@@ -26,13 +26,7 @@ dist-ssr
 # Local Netlify folder
 .netlify
 
-# Large music sets and audio files
+# Large music sets and audio files (tracked via Git LFS)
 BACKUP_AUDIO/
-*.mp3
-*.wav
-*.m4a
-*.flac
-*.aac
-*.ogg
 
 .vercel
