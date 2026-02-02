@@ -2,6 +2,15 @@ import React, { createContext, useContext, useState, useRef, useEffect, useCallb
 // jsmediatags removed
 
 
+const AUDIO_FALLBACK_BASE = (import.meta.env.VITE_AUDIO_FALLBACK_BASE || '').replace(/\/+$/, '');
+const isAbsoluteUrl = (url) => /^https?:\/\//i.test(url);
+const resolveAudioSrc = (src) => {
+    if (!src) return src;
+    if (isAbsoluteUrl(src)) return src;
+    if (import.meta.env.PROD && AUDIO_FALLBACK_BASE) return `${AUDIO_FALLBACK_BASE}${src}`;
+    return src;
+};
+
 const AudioContext = createContext();
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -95,7 +104,7 @@ export const AudioProvider = ({ children }) => {
 
         if (audioRef.current) {
             // Always start with the file defined in 'file' (which should be part000 for multi-part tracks)
-            const encodedSrc = encodeURI(track.file);
+            const encodedSrc = encodeURI(resolveAudioSrc(track.file));
             console.log('Loading audio src:', encodedSrc);
             audioRef.current.src = encodedSrc;
             audioRef.current.load();
@@ -186,7 +195,7 @@ export const AudioProvider = ({ children }) => {
                 const nextPartIdx = currentPartIdx + 1;
                 currentPartIndexRef.current = nextPartIdx;
 
-                const nextFile = track.parts[nextPartIdx];
+                const nextFile = resolveAudioSrc(track.parts[nextPartIdx]);
                 console.log(`Auto-switching to part ${nextPartIdx + 1}/${track.parts.length}: ${nextFile}`);
 
                 if (audioRef.current) {

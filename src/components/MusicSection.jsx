@@ -28,7 +28,7 @@ const MusicSection = () => {
     const sectionRef = useRef(null);
 
     const STATS_API_BASE = (import.meta.env.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
-    const STATS_API_FALLBACK = (import.meta.env.VITE_STATS_API_FALLBACK || 'https://airdox.vercel.app').replace(/\/+$/, '');
+    const STATS_API_FALLBACK = (import.meta.env.VITE_STATS_API_FALLBACK || '').replace(/\/+$/, '');
 
     const buildStatsUrl = (base) => (base ? `${base}/api/stats` : '/api/stats');
     const PRIMARY_STATS_URL = buildStatsUrl(STATS_API_BASE);
