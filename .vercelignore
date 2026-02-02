@@ -1,0 +1,4 @@
+node_modules
+.git
+lint_report.txt
+lint_report_final.txt

@@ -1,0 +1,351 @@
+/* =====================================================
+   BIO SECTION - Premium Design
+   ===================================================== */
+
+.bio-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Background */
+.bio-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.bio-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(255, 0, 170, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(0, 245, 255, 0.05) 0%, transparent 40%);
+}
+
+.bio-lines {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, var(--border-subtle), transparent);
+}
+
+/* Grid Layout */
+.bio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-16);
+    align-items: center;
+}
+
+/* Visual Side */
+.bio-visual {
+    position: relative;
+}
+
+.visual-frame {
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.frame-corner {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--neon-cyan);
+    opacity: 0.5;
+}
+
+.frame-tl {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+}
+
+.frame-tr {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+}
+
+.frame-bl {
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: none;
+}
+
+.frame-br {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+}
+
+.visual-content {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Abstract Layout */
+.abstract-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #111 0%, #000 100%);
+    overflow: hidden;
+}
+
+.geo-structure {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.geo-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ring-1 {
+    width: 100%;
+    height: 100%;
+    border-top-color: var(--neon-cyan);
+    animation: spin 8s linear infinite;
+    box-shadow: 0 0 15px rgba(0, 245, 255, 0.2);
+}
+
+.ring-2 {
+    width: 70%;
+    height: 70%;
+    border-bottom-color: var(--neon-pink);
+    animation: spin 6s linear infinite reverse;
+    box-shadow: 0 0 15px rgba(255, 0, 170, 0.2);
+}
+
+.ring-3 {
+    width: 40%;
+    height: 40%;
+    border-left-color: #fff;
+    animation: spin 4s linear infinite;
+}
+
+.geo-core {
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #fff;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+}
+
+.visual-overlay {
+    position: absolute;
+    bottom: var(--space-4);
+    left: var(--space-4);
+    right: var(--space-4);
+    padding: var(--space-2);
+    text-align: center;
+}
+
+.overlay-text {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.3em;
+    color: var(--text-muted);
+}
+
+/* Content Side */
+.bio-content {
+    max-width: 600px;
+}
+
+.bio-content .section-header {
+    text-align: left;
+    margin-bottom: var(--space-8);
+}
+
+.bio-content .section-title {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Bio Text */
+.bio-text {
+    margin-bottom: var(--space-10);
+}
+
+.bio-intro {
+    font-size: var(--text-xl);
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: var(--space-4);
+}
+
+.bio-body {
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+/* Stats */
+.bio-stats {
+    display: flex;
+    gap: var(--space-8);
+    margin-bottom: var(--space-8);
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.stat-number {
+    font-family: var(--font-heading);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+}
+
+/* Tags */
+.bio-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.tag {
+    padding: var(--space-2) var(--space-4);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--border-radius-full);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    transition: all var(--duration-normal);
+}
+
+.tag:hover {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    background: rgba(0, 245, 255, 0.05);
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 1024px) {
+    .bio-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-12);
+    }
+
+    .visual-frame {
+        max-width: 400px;
+    }
+
+    .bio-content {
+        max-width: none;
+    }
+
+    .bio-content .section-header {
+        text-align: center;
+    }
+
+    .bio-content .section-title {
+        align-items: center;
+    }
+
+    .bio-text {
+        text-align: center;
+    }
+
+    .bio-stats {
+        justify-content: center;
+    }
+
+    .bio-tags {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .bio-stats {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-4);
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .visual-frame {
+        max-width: 300px;
+    }
+}

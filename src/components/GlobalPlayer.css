@@ -1,0 +1,444 @@
+/* Global Player Container */
+.global-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background: rgba(10, 10, 12, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8),
+        0 -2px 10px rgba(0, 243, 255, 0.1);
+    /* Cyan glow hint */
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.global-player.visible {
+    transform: translateY(0);
+}
+
+/* Track Info */
+.gp-track-info {
+    flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.gp-track-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.gp-track-artist {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    color: var(--neon-cyan);
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
+}
+
+/* Controls */
+.gp-controls {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-right: 40px;
+}
+
+.gp-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.gp-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.gp-btn.play-pause {
+    color: var(--neon-cyan);
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+}
+
+.gp-btn.play-pause:hover {
+    background: rgba(0, 243, 255, 0.1);
+    box-shadow: 0 0 25px rgba(0, 243, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.gp-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.gp-btn.play-pause svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Progress & Visualizer Area */
+.gp-center-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    padding: 0 20px;
+}
+
+/* Mini Visualizer Canvas */
+.gp-visualizer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: linear-gradient(to top, black, transparent 90%);
+}
+
+/* Progress Bar */
+.gp-progress-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1;
+}
+
+.gp-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    min-width: 45px;
+    text-align: center;
+}
+
+.gp-progress-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    /* For clamping the fill */
+}
+
+/* Interactive Hit Area for easier clicking */
+.gp-progress-bar::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+.gp-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-cyan), #fff);
+    width: 0%;
+    position: relative;
+    box-shadow: 0 0 10px var(--neon-cyan);
+    border-radius: 2px;
+}
+
+.gp-progress-fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.gp-progress-bar:hover .gp-progress-fill::after {
+    opacity: 1;
+}
+
+/* Volume Control */
+.gp-volume {
+    flex: 0 0 150px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.gp-volume input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+.gp-volume input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    border: 2px solid var(--neon-cyan);
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--neon-cyan);
+    margin-top: -4px;
+    /* Align vertical center if height diff */
+}
+
+/* Run Track (Firefox) */
+.gp-volume input[type="range"]::-moz-range-progress {
+    background: var(--neon-cyan);
+    height: 4px;
+}
+
+/* Tracklist Overlay */
+.gp-tracklist-overlay {
+    position: absolute;
+    bottom: 100%;
+    left: 20px;
+    width: 300px;
+    max-height: 400px;
+    background: rgba(10, 10, 12, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1001;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.gp-tracklist-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gp-tracklist-header span {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: var(--neon-cyan);
+}
+
+.gp-tracklist-header button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.gp-tracklist-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 0;
+}
+
+.gp-track-item {
+    padding: 10px 20px;
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 2px solid transparent;
+}
+
+.gp-track-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.gp-track-item.active {
+    background: rgba(0, 243, 255, 0.05);
+    border-left-color: var(--neon-cyan);
+}
+
+.gp-track-item .gp-track-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--neon-cyan);
+    min-width: 45px;
+}
+
+.gp-track-item .gp-track-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.gp-track-item.active .gp-track-name {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Indicator for clickable info */
+.gp-track-info {
+    cursor: pointer;
+}
+
+.gp-tracklist-indicator {
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: var(--neon-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--neon-cyan);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translateY(-50%) scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(-50%) scale(1.5);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(-50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Custom Scrollbar for Tracklist */
+.gp-tracklist-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.gp-tracklist-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.gp-tracklist-content::-webkit-scrollbar-thumb {
+    background: rgba(0, 243, 255, 0.2);
+    border-radius: 2px;
+}
+
+.gp-tracklist-content::-webkit-scrollbar-thumb:hover {
+    background: var(--neon-cyan);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .global-player {
+        height: auto;
+        flex-wrap: wrap;
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+        background: rgba(8, 8, 10, 0.98);
+        /* Less transparent on mobile */
+    }
+
+    .gp-track-info {
+        margin-right: 0;
+        text-align: center;
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    .gp-center-area {
+        width: 100%;
+        padding: 0;
+        order: -1;
+        /* Visualize/Progress on top or adjust as needed */
+    }
+
+    .gp-controls {
+        margin-right: 0;
+        justify-content: center;
+        width: 100%;
+        order: 2;
+    }
+
+    .gp-volume {
+        display: none;
+        /* Hide volume on mobile to save space */
+    }
+
+    .gp-progress-container {
+        width: 100%;
+    }
+
+    .gp-visualizer {
+        display: none;
+        /* Performance on mobile */
+    }
+
+    .gp-tracklist-overlay {
+        left: 0;
+        width: 100%;
+        border-radius: 0;
+    }
+}
