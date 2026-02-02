@@ -3,12 +3,30 @@ import React, { createContext, useContext, useState, useRef, useEffect, useCallb
 
 
 const AUDIO_FALLBACK_BASE = (import.meta.env.VITE_AUDIO_FALLBACK_BASE || '').replace(/\/+$/, '');
+const AUDIO_MAX_PARTS = 25;
 const isAbsoluteUrl = (url) => /^https?:\/\//i.test(url);
 const resolveAudioSrc = (src) => {
     if (!src) return src;
     if (isAbsoluteUrl(src)) return src;
     if (import.meta.env.PROD && AUDIO_FALLBACK_BASE) return `${AUDIO_FALLBACK_BASE}${src}`;
     return src;
+};
+const encodeAudioSrc = (src) => {
+    if (!src) return src;
+    try {
+        if (isAbsoluteUrl(src)) return new URL(src).toString();
+        return new URL(src, window.location.origin).toString();
+    } catch {
+        return encodeURI(src);
+    }
+};
+const toPlayableSrc = (src) => encodeAudioSrc(resolveAudioSrc(src));
+const padPartIndex = (index) => String(index).padStart(3, '0');
+const toPart000 = (file) => {
+    if (!file || !/\.mp3$/i.test(file)) return null;
+    if (/_part\d{3}\.mp3$/i.test(file)) return null;
+    if (/_full\.mp3$/i.test(file)) return file.replace(/_full\.mp3$/i, '_part000.mp3');
+    return file.replace(/\.mp3$/i, '_part000.mp3');
 };
 
 const AudioContext = createContext();
@@ -91,9 +109,14 @@ export const AudioProvider = ({ children }) => {
             return;
         }
 
-        // Wenn gleicher Track, nur togglen
-        if (currentTrack?.id === track.id) {
-            console.log('Toggling play (same track)');
+        const sameParts = Array.isArray(currentTrack?.parts) && Array.isArray(track.parts)
+            && currentTrack.parts.length === track.parts.length
+            && currentTrack.parts.every((part, idx) => part === track.parts[idx]);
+        const isSameSource = currentTrack?.file === track.file && sameParts;
+
+        // Wenn gleicher Track mit gleicher Quelle, nur togglen
+        if (currentTrack?.id === track.id && isSameSource) {
+            console.log('Toggling play (same track + source)');
             togglePlay();
             return;
         }
@@ -104,7 +127,7 @@ export const AudioProvider = ({ children }) => {
 
         if (audioRef.current) {
             // Always start with the file defined in 'file' (which should be part000 for multi-part tracks)
-            const encodedSrc = encodeURI(resolveAudioSrc(track.file));
+            const encodedSrc = toPlayableSrc(track.file);
             console.log('Loading audio src:', encodedSrc);
             audioRef.current.src = encodedSrc;
             audioRef.current.load();
@@ -175,6 +198,29 @@ export const AudioProvider = ({ children }) => {
         volumeRef.current = volume;
     }, [currentTrack, playlist, repeatMode, shuffle, volume]);
 
+    const fallbackTriedRef = useRef(new Set());
+    const buildPartsList = async (part000) => {
+        const parts = [];
+        if (!part000) return parts;
+        const pattern = part000.replace(/_part000\.mp3$/i, `_part${padPartIndex(0)}.mp3`);
+        const base = pattern.replace(/_part\d{3}\.mp3$/i, '');
+        for (let i = 0; i < AUDIO_MAX_PARTS; i++) {
+            const partFile = `${base}_part${padPartIndex(i)}.mp3`;
+            const url = toPlayableSrc(partFile);
+            try {
+                const res = await fetch(url, { method: 'HEAD' });
+                if (!res.ok) break;
+                parts.push(partFile);
+            } catch {
+                break;
+            }
+        }
+        return parts;
+    };
+
+    // Helper to allow useEffect to call actions
+    const actionsRef = useRef({ playTrack: () => { } });
+
     // Setup Audio Element (ONCE)
     useEffect(() => {
         const audio = new Audio();
@@ -195,11 +241,11 @@ export const AudioProvider = ({ children }) => {
                 const nextPartIdx = currentPartIdx + 1;
                 currentPartIndexRef.current = nextPartIdx;
 
-                const nextFile = resolveAudioSrc(track.parts[nextPartIdx]);
+                const nextFile = track.parts[nextPartIdx];
                 console.log(`Auto-switching to part ${nextPartIdx + 1}/${track.parts.length}: ${nextFile}`);
 
                 if (audioRef.current) {
-                    audioRef.current.src = encodeURI(nextFile);
+                    audioRef.current.src = toPlayableSrc(nextFile);
                     audioRef.current.load();
                     audioRef.current.play()
                         .then(() => setIsPlaying(true))
@@ -225,20 +271,37 @@ export const AudioProvider = ({ children }) => {
             }
         };
 
+        const onError = async () => {
+            const track = currentTrackRef.current;
+            if (!track || fallbackTriedRef.current.has(track.id)) return;
+            if (!track.file || track.parts?.length) return;
+
+            const part000 = toPart000(track.file);
+            if (!part000) return;
+
+            fallbackTriedRef.current.add(track.id);
+            const parts = await buildPartsList(part000);
+            if (!parts.length) return;
+
+            const fallbackTrack = { ...track, file: parts[0], parts };
+            currentPartIndexRef.current = 0;
+            actionsRef.current.playTrack(fallbackTrack);
+        };
+
         audio.addEventListener('timeupdate', updateTime);
         audio.addEventListener('loadedmetadata', updateDuration);
         audio.addEventListener('ended', onEnded);
+        audio.addEventListener('error', onError);
 
         return () => {
             audio.pause();
             audio.removeEventListener('timeupdate', updateTime);
             audio.removeEventListener('loadedmetadata', updateDuration);
             audio.removeEventListener('ended', onEnded);
+            audio.removeEventListener('error', onError);
         };
     }, []); // Empty dependency array -> Runs once
 
-    // Helper to allow useEffect to call actions
-    const actionsRef = useRef({ playTrack: () => { } });
     useEffect(() => {
         actionsRef.current = { playTrack };
     }, [playTrack]);
