@@ -4,26 +4,43 @@ import './Hero.css';
 
 const Hero = () => {
     const [loaded, setLoaded] = useState(false);
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const [cursorScale, setCursorScale] = useState(1);
     const heroRef = useRef(null);
     const bgRef = useRef(null); // Ref for background parallax
     const cursorRef = useRef(null);
     const cursorOuterRef = useRef(null);
+    const glowRef = useRef(null);
+    const mousePosRef = useRef({ x: 0, y: 0 });
+    const cursorScaleRef = useRef(1);
+
+    const getScrollBehavior = () => (
+        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            ? 'auto'
+            : 'smooth'
+    );
+
+    const scrollToSection = (id) => {
+        document.getElementById(id)?.scrollIntoView({ behavior: getScrollBehavior() });
+    };
 
     // Cursor animation loop
     useEffect(() => {
         let animationId;
         const animate = () => {
+            const { x, y } = mousePosRef.current;
+            const scale = cursorScaleRef.current;
             if (cursorRef.current && cursorOuterRef.current) {
-                cursorRef.current.style.transform = `translate(${mousePos.x}px, ${mousePos.y}px) scale(${cursorScale})`;
-                cursorOuterRef.current.style.transform = `translate(${mousePos.x}px, ${mousePos.y}px) scale(${cursorScale * 0.8})`;
+                cursorRef.current.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+                cursorOuterRef.current.style.transform = `translate(${x}px, ${y}px) scale(${scale * 0.8})`;
+            }
+            if (glowRef.current) {
+                glowRef.current.style.left = `${x}px`;
+                glowRef.current.style.top = `${y}px`;
             }
             animationId = requestAnimationFrame(animate);
         };
         animationId = requestAnimationFrame(animate);
         return () => cancelAnimationFrame(animationId);
-    }, [mousePos, cursorScale]);
+    }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => setLoaded(true), 100);
@@ -39,14 +56,11 @@ const Hero = () => {
         window.addEventListener('scroll', handleScroll, { passive: true });
 
         const handleMouseMove = (e) => {
-            // Mouse pos state is needed for cursor which is fine, 
-            // but we could optimize this too if needed. 
-            // For now, removing scroll re-renders is the big win.
-            setMousePos({ x: e.clientX, y: e.clientY });
+            mousePosRef.current = { x: e.clientX, y: e.clientY };
         };
 
-        const handleMouseEnterInteractive = () => setCursorScale(1.5);
-        const handleMouseLeaveInteractive = () => setCursorScale(1);
+        const handleMouseEnterInteractive = () => { cursorScaleRef.current = 1.5; };
+        const handleMouseLeaveInteractive = () => { cursorScaleRef.current = 1; };
 
         window.addEventListener('mousemove', handleMouseMove);
 
@@ -75,10 +89,7 @@ const Hero = () => {
             <div ref={cursorOuterRef} className="cursor-ring"></div>
 
             {/* Cursor Glow */}
-            <div
-                className="cursor-glow"
-                style={{ left: mousePos.x, top: mousePos.y }}
-            ></div>
+            <div ref={glowRef} className="cursor-glow"></div>
 
             {/* Animated Background Layers */}
             <div className="hero-bg" ref={bgRef}>
@@ -181,14 +192,14 @@ const Hero = () => {
                 <div className="hero-cta">
                     <button
                         className="btn btn-primary hero-btn interactive"
-                        onClick={() => document.getElementById('music')?.scrollIntoView({ behavior: 'smooth' })}
+                        onClick={() => scrollToSection('music')}
                     >
                         <span>GET THE SOUND</span>
                         <div className="btn-shine"></div>
                     </button>
                     <button
                         className="btn btn-outline hero-btn interactive"
-                        onClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })}
+                        onClick={() => scrollToSection('booking')}
                     >
                         <span>BOOK NOW</span>
                     </button>
@@ -220,9 +231,11 @@ const Hero = () => {
             </div>
 
             {/* Scroll Indicator */}
-            <div
+            <button
+                type="button"
                 className="scroll-indicator interactive"
-                onClick={() => document.getElementById('bio')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => scrollToSection('bio')}
+                aria-label="Scroll to about section"
             >
                 <div className="scroll-mouse">
                     <div className="scroll-wheel"></div>
@@ -232,7 +245,7 @@ const Hero = () => {
                     <span className="scroll-arrow"></span>
                     <span className="scroll-arrow"></span>
                 </div>
-            </div>
+            </button>
 
             {/* Corner Decorations */}
             <div className="corner-decoration corner-tl"></div>

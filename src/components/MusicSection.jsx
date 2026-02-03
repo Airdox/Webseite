@@ -143,6 +143,13 @@ const MusicSection = () => {
         }
     };
 
+    const handleCoverKeyDown = (event, set) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handlePlayClick(set);
+        }
+    };
+
     const handleVote = (setId, voteType) => {
         const currentVote = userVotes[setId]; // 'like' | 'dislike' | undefined
 
@@ -206,7 +213,14 @@ const MusicSection = () => {
                                 className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''}`}
                             >
                                 {/* Cover Art */}
-                                <div className="set-cover" onClick={() => handlePlayClick(set)}>
+                                <div
+                                    className="set-cover"
+                                    onClick={() => handlePlayClick(set)}
+                                    onKeyDown={(event) => handleCoverKeyDown(event, set)}
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-label={`${isSetPlaying ? 'Pause' : 'Play'} ${set.title}`}
+                                >
                                     <div
                                         className={`cover-vinyl ${isSetPlaying ? 'spinning' : ''}`}
                                         style={{
@@ -227,7 +241,7 @@ const MusicSection = () => {
                                         </div>
                                     </div>
                                     <div className="cover-overlay">
-                                        <button className="play-btn interactive">
+                                        <span className="play-btn interactive" aria-hidden="true">
                                             {isSetPlaying ? (
                                                 <svg viewBox="0 0 24 24" fill="currentColor">
                                                     <rect x="6" y="5" width="4" height="14" />
@@ -238,7 +252,7 @@ const MusicSection = () => {
                                                     <path d="M8 5v14l11-7z" />
                                                 </svg>
                                             )}
-                                        </button>
+                                        </span>
                                     </div>
                                     {set.isChristmasGift && <span className="xmas-badge">🎄 GIFT</span>}
                                     {set.isNew && !set.isChristmasGift && <span className="new-badge">NEW</span>}
@@ -293,9 +307,11 @@ const MusicSection = () => {
                                     </div>
                                     <div className="like-buttons">
                                         <button
+                                            type="button"
                                             className={`like-btn ${userVote === 'like' ? 'liked' : ''}`}
                                             onClick={(e) => { e.stopPropagation(); handleVote(set.id, 'like'); }}
-                                            aria-label="Like"
+                                            aria-label={`Like ${set.title}`}
+                                            aria-pressed={userVote === 'like'}
                                         >
                                             <svg viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M2 20h2c.55 0 1-.45 1-1v-9c0-.55-.45-1-1-1H2v11zm19.83-7.12c.11-.25.17-.52.17-.8V11c0-1.1-.9-2-2-2h-5.5l.92-4.65c.05-.22.02-.46-.08-.66-.23-.45-.52-.86-.88-1.22L14 2 7.59 8.41C7.21 8.79 7 9.3 7 9.83v7.84C7 18.95 8.05 20 9.34 20h8.11c.7 0 1.36-.37 1.72-.97l2.66-6.15z" />
@@ -303,9 +319,11 @@ const MusicSection = () => {
                                             <span>{stats.likes || 0}</span>
                                         </button>
                                         <button
+                                            type="button"
                                             className={`like-btn ${userVote === 'dislike' ? 'disliked' : ''}`}
                                             onClick={(e) => { e.stopPropagation(); handleVote(set.id, 'dislike'); }}
-                                            aria-label="Dislike"
+                                            aria-label={`Dislike ${set.title}`}
+                                            aria-pressed={userVote === 'dislike'}
                                         >
                                             <svg viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M22 4h-2c-.55 0-1 .45-1 1v9c0 .55.45 1 1 1h2V4zM2.17 11.12c-.11.25-.17.52-.17.8V13c0 1.1.9 2 2 2h5.5l-.92 4.65c-.05.22-.02.46.08.66.23.45.52.86.88 1.22L10 22l6.41-6.41c.38-.38.59-.89.59-1.42V6.34C17 5.05 15.95 4 14.66 4H6.55c-.7 0-1.36.37-1.72.97l-2.66 6.15z" />

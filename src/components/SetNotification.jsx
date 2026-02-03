@@ -26,7 +26,7 @@ const SetNotification = () => {
                     <div className="set-title">{latestSet.title}</div>
                     <div className="set-date">{latestSet.date}</div>
                 </div>
-                <button className="set-close" onClick={() => setVisible(false)}>×</button>
+                <button type="button" className="set-close" onClick={() => setVisible(false)} aria-label="Close notification">×</button>
             </div>
         </div>
     );

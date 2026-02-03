@@ -24,6 +24,7 @@ const GlobalPlayer = () => {
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
     const progressRef = useRef(null);
+    const waveformRef = useRef({ trackId: null, points: [] });
 
     // Format time helpers (mm:ss)
     const formatTime = (time) => {
@@ -53,27 +54,18 @@ const GlobalPlayer = () => {
         const bufferLength = analyser.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
 
-        // Generate a pseudo-persistent waveform for the current track
-        const waveformPoints = [];
-        const generateWaveform = () => {
-            waveformPoints.length = 0;
-            const segments = 100;
-            for (let i = 0; i < segments; i++) {
-                // Persistent but "random" industrial look
-                const val = 0.2 + Math.random() * 0.5;
-                waveformPoints.push(val);
-            }
-        };
-        generateWaveform();
+        if (waveformRef.current.trackId !== currentTrack?.id) {
+            waveformRef.current.trackId = currentTrack?.id || null;
+            waveformRef.current.points = Array.from({ length: 100 }, () => 0.2 + Math.random() * 0.5);
+        }
 
-        const draw = () => {
-            animationRef.current = requestAnimationFrame(draw);
+        const drawBaseWaveform = () => {
+            const waveformPoints = waveformRef.current.points;
+            if (!waveformPoints.length) return;
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
             const width = canvas.width;
             const height = canvas.height;
 
-            // 1. Draw Static Waveform Background
             ctx.beginPath();
             ctx.strokeStyle = 'rgba(0, 243, 255, 0.1)';
             ctx.lineWidth = 2;
@@ -85,35 +77,52 @@ const GlobalPlayer = () => {
                 else ctx.lineTo(x, y);
             }
             ctx.stroke();
+        };
 
-            // 2. Draw Reactive Peaks (Foreground) if playing
-            if (isPlaying) {
-                analyser.getByteFrequencyData(dataArray);
-                const barWidth = (width / bufferLength) * 2;
-                let x = 0;
+        const drawFrame = () => {
+            animationRef.current = requestAnimationFrame(drawFrame);
 
-                for (let i = 0; i < bufferLength; i++) {
-                    const value = dataArray[i];
-                    const barHeight = (value / 255) * height * 0.8;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const width = canvas.width;
+            const height = canvas.height;
 
-                    // Neon Cyan with glow
-                    ctx.fillStyle = `rgba(0, 243, 255, ${0.3 + (value / 255) * 0.7})`;
-                    ctx.shadowBlur = 10;
-                    ctx.shadowColor = 'rgba(0, 243, 255, 0.5)';
+            // 1. Static waveform background
+            drawBaseWaveform();
 
-                    ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+            // 2. Reactive peaks (Foreground)
+            analyser.getByteFrequencyData(dataArray);
+            const barWidth = (width / bufferLength) * 2;
+            let x = 0;
 
-                    ctx.shadowBlur = 0; // Reset for next
-                    x += barWidth + 2;
-                }
+            for (let i = 0; i < bufferLength; i++) {
+                const value = dataArray[i];
+                const barHeight = (value / 255) * height * 0.8;
+
+                ctx.fillStyle = `rgba(0, 243, 255, ${0.3 + (value / 255) * 0.7})`;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = 'rgba(0, 243, 255, 0.5)';
+
+                ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+
+                ctx.shadowBlur = 0;
+                x += barWidth + 2;
             }
         };
 
-        draw();
+        if (animationRef.current) {
+            cancelAnimationFrame(animationRef.current);
+            animationRef.current = null;
+        }
 
-        return () => {
-            if (animationRef.current) cancelAnimationFrame(animationRef.current);
-        };
+        if (isPlaying) {
+            drawFrame();
+            return () => {
+                if (animationRef.current) cancelAnimationFrame(animationRef.current);
+            };
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBaseWaveform();
     }, [isPlaying, analyserRef, currentTrack]);
 
     if (!currentTrack) return null;

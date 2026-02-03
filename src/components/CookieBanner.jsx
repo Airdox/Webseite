@@ -18,7 +18,9 @@ const CookieBanner = () => {
 
     const handleDecline = () => {
         localStorage.setItem('airdox-analytics-enabled', 'false');
+        localStorage.setItem('airdox-marketing-enabled', 'false');
         setShowBanner(false);
+        window.dispatchEvent(new CustomEvent('analytics-consent-changed'));
     };
 
     const handleAcceptAll = () => {

@@ -22,8 +22,14 @@ const Footer = () => {
         return () => observer.disconnect();
     }, []);
 
+    const getScrollBehavior = () => (
+        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            ? 'auto'
+            : 'smooth'
+    );
+
     const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: getScrollBehavior() });
     };
 
     const currentYear = new Date().getFullYear();

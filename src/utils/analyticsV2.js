@@ -37,6 +37,8 @@ class AnalyticsV2 {
             this.startSession();
             this.initGA(); // Google Analytics laden
             this.trackPageView();
+        } else {
+            this.disableGA();
         }
     }
 
@@ -47,6 +49,9 @@ class AnalyticsV2 {
     // --- Google Analytics 4 Integration ---
 
     initGA() {
+        const disableKey = `ga-disable-${GA_MEASUREMENT_ID}`;
+        window[disableKey] = false;
+
         // Verhindern, dass Skript mehrfach geladen wird
         if (window.gtag) return;
 
@@ -68,6 +73,18 @@ class AnalyticsV2 {
         });
 
         console.log('📊 GA4 Initialisiert:', GA_MEASUREMENT_ID);
+    }
+
+    disableGA() {
+        const disableKey = `ga-disable-${GA_MEASUREMENT_ID}`;
+        window[disableKey] = true;
+        if (typeof window.gtag === 'function') {
+            try {
+                window.gtag('consent', 'update', { analytics_storage: 'denied' });
+            } catch (error) {
+                console.warn('GA consent update failed:', error);
+            }
+        }
     }
 
     sendGAEvent(eventName, params = {}) {

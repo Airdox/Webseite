@@ -651,3 +651,60 @@ button {
     pointer-events: none;
     z-index: 1000;
 }
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+
+    .reveal,
+    .reveal-left,
+    .reveal-right,
+    .reveal-scale {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .hero {
+        cursor: auto !important;
+    }
+
+    .cursor-dot,
+    .cursor-ring,
+    .cursor-glow,
+    .particles-container,
+    .scan-lines,
+    .cyber-grid {
+        display: none !important;
+    }
+
+    .hero-badge,
+    .hero-tagline,
+    .hero-cta,
+    .hero-socials,
+    .scroll-indicator,
+    .corner-decoration {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .letter-fill {
+        opacity: 1 !important;
+    }
+
+    .letter-stroke {
+        stroke-dashoffset: 0 !important;
+    }
+
+    .glitch {
+        display: none !important;
+    }
+}

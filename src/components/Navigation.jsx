@@ -36,8 +36,14 @@ const Navigation = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const getScrollBehavior = () => (
+        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            ? 'auto'
+            : 'smooth'
+    );
+
     const scrollToSection = (id) => {
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById(id)?.scrollIntoView({ behavior: getScrollBehavior() });
         setMenuOpen(false);
     };
 
@@ -61,21 +67,25 @@ const Navigation = () => {
 
                 <div className="nav-container">
                     {/* Logo */}
-                    <div
+                    <button
+                        type="button"
                         className="nav-logo interactive"
                         onClick={() => scrollToSection('home')}
+                        aria-label="Go to home section"
                     >
                         <span className="logo-text">AIRDOX</span>
                         <span className="logo-dot"></span>
-                    </div>
+                    </button>
 
                     {/* Desktop Navigation */}
                     <div className="nav-links">
                         {navItems.map((item) => (
                             <button
                                 key={item.id}
+                                type="button"
                                 className={`nav-link interactive ${activeSection === item.id ? 'active' : ''}`}
                                 onClick={() => scrollToSection(item.id)}
+                                aria-current={activeSection === item.id ? 'page' : undefined}
                             >
                                 <span className="link-text">{item.label}</span>
                                 <span className="link-indicator"></span>
@@ -93,9 +103,12 @@ const Navigation = () => {
 
                     {/* Mobile Menu Button */}
                     <button
+                        type="button"
                         className={`menu-toggle interactive ${menuOpen ? 'open' : ''}`}
                         onClick={() => setMenuOpen(!menuOpen)}
                         aria-label="Toggle menu"
+                        aria-expanded={menuOpen}
+                        aria-controls="mobile-menu"
                     >
                         <span className="menu-line"></span>
                         <span className="menu-line"></span>
@@ -105,11 +118,16 @@ const Navigation = () => {
             </nav>
 
             {/* Mobile Menu Overlay */}
-            <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
+            <div
+                id="mobile-menu"
+                className={`mobile-menu ${menuOpen ? 'open' : ''}`}
+                aria-hidden={!menuOpen}
+            >
                 <div className="mobile-menu-content">
                     {navItems.map((item, index) => (
                         <button
                             key={item.id}
+                            type="button"
                             className="mobile-nav-link"
                             onClick={() => scrollToSection(item.id)}
                             style={{ animationDelay: `${0.1 + index * 0.1}s` }}

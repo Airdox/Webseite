@@ -1348,6 +1348,18 @@
    RESPONSIVE
    ===================================================== */
 
+@media (pointer: coarse) {
+    .hero {
+        cursor: auto;
+    }
+
+    .cursor-dot,
+    .cursor-ring,
+    .cursor-glow {
+        display: none;
+    }
+}
+
 @media (max-width: 768px) {
     .hero {
         cursor: auto;
