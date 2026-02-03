@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://airdox.netlify.app/sitemap.xml

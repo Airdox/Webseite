@@ -175,6 +175,11 @@ const MusicSection = () => {
 
         // Optimistic Update für sofortiges Feedback (optional API update)
         updateApi(setId, typeToSend);
+
+        const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
+        if (analytics?.trackEvent) {
+            analytics.trackEvent('vote', { setId, vote: typeToSend });
+        }
     };
 
 

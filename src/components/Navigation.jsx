@@ -42,7 +42,15 @@ const Navigation = () => {
             : 'smooth'
     );
 
-    const scrollToSection = (id) => {
+    const trackNav = (label) => {
+        const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
+        if (analytics?.trackInteraction) {
+            analytics.trackInteraction(label, 'navigation', 'click');
+        }
+    };
+
+    const scrollToSection = (id, label) => {
+        if (label) trackNav(label);
         document.getElementById(id)?.scrollIntoView({ behavior: getScrollBehavior() });
         setMenuOpen(false);
     };
@@ -70,7 +78,7 @@ const Navigation = () => {
                     <button
                         type="button"
                         className="nav-logo interactive"
-                        onClick={() => scrollToSection('home')}
+                        onClick={() => scrollToSection('home', 'logo')}
                         aria-label="Go to home section"
                     >
                         <span className="logo-text">AIRDOX</span>
@@ -84,7 +92,7 @@ const Navigation = () => {
                                 key={item.id}
                                 type="button"
                                 className={`nav-link interactive ${activeSection === item.id ? 'active' : ''}`}
-                                onClick={() => scrollToSection(item.id)}
+                                onClick={() => scrollToSection(item.id, item.label)}
                                 aria-current={activeSection === item.id ? 'page' : undefined}
                             >
                                 <span className="link-text">{item.label}</span>
@@ -97,6 +105,7 @@ const Navigation = () => {
                     <a
                         href="mailto:airdox82@gmail.com"
                         className="nav-cta btn btn-primary interactive"
+                        onClick={() => trackNav('contact_email')}
                     >
                         Contact
                     </a>
@@ -129,7 +138,7 @@ const Navigation = () => {
                             key={item.id}
                             type="button"
                             className="mobile-nav-link"
-                            onClick={() => scrollToSection(item.id)}
+                            onClick={() => scrollToSection(item.id, `mobile_${item.label}`)}
                             style={{ animationDelay: `${0.1 + index * 0.1}s` }}
                         >
                             <span className="mobile-link-number">0{index + 1}</span>

@@ -13,7 +13,7 @@ export const sets = [
       title: 'PIRATE STUDIO (17.12.)',
       date: '17.12.2025',
       file: '/sets/public/Airdox Pirate Studio_17.12.2025.mp3',
-      isNew: true,
+      isNew: false,
       duration: '1:05:00',
       vinylColor: '#00f5ff'
     },
@@ -65,12 +65,5 @@ export const sets = [
       duration: '2:49:00',
       vinylColor: '#ff0044'
     },
-  {
-      id: '7',
-      title: 'TEST SET',
-      date: '',
-      file: '/sets/public/airdox test.mp3',
-      duration: '38:12',
-      vinylColor: '#00ced1'
-    }
+  // Test/placeholder removed from live list
 ];

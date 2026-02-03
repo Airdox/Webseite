@@ -228,6 +228,19 @@ export const AudioProvider = ({ children }) => {
         audio.volume = volumeRef.current;
         audioRef.current = audio;
 
+        const trackAudioEvent = (action) => {
+            const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
+            const track = currentTrackRef.current;
+            if (analytics?.trackAudioEvent && track) {
+                analytics.trackAudioEvent(
+                    track.title || track.id || 'unknown',
+                    action,
+                    audio.currentTime || 0,
+                    audio.duration || 0
+                );
+            }
+        };
+
         const updateTime = () => setCurrentTime(audio.currentTime);
         const updateDuration = () => setDuration(audio.duration);
 
@@ -255,6 +268,7 @@ export const AudioProvider = ({ children }) => {
             }
 
             // Normal track end logic
+            trackAudioEvent('complete');
             const mode = repeatModeRef.current;
             const idx = playlistIndexRef.current;
             const list = playlistRef.current;
@@ -288,10 +302,17 @@ export const AudioProvider = ({ children }) => {
             actionsRef.current.playTrack(fallbackTrack);
         };
 
+        const handlePlay = () => trackAudioEvent('play');
+        const handlePause = () => {
+            if (!audio.ended) trackAudioEvent('pause');
+        };
+
         audio.addEventListener('timeupdate', updateTime);
         audio.addEventListener('loadedmetadata', updateDuration);
         audio.addEventListener('ended', onEnded);
         audio.addEventListener('error', onError);
+        audio.addEventListener('play', handlePlay);
+        audio.addEventListener('pause', handlePause);
 
         return () => {
             audio.pause();
@@ -299,6 +320,8 @@ export const AudioProvider = ({ children }) => {
             audio.removeEventListener('loadedmetadata', updateDuration);
             audio.removeEventListener('ended', onEnded);
             audio.removeEventListener('error', onError);
+            audio.removeEventListener('play', handlePlay);
+            audio.removeEventListener('pause', handlePause);
         };
     }, []); // Empty dependency array -> Runs once
 
