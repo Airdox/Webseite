@@ -628,12 +628,17 @@ button {
         padding: var(--space-3) var(--space-6);
         font-size: var(--text-xs);
     }
+
+    .app {
+        padding-bottom: 180px;
+    }
 }
 
 /* === App Container === */
 .app {
     min-height: 100vh;
     position: relative;
+    padding-bottom: 110px;
 }
 
 /* Noise overlay for texture */

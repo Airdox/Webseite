@@ -14,7 +14,6 @@ const GlobalPlayer = () => {
         seek,
         volume,
         changeVolume,
-        isPlayerVisible,
         analyserRef,
 
     } = useAudio();
@@ -130,7 +129,7 @@ const GlobalPlayer = () => {
     const progressPercent = duration ? (currentTime / duration) * 100 : 0;
 
     return (
-        <div className={`global-player ${isPlayerVisible ? 'visible' : ''}`}>
+        <div className="global-player">
 
             {/* Visualizer Background */}
             <canvas ref={canvasRef} className="gp-visualizer" width="900" height="100" />

@@ -55,7 +55,6 @@ export const AudioProvider = ({ children }) => {
     const [shuffle, setShuffle] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [isPlayerVisible, setIsPlayerVisible] = useState(false);
 
     const playlistIndexRef = useRef(0);
     const currentPartIndexRef = useRef(0);
@@ -122,7 +121,6 @@ export const AudioProvider = ({ children }) => {
         }
 
         setCurrentTrack(track);
-        setIsPlayerVisible(true);
         currentPartIndexRef.current = 0; // Reset part index for new track
 
         if (audioRef.current) {
@@ -349,8 +347,6 @@ export const AudioProvider = ({ children }) => {
         shuffle,
         currentTime,
         duration,
-        isPlayerVisible,
-        setIsPlayerVisible,
         playTrack,
         togglePlay,
         seek,

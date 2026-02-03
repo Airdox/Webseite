@@ -260,6 +260,16 @@
     animation: fadeInUp 0.6s 0.5s var(--ease-out) forwards;
 }
 
+.mobile-lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+}
+
 .mobile-socials {
     display: flex;
     gap: var(--space-6);

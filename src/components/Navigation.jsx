@@ -176,6 +176,23 @@ const Navigation = () => {
                             <a href="https://soundcloud.com/airdox" target="_blank" rel="noopener noreferrer">SoundCloud</a>
                             <a href="https://instagram.com/airdox_bln" target="_blank" rel="noopener noreferrer">Instagram</a>
                         </div>
+                        <div className="mobile-lang-toggle">
+                            <a
+                                href="/"
+                                className={`lang-link ${currentLocale === 'de' ? 'active' : ''}`}
+                                aria-current={currentLocale === 'de' ? 'page' : undefined}
+                            >
+                                DE
+                            </a>
+                            <span className="lang-sep">/</span>
+                            <a
+                                href="/en/"
+                                className={`lang-link ${currentLocale === 'en' ? 'active' : ''}`}
+                                aria-current={currentLocale === 'en' ? 'page' : undefined}
+                            >
+                                EN
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

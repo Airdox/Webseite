@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050505"/>
+      <stop offset="100%" stop-color="#0b0b0b"/>
+    </linearGradient>
+    <radialGradient id="glowCyan" cx="30%" cy="30%" r="40%">
+      <stop offset="0%" stop-color="#00f5ff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#00f5ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowPink" cx="85%" cy="60%" r="45%">
+      <stop offset="0%" stop-color="#ff00aa" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#ff00aa" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f5ff"/>
+      <stop offset="100%" stop-color="#ff00aa"/>
+    </linearGradient>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0V80" fill="none" stroke="rgba(0,245,255,0.08)" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.35"/>
+  <circle cx="260" cy="180" r="260" fill="url(#glowCyan)"/>
+  <circle cx="980" cy="420" r="280" fill="url(#glowPink)"/>
+
+  <!-- Brand mark (vector from favicon_new.svg) -->
+  <g transform="translate(120, 130) scale(0.7)">
+    <rect width="512" height="512" rx="100" fill="#111111"/>
+    <path d="M256 100 L400 400 H112 Z" fill="none" stroke="url(#logoGrad)" stroke-width="40" stroke-linejoin="round"/>
+    <circle cx="256" cy="280" r="40" fill="#00f5ff" opacity="0.8"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="520" y="290" fill="#ffffff" font-family="Space Grotesk, Arial, sans-serif" font-size="96" font-weight="700" letter-spacing="2">
+    AIRDOX
+  </text>
+  <text x="520" y="350" fill="#00f5ff" font-family="JetBrains Mono, Arial, monospace" font-size="26" letter-spacing="6">
+    BERLIN UNDERGROUND TECHNO
+  </text>
+  <rect x="520" y="380" width="480" height="3" fill="#ff00aa"/>
+  <text x="520" y="420" fill="rgba(255,255,255,0.7)" font-family="Inter, Arial, sans-serif" font-size="18" letter-spacing="2">
+    airdox.netlify.app
+  </text>
+</svg>
