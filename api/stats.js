@@ -43,6 +43,18 @@ export default async function handler(request, response) {
                 dislikes INTEGER DEFAULT 0
             );
         `;
+        // Seed: ensure first set starts at 44 plays (as per Vercel baseline)
+        const seedPlays = {
+            secret_set_2025_12_22: 44
+        };
+        for (const [id, plays] of Object.entries(seedPlays)) {
+            await sql`
+                INSERT INTO track_stats (id, plays, likes, dislikes)
+                VALUES (${id}, ${plays}, 0, 0)
+                ON CONFLICT (id) DO UPDATE
+                SET plays = GREATEST(track_stats.plays, EXCLUDED.plays);
+            `;
+        }
 
         // GET
         if (request.method === 'GET') {

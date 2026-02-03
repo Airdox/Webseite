@@ -8,7 +8,11 @@ const corsHeaders = {
 };
 
 const getSqlClient = () => {
-    const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.NEON_DATABASE_URL;
+    const dbUrl = process.env.DATABASE_URL ||
+        process.env.POSTGRES_URL ||
+        process.env.NEON_DATABASE_URL ||
+        process.env.NETLIFY_DATABASE_URL ||
+        process.env.NETLIFY_DATABASE_URL_UNPOOLED;
     if (dbUrl) return neonClient(dbUrl);
 
     try {
@@ -42,6 +46,18 @@ export const handler = async (event) => {
                 dislikes INTEGER DEFAULT 0
             );
         `;
+        // Seed: ensure first set starts at 44 plays (as per Vercel baseline)
+        const seedPlays = {
+            secret_set_2025_12_22: 44
+        };
+        for (const [id, plays] of Object.entries(seedPlays)) {
+            await sql`
+                INSERT INTO track_stats (id, plays, likes, dislikes)
+                VALUES (${id}, ${plays}, 0, 0)
+                ON CONFLICT (id) DO UPDATE
+                SET plays = GREATEST(track_stats.plays, EXCLUDED.plays);
+            `;
+        }
 
         // GET
         if (event.httpMethod === 'GET') {

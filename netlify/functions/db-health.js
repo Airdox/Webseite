@@ -8,7 +8,11 @@ const corsHeaders = {
 };
 
 const getSqlClient = () => {
-    const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.NEON_DATABASE_URL;
+    const dbUrl = process.env.DATABASE_URL ||
+        process.env.POSTGRES_URL ||
+        process.env.NEON_DATABASE_URL ||
+        process.env.NETLIFY_DATABASE_URL ||
+        process.env.NETLIFY_DATABASE_URL_UNPOOLED;
     if (dbUrl) return neonClient(dbUrl);
 
     try {
