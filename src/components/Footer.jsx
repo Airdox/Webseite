@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import './Footer.css';
+import { t } from '../utils/i18n';
 
 const Footer = () => {
     const footerRef = useRef(null);
@@ -50,7 +51,7 @@ const Footer = () => {
                     {/* Logo Section */}
                     <div className="footer-brand reveal">
                         <h2 className="footer-logo text-gradient">AIRDOX</h2>
-                        <p className="footer-tagline">BERLIN UNDERGROUND TECHNO</p>
+                        <p className="footer-tagline">{t('footer.tagline')}</p>
                     </div>
 
                     {/* Social Links */}
@@ -77,7 +78,7 @@ const Footer = () => {
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M12 19V5M5 12l7-7 7 7" />
                         </svg>
-                        <span>Back to Top</span>
+                        <span>{t('footer.backToTop')}</span>
                     </button>
                 </div>
 
@@ -89,7 +90,7 @@ const Footer = () => {
                             © {currentYear} AIRDOX. All rights reserved.
                         </p>
                         <p className="footer-credit">
-                            Made with <span className="heart">♥</span> in Berlin <span className="version-tag">v0.1.2</span>
+                            {t('footer.madeWith')} <span className="heart">♥</span> {t('footer.inBerlin')} <span className="version-tag">v0.1.2</span>
                         </p>
                     </div>
                 </div>

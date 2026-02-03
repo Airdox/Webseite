@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import './BioSection.css';
+import { t } from '../utils/i18n';
 
 const BioSection = () => {
     const sectionRef = useRef(null);
@@ -61,31 +62,31 @@ const BioSection = () => {
                     {/* Right Side - Text */}
                     <div className="bio-content">
                         <div className="section-header reveal">
-                            <span className="section-label">// ABOUT</span>
-                            <h2 className="section-title text-gradient">AIRDOX</h2>
+                            <span className="section-label">{t('bio.sectionLabel')}</span>
+                            <h2 className="section-title text-gradient">{t('bio.title')}</h2>
                         </div>
 
                         <div className="bio-text reveal stagger-1">
                             <p className="bio-intro">
-                                Der Sound AIRDOX steht für puristischen Berliner Underground Techno – einen Sound, der keine Kompromisse kennt. Treibende Rhythmen, die die Tanzfläche zum Kochen bringen.
+                                {t('bio.intro')}
                             </p>
                             <p className="bio-body" style={{ marginBottom: '1rem' }}>
-                                Deine Füße werden nicht stillstehen. Beats, die greifen und nicht mehr loslassen. Keine endlosen Flächen, kein Energieverlust – nur pure, unerbittliche Tanzenergie, die stundenlang trägt.
+                                {t('bio.body1')}
                             </p>
                             <p className="bio-body" style={{ marginBottom: '1rem' }}>
-                                <strong style={{ color: 'var(--text-primary)' }}>Die Prägung</strong><br />
-                                Seine musikalische DNA wurde in den legendären Nächten des alten Tresor geschrieben – genauer gesagt in der oberen Etage, im Alten Globus. Nicht der raue Keller-Sound, sondern der cleane, energetische Techno der Leipziger Straße 126A formte seine Ästhetik. Jahre intensiven Erlebens haben seinen Ansatz geschärft: Die Crowd in einen unausweichlichen Beat-Sog ziehen, aus dem es kein Entrinnen gibt.
+                                <strong style={{ color: 'var(--text-primary)' }}>{t('bio.heading1')}</strong><br />
+                                {t('bio.body2')}
                             </p>
                             <p className="bio-body" style={{ marginBottom: '1rem' }}>
-                                Seine Helden dieser Ära: Djoker Daan, Duffy, Wimpy, Housemeister und Kristin – DJs, die genau jene Vision von Tanzflächen-Techno verkörperten, die bis heute sein Schaffen bestimmt.
+                                {t('bio.body3')}
                             </p>
                             <p className="bio-body" style={{ marginBottom: '1rem' }}>
-                                <strong style={{ color: 'var(--text-primary)' }}>Der Weg</strong><br />
-                                Seit über zwei Jahrzehnten ist AIRDOX Teil der Szene, doch lange teilte sich seine Energie zwischen Studium, Beruf und Musik. Der volle Fokus musste warten. Heute gilt seine gesamte Kraft der Musik – eine neue, entschlossene Phase seiner Karriere hat begonnen.
+                                <strong style={{ color: 'var(--text-primary)' }}>{t('bio.heading2')}</strong><br />
+                                {t('bio.body4')}
                             </p>
                             <p className="bio-body">
-                                <strong style={{ color: 'var(--text-primary)' }}>Die Vision</strong><br />
-                                AIRDOX ist offen für Kollaborationen und den kreativen Austausch mit Gleichgesinnten. Dieser Dialog bereichert und schärft seinen fest definierten Stil – immer mit dem Ziel, den perfekten Moment auf der Tanzfläche zu erschaffen.
+                                <strong style={{ color: 'var(--text-primary)' }}>{t('bio.heading3')}</strong><br />
+                                {t('bio.body5')}
                             </p>
                         </div>
 

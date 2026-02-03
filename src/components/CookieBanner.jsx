@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './CookieBanner.css';
+import { t } from '../utils/i18n';
 
 const CookieBanner = () => {
     const [showBanner, setShowBanner] = useState(false);
@@ -36,9 +37,9 @@ const CookieBanner = () => {
         <div className="cookie-banner-overlay">
             <div className="cookie-banner glass-card">
                 <div className="cookie-header">
-                    <h3 className="cookie-title">🍪 Cookie-Einstellungen</h3>
+                    <h3 className="cookie-title">{t('cookie.title')}</h3>
                     <p className="cookie-text">
-                        Wir verwenden Cookies und ähnliche Technologien, um dein Erlebnis zu verbessern und anonyme Nutzungsstatistiken zu erfassen.
+                        {t('cookie.text')}
                     </p>
                 </div>
 
@@ -46,27 +47,27 @@ const CookieBanner = () => {
                     <div className="cookie-details">
                         <div className="cookie-category">
                             <div className="category-header">
-                                <span className="category-name">📊 Analyse-Cookies</span>
-                                <span className="category-badge">Optional</span>
+                                <span className="category-name">{t('cookie.analytics.title')}</span>
+                                <span className="category-badge">{t('cookie.analytics.badge')}</span>
                             </div>
                             <p className="category-desc">
-                                Helfen uns zu verstehen, wie Besucher die Website nutzen. So können wir das Nutzererlebnis verbessern.
+                                {t('cookie.analytics.desc')}
                             </p>
                             <ul className="category-list">
-                                <li>Seitenaufrufe & Navigation</li>
-                                <li>Downloads & Audio-Plays</li>
-                                <li>Geräte- & Browser-Informationen</li>
-                                <li>Session-Dauer</li>
+                                <li>{t('cookie.analytics.item1')}</li>
+                                <li>{t('cookie.analytics.item2')}</li>
+                                <li>{t('cookie.analytics.item3')}</li>
+                                <li>{t('cookie.analytics.item4')}</li>
                             </ul>
                         </div>
 
                         <div className="cookie-category essential">
                             <div className="category-header">
-                                <span className="category-name">🔒 Essentielle Cookies</span>
-                                <span className="category-badge essential">Erforderlich</span>
+                                <span className="category-name">{t('cookie.essential.title')}</span>
+                                <span className="category-badge essential">{t('cookie.essential.badge')}</span>
                             </div>
                             <p className="category-desc">
-                                Notwendig für die Grundfunktionen der Website. Diese können nicht deaktiviert werden.
+                                {t('cookie.essential.desc')}
                             </p>
                         </div>
                     </div>
@@ -77,25 +78,25 @@ const CookieBanner = () => {
                         className="cookie-btn cookie-btn-details"
                         onClick={() => setShowDetails(!showDetails)}
                     >
-                        {showDetails ? 'Weniger' : 'Details'}
+                        {showDetails ? t('cookie.less') : t('cookie.details')}
                     </button>
                     <button
                         className="cookie-btn cookie-btn-decline"
                         onClick={handleDecline}
                     >
-                        Nur Essentielle
+                        {t('cookie.essentialOnly')}
                     </button>
                     <button
                         className="cookie-btn cookie-btn-accept"
                         onClick={handleAcceptAll}
                     >
-                        Alle Akzeptieren
+                        {t('cookie.acceptAll')}
                     </button>
                 </div>
 
                 <p className="cookie-legal">
-                    Mit "Alle Akzeptieren" stimmst du der Verwendung aller Cookies zu.
-                    <a href="#" onClick={(e) => { e.preventDefault(); setShowDetails(true); }}>Mehr erfahren</a>
+                    {t('cookie.legal')}
+                    <a href="#" onClick={(e) => { e.preventDefault(); setShowDetails(true); }}>{t('cookie.learnMore')}</a>
                 </p>
             </div>
         </div>

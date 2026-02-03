@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { sets } from '../data/musicSets';
 import './SetNotification.css';
+import { t } from '../utils/i18n';
 
 const SetNotification = () => {
     const [visible, setVisible] = useState(false);
@@ -22,7 +23,7 @@ const SetNotification = () => {
             <div className="set-notification-content">
                 <div className="set-icon">🎵</div>
                 <div className="set-info">
-                    <div className="set-badge">NEW TRANSMISSION</div>
+                    <div className="set-badge">{t('notification.badge')}</div>
                     <div className="set-title">{latestSet.title}</div>
                     <div className="set-date">{latestSet.date}</div>
                 </div>

@@ -69,10 +69,20 @@ class AnalyticsV2 {
 
         gtag('config', GA_MEASUREMENT_ID, {
             'anonymize_ip': true, // DSGVO-freundlich
-            'send_page_view': false // Wir tracken PageViews manuell
+            'send_page_view': false, // Wir tracken PageViews manuell
+            'debug_mode': this.isDebugMode()
         });
 
         console.log('📊 GA4 Initialisiert:', GA_MEASUREMENT_ID);
+    }
+
+    isDebugMode() {
+        try {
+            const url = new URL(window.location.href);
+            return url.searchParams.get('ga_debug') === '1';
+        } catch {
+            return false;
+        }
     }
 
     disableGA() {

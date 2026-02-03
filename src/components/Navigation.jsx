@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { t } from '../utils/i18n';
+import { t, getCurrentLocale } from '../utils/i18n';
 import './Navigation.css';
 
 const Navigation = () => {
@@ -63,6 +63,8 @@ const Navigation = () => {
         { id: 'booking', label: t('nav.booking') },
     ];
 
+    const currentLocale = getCurrentLocale();
+
     return (
         <>
             <nav className={`nav ${scrolled ? 'nav-scrolled' : ''}`}>
@@ -100,6 +102,25 @@ const Navigation = () => {
                                 <span className="link-indicator"></span>
                             </button>
                         ))}
+                    </div>
+
+                    {/* Language Toggle */}
+                    <div className="lang-toggle">
+                        <a
+                            href="/"
+                            className={`lang-link ${currentLocale === 'de' ? 'active' : ''}`}
+                            aria-current={currentLocale === 'de' ? 'page' : undefined}
+                        >
+                            DE
+                        </a>
+                        <span className="lang-sep">/</span>
+                        <a
+                            href="/en/"
+                            className={`lang-link ${currentLocale === 'en' ? 'active' : ''}`}
+                            aria-current={currentLocale === 'en' ? 'page' : undefined}
+                        >
+                            EN
+                        </a>
                     </div>
 
                     {/* CTA Button */}

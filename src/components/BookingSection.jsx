@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './BookingSection.css';
+import { t } from '../utils/i18n';
 
 const BookingSection = () => {
     const sectionRef = useRef(null);
@@ -95,20 +96,21 @@ const BookingSection = () => {
                     <div className="booking-info reveal-left">
                         <div className="section-header">
                             <span className="section-label">// GET IN TOUCH</span>
-                            <h2 className="section-title text-gradient">BOOKING</h2>
-                            <p className="section-subtitle">Available for clubs, festivals, and private events.</p>
+                            <span className="section-label">{t('booking.sectionLabel')}</span>
+                            <h2 className="section-title text-gradient">{t('booking.title')}</h2>
+                            <p className="section-subtitle">{t('booking.subtitle')}</p>
                         </div>
 
                         <div className="booking-details">
                             <div className="detail-item">
-                                <span className="detail-label">EMAIL</span>
+                                <span className="detail-label">{t('booking.emailLabel')}</span>
                                 <a href="mailto:airdox82@gmail.com" className="detail-value interactive">
                                     airdox82@gmail.com
                                 </a>
                             </div>
                             <div className="detail-item">
-                                <span className="detail-label">BASED IN</span>
-                                <span className="detail-value">Berlin, Germany</span>
+                                <span className="detail-label">{t('booking.basedLabel')}</span>
+                                <span className="detail-value">{t('booking.basedValue')}</span>
                             </div>
                         </div>
 
@@ -165,13 +167,13 @@ const BookingSection = () => {
                         {submitted ? (
                             <div className="form-success glass-card">
                                 <div className="success-icon">✓</div>
-                                <h3>Nachricht gesendet!</h3>
-                                <p>Danke für deine Anfrage. Ich melde mich bald bei dir.</p>
+                                <h3>{t('booking.successTitle')}</h3>
+                                <p>{t('booking.successBody')}</p>
                                 <button
                                     className="btn btn-primary"
                                     onClick={() => setSubmitted(false)}
                                 >
-                                    Neue Nachricht
+                                    {t('booking.newMessage')}
                                 </button>
                             </div>
                         ) : (
@@ -186,7 +188,7 @@ const BookingSection = () => {
                                 <input type="hidden" name="form-name" value="booking" />
                                 <input type="hidden" name="bot-field" />
 
-                                <h3 className="form-title">Send a Message</h3>
+                                <h3 className="form-title">{t('booking.formTitle')}</h3>
 
                                 {error && <div className="form-error">{error}</div>}
 
@@ -194,7 +196,7 @@ const BookingSection = () => {
                                     <input type="text" name="name" id="name" value={formData.name}
                                         onChange={handleInputChange} onFocus={() => handleFocus('name')}
                                         onBlur={() => handleBlur('name')} placeholder=" " required />
-                                    <label htmlFor="name">Your Name</label>
+                                    <label htmlFor="name">{t('booking.name')}</label>
                                     <div className="input-line"></div>
                                 </div>
 
@@ -202,7 +204,7 @@ const BookingSection = () => {
                                     <input type="email" name="email" id="email" value={formData.email}
                                         onChange={handleInputChange} onFocus={() => handleFocus('email')}
                                         onBlur={() => handleBlur('email')} placeholder=" " required />
-                                    <label htmlFor="email">Email Address</label>
+                                    <label htmlFor="email">{t('booking.email')}</label>
                                     <div className="input-line"></div>
                                 </div>
 
@@ -210,7 +212,7 @@ const BookingSection = () => {
                                     <input type="text" name="event" id="event" value={formData.event}
                                         onChange={handleInputChange} onFocus={() => handleFocus('event')}
                                         onBlur={() => handleBlur('event')} placeholder=" " />
-                                    <label htmlFor="event">Event / Venue</label>
+                                    <label htmlFor="event">{t('booking.event')}</label>
                                     <div className="input-line"></div>
                                 </div>
 
@@ -218,12 +220,12 @@ const BookingSection = () => {
                                     <textarea name="message" id="message" rows="4" value={formData.message}
                                         onChange={handleInputChange} onFocus={() => handleFocus('message')}
                                         onBlur={() => handleBlur('message')} placeholder=" " required></textarea>
-                                    <label htmlFor="message">Your Message</label>
+                                    <label htmlFor="message">{t('booking.message')}</label>
                                     <div className="input-line"></div>
                                 </div>
 
                                 <button type="submit" className="btn btn-primary form-submit interactive">
-                                    <span>Send Request</span>
+                                    <span>{t('booking.submit')}</span>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
                                         <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" />
                                     </svg>

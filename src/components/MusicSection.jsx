@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAudio } from '../contexts/AudioContext';
 import './MusicSection.css';
+import { t } from '../utils/i18n';
 
 import { sets } from '../data/musicSets';
 
@@ -197,9 +198,9 @@ const MusicSection = () => {
             <div className="container">
                 {/* Header */}
                 <div className="section-header reveal">
-                    <span className="section-label">// LATEST RELEASES</span>
-                    <h2 className="section-title text-gradient">MUSIC</h2>
-                    <p className="section-subtitle">Stream exclusive techno sets</p>
+                    <span className="section-label">{t('music.sectionLabel')}</span>
+                    <h2 className="section-title text-gradient">{t('music.title')}</h2>
+                    <p className="section-subtitle">{t('music.subtitle')}</p>
                 </div>
 
                 {/* Sets Grid */}
