@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 // Cache bust: 2024-12-31 v3
 import './Hero.css';
+import { t } from '../utils/i18n';
 
 const Hero = () => {
     const [loaded, setLoaded] = useState(false);
@@ -138,7 +139,7 @@ const Hero = () => {
                 {/* Pre-title Badge */}
                 <div className="hero-badge">
                     <span className="badge-dot"></span>
-                    <span className="badge-text">BERLIN UNDERGROUND TECHNO</span>
+                    <span className="badge-text">{t('hero.badge')}</span>
                 </div>
 
                 {/* Main Title */}
@@ -187,11 +188,11 @@ const Hero = () => {
                 <div className="hero-tagline">
                     <div className="tagline-line"></div>
                     <p className="tagline-text">
-                        <span>UNDERGROUND</span>
+                        <span>{t('hero.tagline.1')}</span>
                         <span className="separator">◆</span>
-                        <span>SOUND</span>
+                        <span>{t('hero.tagline.2')}</span>
                         <span className="separator">◆</span>
-                        <span>EXPERIENCE</span>
+                        <span>{t('hero.tagline.3')}</span>
                     </p>
                     <div className="tagline-line"></div>
                 </div>
@@ -202,14 +203,14 @@ const Hero = () => {
                         className="btn btn-primary hero-btn interactive"
                         onClick={() => scrollToSection('music', 'cta_music')}
                     >
-                        <span>GET THE SOUND</span>
+                        <span>{t('hero.cta.music')}</span>
                         <div className="btn-shine"></div>
                     </button>
                     <button
                         className="btn btn-outline hero-btn interactive"
                         onClick={() => scrollToSection('booking', 'cta_booking')}
                     >
-                        <span>BOOK NOW</span>
+                        <span>{t('hero.cta.booking')}</span>
                     </button>
                 </div>
 
@@ -248,7 +249,7 @@ const Hero = () => {
                 <div className="scroll-mouse">
                     <div className="scroll-wheel"></div>
                 </div>
-                <span className="scroll-text">SCROLL</span>
+                <span className="scroll-text">{t('hero.scroll')}</span>
                 <div className="scroll-arrows">
                     <span className="scroll-arrow"></span>
                     <span className="scroll-arrow"></span>

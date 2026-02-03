@@ -4,12 +4,18 @@ import { createRoot } from 'react-dom/client'
 import './styles/global.css'
 import App from './App.jsx'
 import './utils/analyticsV2.js'
+import { getLocale } from './utils/i18n.js'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
   </StrictMode>,
 )
+
+// Keep document language in sync
+try {
+  document.documentElement.lang = getLocale()
+} catch {}
 
 // Service Worker registrieren (für PWA-Funktionalität)
 // Emergency: Force unregister Service Worker to clear stale cache

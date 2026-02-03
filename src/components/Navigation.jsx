@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { t } from '../utils/i18n';
 import './Navigation.css';
 
 const Navigation = () => {
@@ -56,10 +57,10 @@ const Navigation = () => {
     };
 
     const navItems = [
-        { id: 'home', label: 'Home' },
-        { id: 'bio', label: 'About' },
-        { id: 'music', label: 'Music' },
-        { id: 'booking', label: 'Booking' },
+        { id: 'home', label: t('nav.home') },
+        { id: 'bio', label: t('nav.about') },
+        { id: 'music', label: t('nav.music') },
+        { id: 'booking', label: t('nav.booking') },
     ];
 
     return (
@@ -107,7 +108,7 @@ const Navigation = () => {
                         className="nav-cta btn btn-primary interactive"
                         onClick={() => trackNav('contact_email')}
                     >
-                        Contact
+                        {t('nav.contact')}
                     </a>
 
                     {/* Mobile Menu Button */}
@@ -148,7 +149,7 @@ const Navigation = () => {
 
                     <div className="mobile-menu-footer">
                         <a href="mailto:airdox82@gmail.com" className="btn btn-primary">
-                            Get in Touch
+                            {t('nav.getInTouch')}
                         </a>
                         <div className="mobile-socials">
                             <a href="https://soundcloud.com/airdox" target="_blank" rel="noopener noreferrer">SoundCloud</a>
