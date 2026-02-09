@@ -1,4 +1,5 @@
 const CONSENT_KEY = 'airdox-analytics-enabled';
+const isDev = import.meta.env?.DEV;
 let analyticsPromise = null;
 
 export const ensureAnalyticsLoaded = () => {
@@ -11,7 +12,7 @@ export const ensureAnalyticsLoaded = () => {
             return analytics;
         })
         .catch((error) => {
-            console.error('Analytics load failed:', error);
+            if (isDev) console.error('Analytics load failed:', error);
             analyticsPromise = null;
             return null;
         });
