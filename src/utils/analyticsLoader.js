@@ -1,26 +1,48 @@
+const CONSENT_KEY = 'airdox-analytics-enabled';
 let analyticsPromise = null;
 
 export const ensureAnalyticsLoaded = () => {
     if (analyticsPromise) return analyticsPromise;
 
-    analyticsPromise = import('./analyticsV2.js');
-    analyticsPromise.catch(() => {
-        analyticsPromise = null;
-    });
+    analyticsPromise = import('./analytics/index.js')
+        .then((mod) => {
+            const analytics = mod?.default;
+            if (analytics?.init) analytics.init();
+            return analytics;
+        })
+        .catch((error) => {
+            console.error('Analytics load failed:', error);
+            analyticsPromise = null;
+            return null;
+        });
 
     return analyticsPromise;
 };
 
-export const maybeLoadAnalytics = () => {
-    try {
-        if (typeof window === 'undefined') return null;
-        const consent = window.localStorage?.getItem('airdox-analytics-enabled');
-        if (consent === 'true') {
-            return ensureAnalyticsLoaded();
+const handleConsentChange = () => {
+    if (typeof window === 'undefined') return null;
+
+    const consent = window.localStorage?.getItem(CONSENT_KEY);
+    if (consent === 'true') {
+        if (analyticsPromise) {
+            void analyticsPromise.then((analytics) => analytics?.init?.());
+            return analyticsPromise;
         }
-    } catch {
-        return null;
+        return ensureAnalyticsLoaded();
     }
 
+    const analytics = window.airdoxAnalytics || window.airdoxAnalyticsV2;
+    if (analytics?.disableGA) {
+        analytics.disableGA();
+    }
+
+    return null;
+};
+
+export const maybeLoadAnalytics = () => {
+    if (typeof window === 'undefined') return null;
+
+    handleConsentChange();
+    window.addEventListener('analytics-consent-changed', handleConsentChange);
     return null;
 };

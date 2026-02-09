@@ -18,7 +18,6 @@ const GlobalPlayer = () => {
 
     } = useAudio();
 
-    const [showTracklist, setShowTracklist] = React.useState(false);
     const [isPageVisible, setIsPageVisible] = React.useState(() => !document.hidden);
 
     const canvasRef = useRef(null);

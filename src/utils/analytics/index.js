@@ -1,51 +1,54 @@
-/**
- * AIRDOX Analytics V2 - Advanced Analytics System
- * Erweiterte Metriken, User Behavior Tracking, Charts
- * + Google Analytics 4 Integration
- */
+import ReactGA from 'react-ga4';
 
-// ⚠️ DEINE GAM-ID HIER EINTRAGEN:
-const GA_MEASUREMENT_ID = 'G-QX0D1TSKW5';
-const isDev = import.meta.env?.DEV;
-const devLog = (...args) => {
-    if (isDev) console.log(...args);
-};
-const devWarn = (...args) => {
-    if (isDev) console.warn(...args);
-};
+const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || 'G-QX0D1TSKW5';
 
-class AnalyticsV2 {
+class Analytics {
     constructor() {
         this.storageKey = 'airdox-analytics-data';
         this.consentKey = 'airdox-analytics-enabled';
         this.sessionKey = 'airdox-session-id';
         this.sessionStartKey = 'airdox-session-start';
+        this.initialized = false;
+        this.gaInitialized = false;
+        this.initialPageViewSent = false;
 
-        // Event Listener
-        window.addEventListener('analytics-consent-changed', () => this.init());
-
-        // Track session end
-        window.addEventListener('beforeunload', () => this.endSession());
-
-        // Track visibility changes (tab switching)
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                this.trackEvent('tab_hidden');
-            } else {
-                this.trackEvent('tab_visible');
-            }
-        });
-
-        this.init();
+        this.handleBeforeUnload = this.handleBeforeUnload.bind(this);
+        this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
     }
 
     init() {
-        if (this.isEnabled()) {
-            this.startSession();
-            this.initGA(); // Google Analytics laden
-            this.trackPageView();
-        } else {
+        if (!this.isEnabled()) {
             this.disableGA();
+            return;
+        }
+
+        this.ensureListeners();
+        this.startSession();
+        this.initGA();
+
+        if (!this.initialPageViewSent) {
+            this.trackPageView();
+            this.initialPageViewSent = true;
+        }
+    }
+
+    ensureListeners() {
+        if (this.initialized) return;
+        this.initialized = true;
+
+        window.addEventListener('beforeunload', this.handleBeforeUnload);
+        document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    }
+
+    handleBeforeUnload() {
+        this.endSession();
+    }
+
+    handleVisibilityChange() {
+        if (document.hidden) {
+            this.trackEvent('tab_hidden');
+        } else {
+            this.trackEvent('tab_visible');
         }
     }
 
@@ -53,67 +56,48 @@ class AnalyticsV2 {
         return localStorage.getItem(this.consentKey) === 'true';
     }
 
-    // --- Google Analytics 4 Integration ---
-
     initGA() {
-        const disableKey = `ga-disable-${GA_MEASUREMENT_ID}`;
-        window[disableKey] = false;
-
-        // Verhindern, dass Skript mehrfach geladen wird
-        if (window.gtag) return;
-
-        // 1. Skript Tag erstellen
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-        document.head.appendChild(script);
-
-        // 2. Initialisierung
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { window.dataLayer.push(arguments); }
-        window.gtag = gtag;
-        gtag('js', new Date());
-
-        gtag('config', GA_MEASUREMENT_ID, {
-            'anonymize_ip': true, // DSGVO-freundlich
-            'send_page_view': false, // Wir tracken PageViews manuell
-            'debug_mode': this.isDebugMode()
-        });
-
-        devLog('📊 GA4 Initialisiert:', GA_MEASUREMENT_ID);
-    }
-
-    isDebugMode() {
+        if (!GA_MEASUREMENT_ID || this.gaInitialized) return;
         try {
-            const url = new URL(window.location.href);
-            return url.searchParams.get('ga_debug') === '1';
-        } catch {
-            return false;
+            const disableKey = `ga-disable-${GA_MEASUREMENT_ID}`;
+            window[disableKey] = false;
+
+            ReactGA.initialize(GA_MEASUREMENT_ID, {
+                gaOptions: { anonymize_ip: true },
+                gtagOptions: { send_page_view: false },
+                testMode: import.meta.env.DEV
+            });
+
+            this.gaInitialized = true;
+        } catch (error) {
+            console.warn('GA4 init failed:', error);
         }
     }
 
     disableGA() {
+        if (!GA_MEASUREMENT_ID) return;
         const disableKey = `ga-disable-${GA_MEASUREMENT_ID}`;
         window[disableKey] = true;
-        if (typeof window.gtag === 'function') {
-            try {
-                window.gtag('consent', 'update', { analytics_storage: 'denied' });
-            } catch (error) {
-                devWarn('GA consent update failed:', error);
+        this.gaInitialized = false;
+    }
+
+    sendGAEvent(eventName, params = {}) {
+        if (!this.isEnabled() || !this.gaInitialized || !eventName) return;
+        try {
+            if (typeof ReactGA.gtag === 'function') {
+                ReactGA.gtag('event', eventName, params);
+            } else if (typeof ReactGA.event === 'function') {
+                ReactGA.event(eventName, params);
+            }
+        } catch (error) {
+            if (import.meta.env.DEV) {
+                console.warn('GA4 event failed:', error);
             }
         }
     }
 
-    sendGAEvent(eventName, params = {}) {
-        if (typeof window.gtag === 'function' && this.isEnabled()) {
-            window.gtag('event', eventName, params);
-        }
-    }
-
-    // --- Core Analytics ---
-
     generateSessionId() {
-        return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        return `session_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
     }
 
     startSession() {
@@ -124,7 +108,6 @@ class AnalyticsV2 {
             sessionStorage.setItem(this.sessionKey, sessionId);
             sessionStorage.setItem(this.sessionStartKey, startTime);
 
-            // Track session start in data
             const data = this.getData();
             if (!data.sessions) data.sessions = [];
 
@@ -143,7 +126,6 @@ class AnalyticsV2 {
 
             this.saveData(data);
 
-            // GA Session Start (wird autom. von GA erkannt, aber wir können custom trigger setzen)
             this.sendGAEvent('session_start_custom', { session_id: sessionId });
         }
     }
@@ -153,8 +135,8 @@ class AnalyticsV2 {
 
         const sessionId = this.getSessionId();
         const data = this.getData();
+        const session = data.sessions?.find((s) => s.sessionId === sessionId && !s.endTime);
 
-        const session = data.sessions?.find(s => s.sessionId === sessionId && !s.endTime);
         if (session) {
             session.endTime = new Date().toISOString();
             session.duration = Math.floor((new Date(session.endTime) - new Date(session.startTime)) / 1000);
@@ -166,8 +148,8 @@ class AnalyticsV2 {
     updateSessionMetric(metric, increment = 1) {
         const data = this.getData();
         const sessionId = this.getSessionId();
+        const session = data.sessions?.find((s) => s.sessionId === sessionId && !s.endTime);
 
-        const session = data.sessions?.find(s => s.sessionId === sessionId && !s.endTime);
         if (session) {
             session[metric] = (session[metric] || 0) + increment;
             this.saveData(data);
@@ -215,7 +197,7 @@ class AnalyticsV2 {
             const data = localStorage.getItem(this.storageKey);
             return data ? JSON.parse(data) : this.getDefaultData();
         } catch (error) {
-            console.error('Analytics V2: Fehler beim Laden', error);
+            console.error('Analytics: Fehler beim Laden', error);
             return this.getDefaultData();
         }
     }
@@ -235,7 +217,7 @@ class AnalyticsV2 {
         try {
             localStorage.setItem(this.storageKey, JSON.stringify(data));
         } catch (error) {
-            console.error('Analytics V2: Fehler beim Speichern', error);
+            console.error('Analytics: Fehler beim Speichern', error);
         }
     }
 
@@ -254,19 +236,18 @@ class AnalyticsV2 {
         data.pageViews.push(event);
         this.updateSessionMetric('pageViews');
 
-        // Retention policy
         if (data.pageViews.length > 2000) {
             data.pageViews = data.pageViews.slice(-2000);
         }
 
         this.saveData(data);
 
-        // -> GA4
-        this.sendGAEvent('page_view', {
-            page_title: document.title,
-            page_location: window.location.href,
-            page_path: page
-        });
+        if (this.gaInitialized) {
+            ReactGA.send({
+                hitType: 'pageview',
+                page: page
+            });
+        }
     }
 
     trackDownload(fileName, fileSize, category = 'public') {
@@ -292,10 +273,9 @@ class AnalyticsV2 {
 
         this.saveData(data);
 
-        // -> GA4
         this.sendGAEvent('file_download', {
             file_name: fileName,
-            file_extension: fileName.split('.').pop(),
+            file_extension: fileName?.split('.').pop(),
             link_id: category
         });
     }
@@ -307,7 +287,7 @@ class AnalyticsV2 {
         const event = {
             type: 'audio',
             trackName,
-            action, // 'play', 'pause', 'skip', 'complete'
+            action,
             playDuration,
             trackDuration,
             completionRate: trackDuration > 0 ? playDuration / trackDuration : 0,
@@ -315,7 +295,6 @@ class AnalyticsV2 {
             sessionId: this.getSessionId()
         };
 
-        if (!data.audioEvents) data.audioEvents = [];
         data.audioEvents.push(event);
 
         if (action === 'play') {
@@ -328,8 +307,7 @@ class AnalyticsV2 {
 
         this.saveData(data);
 
-        // -> GA4 (Custom Event)
-        this.sendGAEvent('audio_' + action, {
+        this.sendGAEvent(`audio_${action}`, {
             track_name: trackName,
             play_duration: playDuration,
             completion_rate: parseFloat(event.completionRate.toFixed(2))
@@ -349,7 +327,6 @@ class AnalyticsV2 {
             sessionId: this.getSessionId()
         };
 
-        if (!data.interactions) data.interactions = [];
         data.interactions.push(event);
         this.updateSessionMetric('interactions');
 
@@ -359,7 +336,6 @@ class AnalyticsV2 {
 
         this.saveData(data);
 
-        // -> GA4
         this.sendGAEvent('engagement', {
             event_category: section,
             event_label: element,
@@ -379,7 +355,6 @@ class AnalyticsV2 {
             sessionId: this.getSessionId()
         };
 
-        if (!data.customEvents) data.customEvents = [];
         data.customEvents.push(event);
 
         if (data.customEvents.length > 500) {
@@ -388,7 +363,6 @@ class AnalyticsV2 {
 
         this.saveData(data);
 
-        // -> GA4
         this.sendGAEvent(eventName, eventData);
     }
 
@@ -400,7 +374,6 @@ class AnalyticsV2 {
         const data = this.getData();
         const now = new Date();
 
-        // Time range filters
         let startDate = new Date(0);
         if (timeRange === '7days') {
             startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -410,36 +383,33 @@ class AnalyticsV2 {
             startDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
         }
 
-        const filterByTime = (arr) => arr.filter(item => new Date(item.timestamp) >= startDate);
+        const filterByTime = (arr) => arr.filter((item) => new Date(item.timestamp) >= startDate);
 
         const pageViews = filterByTime(data.pageViews || []);
         const downloads = filterByTime(data.downloads || []);
-        const sessions = (data.sessions || []).filter(s => new Date(s.startTime) >= startDate);
+        const sessions = (data.sessions || []).filter((s) => new Date(s.startTime) >= startDate);
         const audioEvents = filterByTime(data.audioEvents || []);
         const interactions = filterByTime(data.interactions || []);
 
-        // Basic totals
         const total = {
             pageViews: pageViews.length,
             downloads: downloads.length,
             sessions: sessions.length,
-            audioPlays: audioEvents.filter(e => e.action === 'play').length,
+            audioPlays: audioEvents.filter((e) => e.action === 'play').length,
             interactions: interactions.length
         };
 
-        // Session analytics
-        const completedSessions = sessions.filter(s => s.endTime);
+        const completedSessions = sessions.filter((s) => s.endTime);
         const avgSessionDuration = completedSessions.length > 0
             ? completedSessions.reduce((sum, s) => sum + (s.duration || 0), 0) / completedSessions.length
             : 0;
 
         const bounceRate = sessions.length > 0
-            ? (sessions.filter(s => s.pageViews <= 1).length / sessions.length) * 100
+            ? (sessions.filter((s) => s.pageViews <= 1).length / sessions.length) * 100
             : 0;
 
-        // Download analytics
         const downloadsByFile = {};
-        downloads.forEach(d => {
+        downloads.forEach((d) => {
             downloadsByFile[d.fileName] = (downloadsByFile[d.fileName] || 0) + 1;
         });
 
@@ -448,13 +418,12 @@ class AnalyticsV2 {
             .slice(0, 10);
 
         const downloadsByCategory = {
-            public: downloads.filter(d => d.category === 'public').length,
-            vip: downloads.filter(d => d.category === 'vip').length
+            public: downloads.filter((d) => d.category === 'public').length,
+            vip: downloads.filter((d) => d.category === 'vip').length
         };
 
-        // Audio analytics
         const audioByTrack = {};
-        audioEvents.filter(e => e.action === 'play').forEach(e => {
+        audioEvents.filter((e) => e.action === 'play').forEach((e) => {
             audioByTrack[e.trackName] = (audioByTrack[e.trackName] || 0) + 1;
         });
 
@@ -467,18 +436,14 @@ class AnalyticsV2 {
             : 0;
 
         const skipRate = audioEvents.length > 0
-            ? (audioEvents.filter(e => e.action === 'skip').length / audioEvents.length) * 100
+            ? (audioEvents.filter((e) => e.action === 'skip').length / audioEvents.length) * 100
             : 0;
 
-        // Device analytics
         const deviceDistribution = this.calculateDistribution(sessions, 'device.type');
         const browserDistribution = this.calculateDistribution(sessions, 'device.browser');
         const osDistribution = this.calculateDistribution(sessions, 'device.os');
 
-        // Timeline data for charts (daily aggregation)
         const timeline = this.generateTimeline(pageViews, downloads, audioEvents, timeRange);
-
-        // Peak hours heatmap
         const heatmap = this.generateHeatmap(pageViews);
 
         return {
@@ -513,7 +478,7 @@ class AnalyticsV2 {
 
     calculateDistribution(items, path) {
         const distribution = {};
-        items.forEach(item => {
+        items.forEach((item) => {
             const value = path.split('.').reduce((obj, key) => obj?.[key], item) || 'Unknown';
             distribution[value] = (distribution[value] || 0) + 1;
         });
@@ -535,17 +500,17 @@ class AnalyticsV2 {
             const nextDate = new Date(date);
             nextDate.setDate(nextDate.getDate() + 1);
 
-            const dayViews = pageViews.filter(pv => {
+            const dayViews = pageViews.filter((pv) => {
                 const pvDate = new Date(pv.timestamp);
                 return pvDate >= date && pvDate < nextDate;
             }).length;
 
-            const dayDownloads = downloads.filter(d => {
+            const dayDownloads = downloads.filter((d) => {
                 const dDate = new Date(d.timestamp);
                 return dDate >= date && dDate < nextDate;
             }).length;
 
-            const dayPlays = audioEvents.filter(e => {
+            const dayPlays = audioEvents.filter((e) => {
                 const eDate = new Date(e.timestamp);
                 return e.action === 'play' && eDate >= date && eDate < nextDate;
             }).length;
@@ -562,11 +527,11 @@ class AnalyticsV2 {
     }
 
     generateHeatmap(pageViews) {
-        const heatmap = Array(7).fill(0).map(() => Array(24).fill(0));
+        const heatmap = Array.from({ length: 7 }, () => Array(24).fill(0));
 
-        pageViews.forEach(pv => {
+        pageViews.forEach((pv) => {
             const date = new Date(pv.timestamp);
-            const day = date.getDay(); // 0 = Sunday, 6 = Saturday
+            const day = date.getDay();
             const hour = date.getHours();
             heatmap[day][hour]++;
         });
@@ -594,8 +559,8 @@ class AnalyticsV2 {
                 rates: stats.rates
             },
             topLists: {
-                downloads: stats.downloads.top,
-                tracks: stats.audio.top
+                downloads: stats.downloads?.top,
+                tracks: stats.audio?.top
             },
             devices: stats.devices,
             timeline: stats.timeline,
@@ -611,24 +576,20 @@ class AnalyticsV2 {
     exportCSV(stats) {
         let csv = 'Timestamp,Event Type,Value,Category,Session ID,Device,Browser\n';
 
-        const data = stats.rawData;
+        const data = stats.rawData || {};
 
-        // Page Views
-        (data.pageViews || []).forEach(pv => {
+        (data.pageViews || []).forEach((pv) => {
             csv += `${pv.timestamp},pageview,${pv.page},-,${pv.sessionId},${pv.device?.type},${pv.device?.browser}\n`;
         });
 
-        // Downloads
-        (data.downloads || []).forEach(d => {
+        (data.downloads || []).forEach((d) => {
             csv += `${d.timestamp},download,${d.fileName},${d.category},${d.sessionId},${d.device?.type},${d.device?.browser}\n`;
         });
 
-        // Audio Events
-        (data.audioEvents || []).forEach(e => {
+        (data.audioEvents || []).forEach((e) => {
             csv += `${e.timestamp},audio_${e.action},${e.trackName},-,${e.sessionId},-,-\n`;
         });
 
-        // UTF-8 BOM for Excel compatibility
         const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
         this.downloadBlob(blob, `airdox-analytics-${Date.now()}.csv`);
     }
@@ -642,7 +603,6 @@ class AnalyticsV2 {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        devLog(`📊 Analytics V2: ${filename} exportiert`);
     }
 
     clearData() {
@@ -650,20 +610,17 @@ class AnalyticsV2 {
             localStorage.removeItem(this.storageKey);
             sessionStorage.removeItem(this.sessionKey);
             sessionStorage.removeItem(this.sessionStartKey);
-            devLog('📊 Analytics V2: Alle Daten gelöscht');
             return true;
         }
         return false;
     }
 }
 
-// Global instance
-const analyticsV2 = new AnalyticsV2();
+const analytics = new Analytics();
 
-// Developer access
 if (typeof window !== 'undefined') {
-    window.airdoxAnalytics = analyticsV2;
-    window.airdoxAnalyticsV2 = analyticsV2;
+    window.airdoxAnalytics = analytics;
+    window.airdoxAnalyticsV2 = analytics;
 }
 
-export default analyticsV2;
+export default analytics;

@@ -1,5 +1,6 @@
 import { neon } from '@neondatabase/serverless';
 
+const isDev = process.env.NODE_ENV !== 'production';
 const CACHE_CONTROL = 'public, s-maxage=10, stale-while-revalidate=30';
 const SEED_PLAYS = {
     secret_set_2025_12_22: 44
@@ -45,7 +46,7 @@ const createSqlClient = async ({ env, allowNetlify }) => {
             return mod.neon();
         }
     } catch (error) {
-        console.warn('Netlify Neon init failed:', error);
+        if (isDev) console.warn('Netlify Neon init failed:', error);
     }
 
     return null;

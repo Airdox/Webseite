@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './CookieBanner.css';
 import { t } from '../utils/i18n';
-import { ensureAnalyticsLoaded, maybeLoadAnalytics } from '../utils/analyticsLoader';
+import { ensureAnalyticsLoaded, maybeLoadAnalytics } from '../utils/analyticsLoader.js';
 
 const CookieBanner = () => {
     const [showBanner, setShowBanner] = useState(false);

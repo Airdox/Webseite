@@ -5,6 +5,11 @@ import { t } from '../utils/i18n';
 
 import { sets } from '../data/musicSets';
 
+const isDev = import.meta.env?.DEV;
+const devWarn = (...args) => {
+    if (isDev) console.warn(...args);
+};
+
 const MusicSection = () => {
     const {
         currentTrack,
@@ -64,7 +69,7 @@ const MusicSection = () => {
                     setTimeout(fetchStats, 2000 * retryCount);
                 }
             } catch (err) {
-                console.warn('Failed to fetch stats, using cache:', err);
+                devWarn('Failed to fetch stats, using cache:', err);
                 if (retryCount < maxRetries) {
                     retryCount++;
                     setTimeout(fetchStats, 3000);

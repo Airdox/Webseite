@@ -49,6 +49,24 @@ npm run dev:netlify
 npm run build
 ```
 
+## Umgebungsvariablen
+
+Die Datei `.env.example` enthält alle benötigten Variablen (ohne Secrets). Für lokale Tests nutze `.env` (ist in `.gitignore`).
+
+Client (Vite):
+- `VITE_STATS_API_BASE`
+- `VITE_STATS_API_FALLBACK`
+- `VITE_AUDIO_FALLBACK_BASE`
+- `VITE_GA_MEASUREMENT_ID`
+- `VITE_DISABLE_SW`
+
+Serverless/DB (Netlify/Vercel):
+- `DATABASE_URL`
+- `POSTGRES_URL`
+- `NEON_DATABASE_URL`
+- `NETLIFY_DATABASE_URL`
+- `NETLIFY_DATABASE_URL_UNPOOLED`
+
 ## 📊 Track Stats API
 
 - `GET /api/stats`: Alle Track-Statistiken abrufen.
