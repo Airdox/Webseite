@@ -106,14 +106,14 @@ export const AudioProvider = ({ children }) => {
         } else {
             audioRef.current.play()
                 .then(() => setIsPlaying(true))
-                .catch(err => console.error('Play error:', err));
+                .catch(err => devWarn('Play error:', err));
         }
     }, [currentTrack, isPlaying, initAudioContext]);
 
     const playTrack = useCallback((track, autoPlay = true) => {
         devLog('playTrack called for:', track?.title);
         if (!track || !track.file) {
-            console.error('Invalid track or file missing');
+            devWarn('Invalid track or file missing');
             return;
         }
 
@@ -148,11 +148,11 @@ export const AudioProvider = ({ children }) => {
                             devLog('Playback started successfully');
                             setIsPlaying(true);
                         })
-                        .catch(err => console.error('Play error:', err));
+                        .catch(err => devWarn('Play error:', err));
                 }
             }
         } else {
-            console.error('audioRef.current is null!');
+            devWarn('audioRef.current is null!');
         }
 
         // Playlist index update
@@ -269,7 +269,7 @@ export const AudioProvider = ({ children }) => {
                     audioRef.current.load();
                     audioRef.current.play()
                         .then(() => setIsPlaying(true))
-                        .catch(err => console.error('Part switch error:', err));
+                        .catch(err => devWarn('Part switch error:', err));
                 }
                 return; // Don't proceed to next track logic
             }
@@ -281,7 +281,7 @@ export const AudioProvider = ({ children }) => {
             const list = playlistRef.current;
 
             if (mode === 'one') {
-                playTrack(track);
+                actionsRef.current.playTrack(track);
             } else if (mode === 'all' || idx < list.length - 1) {
                 if (list.length === 0) return;
                 let nextIndex = shuffleRef.current ? Math.floor(Math.random() * list.length) : (idx + 1) % list.length;
@@ -340,9 +340,6 @@ export const AudioProvider = ({ children }) => {
     useEffect(() => {
         if (audioRef.current) audioRef.current.volume = volume;
     }, [volume]);
-
-    const [currentTracklist, setCurrentTracklist] = useState([]);
-    const [isLoadingTracklist, setIsLoadingTracklist] = useState(false);
 
     const value = {
         audioRef,

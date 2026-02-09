@@ -1,3 +1,4 @@
+/* global process, Buffer */
 import { neon } from '@neondatabase/serverless';
 
 const isDev = process.env.NODE_ENV !== 'production';

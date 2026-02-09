@@ -77,7 +77,7 @@ const MusicSection = () => {
             }
         };
         fetchStats();
-    }, []);
+    }, [FALLBACK_STATS_URL, PRIMARY_STATS_URL]);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -124,7 +124,7 @@ const MusicSection = () => {
                 localStorage.setItem('airdox_global_stats', JSON.stringify(globalStats));
             }
         } catch (err) {
-            console.error('Failed to update stats:', err);
+            devWarn('Failed to update stats:', err);
             // Persist optimistic update to localStorage as fallback
             localStorage.setItem('airdox_global_stats', JSON.stringify(globalStats));
         }

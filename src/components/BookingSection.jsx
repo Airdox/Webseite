@@ -2,6 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import './BookingSection.css';
 import { t } from '../utils/i18n';
 
+const isDev = import.meta.env?.DEV;
+const devError = (...args) => {
+    if (isDev) console.error(...args);
+};
+
 const BookingSection = () => {
     const sectionRef = useRef(null);
     const [formData, setFormData] = useState({
@@ -73,7 +78,7 @@ const BookingSection = () => {
                 throw new Error('Fehler beim Senden');
             }
         } catch (err) {
-            console.error('Form submission error:', err);
+            devError('Form submission error:', err);
             setError(`Nachricht konnte nicht gesendet werden. (Error: ${err.message}) Please try later.`);
         }
     };

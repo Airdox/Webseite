@@ -1,3 +1,4 @@
+/* global process */
 import { handleStatsRequest } from '../../src/lib/stats-logic.js';
 
 const corsHeaders = {

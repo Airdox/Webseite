@@ -32,11 +32,6 @@ const handleConsentChange = () => {
         return ensureAnalyticsLoaded();
     }
 
-    const analytics = window.airdoxAnalytics || window.airdoxAnalyticsV2;
-    if (analytics?.disableGA) {
-        analytics.disableGA();
-    }
-
     return null;
 };
 

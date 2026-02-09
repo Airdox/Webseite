@@ -1,4 +1,4 @@
-import { render, act, waitFor } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import { AudioProvider, useAudio } from '../AudioContext';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
@@ -29,14 +29,14 @@ describe('AudioContext Gapless Playback', () => {
         };
 
         // Mock proper constructor using a class to support 'new Audio()'
-        global.Audio = class {
+        globalThis.Audio = class {
             constructor() {
                 return audioMock;
             }
         };
 
         // Mock Web Audio API using a class
-        global.AudioContext = class {
+        globalThis.AudioContext = class {
             constructor() {
                 this.state = 'suspended';
                 this.destination = {};
@@ -59,7 +59,7 @@ describe('AudioContext Gapless Playback', () => {
         };
 
         // Add webkit alias
-        global.webkitAudioContext = global.AudioContext;
+        globalThis.webkitAudioContext = globalThis.AudioContext;
     });
 
     it('should switch to the next part automatically when a part ends', async () => {

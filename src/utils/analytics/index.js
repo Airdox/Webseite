@@ -1,6 +1,7 @@
-import ReactGA from 'react-ga4';
-
-const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || 'G-QX0D1TSKW5';
+const isDev = import.meta.env?.DEV;
+const devError = (...args) => {
+    if (isDev) console.error(...args);
+};
 
 class Analytics {
     constructor() {
@@ -9,7 +10,6 @@ class Analytics {
         this.sessionKey = 'airdox-session-id';
         this.sessionStartKey = 'airdox-session-start';
         this.initialized = false;
-        this.gaInitialized = false;
         this.initialPageViewSent = false;
 
         this.handleBeforeUnload = this.handleBeforeUnload.bind(this);
@@ -17,15 +17,10 @@ class Analytics {
     }
 
     init() {
-        if (!this.isEnabled()) {
-            this.disableGA();
-            return;
-        }
+        if (!this.isEnabled()) return;
 
         this.ensureListeners();
         this.startSession();
-        this.initGA();
-
         if (!this.initialPageViewSent) {
             this.trackPageView();
             this.initialPageViewSent = true;
@@ -54,46 +49,6 @@ class Analytics {
 
     isEnabled() {
         return localStorage.getItem(this.consentKey) === 'true';
-    }
-
-    initGA() {
-        if (!GA_MEASUREMENT_ID || this.gaInitialized) return;
-        try {
-            const disableKey = `ga-disable-${GA_MEASUREMENT_ID}`;
-            window[disableKey] = false;
-
-            ReactGA.initialize(GA_MEASUREMENT_ID, {
-                gaOptions: { anonymize_ip: true },
-                gtagOptions: { send_page_view: false },
-                testMode: import.meta.env.DEV
-            });
-
-            this.gaInitialized = true;
-        } catch (error) {
-            console.warn('GA4 init failed:', error);
-        }
-    }
-
-    disableGA() {
-        if (!GA_MEASUREMENT_ID) return;
-        const disableKey = `ga-disable-${GA_MEASUREMENT_ID}`;
-        window[disableKey] = true;
-        this.gaInitialized = false;
-    }
-
-    sendGAEvent(eventName, params = {}) {
-        if (!this.isEnabled() || !this.gaInitialized || !eventName) return;
-        try {
-            if (typeof ReactGA.gtag === 'function') {
-                ReactGA.gtag('event', eventName, params);
-            } else if (typeof ReactGA.event === 'function') {
-                ReactGA.event(eventName, params);
-            }
-        } catch (error) {
-            if (import.meta.env.DEV) {
-                console.warn('GA4 event failed:', error);
-            }
-        }
     }
 
     generateSessionId() {
@@ -126,7 +81,6 @@ class Analytics {
 
             this.saveData(data);
 
-            this.sendGAEvent('session_start_custom', { session_id: sessionId });
         }
     }
 
@@ -197,7 +151,7 @@ class Analytics {
             const data = localStorage.getItem(this.storageKey);
             return data ? JSON.parse(data) : this.getDefaultData();
         } catch (error) {
-            console.error('Analytics: Fehler beim Laden', error);
+            devError('Analytics: Fehler beim Laden', error);
             return this.getDefaultData();
         }
     }
@@ -217,7 +171,7 @@ class Analytics {
         try {
             localStorage.setItem(this.storageKey, JSON.stringify(data));
         } catch (error) {
-            console.error('Analytics: Fehler beim Speichern', error);
+            devError('Analytics: Fehler beim Speichern', error);
         }
     }
 
@@ -242,12 +196,6 @@ class Analytics {
 
         this.saveData(data);
 
-        if (this.gaInitialized) {
-            ReactGA.send({
-                hitType: 'pageview',
-                page: page
-            });
-        }
     }
 
     trackDownload(fileName, fileSize, category = 'public') {
@@ -273,11 +221,6 @@ class Analytics {
 
         this.saveData(data);
 
-        this.sendGAEvent('file_download', {
-            file_name: fileName,
-            file_extension: fileName?.split('.').pop(),
-            link_id: category
-        });
     }
 
     trackAudioEvent(trackName, action, playDuration = 0, trackDuration = 0) {
@@ -307,11 +250,6 @@ class Analytics {
 
         this.saveData(data);
 
-        this.sendGAEvent(`audio_${action}`, {
-            track_name: trackName,
-            play_duration: playDuration,
-            completion_rate: parseFloat(event.completionRate.toFixed(2))
-        });
     }
 
     trackInteraction(element, section, action = 'click') {
@@ -336,11 +274,6 @@ class Analytics {
 
         this.saveData(data);
 
-        this.sendGAEvent('engagement', {
-            event_category: section,
-            event_label: element,
-            event_action: action
-        });
     }
 
     trackEvent(eventName, eventData = {}) {
@@ -363,7 +296,6 @@ class Analytics {
 
         this.saveData(data);
 
-        this.sendGAEvent(eventName, eventData);
     }
 
     getStats(timeRange = 'all') {

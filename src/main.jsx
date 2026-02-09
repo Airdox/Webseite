@@ -18,7 +18,9 @@ maybeLoadAnalytics()
 // Keep document language in sync
 try {
   document.documentElement.lang = getLocale()
-} catch {}
+} catch {
+  // no-op
+}
 
 // Service Worker registrieren (für PWA-Funktionalität)
 // In dev or when explicitly disabled, unregister to avoid stale caches.

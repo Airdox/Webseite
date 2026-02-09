@@ -1,3 +1,4 @@
+/* global process */
 import { neon as netlifyNeon } from '@netlify/neon';
 import { neon as neonClient } from '@neondatabase/serverless';
 
