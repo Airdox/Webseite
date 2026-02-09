@@ -7,6 +7,8 @@
     "dev": "vite",
     "dev:netlify": "netlify dev",
     "build": "vite build",
+    "build:site": "vite build && node scripts/postbuild-trim-audio.js",
+    "deploy:audio": "node scripts/deploy-audio.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "db:generate": "drizzle-kit generate",

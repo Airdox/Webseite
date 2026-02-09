@@ -127,6 +127,8 @@ const Hero = () => {
         };
     }, []);
 
+    const TITLE = 'AIRDOX';
+
     return (
         <section className="hero" id="home" ref={heroRef} data-version="0.1.1">
             {/* Custom Cursor */}
@@ -179,12 +181,12 @@ const Hero = () => {
                 </div>
 
                 {/* Main Title */}
-                <h1 className="hero-title">
-                    <span className="title-shadow" aria-hidden="true">AIRDOX</span>
+                <h1 className="hero-title" style={{ '--title-letter-count': TITLE.length }}>
+                    <span className="title-shadow" aria-hidden="true">{TITLE}</span>
 
                     <div className="title-snake-container">
-                        {'AIRDOX'.split('').map((letter, i) => (
-                            <div key={i} className="snake-letter-wrapper">
+                        {TITLE.split('').map((letter, i) => (
+                            <div key={i} className="snake-letter-wrapper" style={{ '--i': i }}>
                                 <svg className="letter-svg" viewBox="0 0 160 220">
                                     <defs>
                                         <linearGradient id={`grad-${i}`} x1="0%" y1="0%" x2="0%" y2="100%">
@@ -192,12 +194,17 @@ const Hero = () => {
                                             <stop offset="50%" stopColor="var(--neon-cyan)" />
                                             <stop offset="100%" stopColor="var(--neon-pink)" />
                                         </linearGradient>
+                                        <clipPath id={`clip-${i}`} clipPathUnits="userSpaceOnUse">
+                                            <text x="50%" y="80%" textAnchor="middle" className="letter-fill">
+                                                {letter}
+                                            </text>
+                                        </clipPath>
                                     </defs>
                                     <text
                                         x="50%"
                                         y="80%"
                                         textAnchor="middle"
-                                        className={`letter-stroke letter-stroke-${i}`}
+                                        className="letter-stroke"
                                     >
                                         {letter}
                                     </text>
@@ -206,7 +213,16 @@ const Hero = () => {
                                         y="80%"
                                         textAnchor="middle"
                                         fill={`url(#grad-${i})`}
-                                        className={`letter-fill letter-fill-${i}`}
+                                        className="letter-fill"
+                                    >
+                                        {letter}
+                                    </text>
+                                    <text
+                                        x="50%"
+                                        y="80%"
+                                        textAnchor="middle"
+                                        className="letter-snake"
+                                        clipPath={`url(#clip-${i})`}
                                     >
                                         {letter}
                                     </text>
@@ -215,9 +231,9 @@ const Hero = () => {
                         ))}
                     </div>
 
-                    <span className="title-glow" aria-hidden="true">AIRDOX</span>
-                    <span className="glitch glitch-1" aria-hidden="true">AIRDOX</span>
-                    <span className="glitch glitch-2" aria-hidden="true">AIRDOX</span>
+                    <span className="title-glow" aria-hidden="true">{TITLE}</span>
+                    <span className="glitch glitch-1" aria-hidden="true">{TITLE}</span>
+                    <span className="glitch glitch-2" aria-hidden="true">{TITLE}</span>
                 </h1>
 
                 {/* Tagline */}

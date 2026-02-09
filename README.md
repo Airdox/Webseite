@@ -57,7 +57,6 @@ Client (Vite):
 - `VITE_STATS_API_BASE`
 - `VITE_STATS_API_FALLBACK`
 - `VITE_AUDIO_FALLBACK_BASE`
-- `VITE_GA_MEASUREMENT_ID`
 - `VITE_DISABLE_SW`
 
 Serverless/DB (Netlify/Vercel):
@@ -66,6 +65,12 @@ Serverless/DB (Netlify/Vercel):
 - `NEON_DATABASE_URL`
 - `NETLIFY_DATABASE_URL`
 - `NETLIFY_DATABASE_URL_UNPOOLED`
+
+Audio Deploy Workflow (optional):
+1. Deploy die Audio-Dateien einmalig auf eine separate Netlify‑Site. Command: `npm run deploy:audio`
+2. Setze in der Haupt‑Site `VITE_AUDIO_FALLBACK_BASE` auf die Audio‑Site URL.
+3. Deploys der Haupt‑Site nutzen `npm run build:site` und entfernen `dist/sets`,
+   damit MP3s nicht bei jedem Deploy erneut hochgeladen werden.
 
 ## 📊 Track Stats API
 

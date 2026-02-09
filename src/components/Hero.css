@@ -302,6 +302,13 @@
     line-height: 0.9;
     margin-bottom: var(--space-8);
     letter-spacing: -0.03em;
+    /* Title animation timing (AIRDOX = 6 letters) */
+    --title-letter-count: 6;
+    --title-reveal-delay: 0.15s;
+    --title-stagger: 0.12s;
+    --title-reveal-duration: 0.9s;
+    --snake-cycle: 2.8s;
+    --snake-start-delay: calc(var(--title-reveal-delay) + var(--title-reveal-duration) + ((var(--title-letter-count) - 1) * var(--title-stagger)) + 0.15s);
 }
 
 .title-shadow {
@@ -315,6 +322,9 @@
     -webkit-text-stroke: 1px rgba(255, 255, 255, 0.03);
     white-space: nowrap;
     z-index: 0;
+    opacity: 0;
+    animation: titleShadowIn 0.6s var(--ease-out) forwards;
+    animation-delay: var(--snake-start-delay);
 }
 
 .title-main {
@@ -342,12 +352,19 @@
     width: 160px;
     height: 220px;
     margin: 0 -15px;
+    opacity: 0;
+    transform: translateY(80px) rotateX(-90deg);
+    filter: blur(10px);
+    transform-origin: 50% 80%;
+    backface-visibility: hidden;
+    will-change: transform, opacity, filter;
 }
 
 .letter-svg {
     width: 100%;
     height: 100%;
     overflow: visible;
+    isolation: isolate;
 }
 
 .letter-fill {
@@ -355,7 +372,7 @@
     font-size: 190px;
     font-weight: 900;
     /* fill set via SVG */
-    opacity: 0;
+    opacity: 1;
 }
 
 .letter-stroke {
@@ -363,13 +380,66 @@
     font-size: 190px;
     font-weight: 900;
     fill: none;
+    stroke: rgba(255, 255, 255, 0.22);
     stroke-width: 6px;
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    opacity: 1;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    opacity: 0.9;
     filter: drop-shadow(0 0 10px var(--neon-cyan));
+}
+
+.letter-snake {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 190px;
+    font-weight: 900;
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 10px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 120 880;
+    stroke-dashoffset: 0;
+    opacity: 0;
+    mix-blend-mode: difference;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.35));
+}
+
+/* Reveal letters one-by-one once the hero is loaded */
+.hero-content.loaded .snake-letter-wrapper {
+    animation: letterReveal var(--title-reveal-duration) var(--ease-out) forwards;
+    animation-delay: calc(var(--title-reveal-delay) + (var(--i) * var(--title-stagger)));
+}
+
+/* After the reveal, run an outline "snake" that inverts the letter content along its path */
+.hero-content.loaded .letter-snake {
+    animation:
+        snakeFadeIn 0.45s var(--ease-out) forwards,
+        snakeMove var(--snake-cycle) linear infinite;
+    animation-delay:
+        var(--snake-start-delay),
+        var(--snake-start-delay);
+}
+
+@keyframes snakeMove {
+    from {
+        stroke-dashoffset: 0;
+    }
+
+    to {
+        stroke-dashoffset: -1000;
+    }
+}
+
+@keyframes snakeFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* Specific Animations per Letter */
@@ -381,12 +451,20 @@
     animation: fill-0 16s linear infinite;
 }
 
+.letter-snake-0 {
+    animation: snake-move 2.8s linear infinite, snake-vis-0 16s linear infinite;
+}
+
 .letter-stroke-1 {
     animation: stroke-1 16s linear infinite;
 }
 
 .letter-fill-1 {
     animation: fill-1 16s linear infinite;
+}
+
+.letter-snake-1 {
+    animation: snake-move 2.8s linear infinite, snake-vis-1 16s linear infinite;
 }
 
 .letter-stroke-2 {
@@ -397,12 +475,20 @@
     animation: fill-2 16s linear infinite;
 }
 
+.letter-snake-2 {
+    animation: snake-move 2.8s linear infinite, snake-vis-2 16s linear infinite;
+}
+
 .letter-stroke-3 {
     animation: stroke-3 16s linear infinite;
 }
 
 .letter-fill-3 {
     animation: fill-3 16s linear infinite;
+}
+
+.letter-snake-3 {
+    animation: snake-move 2.8s linear infinite, snake-vis-3 16s linear infinite;
 }
 
 .letter-stroke-4 {
@@ -413,12 +499,20 @@
     animation: fill-4 16s linear infinite;
 }
 
+.letter-snake-4 {
+    animation: snake-move 2.8s linear infinite, snake-vis-4 16s linear infinite;
+}
+
 .letter-stroke-5 {
     animation: stroke-5 16s linear infinite;
 }
 
 .letter-fill-5 {
     animation: fill-5 16s linear infinite;
+}
+
+.letter-snake-5 {
+    animation: snake-move 2.8s linear infinite, snake-vis-5 16s linear infinite;
 }
 
 /* 
@@ -994,9 +1088,36 @@
     color: var(--neon-cyan);
     white-space: nowrap;
     filter: blur(40px);
-    opacity: 0.4;
+    opacity: 0;
     z-index: 1;
-    animation: glowPulse 4s ease-in-out infinite;
+    animation-name: titleGlowIn, glowPulse;
+    animation-duration: 0.6s, 4s;
+    animation-timing-function: var(--ease-out), ease-in-out;
+    animation-fill-mode: forwards, none;
+    animation-iteration-count: 1, infinite;
+    animation-delay: var(--snake-start-delay), calc(var(--snake-start-delay) + 0.6s);
+}
+
+@keyframes titleShadowIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes titleGlowIn {
+    from {
+        opacity: 0;
+        filter: blur(60px);
+    }
+
+    to {
+        opacity: 0.3;
+        filter: blur(40px);
+    }
 }
 
 @keyframes glowPulse {
@@ -1357,6 +1478,30 @@
     .cursor-ring,
     .cursor-glow {
         display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .snake-letter-wrapper {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        animation: none !important;
+    }
+
+    .letter-snake {
+        display: none;
+        animation: none !important;
+    }
+
+    .title-shadow {
+        opacity: 1;
+        animation: none !important;
+    }
+
+    .title-glow {
+        opacity: 0.3;
+        animation: none !important;
     }
 }
 
