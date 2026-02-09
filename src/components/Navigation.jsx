@@ -9,32 +9,39 @@ const Navigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
+        const sectionIds = ['home', 'bio', 'music', 'booking'];
+        let rafId = null;
+
         const handleScroll = () => {
-            // Scrolled state
-            setScrolled(window.scrollY > 50);
+            if (rafId) return;
+            rafId = requestAnimationFrame(() => {
+                rafId = null;
+                const winScroll = window.scrollY;
+                const height = document.documentElement.scrollHeight - window.innerHeight;
 
-            // Scroll progress
-            const winScroll = window.scrollY;
-            const height = document.documentElement.scrollHeight - window.innerHeight;
-            const scrolled = (winScroll / height) * 100;
-            setScrollProgress(scrolled);
+                setScrolled(winScroll > 50);
+                setScrollProgress(height > 0 ? (winScroll / height) * 100 : 0);
 
-            // Active section detection
-            const sections = ['home', 'bio', 'music', 'booking'];
-            for (const section of sections.reverse()) {
-                const element = document.getElementById(section);
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    if (rect.top <= 200) {
-                        setActiveSection(section);
-                        break;
+                for (let i = sectionIds.length - 1; i >= 0; i -= 1) {
+                    const section = sectionIds[i];
+                    const element = document.getElementById(section);
+                    if (element) {
+                        const rect = element.getBoundingClientRect();
+                        if (rect.top <= 200) {
+                            setActiveSection(prev => (prev === section ? prev : section));
+                            break;
+                        }
                     }
                 }
-            }
+            });
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
+        handleScroll();
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            if (rafId) cancelAnimationFrame(rafId);
+        };
     }, []);
 
     const getScrollBehavior = () => (

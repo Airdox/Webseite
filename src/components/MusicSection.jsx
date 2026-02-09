@@ -239,6 +239,9 @@ const MusicSection = () => {
                                                 <img 
                                                     src={set.isChristmasGift ? "/assets/santa_vinyl.png" : "/assets/airdox-vinyl.jpg"} 
                                                     alt="Vinyl Label" 
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                    fetchpriority="low"
                                                     className={`vinyl-image ${set.isChristmasGift ? 'santa-style' : ''}`} 
                                                 />
                                             ) : (

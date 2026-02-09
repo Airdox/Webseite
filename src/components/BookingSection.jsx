@@ -55,19 +55,12 @@ const BookingSection = () => {
             data.append('form-name', 'booking');
         }
 
-        console.log('--- FORM SUBMISSION START ---');
-        console.log('Encrypted Body:', new URLSearchParams(data).toString());
-        console.log('Form Data Object:', Object.fromEntries(data.entries()));
-
         try {
             const response = await fetch('/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams(data).toString()
             });
-
-            console.log('Response Status:', response.status);
-            console.log('Response OK:', response.ok);
 
             if (response.ok) {
                 setSubmitted(true);

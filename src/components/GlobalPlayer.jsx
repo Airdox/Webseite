@@ -19,6 +19,7 @@ const GlobalPlayer = () => {
     } = useAudio();
 
     const [showTracklist, setShowTracklist] = React.useState(false);
+    const [isPageVisible, setIsPageVisible] = React.useState(() => !document.hidden);
 
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
@@ -45,6 +46,12 @@ const GlobalPlayer = () => {
 
     // Visualizer Loop
     useEffect(() => {
+        const handleVisibility = () => setIsPageVisible(!document.hidden);
+        document.addEventListener('visibilitychange', handleVisibility);
+        return () => document.removeEventListener('visibilitychange', handleVisibility);
+    }, []);
+
+    useEffect(() => {
         if (!analyserRef.current || !canvasRef.current) return;
 
         const canvas = canvasRef.current;
@@ -52,6 +59,9 @@ const GlobalPlayer = () => {
         const analyser = analyserRef.current;
         const bufferLength = analyser.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+        const barStep = isCoarsePointer ? 2 : 1;
 
         if (waveformRef.current.trackId !== currentTrack?.id) {
             waveformRef.current.trackId = currentTrack?.id || null;
@@ -90,10 +100,11 @@ const GlobalPlayer = () => {
 
             // 2. Reactive peaks (Foreground)
             analyser.getByteFrequencyData(dataArray);
-            const barWidth = (width / bufferLength) * 2;
+            const visibleBars = Math.ceil(bufferLength / barStep);
+            const barWidth = width / visibleBars;
             let x = 0;
 
-            for (let i = 0; i < bufferLength; i++) {
+            for (let i = 0; i < bufferLength; i += barStep) {
                 const value = dataArray[i];
                 const barHeight = (value / 255) * height * 0.8;
 
@@ -104,7 +115,7 @@ const GlobalPlayer = () => {
                 ctx.fillRect(x, height - barHeight, barWidth, barHeight);
 
                 ctx.shadowBlur = 0;
-                x += barWidth + 2;
+                x += barWidth;
             }
         };
 
@@ -113,7 +124,8 @@ const GlobalPlayer = () => {
             animationRef.current = null;
         }
 
-        if (isPlaying) {
+        const shouldAnimate = isPlaying && isPageVisible && !prefersReducedMotion;
+        if (shouldAnimate) {
             drawFrame();
             return () => {
                 if (animationRef.current) cancelAnimationFrame(animationRef.current);
@@ -122,7 +134,7 @@ const GlobalPlayer = () => {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawBaseWaveform();
-    }, [isPlaying, analyserRef, currentTrack]);
+    }, [isPlaying, analyserRef, currentTrack, isPageVisible]);
 
     if (!currentTrack) return null;
 

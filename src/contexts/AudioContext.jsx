@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
 // jsmediatags removed
 
+const isDev = import.meta.env?.DEV;
+const devLog = (...args) => {
+    if (isDev) console.log(...args);
+};
+const devWarn = (...args) => {
+    if (isDev) console.warn(...args);
+};
 
 const AUDIO_FALLBACK_BASE = (import.meta.env.VITE_AUDIO_FALLBACK_BASE || '').replace(/\/+$/, '');
 const AUDIO_MAX_PARTS = 25;
@@ -67,7 +74,9 @@ export const AudioProvider = ({ children }) => {
         if (!audioContextRef.current) {
             audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
             analyserRef.current = audioContextRef.current.createAnalyser();
-            analyserRef.current.fftSize = 256; // Smaller for beat detection
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const isCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+            analyserRef.current.fftSize = (prefersReducedMotion || isCoarsePointer) ? 128 : 256;
             analyserRef.current.smoothingTimeConstant = 0.8;
         }
 
@@ -81,7 +90,7 @@ export const AudioProvider = ({ children }) => {
                 audioSourceRef.current.connect(analyserRef.current);
                 analyserRef.current.connect(audioContextRef.current.destination);
             } catch (err) {
-                console.warn('Audio source already connected or failed:', err);
+                devWarn('Audio source already connected or failed:', err);
             }
         }
     }, []);
@@ -102,7 +111,7 @@ export const AudioProvider = ({ children }) => {
     }, [currentTrack, isPlaying, initAudioContext]);
 
     const playTrack = useCallback((track, autoPlay = true) => {
-        console.log('playTrack called for:', track?.title);
+        devLog('playTrack called for:', track?.title);
         if (!track || !track.file) {
             console.error('Invalid track or file missing');
             return;
@@ -115,7 +124,7 @@ export const AudioProvider = ({ children }) => {
 
         // Wenn gleicher Track mit gleicher Quelle, nur togglen
         if (currentTrack?.id === track.id && isSameSource) {
-            console.log('Toggling play (same track + source)');
+            devLog('Toggling play (same track + source)');
             togglePlay();
             return;
         }
@@ -126,17 +135,17 @@ export const AudioProvider = ({ children }) => {
         if (audioRef.current) {
             // Always start with the file defined in 'file' (which should be part000 for multi-part tracks)
             const encodedSrc = toPlayableSrc(track.file);
-            console.log('Loading audio src:', encodedSrc);
+            devLog('Loading audio src:', encodedSrc);
             audioRef.current.src = encodedSrc;
             audioRef.current.load();
             if (autoPlay) {
                 initAudioContext();
-                console.log('Attempting autoPlay');
+                devLog('Attempting autoPlay');
                 const playPromise = audioRef.current.play();
                 if (playPromise !== undefined) {
                     playPromise
                         .then(() => {
-                            console.log('Playback started successfully');
+                            devLog('Playback started successfully');
                             setIsPlaying(true);
                         })
                         .catch(err => console.error('Play error:', err));
@@ -253,7 +262,7 @@ export const AudioProvider = ({ children }) => {
                 currentPartIndexRef.current = nextPartIdx;
 
                 const nextFile = track.parts[nextPartIdx];
-                console.log(`Auto-switching to part ${nextPartIdx + 1}/${track.parts.length}: ${nextFile}`);
+                devLog(`Auto-switching to part ${nextPartIdx + 1}/${track.parts.length}: ${nextFile}`);
 
                 if (audioRef.current) {
                     audioRef.current.src = toPlayableSrc(nextFile);

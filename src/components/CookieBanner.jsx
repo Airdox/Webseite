@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './CookieBanner.css';
 import { t } from '../utils/i18n';
+import { ensureAnalyticsLoaded, maybeLoadAnalytics } from '../utils/analyticsLoader';
 
 const CookieBanner = () => {
     const [showBanner, setShowBanner] = useState(false);
@@ -12,6 +13,8 @@ const CookieBanner = () => {
         if (consent === null) {
             // Noch keine Entscheidung - Banner zeigen nach kurzer Verzögerung
             setTimeout(() => setShowBanner(true), 1500);
+        } else if (consent === 'true') {
+            maybeLoadAnalytics();
         }
     }, []);
 
@@ -27,6 +30,7 @@ const CookieBanner = () => {
     const handleAcceptAll = () => {
         localStorage.setItem('airdox-analytics-enabled', 'true');
         localStorage.setItem('airdox-marketing-enabled', 'true');
+        ensureAnalyticsLoaded();
         setShowBanner(false);
         window.dispatchEvent(new CustomEvent('analytics-consent-changed'));
     };

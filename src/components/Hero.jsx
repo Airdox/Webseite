@@ -31,10 +31,23 @@ const Hero = () => {
         document.getElementById(id)?.scrollIntoView({ behavior: getScrollBehavior() });
     };
 
-    // Cursor animation loop
+    // Custom cursor + hover effects (throttled)
     useEffect(() => {
-        let animationId;
-        const animate = () => {
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const supportsHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+        const hasFinePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
+        const enableCursor = !prefersReducedMotion && supportsHover && hasFinePointer;
+
+        if (!enableCursor) {
+            if (cursorRef.current) cursorRef.current.style.display = 'none';
+            if (cursorOuterRef.current) cursorOuterRef.current.style.display = 'none';
+            if (glowRef.current) glowRef.current.style.display = 'none';
+            return;
+        }
+
+        let rafId = null;
+        const renderCursor = () => {
+            rafId = null;
             const { x, y } = mousePosRef.current;
             const scale = cursorScaleRef.current;
             if (cursorRef.current && cursorOuterRef.current) {
@@ -45,35 +58,29 @@ const Hero = () => {
                 glowRef.current.style.left = `${x}px`;
                 glowRef.current.style.top = `${y}px`;
             }
-            animationId = requestAnimationFrame(animate);
-        };
-        animationId = requestAnimationFrame(animate);
-        return () => cancelAnimationFrame(animationId);
-    }, []);
-
-    useEffect(() => {
-        const timer = setTimeout(() => setLoaded(true), 100);
-
-        // Optimized Scroll Handler (No State Update)
-        const handleScroll = () => {
-            if (bgRef.current) {
-                const scrolled = window.scrollY;
-                bgRef.current.style.transform = `translateY(${scrolled * 0.4}px)`;
-            }
         };
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        const schedule = () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(renderCursor);
+        };
 
         const handleMouseMove = (e) => {
             mousePosRef.current = { x: e.clientX, y: e.clientY };
+            schedule();
         };
 
-        const handleMouseEnterInteractive = () => { cursorScaleRef.current = 1.5; };
-        const handleMouseLeaveInteractive = () => { cursorScaleRef.current = 1; };
+        const handleMouseEnterInteractive = () => {
+            cursorScaleRef.current = 1.5;
+            schedule();
+        };
+        const handleMouseLeaveInteractive = () => {
+            cursorScaleRef.current = 1;
+            schedule();
+        };
 
         window.addEventListener('mousemove', handleMouseMove);
 
-        // Add hover effects to interactive elements
         const interactiveElements = document.querySelectorAll('button, a, .interactive');
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', handleMouseEnterInteractive);
@@ -81,13 +88,42 @@ const Hero = () => {
         });
 
         return () => {
-            clearTimeout(timer);
-            window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('mousemove', handleMouseMove);
             interactiveElements.forEach(el => {
                 el.removeEventListener('mouseenter', handleMouseEnterInteractive);
                 el.removeEventListener('mouseleave', handleMouseLeaveInteractive);
             });
+            if (rafId) cancelAnimationFrame(rafId);
+        };
+    }, []);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setLoaded(true), 100);
+
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+            return () => clearTimeout(timer);
+        }
+
+        let rafId = null;
+        const handleScroll = () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(() => {
+                rafId = null;
+                if (bgRef.current) {
+                    const scrolled = window.scrollY;
+                    bgRef.current.style.transform = `translateY(${scrolled * 0.4}px)`;
+                }
+            });
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('scroll', handleScroll);
+            if (rafId) cancelAnimationFrame(rafId);
         };
     }, []);
 

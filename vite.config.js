@@ -30,7 +30,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          utils: ['@neondatabase/serverless', 'react-ga4']
+          utils: ['@neondatabase/serverless']
         }
       }
     }

@@ -3,8 +3,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles/global.css'
 import App from './App.jsx'
-import './utils/analyticsV2.js'
 import { getLocale } from './utils/i18n.js'
+import { maybeLoadAnalytics } from './utils/analyticsLoader.js'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -12,20 +12,28 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>,
 )
 
+// Load analytics only after consent
+maybeLoadAnalytics()
+
 // Keep document language in sync
 try {
   document.documentElement.lang = getLocale()
 } catch {}
 
 // Service Worker registrieren (für PWA-Funktionalität)
-// Emergency: Force unregister Service Worker to clear stale cache
-if ('serviceWorker' in navigator) {
+// In dev or when explicitly disabled, unregister to avoid stale caches.
+const shouldDisableServiceWorker = import.meta.env.DEV || import.meta.env.VITE_DISABLE_SW === 'true'
+if (shouldDisableServiceWorker && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
       for (let registration of registrations) {
         registration.unregister()
-          .then(() => console.log('SW unregistered successfully'))
-          .catch(err => console.log('SW unregistration failed:', err));
+          .then(() => {
+            if (import.meta.env.DEV) console.log('SW unregistered successfully')
+          })
+          .catch(err => {
+            if (import.meta.env.DEV) console.warn('SW unregistration failed:', err)
+          })
       }
     });
   });

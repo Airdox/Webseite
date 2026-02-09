@@ -1,32 +1,12 @@
-import { neon } from '@neondatabase/serverless';
+import { checkDbHealth, dbHealthCorsHeaders } from '../server/db-health-core.js';
 
 export default async function handler(request, response) {
-    // CORS headers
-    response.setHeader('Access-Control-Allow-Origin', '*');
+    Object.entries(dbHealthCorsHeaders).forEach(([key, value]) => response.setHeader(key, value));
 
-    // Check if DATABASE_URL is configured
-    if (!process.env.DATABASE_URL) {
-        return response.status(200).json({
-            status: 'fallback',
-            database: 'not configured',
-            message: 'DATABASE_URL environment variable is not set. Stats will be stored locally.'
-        });
+    if (request.method === 'OPTIONS') {
+        return response.status(200).end();
     }
 
-    try {
-        const sql = neon(process.env.DATABASE_URL);
-        const result = await sql`SELECT NOW() as current_time`;
-        return response.status(200).json({
-            status: 'healthy',
-            database: 'connected',
-            timestamp: result[0].current_time
-        });
-    } catch (error) {
-        console.error('Health Check Error:', error);
-        return response.status(200).json({
-            status: 'error',
-            database: 'connection failed',
-            error: error.message
-        });
-    }
+    const payload = await checkDbHealth('fallback');
+    return response.status(200).json(payload);
 }

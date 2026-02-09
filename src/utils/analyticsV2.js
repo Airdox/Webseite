@@ -6,6 +6,13 @@
 
 // ⚠️ DEINE GAM-ID HIER EINTRAGEN:
 const GA_MEASUREMENT_ID = 'G-QX0D1TSKW5';
+const isDev = import.meta.env?.DEV;
+const devLog = (...args) => {
+    if (isDev) console.log(...args);
+};
+const devWarn = (...args) => {
+    if (isDev) console.warn(...args);
+};
 
 class AnalyticsV2 {
     constructor() {
@@ -73,7 +80,7 @@ class AnalyticsV2 {
             'debug_mode': this.isDebugMode()
         });
 
-        console.log('📊 GA4 Initialisiert:', GA_MEASUREMENT_ID);
+        devLog('📊 GA4 Initialisiert:', GA_MEASUREMENT_ID);
     }
 
     isDebugMode() {
@@ -92,7 +99,7 @@ class AnalyticsV2 {
             try {
                 window.gtag('consent', 'update', { analytics_storage: 'denied' });
             } catch (error) {
-                console.warn('GA consent update failed:', error);
+                devWarn('GA consent update failed:', error);
             }
         }
     }
@@ -635,7 +642,7 @@ class AnalyticsV2 {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        console.log(`📊 Analytics V2: ${filename} exportiert`);
+        devLog(`📊 Analytics V2: ${filename} exportiert`);
     }
 
     clearData() {
@@ -643,7 +650,7 @@ class AnalyticsV2 {
             localStorage.removeItem(this.storageKey);
             sessionStorage.removeItem(this.sessionKey);
             sessionStorage.removeItem(this.sessionStartKey);
-            console.log('📊 Analytics V2: Alle Daten gelöscht');
+            devLog('📊 Analytics V2: Alle Daten gelöscht');
             return true;
         }
         return false;
