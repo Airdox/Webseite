@@ -9,7 +9,7 @@ const Navigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
-        const sectionIds = ['home', 'bio', 'music', 'downloads', 'booking'];
+        const sectionIds = ['home', 'bio', 'music', 'booking'];
         let rafId = null;
 
         const handleScroll = () => {
@@ -67,7 +67,6 @@ const Navigation = () => {
         { id: 'home', label: t('nav.home') },
         { id: 'bio', label: t('nav.about') },
         { id: 'music', label: t('nav.music') },
-        { id: 'downloads', label: t('nav.downloads') },
         { id: 'booking', label: t('nav.booking') },
     ];
 
