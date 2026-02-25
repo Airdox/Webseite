@@ -395,14 +395,14 @@
     font-size: 190px;
     font-weight: 900;
     fill: none;
-    stroke: #ffffff;
-    stroke-width: 10px;
+    stroke-width: 14px;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: 120 880;
     stroke-dashoffset: 0;
     opacity: 0;
-    mix-blend-mode: difference;
+    transition: opacity 180ms var(--ease-out);
+    will-change: opacity, stroke-dashoffset;
     filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.35));
 }
 
@@ -412,14 +412,10 @@
     animation-delay: calc(var(--title-reveal-delay) + (var(--i) * var(--title-stagger)));
 }
 
-/* After the reveal, run an outline "snake" that inverts the letter content along its path */
-.hero-content.loaded .letter-snake {
-    animation:
-        snakeFadeIn 0.45s var(--ease-out) forwards,
-        snakeMove var(--snake-cycle) linear infinite;
-    animation-delay:
-        var(--snake-start-delay),
-        var(--snake-start-delay);
+/* Sequential snake: only the currently active letter gets the outline animation (JS toggles .is-active) */
+.hero-content.loaded .letter-snake.is-active {
+    opacity: 1;
+    animation: snakeMove var(--snake-cycle) linear infinite;
 }
 
 @keyframes snakeMove {
@@ -429,16 +425,6 @@
 
     to {
         stroke-dashoffset: -1000;
-    }
-}
-
-@keyframes snakeFadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
     }
 }
 

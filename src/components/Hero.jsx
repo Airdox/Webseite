@@ -5,6 +5,7 @@ import { t } from '../utils/i18n';
 
 const Hero = () => {
     const [loaded, setLoaded] = useState(false);
+    const [snakeIndex, setSnakeIndex] = useState(-1);
     const heroRef = useRef(null);
     const bgRef = useRef(null); // Ref for background parallax
     const cursorRef = useRef(null);
@@ -12,6 +13,8 @@ const Hero = () => {
     const glowRef = useRef(null);
     const mousePosRef = useRef({ x: 0, y: 0 });
     const cursorScaleRef = useRef(1);
+
+    const TITLE = 'AIRDOX';
 
     const getScrollBehavior = () => (
         window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -127,7 +130,44 @@ const Hero = () => {
         };
     }, []);
 
-    const TITLE = 'AIRDOX';
+    // Sequential snake: run the outline animation per letter, one after another (not all at once).
+    useEffect(() => {
+        if (!loaded) return;
+
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return;
+
+        const titleEl = heroRef.current?.querySelector('.hero-title');
+        const cs = titleEl ? window.getComputedStyle(titleEl) : null;
+        const readSeconds = (name, fallback) => {
+            if (!cs) return fallback;
+            const raw = cs.getPropertyValue(name);
+            const n = parseFloat(raw);
+            return Number.isFinite(n) ? n : fallback;
+        };
+
+        const revealDelay = readSeconds('--title-reveal-delay', 0.15);
+        const stagger = readSeconds('--title-stagger', 0.12);
+        const revealDuration = readSeconds('--title-reveal-duration', 0.9);
+        const snakeCycle = readSeconds('--snake-cycle', 2.8);
+
+        const startAfterAllReveal = revealDelay + revealDuration + ((TITLE.length - 1) * stagger) + 0.15;
+        const startMs = Math.max(0, Math.round(startAfterAllReveal * 1000));
+        const stepMs = Math.max(200, Math.round(snakeCycle * 1000));
+
+        let intervalId = null;
+        const startId = window.setTimeout(() => {
+            setSnakeIndex(0);
+            intervalId = window.setInterval(() => {
+                setSnakeIndex(prev => (prev + 1) % TITLE.length);
+            }, stepMs);
+        }, startMs);
+
+        return () => {
+            window.clearTimeout(startId);
+            if (intervalId) window.clearInterval(intervalId);
+        };
+    }, [TITLE, loaded]);
 
     return (
         <section className="hero" id="home" ref={heroRef} data-version="0.1.1">
@@ -194,23 +234,38 @@ const Hero = () => {
                                             <stop offset="50%" stopColor="var(--neon-cyan)" />
                                             <stop offset="100%" stopColor="var(--neon-pink)" />
                                         </linearGradient>
-                                        <clipPath id={`clip-${i}`} clipPathUnits="userSpaceOnUse">
-                                            <text x="50%" y="80%" textAnchor="middle" className="letter-fill">
+                                        <linearGradient id={`grad-snake-${i}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stopColor="#ffffff" />
+                                            <stop offset="50%" stopColor="var(--neon-pink)" />
+                                            <stop offset="100%" stopColor="var(--neon-cyan)" />
+                                        </linearGradient>
+                                        {/* Show the snake only OUTSIDE the letter shape */}
+                                        <mask
+                                            id={`mask-snake-out-${i}`}
+                                            maskUnits="userSpaceOnUse"
+                                            maskContentUnits="userSpaceOnUse"
+                                            x="-40"
+                                            y="-40"
+                                            width="240"
+                                            height="320"
+                                        >
+                                            <rect x="-40" y="-40" width="240" height="320" fill="#ffffff" />
+                                            <text x="80" y="176" textAnchor="middle" className="letter-fill" fill="#000000">
                                                 {letter}
                                             </text>
-                                        </clipPath>
+                                        </mask>
                                     </defs>
                                     <text
-                                        x="50%"
-                                        y="80%"
+                                        x="80"
+                                        y="176"
                                         textAnchor="middle"
                                         className="letter-stroke"
                                     >
                                         {letter}
                                     </text>
                                     <text
-                                        x="50%"
-                                        y="80%"
+                                        x="80"
+                                        y="176"
                                         textAnchor="middle"
                                         fill={`url(#grad-${i})`}
                                         className="letter-fill"
@@ -218,11 +273,12 @@ const Hero = () => {
                                         {letter}
                                     </text>
                                     <text
-                                        x="50%"
-                                        y="80%"
+                                        x="80"
+                                        y="176"
                                         textAnchor="middle"
-                                        className="letter-snake"
-                                        clipPath={`url(#clip-${i})`}
+                                        className={`letter-snake${snakeIndex === i ? ' is-active' : ''}`}
+                                        mask={`url(#mask-snake-out-${i})`}
+                                        stroke={`url(#grad-snake-${i})`}
                                     >
                                         {letter}
                                     </text>
