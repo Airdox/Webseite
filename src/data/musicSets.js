@@ -3,8 +3,8 @@ export const sets = [
       id: 'recording_2026_03_09',
       title: 'wenn man einfach keinen grund hat',
       date: 'MAR 2026',
-      file: '/sets/public/Airdox_REC_2026_03_09.wav',
-      duration: 'UNKNOWN', // Unknown format since no probe
+      file: '/sets/public/Airdox_REC_2026_03_09.mp3',
+      duration: '50:23', // Updated with expected duration if known, or leave UNKNOWN
       isNew: true,
       vinylColor: '#00ffcc'
   },
@@ -14,7 +14,7 @@ export const sets = [
       date: '22.12.2025',
       file: '/sets/public/Airdox_Secret_Set_Pirate_Studio_22_12_2025_full.mp3',
       duration: '2:46:56',
-      isNew: true,
+      isNew: false,
       vinylColor: '#ff00ff'
     },
   {
