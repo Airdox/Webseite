@@ -9,7 +9,7 @@ const devWarn = (...args) => {
     if (isDev) console.warn(...args);
 };
 
-const AUDIO_FALLBACK_BASE = (import.meta.env.VITE_AUDIO_FALLBACK_BASE || '').replace(/\/+$/, '');
+const AUDIO_FALLBACK_BASE = (import.meta.env?.VITE_AUDIO_FALLBACK_BASE || '').replace(/\/+$/, '');
 const AUDIO_MAX_PARTS = 25;
 const isAbsoluteUrl = (url) => /^https?:\/\//i.test(url);
 const resolveAudioSrc = (src) => {
@@ -123,14 +123,17 @@ export const AudioProvider = ({ children }) => {
         const isSameSource = currentTrack?.file === track.file && sameParts;
 
         // Wenn gleicher Track mit gleicher Quelle, nur togglen
+        currentPartIndexRef.current = 0; // Reset part index for new track
+
+        // Check if track is actually different to avoid unnecessary re-renders of the player UI
         if (currentTrack?.id === track.id && isSameSource) {
             devLog('Toggling play (same track + source)');
             togglePlay();
             return;
         }
 
+        // Before setting new track, ensure we don't have a flash of null
         setCurrentTrack(track);
-        currentPartIndexRef.current = 0; // Reset part index for new track
 
         if (audioRef.current) {
             // Always start with the file defined in 'file' (which should be part000 for multi-part tracks)

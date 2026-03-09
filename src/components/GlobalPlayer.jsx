@@ -2,6 +2,10 @@ import React, { useRef, useEffect } from 'react';
 import { useAudio } from '../contexts/AudioContext';
 import './GlobalPlayer.css';
 
+const devLog = (...args) => {
+    if (import.meta.env?.DEV) console.log(...args);
+};
+
 const GlobalPlayer = () => {
     const {
         currentTrack,
@@ -24,6 +28,30 @@ const GlobalPlayer = () => {
     const animationRef = useRef(null);
     const progressRef = useRef(null);
     const waveformRef = useRef({ trackId: null, points: [] });
+    const playerRef = useRef(null);
+    const isVisible = !!currentTrack;
+
+    // Force re-paint on track change using advanced hardware acceleration triggers
+    useEffect(() => {
+        if (isVisible && playerRef.current) {
+            const el = playerRef.current;
+
+            // Phase 1: Minimal shift to trigger compositor update
+            el.setAttribute('data-rendering', 'true');
+
+            // Phase 2: Force reflow & second frame update
+            requestAnimationFrame(() => {
+                // Changing a property that forces a composite layer rebuild
+                el.style.opacity = '0.999';
+
+                requestAnimationFrame(() => {
+                    el.style.opacity = '1';
+                    el.removeAttribute('data-rendering');
+                    devLog('Hard-Repaint triggered for track:', currentTrack?.id);
+                });
+            });
+        }
+    }, [currentTrack?.id, isVisible]);
 
     // Format time helpers (mm:ss)
     const formatTime = (time) => {
@@ -135,20 +163,25 @@ const GlobalPlayer = () => {
         drawBaseWaveform();
     }, [isPlaying, analyserRef, currentTrack, isPageVisible]);
 
-    if (!currentTrack) return null;
-
     const progressPercent = duration ? (currentTime / duration) * 100 : 0;
 
     return (
-        <div className="global-player">
+        <div
+            className={`global-player ${isVisible ? 'visible' : 'hidden'}`}
+            ref={playerRef}
+            style={{
+                visibility: isVisible ? 'visible' : 'hidden',
+                pointerEvents: isVisible ? 'auto' : 'none'
+            }}
+        >
 
             {/* Visualizer Background */}
             <canvas ref={canvasRef} className="gp-visualizer" width="900" height="100" />
 
             {/* Track Info */}
             <div className="gp-track-info">
-                <div className="gp-track-title" title={currentTrack.title}>
-                    {currentTrack.title}
+                <div className="gp-track-title" title={currentTrack?.title || ''}>
+                    {currentTrack?.title || 'No track selected'}
                 </div>
                 <div className="gp-track-artist">
                     AIRDOX // RESIDENT DJ

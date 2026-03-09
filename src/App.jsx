@@ -9,7 +9,7 @@ const MusicSection = lazy(() => import('./components/MusicSection'));
 const BioSection = lazy(() => import('./components/BioSection'));
 const BookingSection = lazy(() => import('./components/BookingSection'));
 const Footer = lazy(() => import('./components/Footer'));
-const GlobalPlayer = lazy(() => import('./components/GlobalPlayer'));
+import GlobalPlayer from './components/GlobalPlayer';
 
 import SetNotification from './components/SetNotification';
 import CookieBanner from './components/CookieBanner';
@@ -83,9 +83,7 @@ function App() {
           </Suspense>
           <SetNotification />
           <CookieBanner />
-          <Suspense fallback={null}>
-            <GlobalPlayer />
-          </Suspense>
+          <GlobalPlayer />
         </div>
       </AudioProvider>
     </ToastProvider>

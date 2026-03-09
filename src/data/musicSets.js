@@ -1,5 +1,14 @@
 export const sets = [
   {
+      id: 'recording_2026_03_09',
+      title: 'wenn man einfach keinen grund hat',
+      date: 'MAR 2026',
+      file: '/sets/public/Airdox_REC_2026_03_09.wav',
+      duration: 'UNKNOWN', // Unknown format since no probe
+      isNew: true,
+      vinylColor: '#00ffcc'
+  },
+  {
       id: 'secret_set_2025_12_22',
       title: 'SECRET SET (PIRATE STUDIO)',
       date: '22.12.2025',
