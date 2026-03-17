@@ -1,11 +1,20 @@
 export const sets = [
   {
+      id: 'recording_2026_03_15',
+      title: 'REC 15.03.2026',
+      date: 'MAR 2026',
+      file: '/sets/public/Airdox_REC_2026_03_15.mp3',
+      duration: '1:36:22',
+      isNew: true,
+      vinylColor: '#ff6600'
+  },
+  {
       id: 'recording_2026_03_09',
       title: 'wenn man einfach keinen grund hat',
       date: 'MAR 2026',
       file: '/sets/public/Airdox_REC_2026_03_09.mp3',
       duration: '50:23', // Updated with expected duration if known, or leave UNKNOWN
-      isNew: true,
+      isNew: false,
       vinylColor: '#00ffcc'
   },
   {
