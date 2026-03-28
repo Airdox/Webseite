@@ -12,12 +12,12 @@ const AnalyticsDashboard = () => {
     }
   }, []);
 
-  // Hotkey lauschen (Strg + Shift + A)
+  // Hotkey lauschen (Strg + Alt + A)
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Strg (ctrlKey) + Shift (shiftKey) + A (KeyA)
+      // Strg (ctrlKey) + Alt (altKey) + A (KeyA)
       // Mac Cmd wird bei ctrlKey oft nicht erfasst, ggf. metaKey hinzunehmen:
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.code === 'KeyA') {
+      if ((e.ctrlKey || e.metaKey) && e.altKey && e.code === 'KeyA') {
         e.preventDefault();
         setIsOpen((prev) => {
           if (!prev) fetchStats();
