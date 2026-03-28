@@ -63,6 +63,7 @@ const Footer = () => {
                                 target={link.url.startsWith('mailto') ? undefined : '_blank'}
                                 rel={link.url.startsWith('mailto') ? undefined : 'noopener noreferrer'}
                                 className="footer-social-link interactive"
+                                onClick={() => window.airdoxAnalytics?.trackOutboundLink(link.name, link.url)}
                             >
                                 {link.name}
                             </a>

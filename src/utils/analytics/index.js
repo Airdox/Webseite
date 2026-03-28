@@ -75,12 +75,13 @@ class Analytics {
                 downloads: 0,
                 audioPlays: 0,
                 interactions: 0,
+                referrer: document.referrer || 'Direct/Unknown',
+                maxScrollDepth: 0,
                 device: this.getDeviceInfo(),
                 exitPage: null
             });
 
             this.saveData(data);
-
         }
     }
 
@@ -163,7 +164,8 @@ class Analytics {
             sessions: [],
             audioEvents: [],
             interactions: [],
-            customEvents: []
+            customEvents: [],
+            socialClicks: []
         };
     }
 
@@ -172,6 +174,12 @@ class Analytics {
             localStorage.setItem(this.storageKey, JSON.stringify(data));
         } catch (error) {
             devError('Analytics: Fehler beim Speichern', error);
+        }
+    }
+
+    sendToGA(eventName, params = {}) {
+        if (typeof window.gtag === 'function') {
+            window.gtag('event', eventName, params);
         }
     }
 
@@ -196,6 +204,7 @@ class Analytics {
 
         this.saveData(data);
 
+        this.sendToGA('page_view', { page_path: page });
     }
 
     trackDownload(fileName, fileSize, category = 'public') {
@@ -221,6 +230,11 @@ class Analytics {
 
         this.saveData(data);
 
+        this.sendToGA('file_download', { 
+            file_name: fileName, 
+            file_size: fileSize,
+            event_category: category 
+        });
     }
 
     trackAudioEvent(trackName, action, playDuration = 0, trackDuration = 0) {
@@ -250,6 +264,11 @@ class Analytics {
 
         this.saveData(data);
 
+        this.sendToGA(`audio_${action}`, { 
+            track_name: trackName, 
+            play_duration: playDuration,
+            event_category: 'Audio'
+        });
     }
 
     trackInteraction(element, section, action = 'click') {
@@ -274,6 +293,51 @@ class Analytics {
 
         this.saveData(data);
 
+        this.sendToGA('interaction', { 
+            event_category: section, 
+            event_label: element,
+            event_action: action
+        });
+    }
+
+    trackScrollDepth(percentage) {
+        if (!this.isEnabled()) return;
+        const data = this.getData();
+        const sessionId = this.getSessionId();
+        const session = data.sessions?.find((s) => s.sessionId === sessionId && !s.endTime);
+
+        if (session && percentage > (session.maxScrollDepth || 0)) {
+            session.maxScrollDepth = percentage;
+            this.saveData(data);
+            this.sendToGA('scroll', { percent_scrolled: percentage });
+        }
+    }
+
+    trackOutboundLink(platform, url) {
+        if (!this.isEnabled()) return;
+
+        const data = this.getData();
+        const event = {
+            type: 'outbound',
+            platform,
+            url,
+            timestamp: new Date().toISOString(),
+            sessionId: this.getSessionId()
+        };
+
+        if (!data.socialClicks) data.socialClicks = [];
+        data.socialClicks.push(event);
+
+        if (data.socialClicks.length > 500) {
+            data.socialClicks = data.socialClicks.slice(-500);
+        }
+        this.saveData(data);
+
+        this.sendToGA('outbound_click', {
+            link_url: url,
+            event_category: 'Outbound',
+            event_label: platform
+        });
     }
 
     trackEvent(eventName, eventData = {}) {
@@ -296,6 +360,7 @@ class Analytics {
 
         this.saveData(data);
 
+        this.sendToGA(eventName, eventData);
     }
 
     getStats(timeRange = 'all') {
@@ -322,13 +387,15 @@ class Analytics {
         const sessions = (data.sessions || []).filter((s) => new Date(s.startTime) >= startDate);
         const audioEvents = filterByTime(data.audioEvents || []);
         const interactions = filterByTime(data.interactions || []);
+        const socialClicks = filterByTime(data.socialClicks || []);
 
         const total = {
             pageViews: pageViews.length,
             downloads: downloads.length,
             sessions: sessions.length,
             audioPlays: audioEvents.filter((e) => e.action === 'play').length,
-            interactions: interactions.length
+            interactions: interactions.length,
+            socialClicks: socialClicks.length
         };
 
         const completedSessions = sessions.filter((s) => s.endTime);
@@ -337,8 +404,15 @@ class Analytics {
             : 0;
 
         const bounceRate = sessions.length > 0
-            ? (sessions.filter((s) => s.pageViews <= 1).length / sessions.length) * 100
+            ? (sessions.filter((s) => s.pageViews <= 1 && (s.maxScrollDepth || 0) < 25).length / sessions.length) * 100
             : 0;
+
+        const avgScrollDepth = sessions.length > 0
+            ? sessions.reduce((sum, s) => sum + (s.maxScrollDepth || 0), 0) / sessions.length
+            : 0;
+
+        const referrers = this.calculateDistribution(sessions, 'referrer');
+        const topSocialClicks = this.calculateDistribution(socialClicks, 'platform');
 
         const downloadsByFile = {};
         downloads.forEach((d) => {
@@ -383,11 +457,16 @@ class Analytics {
             total,
             averages: {
                 sessionDuration: Math.round(avgSessionDuration),
-                playDuration: Math.round(avgPlayDuration)
+                playDuration: Math.round(avgPlayDuration),
+                scrollDepth: Math.round(avgScrollDepth)
             },
             rates: {
                 bounce: Math.round(bounceRate * 10) / 10,
                 skip: Math.round(skipRate * 10) / 10
+            },
+            traffic: {
+                referrers,
+                socialClicks: topSocialClicks
             },
             downloads: {
                 byCategory: downloadsByCategory,
@@ -490,6 +569,7 @@ class Analytics {
                 averages: stats.averages,
                 rates: stats.rates
             },
+            traffic: stats.traffic,
             topLists: {
                 downloads: stats.downloads?.top,
                 tracks: stats.audio?.top

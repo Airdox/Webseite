@@ -180,8 +180,8 @@ const Navigation = () => {
                             {t('nav.getInTouch')}
                         </a>
                         <div className="mobile-socials">
-                            <a href="https://soundcloud.com/airdox" target="_blank" rel="noopener noreferrer">SoundCloud</a>
-                            <a href="https://instagram.com/airdox_bln" target="_blank" rel="noopener noreferrer">Instagram</a>
+                            <a href="https://soundcloud.com/airdox" target="_blank" rel="noopener noreferrer" onClick={() => window.airdoxAnalytics?.trackOutboundLink('SoundCloud_MobileNav', 'https://soundcloud.com/airdox')}>SoundCloud</a>
+                            <a href="https://instagram.com/airdox_bln" target="_blank" rel="noopener noreferrer" onClick={() => window.airdoxAnalytics?.trackOutboundLink('Instagram_MobileNav', 'https://instagram.com/airdox_bln')}>Instagram</a>
                         </div>
                         <div className="mobile-lang-toggle">
                             <a

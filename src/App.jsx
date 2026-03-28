@@ -13,6 +13,7 @@ import GlobalPlayer from './components/GlobalPlayer';
 
 import SetNotification from './components/SetNotification';
 import CookieBanner from './components/CookieBanner';
+import AnalyticsDashboard from './components/AnalyticsDashboard';
 import './styles/global.css';
 
 // Loading Fallback Component
@@ -62,6 +63,39 @@ function App() {
     return () => clearInterval(timer);
   }, []);
 
+  // Globales Scroll Tracking
+  useEffect(() => {
+    let ticking = false;
+    let localMaxDepth = 0;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollPosition = window.scrollY;
+          const windowHeight = window.innerHeight;
+          const documentHeight = document.documentElement.scrollHeight;
+          
+          if (documentHeight > windowHeight) {
+             const depth = Math.floor((scrollPosition / (documentHeight - windowHeight)) * 100);
+             // Nur Updates ans System schicken, wenn sich die Tiefe signifikant erhöht
+             if (depth > localMaxDepth) {
+                 localMaxDepth = depth;
+                 // Um localStorage nicht zu fluten, updaten wir zB alle 10%
+                 if (depth % 10 === 0 || depth === 100 || depth === 25 || depth === 50 || depth === 75) {
+                    window.airdoxAnalytics?.trackScrollDepth(depth);
+                 }
+             }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <ToastProvider>
       <AudioProvider>
@@ -84,6 +118,7 @@ function App() {
           <SetNotification />
           <CookieBanner />
           <GlobalPlayer />
+          <AnalyticsDashboard />
         </div>
       </AudioProvider>
     </ToastProvider>

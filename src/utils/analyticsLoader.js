@@ -25,6 +25,12 @@ const handleConsentChange = () => {
 
     const consent = window.localStorage?.getItem(CONSENT_KEY);
     if (consent === 'true') {
+        if (typeof window.gtag === 'function') {
+            window.gtag('consent', 'update', {
+                'analytics_storage': 'granted'
+            });
+        }
+        
         if (analyticsPromise) {
             void analyticsPromise.then((analytics) => analytics?.init?.());
             return analyticsPromise;
