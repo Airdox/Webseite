@@ -193,7 +193,7 @@ const BookingSection = () => {
                                 <div className={`form-group ${focused.name || formData.name ? 'focused' : ''}`}>
                                     <input type="text" name="name" id="name" value={formData.name}
                                         onChange={handleInputChange} onFocus={() => handleFocus('name')}
-                                        onBlur={() => handleBlur('name')} placeholder=" " required />
+                                        onBlur={() => handleBlur('name')} placeholder=" " required autoComplete="name" />
                                     <label htmlFor="name">{t('booking.name')}</label>
                                     <div className="input-line"></div>
                                 </div>
@@ -201,7 +201,7 @@ const BookingSection = () => {
                                 <div className={`form-group ${focused.email || formData.email ? 'focused' : ''}`}>
                                     <input type="email" name="email" id="email" value={formData.email}
                                         onChange={handleInputChange} onFocus={() => handleFocus('email')}
-                                        onBlur={() => handleBlur('email')} placeholder=" " required />
+                                        onBlur={() => handleBlur('email')} placeholder=" " required autoComplete="email" />
                                     <label htmlFor="email">{t('booking.email')}</label>
                                     <div className="input-line"></div>
                                 </div>
@@ -209,7 +209,7 @@ const BookingSection = () => {
                                 <div className={`form-group ${focused.event || formData.event ? 'focused' : ''}`}>
                                     <input type="text" name="event" id="event" value={formData.event}
                                         onChange={handleInputChange} onFocus={() => handleFocus('event')}
-                                        onBlur={() => handleBlur('event')} placeholder=" " />
+                                        onBlur={() => handleBlur('event')} placeholder=" " autoComplete="off" />
                                     <label htmlFor="event">{t('booking.event')}</label>
                                     <div className="input-line"></div>
                                 </div>
@@ -217,7 +217,7 @@ const BookingSection = () => {
                                 <div className={`form-group ${focused.message || formData.message ? 'focused' : ''}`}>
                                     <textarea name="message" id="message" rows="4" value={formData.message}
                                         onChange={handleInputChange} onFocus={() => handleFocus('message')}
-                                        onBlur={() => handleBlur('message')} placeholder=" " required></textarea>
+                                        onBlur={() => handleBlur('message')} placeholder=" " required autoComplete="off"></textarea>
                                     <label htmlFor="message">{t('booking.message')}</label>
                                     <div className="input-line"></div>
                                 </div>

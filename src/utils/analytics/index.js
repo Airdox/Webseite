@@ -31,7 +31,7 @@ class Analytics {
         if (this.initialized) return;
         this.initialized = true;
 
-        window.addEventListener('beforeunload', this.handleBeforeUnload);
+        window.addEventListener('pagehide', this.handleBeforeUnload);
         document.addEventListener('visibilitychange', this.handleVisibilityChange);
     }
 
