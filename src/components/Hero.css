@@ -202,6 +202,8 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+    perspective: 1200px;
+    transform-style: preserve-3d;
 }
 
 .glitch-block {
@@ -210,8 +212,8 @@
     opacity: 0;
     pointer-events: none;
     z-index: 1;
-    /* Chaotic animation with step-end or very fast transitions */
-    animation: randomGlitchFlash var(--duration) var(--delay) infinite;
+    /* 3D and chaotic animation */
+    animation: randomGlitchFlash3D var(--duration) var(--delay) infinite;
     mix-blend-mode: screen;
 }
 
@@ -220,38 +222,40 @@
     box-shadow: 0 0 15px var(--neon-pink);
 }
 
-@keyframes randomGlitchFlash {
-    /* Longer silent periods (90% of the time invisible) */
-    0%, 2%, 5%, 15%, 18%, 35%, 38%, 55%, 58%, 75%, 78%, 92%, 100% { 
+@keyframes randomGlitchFlash3D {
+    /* 90% invisible */
+    0%, 31%, 34%, 55%, 58%, 78%, 81%, 95%, 100% { 
         opacity: 0; 
-        transform: translate(0, 0) scale(1); 
+        transform: translate3d(0, 0, var(--z)) scale(1); 
     }
     
-    /* Powerful, brief flashes (10% of the time active) */
+    /* 3D Glitch Effects: Move into depth as they flash */
+    32% { 
+        opacity: 0.9; 
+        transform: translate3d(-10px, -5px, calc(var(--z) - 200px)) scaleX(1.8) scale(0.6); 
+        filter: brightness(2);
+    }
+    33% { opacity: 0; }
     
-    /* Blip 1: Horizontal Smear */
-    3% { opacity: 0.8; transform: scaleX(2.5) translateX(10px); filter: brightness(1.5) hue-rotate(90deg); }
-    4% { opacity: 0.4; transform: scaleX(1.8) translateX(-5px); }
-    
-    /* Blip 2: Vertical Glitch */
-    16% { opacity: 1; transform: scaleY(3.5) scaleX(0.4) translate(-10%, 20%); }
-    17% { opacity: 0; }
-    
-    /* Blip 3: Double Strike */
-    36% { opacity: 0.9; transform: scale(1.4) skewX(20deg); }
-    37% { opacity: 0.5; transform: scale(1.1) skewX(-20deg); }
-    
-    /* Blip 4: Large ghosting */
-    56% { opacity: 0.7; transform: scale(2.5) translate(15px, -15px); filter: blur(2px); }
+    56% { 
+        opacity: 0.8; 
+        transform: translate3d(20px, 10px, calc(var(--z) + 100px)) scaleY(2.5) scale(1.4); 
+    }
     57% { opacity: 0; }
     
-    /* Blip 5: High frequency flicker */
-    76% { opacity: 0.95; transform: translate(-30px, 10px); }
-    77% { opacity: 0.4; transform: translate(30px, -10px); }
+    79% { 
+        opacity: 1; 
+        transform: translate3d(-5px, 5px, calc(var(--z) - 300px)) skewX(-20deg) scale(0.4); 
+        box-shadow: -4px 0 0 var(--neon-pink), 4px 0 0 var(--neon-cyan);
+    }
+    80% { opacity: 0; }
     
-    /* Blip 6: Final erratic pop */
-    93% { opacity: 1; transform: scale(3) rotate(5deg); box-shadow: 0 0 40px var(--neon-cyan); }
-    94% { opacity: 0.5; transform: scale(0.5) rotate(-5deg); }
+    96% { 
+        opacity: 1; 
+        transform: translate3d(30px, 0, calc(var(--z) + 200px)) scale(2); 
+        filter: hue-rotate(180deg) brightness(3);
+    }
+    97% { opacity: 0; }
 }
 
 /* =====================================================
@@ -266,7 +270,8 @@
     max-width: 1200px;
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 1s var(--ease-out), transform 1s var(--ease-out);
+    transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), 
+                transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hero-content.loaded {

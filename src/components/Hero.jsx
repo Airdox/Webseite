@@ -4,17 +4,20 @@ import Magnetic from './Magnetic';
 import './Hero.css';
 import { t } from '../utils/i18n';
 
-const GLITCH_BLOCKS = Array.from({ length: 20 }).map((_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    w: Math.random() * 150 + 50, // Larger block variety
-    h: Math.random() * 4 + 2,
-    delay: Math.random() * 20,
-    duration: Math.random() * 15 + 15, // Much slower overall
-    isGlow: i % 4 === 0,
-    rotation: Math.random() > 0.9 ? 90 : 0,
-}));
+const GLITCH_BLOCKS = Array.from({ length: 15 }).map((_, i) => {
+    const isVertical = Math.random() > 0.7;
+    return {
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        z: Math.random() * -500, // Depth into the screen
+        w: isVertical ? (Math.random() * 3 + 2) : (Math.random() * 160 + 40),
+        h: isVertical ? (Math.random() * 160 + 40) : (Math.random() * 3 + 2),
+        delay: Math.random() * 15,
+        duration: Math.random() * 8 + 8,
+        isGlow: i % 4 === 0,
+    };
+});
 
 const Hero = () => {
     const [loaded, setLoaded] = useState(false);
@@ -209,7 +212,7 @@ const Hero = () => {
                 <div className="noise"></div>
             </div>
 
-            {/* Random Glitch Blocks */}
+            {/* Random 3D Glitch Blocks */}
             <div className="particles-container">
                 {GLITCH_BLOCKS.map((block) => (
                     <div
@@ -220,7 +223,7 @@ const Hero = () => {
                             top: `${block.y}%`,
                             width: `${block.w}px`,
                             height: `${block.h}px`,
-                            rotate: `${block.rotation}deg`,
+                            '--z': `${block.z}px`,
                             '--delay': `${block.delay}s`,
                             '--duration': `${block.duration}s`
                         }}
@@ -295,6 +298,7 @@ const Hero = () => {
                                         className={`letter-snake${snakeIndex === i ? ' is-active' : ''}`}
                                         mask={`url(#mask-snake-out-${i})`}
                                         stroke={`url(#grad-snake-${i})`}
+                                        pathLength="1000"
                                     >
                                         {letter}
                                     </text>
