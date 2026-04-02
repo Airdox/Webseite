@@ -1,27 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import './Footer.css';
 import { t } from '../utils/i18n';
+import useRevealOnScroll from '../hooks/useRevealOnScroll';
 
 const Footer = () => {
     const footerRef = useRef(null);
+    useRevealOnScroll(footerRef);
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
-
-        const elements = footerRef.current?.querySelectorAll('.reveal');
-        elements?.forEach(el => observer.observe(el));
-
-        return () => observer.disconnect();
-    }, []);
 
     const getScrollBehavior = () => (
         window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches

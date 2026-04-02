@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import './BioSection.css';
 import { t } from '../utils/i18n';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
@@ -6,6 +6,8 @@ import useRevealOnScroll from '../hooks/useRevealOnScroll';
 const BioSection = () => {
     const sectionRef = useRef(null);
     useRevealOnScroll(sectionRef);
+
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const stats = [
         { number: '50+', label: 'LIVE SETS' },
@@ -50,29 +52,52 @@ const BioSection = () => {
                             <h2 className="section-title text-gradient">{t('bio.title')}</h2>
                         </div>
 
-                        <div className="bio-text reveal stagger-1">
+                        <div className={`bio-text reveal stagger-1 ${isExpanded ? 'expanded' : 'collapsed'}`}>
                             <p className="bio-intro">
                                 {t('bio.intro')}
                             </p>
                             <p className="bio-body" style={{ marginBottom: '1rem' }}>
                                 {t('bio.body1')}
                             </p>
-                            <p className="bio-body" style={{ marginBottom: '1rem' }}>
-                                <strong style={{ color: 'var(--text-primary)' }}>{t('bio.heading1')}</strong><br />
-                                {t('bio.body2')}
-                            </p>
-                            <p className="bio-body" style={{ marginBottom: '1rem' }}>
-                                {t('bio.body3')}
-                            </p>
-                            <p className="bio-body" style={{ marginBottom: '1rem' }}>
-                                <strong style={{ color: 'var(--text-primary)' }}>{t('bio.heading2')}</strong><br />
-                                {t('bio.body4')}
-                            </p>
-                            <p className="bio-body">
-                                <strong style={{ color: 'var(--text-primary)' }}>{t('bio.heading3')}</strong><br />
-                                {t('bio.body5')}
-                            </p>
+                            
+                            <div className="bio-expandable">
+                                <p className="bio-body" style={{ marginBottom: '1rem' }}>
+                                    <strong style={{ color: 'var(--text-primary)' }}>{t('bio.heading1')}</strong><br />
+                                    {t('bio.body2')}
+                                </p>
+                                <p className="bio-body" style={{ marginBottom: '1rem' }}>
+                                    {t('bio.body3')}
+                                </p>
+                                <p className="bio-body" style={{ marginBottom: '1rem' }}>
+                                    <strong style={{ color: 'var(--text-primary)' }}>{t('bio.heading2')}</strong><br />
+                                    {t('bio.body4')}
+                                </p>
+                                <p className="bio-body">
+                                    <strong style={{ color: 'var(--text-primary)' }}>{t('bio.heading3')}</strong><br />
+                                    {t('bio.body5')}
+                                </p>
+                            </div>
+
+                            <button 
+                                className="bio-more-btn mobile-only" 
+                                onClick={() => setIsExpanded(!isExpanded)}
+                                aria-expanded={isExpanded}
+                            >
+                                {isExpanded ? t('bio.showLess') : t('bio.showMore')}
+                                <svg 
+                                    viewBox="0 0 24 24" 
+                                    className={isExpanded ? 'rotated' : ''} 
+                                    width="18" 
+                                    height="18" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    strokeWidth="2"
+                                >
+                                    <path d="M6 9l6 6 6-6" />
+                                </svg>
+                            </button>
                         </div>
+
 
                         {/* Stats */}
                         <div className="bio-stats reveal stagger-2">

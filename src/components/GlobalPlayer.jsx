@@ -22,7 +22,38 @@ const GlobalPlayer = () => {
 
     } = useAudio();
 
+    // Keyboard Shortcuts
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            // Ignore if user is typing in an input, textarea or select
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) {
+                return;
+            }
+
+            switch (e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    togglePlay();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    seek(Math.min(duration, currentTime + 10));
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    seek(Math.max(0, currentTime - 10));
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [togglePlay, seek, currentTime, duration]);
+
     const [isPageVisible, setIsPageVisible] = React.useState(() => !document.hidden);
+
 
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
