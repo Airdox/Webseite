@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -27,6 +28,10 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     rollupOptions: {
+      input: {
+        main: resolve('index.html'),
+        en: resolve('en/index.html')
+      },
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom']

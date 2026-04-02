@@ -3,6 +3,7 @@ import { ToastProvider } from './contexts/ToastContext';
 import { AudioProvider } from './contexts/AudioContext';
 import Hero from './components/Hero';
 import Navigation from './components/Navigation';
+import SmoothScroll from './components/SmoothScroll';
 
 // Lazy load components below the fold
 const MusicSection = lazy(() => import('./components/MusicSection'));
@@ -99,9 +100,10 @@ function App() {
   return (
     <ToastProvider>
       <AudioProvider>
-        <LoadingScreen progress={loadingProgress} isLoaded={!loading} />
-        <div className="app">
-          <Navigation />
+        <SmoothScroll>
+          <LoadingScreen progress={loadingProgress} isLoaded={!loading} />
+          <div className="app">
+            <Navigation />
           <Hero />
           <Suspense fallback={<SectionLoading />}>
             <BioSection />
@@ -119,7 +121,8 @@ function App() {
           <CookieBanner />
           <GlobalPlayer />
           <AnalyticsDashboard />
-        </div>
+          </div>
+        </SmoothScroll>
       </AudioProvider>
     </ToastProvider>
   );

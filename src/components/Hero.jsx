@@ -1,7 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
 // Cache bust: 2024-12-31 v3
+import Magnetic from './Magnetic';
 import './Hero.css';
 import { t } from '../utils/i18n';
+
+const GLITCH_BLOCKS = Array.from({ length: 20 }).map((_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    w: Math.random() * 150 + 50, // Larger block variety
+    h: Math.random() * 4 + 2,
+    delay: Math.random() * 20,
+    duration: Math.random() * 15 + 15, // Much slower overall
+    isGlow: i % 4 === 0,
+    rotation: Math.random() > 0.9 ? 90 : 0,
+}));
 
 const Hero = () => {
     const [loaded, setLoaded] = useState(false);
@@ -196,17 +209,20 @@ const Hero = () => {
                 <div className="noise"></div>
             </div>
 
-            {/* Floating Particles */}
+            {/* Random Glitch Blocks */}
             <div className="particles-container">
-                {Array.from({ length: 40 }).map((_, i) => (
+                {GLITCH_BLOCKS.map((block) => (
                     <div
-                        key={i}
-                        className={`particle ${i % 3 === 0 ? 'particle-glow' : ''}`}
+                        key={block.id}
+                        className={`glitch-block ${block.isGlow ? 'glitch-glow' : ''}`}
                         style={{
-                            '--x': `${(i * 137.5) % 100}%`,
-                            '--delay': `${(i * 0.2) % 8}s`,
-                            '--duration': `${15 + ((i * 7.5) % 20)}s`,
-                            '--size': `${2 + ((i * 1.5) % 4)}px`
+                            left: `${block.x}%`,
+                            top: `${block.y}%`,
+                            width: `${block.w}px`,
+                            height: `${block.h}px`,
+                            rotate: `${block.rotation}deg`,
+                            '--delay': `${block.delay}s`,
+                            '--duration': `${block.duration}s`
                         }}
                     ></div>
                 ))}
@@ -307,19 +323,23 @@ const Hero = () => {
 
                 {/* CTA Buttons */}
                 <div className="hero-cta">
-                    <button
-                        className="btn btn-primary hero-btn interactive"
-                        onClick={() => scrollToSection('music', 'cta_music')}
-                    >
-                        <span>{t('hero.cta.music')}</span>
-                        <div className="btn-shine"></div>
-                    </button>
-                    <button
-                        className="btn btn-outline hero-btn interactive"
-                        onClick={() => scrollToSection('booking', 'cta_booking')}
-                    >
-                        <span>{t('hero.cta.booking')}</span>
-                    </button>
+                    <Magnetic>
+                        <button
+                            className="btn btn-primary hero-btn interactive"
+                            onClick={() => scrollToSection('music', 'cta_music')}
+                        >
+                            <span>{t('hero.cta.music')}</span>
+                            <div className="btn-shine"></div>
+                        </button>
+                    </Magnetic>
+                    <Magnetic>
+                        <button
+                            className="btn btn-outline hero-btn interactive"
+                            onClick={() => scrollToSection('booking', 'cta_booking')}
+                        >
+                            <span>{t('hero.cta.booking')}</span>
+                        </button>
+                    </Magnetic>
                 </div>
 
                 {/* Social Links */}

@@ -347,17 +347,14 @@ button {
 }
 
 /* === Reveal Animations === */
+/* Fallback for browsers without animation-timeline support (uses JS observer -> .visible) */
 .reveal {
     opacity: 0;
     transform: translateY(60px);
     transition: opacity var(--duration-slower) var(--ease-out),
         transform var(--duration-slower) var(--ease-out);
 }
-
-.reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
 .reveal-left {
     opacity: 0;
@@ -365,11 +362,7 @@ button {
     transition: opacity var(--duration-slower) var(--ease-out),
         transform var(--duration-slower) var(--ease-out);
 }
-
-.reveal-left.visible {
-    opacity: 1;
-    transform: translateX(0);
-}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
 
 .reveal-right {
     opacity: 0;
@@ -377,11 +370,7 @@ button {
     transition: opacity var(--duration-slower) var(--ease-out),
         transform var(--duration-slower) var(--ease-out);
 }
-
-.reveal-right.visible {
-    opacity: 1;
-    transform: translateX(0);
-}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
 
 .reveal-scale {
     opacity: 0;
@@ -389,36 +378,58 @@ button {
     transition: opacity var(--duration-slower) var(--ease-out),
         transform var(--duration-slower) var(--ease-spring);
 }
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
 
-.reveal-scale.visible {
-    opacity: 1;
-    transform: scale(1);
+/* Native CSS Scroll-Driven Animations */
+@supports (animation-timeline: view()) {
+    .reveal, .reveal-left, .reveal-right, .reveal-scale {
+        opacity: 0;
+        animation-fill-mode: both;
+        animation-timing-function: var(--ease-out);
+        animation-timeline: view();
+        animation-range: entry 10% cover 30%;
+        transition: none !important; /* Override JS fallback transitions */
+    }
+    
+    .reveal {
+        animation-name: revealUp;
+    }
+    .reveal-left {
+        animation-name: revealLeft;
+    }
+    .reveal-right {
+        animation-name: revealRight;
+    }
+    .reveal-scale {
+        animation-name: revealScale;
+        animation-timing-function: var(--ease-spring);
+    }
+
+    @keyframes revealUp {
+        0% { opacity: 0; transform: translateY(60px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes revealLeft {
+        0% { opacity: 0; transform: translateX(-60px); }
+        100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes revealRight {
+        0% { opacity: 0; transform: translateX(60px); }
+        100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes revealScale {
+        0% { opacity: 0; transform: scale(0.8); }
+        100% { opacity: 1; transform: scale(1); }
+    }
 }
 
-/* Stagger delays */
-.stagger-1 {
-    transition-delay: 0.1s;
-}
-
-.stagger-2 {
-    transition-delay: 0.2s;
-}
-
-.stagger-3 {
-    transition-delay: 0.3s;
-}
-
-.stagger-4 {
-    transition-delay: 0.4s;
-}
-
-.stagger-5 {
-    transition-delay: 0.5s;
-}
-
-.stagger-6 {
-    transition-delay: 0.6s;
-}
+/* Stagger delays (applied to JS fallback only) */
+.stagger-1 { transition-delay: 0.1s; animation-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; animation-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; animation-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; animation-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; animation-delay: 0.5s; }
+.stagger-6 { transition-delay: 0.6s; animation-delay: 0.6s; }
 
 /* === Keyframe Animations === */
 @keyframes fadeIn {
