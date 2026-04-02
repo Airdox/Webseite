@@ -1,27 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import './BioSection.css';
 import { t } from '../utils/i18n';
+import useRevealOnScroll from '../hooks/useRevealOnScroll';
 
 const BioSection = () => {
     const sectionRef = useRef(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
-
-        const elements = sectionRef.current?.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-        elements?.forEach(el => observer.observe(el));
-
-        return () => observer.disconnect();
-    }, []);
+    useRevealOnScroll(sectionRef);
 
     const stats = [
         { number: '50+', label: 'LIVE SETS' },

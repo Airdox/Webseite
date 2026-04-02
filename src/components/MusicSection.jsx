@@ -4,6 +4,7 @@ import './MusicSection.css';
 import { t } from '../utils/i18n';
 
 import { sets } from '../data/musicSets';
+import useRevealOnScroll from '../hooks/useRevealOnScroll';
 
 const isDev = import.meta.env?.DEV;
 const devWarn = (...args) => {
@@ -32,6 +33,7 @@ const MusicSection = () => {
     });
 
     const sectionRef = useRef(null);
+    useRevealOnScroll(sectionRef, '.reveal, .reveal-scale');
 
     const STATS_API_BASE = (import.meta.env?.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
     const STATS_API_FALLBACK = (import.meta.env?.VITE_STATS_API_FALLBACK || '').replace(/\/+$/, '');
@@ -78,24 +80,6 @@ const MusicSection = () => {
         };
         fetchStats();
     }, [FALLBACK_STATS_URL, PRIMARY_STATS_URL]);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
-
-        const elements = sectionRef.current?.querySelectorAll('.reveal, .reveal-scale');
-        elements?.forEach(el => observer.observe(el));
-
-        return () => observer.disconnect();
-    }, []);
 
     // API Call Helfer
     const updateApi = async (id, type) => {
@@ -306,6 +290,7 @@ const MusicSection = () => {
                                     <h3 className="set-title">{set.title}</h3>
                                     <div className="set-meta">
                                         <span className="set-date">{set.date}</span>
+                                        {set.duration && <span className="set-duration">{set.duration}</span>}
                                     </div>
 
 

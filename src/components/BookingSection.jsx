@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './BookingSection.css';
 import { t } from '../utils/i18n';
+import useRevealOnScroll from '../hooks/useRevealOnScroll';
 
 const isDev = import.meta.env?.DEV;
 const devError = (...args) => {
@@ -9,6 +10,8 @@ const devError = (...args) => {
 
 const BookingSection = () => {
     const sectionRef = useRef(null);
+    useRevealOnScroll(sectionRef);
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -18,24 +21,6 @@ const BookingSection = () => {
     const [focused, setFocused] = useState({});
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
-
-        const elements = sectionRef.current?.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-        elements?.forEach(el => observer.observe(el));
-
-        return () => observer.disconnect();
-    }, []);
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
