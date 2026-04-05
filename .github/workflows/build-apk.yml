@@ -1,7 +1,7 @@
 name: Build Android APK
 
 on:
-  workflow_dispatch: # Allows triggering manually from GitHub
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -17,21 +17,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
-
-      - name: Setup npm cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: |
@@ -41,26 +33,15 @@ jobs:
       - name: Generate Android project
         run: |
           cd android-app
-          npx expo prebuild --platform android --clean > prebuild-log.txt 2>&1 || true
+          npx expo prebuild --platform android --clean
 
       - name: Build APK
         run: |
           cd android-app/android
           chmod +x ./gradlew
-          ./gradlew assembleRelease > build-log.txt 2>&1 || true
-
-      - name: Upload Logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Build-Logs
-          path: |
-            android-app/prebuild-log.txt
-            android-app/android/build-log.txt
-          retention-days: 1
+          ./gradlew assembleRelease
 
       - name: Upload APK Artifact
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: AIRDOX-App-APK
