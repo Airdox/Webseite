@@ -60,8 +60,9 @@ jobs:
           retention-days: 1
 
       - name: Upload APK Artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: AIRDOX-App-APK
-          path: android-app/android/app/build/outputs/apk/release/app-release.apk
+          path: android-app/android/app/build/outputs/apk/**/*.apk
           retention-days: 7
