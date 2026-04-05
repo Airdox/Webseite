@@ -169,7 +169,9 @@ const Hero = () => {
 
         const startAfterAllReveal = revealDelay + revealDuration + ((TITLE.length - 1) * stagger) + 0.15;
         const startMs = Math.max(0, Math.round(startAfterAllReveal * 1000));
-        const stepMs = Math.max(200, Math.round(snakeCycle * 1000));
+        
+        // Exakte Synchronisation: stepMs entspricht auf die Millisekunde genau snakeCycle
+        const stepMs = Math.round(snakeCycle * 1000);
 
         let intervalId = null;
         const startId = window.setTimeout(() => {
