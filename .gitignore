@@ -33,3 +33,10 @@ dist-ssr
 BACKUP_AUDIO/
 
 .vercel
+
+# Android App
+android/
+android-app/
+apk-builds/
+platform-tools/
+airdox-mobile/
