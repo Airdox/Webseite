@@ -271,15 +271,19 @@ const MusicSection = () => {
                                             '--vinyl-index': index
                                         }}
                                     >
-                                        <div className={`mini-vinyl ${isSetPlaying ? 'active-disc' : 'static-disc'}`}>
-                                            <img
-                                                src={set.isChristmasGift ? "santa_vinyl.png" : "airdox-vinyl.jpg"}
-                                                alt="Vinyl Label"
-                                                loading="lazy"
-                                                decoding="async"
-                                                fetchpriority="low"
-                                                className={`vinyl-image ${set.isChristmasGift ? 'santa-style' : ''}`}
-                                            />
+                                        <div className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''}`}>
+                                            {isSetPlaying ? (
+                                                <img
+                                                    src={set.isChristmasGift ? "/santa_vinyl.png" : "/airdox-vinyl.jpg"}
+                                                    alt="Vinyl Label"
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                    fetchpriority="low"
+                                                    className={`vinyl-image ${set.isChristmasGift ? 'santa-style' : ''}`}
+                                                />
+                                            ) : (
+                                                <div className="mini-vinyl-label"></div>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="cover-overlay">
