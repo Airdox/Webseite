@@ -31,17 +31,28 @@ export async function onRequest(context) {
 
     if (megaUrl) {
         try {
-            // Mega.nz direct streaming is complex in Workers due to memory limits.
-            // The most reliable free way is to use a public Mega-to-Direct-Link proxy 
-            // or redirect to a known direct link format if available.
-            // Since we want 100% free and autonomous, we'll use the redirect to the 
-            // Mega.nz file viewer as a fallback, but for audio we need a direct stream.
+            const file = File.fromURL(megaUrl);
+            const attributes = await file.loadAttributes();
+            const downloadUrl = await file.getDownloadURL();
             
-            // For now, let's try the redirect again but with a specific header 
-            // that might help some browsers, or use a known direct link pattern.
-            return Response.redirect(megaUrl, 302);
+            // Fetch the file from Mega and stream it back to the client
+            const response = await fetch(downloadUrl);
+            
+            // Create a new response with the stream and appropriate headers
+            const { readable, writable } = new TransformStream();
+            response.body.pipeTo(writable);
+            
+            return new Response(readable, {
+                headers: {
+                    'Content-Type': 'audio/mpeg',
+                    'Content-Length': attributes.size,
+                    'Accept-Ranges': 'bytes',
+                    'Cache-Control': 'public, max-age=3600'
+                }
+            });
         } catch (e) {
-            return new Response('Error streaming from Mega: ' + e.message, { status: 500 });
+            // Fallback to redirect if streaming fails
+            return Response.redirect(megaUrl, 302);
         }
     }
 
