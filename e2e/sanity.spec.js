@@ -14,8 +14,9 @@ test.describe('AIRDOX Sanity Check', () => {
     });
 
     test('navigation zum Musik-Bereich funktioniert', async ({ page }) => {
-        // Klicke auf den "Music" Link in der Nav
-        await page.click('nav a[href="#music"]');
+        // Die Navigation nutzt Buttons, keine Links mit href
+        const musicBtn = page.locator('.nav-links button').filter({ hasText: /Music|MUSIC/i });
+        await musicBtn.click();
         
         // Prüfe ob die Musik-Sektion sichtbar ist
         const musicSection = page.locator('#music');
@@ -35,8 +36,9 @@ test.describe('AIRDOX Sanity Check', () => {
         await firstPlayBtn.click();
 
         // Wir prüfen, ob die Player-Leiste (falls implementiert) oder das Cover-Overlay sich ändert
-        // Wir nehmen an, dass das Cover die 'playing' Klasse bekommt
-        await expect(firstPlayBtn.locator('.cover-vinyl')).toHaveClass(/playing/);
+        // Laut MusicSection.jsx bekommt das Vinyl die Klasse 'spinning'
+        // Wir geben dem Ganzen etwas Zeit, falls der Audio-Stream laden muss (15s)
+        await expect(firstPlayBtn.locator('.cover-vinyl')).toHaveClass(/spinning/, { timeout: 15000 });
     });
 
     test('prüfung der englischen Version', async ({ page }) => {

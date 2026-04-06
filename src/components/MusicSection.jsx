@@ -44,7 +44,7 @@ const MusicSection = () => {
     });
 
     const isMobileApp = window.location.protocol === 'file:' || (window.location.hostname === 'localhost' && !!window.Capacitor);
-    const PRODUCTION_URL = 'https://airdox.netlify.app';
+    const PRODUCTION_URL = 'https://airdox.pages.dev'; // Cloudflare Pages URL
 
     const STATS_API_BASE = (import.meta.env?.VITE_STATS_API_BASE || (isMobileApp ? PRODUCTION_URL : '')).replace(/\/+$/, '');
     const STATS_API_FALLBACK = (import.meta.env?.VITE_STATS_API_FALLBACK || '').replace(/\/+$/, '');
