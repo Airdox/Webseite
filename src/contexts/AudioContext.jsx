@@ -9,13 +9,13 @@ const devWarn = (...args) => {
     if (isDev) console.warn(...args);
 };
 
-const AUDIO_FALLBACK_BASE = (import.meta.env?.VITE_AUDIO_FALLBACK_BASE || '').replace(/\/+$/, '');
+const AUDIO_BASE = (import.meta.env?.VITE_AUDIO_BASE || import.meta.env?.VITE_AUDIO_FALLBACK_BASE || '').replace(/\/+$/, '');
 const AUDIO_MAX_PARTS = 25;
 const isAbsoluteUrl = (url) => /^https?:\/\//i.test(url);
 const resolveAudioSrc = (src) => {
     if (!src) return src;
     if (isAbsoluteUrl(src)) return src;
-    if (import.meta.env.PROD && AUDIO_FALLBACK_BASE) return `${AUDIO_FALLBACK_BASE}${src}`;
+    if (AUDIO_BASE) return `${AUDIO_BASE}/${src.replace(/^\/+/, '')}`;
     return src;
 };
 const encodeAudioSrc = (src) => {
