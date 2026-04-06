@@ -97,7 +97,8 @@
 }
 
 /* Picture Disc (Active Playing) */
-.mini-vinyl.active-disc {
+.mini-vinyl.active-disc,
+.mini-vinyl.static-disc {
     width: 100%;
     height: 100%;
     background: #111;
