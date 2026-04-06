@@ -1,4 +1,4 @@
-import { render, act } from '@testing-library/react';
+import { render, act, waitFor } from '@testing-library/react';
 import { AudioProvider, useAudio } from '../AudioContext';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
@@ -96,5 +96,45 @@ describe('AudioContext Gapless Playback', () => {
         // 3. Verify it switched to part 1
         expect(audioMock.src).toContain('/sets/part1.mp3');
         expect(audioMock.play).toHaveBeenCalledTimes(2); // Initial play + Part switch play
+    });
+
+    it('should trigger fallback mechanism when a track fails to load', async () => {
+        let contextValues;
+
+        render(
+            <AudioProvider>
+                <TestComponent onMount={(vals) => contextValues = vals} />
+            </AudioProvider>
+        );
+
+        const failingTrack = {
+            id: 'failing-set',
+            title: 'Failing Set',
+            file: '/sets/failing_full.mp3'
+        };
+
+        // Mock fetch for buildPartsList
+        vi.stubGlobal('fetch', vi.fn().mockImplementation((url) => {
+            if (url.includes('_part000.mp3')) return Promise.resolve({ ok: true });
+            if (url.includes('_part001.mp3')) return Promise.resolve({ ok: true });
+            return Promise.resolve({ ok: false });
+        }));
+
+        // 1. Play track
+        await act(async () => {
+            contextValues.playTrack(failingTrack);
+        });
+
+        // 2. Simulate error
+        const errorHandler = audioMock.addEventListener.mock.calls.find(call => call[0] === 'error')[1];
+        
+        await act(async () => {
+            await errorHandler();
+        });
+
+        // 3. Verify fallback is triggered (should look for parts)
+        await waitFor(() => {
+            expect(audioMock.src).toContain('_part000.mp3');
+        });
     });
 });

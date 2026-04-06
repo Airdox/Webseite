@@ -11,6 +11,7 @@
     "deploy:audio": "node scripts/deploy-audio.js",
     "lint": "eslint .",
     "preview": "vite preview",
+    "test": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "db:generate": "drizzle-kit generate",
