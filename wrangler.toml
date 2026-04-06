@@ -1,0 +1,7 @@
+name = "airdox-web"
+pages_build_output_dir = "dist"
+
+[vars]
+DATABASE_URL = "postgresql://postgres:Fxem,2_Qa7baEuA@db.zhotpnptilrpjsqlypxt.supabase.co:5432/postgres"
+VITE_STATS_API_BASE = "/api"
+VITE_AUDIO_FALLBACK_BASE = "/audio"
