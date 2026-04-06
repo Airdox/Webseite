@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useAudio } from '../contexts/AudioContext';
 import './MusicSection.css';
 import { t } from '../utils/i18n';
@@ -9,6 +9,9 @@ import useRevealOnScroll from '../hooks/useRevealOnScroll';
 const isDev = import.meta.env?.DEV;
 const devWarn = (...args) => {
     if (isDev) console.warn(...args);
+};
+const devLog = (...args) => {
+    if (isDev) console.log(...args);
 };
 
 const MusicSection = () => {
@@ -35,20 +38,28 @@ const MusicSection = () => {
     const sectionRef = useRef(null);
     useRevealOnScroll(sectionRef, '.reveal, .reveal-scale');
 
-    const STATS_API_BASE = (import.meta.env?.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
+    const [offlineQueue, setOfflineQueue] = useState(() => {
+        try { return JSON.parse(localStorage.getItem('airdox_offline_queue') || '[]'); }
+        catch { return []; }
+    });
+
+    const isMobileApp = window.location.protocol === 'file:' || (window.location.hostname === 'localhost' && !!window.Capacitor);
+    const PRODUCTION_URL = 'https://airdox.netlify.app';
+
+    const STATS_API_BASE = (import.meta.env?.VITE_STATS_API_BASE || (isMobileApp ? PRODUCTION_URL : '')).replace(/\/+$/, '');
     const STATS_API_FALLBACK = (import.meta.env?.VITE_STATS_API_FALLBACK || '').replace(/\/+$/, '');
 
     const buildStatsUrl = (base) => (base ? `${base}/api/stats` : '/api/stats');
     const PRIMARY_STATS_URL = buildStatsUrl(STATS_API_BASE);
     const FALLBACK_STATS_URL = STATS_API_FALLBACK ? buildStatsUrl(STATS_API_FALLBACK) : null;
 
-    const fetchJson = async (url, options) => {
+    const fetchJson = useCallback(async (url, options) => {
         const res = await fetch(url, options);
         if (!res.ok) return { ok: false, status: res.status };
         const data = await res.json();
         if (data && data._fallback) return { ok: false, fallback: true, data };
         return { ok: true, data };
-    };
+    }, []);
 
     // Stats beim Laden holen (mit Cache & Retry)
     useEffect(() => {
@@ -79,10 +90,10 @@ const MusicSection = () => {
             }
         };
         fetchStats();
-    }, [FALLBACK_STATS_URL, PRIMARY_STATS_URL]);
+    }, [FALLBACK_STATS_URL, PRIMARY_STATS_URL, fetchJson]);
 
     // API Call Helfer
-    const updateApi = async (id, type) => {
+    const updateApi = useCallback(async (id, type, isQueueRetry = false) => {
         try {
             const payload = JSON.stringify({ id, type });
             const postOnce = (url) => fetchJson(url, {
@@ -103,16 +114,53 @@ const MusicSection = () => {
                     localStorage.setItem('airdox_global_stats', JSON.stringify(updated));
                     return updated;
                 });
+                return true;
             } else {
-                // Persist optimistic update to localStorage as fallback
-                localStorage.setItem('airdox_global_stats', JSON.stringify(globalStats));
+                if (!isQueueRetry) addToQueue(id, type);
+                return false;
             }
         } catch (err) {
             devWarn('Failed to update stats:', err);
-            // Persist optimistic update to localStorage as fallback
-            localStorage.setItem('airdox_global_stats', JSON.stringify(globalStats));
+            if (!isQueueRetry) addToQueue(id, type);
+            return false;
         }
+    }, [PRIMARY_STATS_URL, FALLBACK_STATS_URL, fetchJson]);
+
+    const addToQueue = (id, type) => {
+        setOfflineQueue(prev => {
+            // Keine Duplikate für 'play' direkt hintereinander (optional)
+            const updated = [...prev, { id, type, timestamp: Date.now() }];
+            localStorage.setItem('airdox_offline_queue', JSON.stringify(updated));
+            return updated;
+        });
     };
+
+    const syncOfflineQueue = useCallback(async () => {
+        if (offlineQueue.length === 0) return;
+        
+        devLog(`Syncing ${offlineQueue.length} offline actions...`);
+        const queueCopy = [...offlineQueue];
+        const remaining = [];
+
+        for (const action of queueCopy) {
+            const success = await updateApi(action.id, action.type, true);
+            if (!success) {
+                remaining.push(action);
+            }
+        }
+
+        setOfflineQueue(remaining);
+        localStorage.setItem('airdox_offline_queue', JSON.stringify(remaining));
+    }, [offlineQueue, updateApi]);
+
+    // Sync beim Start und wenn die Komponente online geht
+    useEffect(() => {
+        syncOfflineQueue();
+        
+        const handleOnline = () => syncOfflineQueue();
+        window.addEventListener('online', handleOnline);
+        return () => window.removeEventListener('online', handleOnline);
+    }, [syncOfflineQueue]);
 
     const handlePlayClick = (set) => {
         if (currentTrack?.id === set.id) {
