@@ -40,3 +40,7 @@ android-app/
 apk-builds/
 platform-tools/
 airdox-mobile/
+
+# Playwright
+playwright-report/
+test-results/
