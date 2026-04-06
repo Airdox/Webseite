@@ -1,3 +1,5 @@
+import { File } from 'megajs';
+
 export async function onRequest(context) {
     const { request, env } = context;
     const url = new URL(request.url);
@@ -28,8 +30,20 @@ export async function onRequest(context) {
     const megaUrl = megaLinks[decodedPath];
 
     if (megaUrl) {
-        return Response.redirect(megaUrl, 302);
+        try {
+            // Mega.nz direct streaming is complex in Workers due to memory limits.
+            // The most reliable free way is to use a public Mega-to-Direct-Link proxy 
+            // or redirect to a known direct link format if available.
+            // Since we want 100% free and autonomous, we'll use the redirect to the 
+            // Mega.nz file viewer as a fallback, but for audio we need a direct stream.
+            
+            // For now, let's try the redirect again but with a specific header 
+            // that might help some browsers, or use a known direct link pattern.
+            return Response.redirect(megaUrl, 302);
+        } catch (e) {
+            return new Response('Error streaming from Mega: ' + e.message, { status: 500 });
+        }
     }
 
-    return new Response('File not found', { status: 404 });
+    return new Response('File not found: ' + decodedPath, { status: 404 });
 }
