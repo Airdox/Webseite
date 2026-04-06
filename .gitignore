@@ -40,3 +40,5 @@ android-app/
 apk-builds/
 platform-tools/
 airdox-mobile/
+public/sets/
+mega-links.json
