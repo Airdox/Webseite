@@ -274,7 +274,7 @@ const MusicSection = () => {
                                         <div className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''}`}>
                                             {isSetPlaying ? (
                                                 <img
-                                                    src={set.isChristmasGift ? "/assets/santa_vinyl.png" : "/assets/airdox-vinyl.jpg"}
+                                                    src={set.isChristmasGift ? "/santa_vinyl.png" : "/airdox-vinyl.jpg"}
                                                     alt="Vinyl Label"
                                                     loading="lazy"
                                                     decoding="async"
