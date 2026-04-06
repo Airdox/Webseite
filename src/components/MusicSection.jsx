@@ -272,7 +272,7 @@ const MusicSection = () => {
                                         }}
                                     >
                                         <div className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''}`}>
-                                            {isSetPlaying ? (
+                                            {isSetPlaying && (
                                                 <img
                                                     src={set.isChristmasGift ? "/santa_vinyl.png" : "/airdox-vinyl.jpg"}
                                                     alt="Vinyl Label"
@@ -281,9 +281,8 @@ const MusicSection = () => {
                                                     fetchpriority="low"
                                                     className={`vinyl-image ${set.isChristmasGift ? 'santa-style' : ''}`}
                                                 />
-                                            ) : (
-                                                <div className="mini-vinyl-label"></div>
                                             )}
+                                            {!isSetPlaying && <div className="mini-vinyl-label"></div>}
                                         </div>
                                     </div>
                                     <div className="cover-overlay">
