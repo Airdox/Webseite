@@ -10,13 +10,14 @@
     "build:site": "vite build && node scripts/postbuild-trim-audio.js",
     "deploy:audio": "node scripts/deploy-audio.js",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "pnpm run build && wrangler dev",
     "test": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "netlify dev:exec drizzle-kit migrate",
-    "db:studio": "netlify dev:exec drizzle-kit studio"
+    "db:studio": "netlify dev:exec drizzle-kit studio",
+    "deploy": "pnpm run build && wrangler deploy"
   },
   "dependencies": {
     "@capacitor/android": "^8.3.0",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^8.3.0",
+    "@cloudflare/vite-plugin": "^1.31.2",
     "@eslint/js": "^9.39.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
@@ -48,6 +50,6 @@
     "netlify-cli": "^23.14.0",
     "vite": "^6.4.2",
     "vitest": "^4.0.16",
-    "wrangler": "^4.80.0"
+    "wrangler": "^4.81.1"
   }
 }

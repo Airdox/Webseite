@@ -42,3 +42,8 @@ platform-tools/
 airdox-mobile/
 public/sets/
 mega-links.json
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
