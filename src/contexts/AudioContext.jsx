@@ -15,8 +15,10 @@ const isAbsoluteUrl = (url) => /^https?:\/\//i.test(url);
 const resolveAudioSrc = (src) => {
     if (!src) return src;
     if (isAbsoluteUrl(src)) return src;
-    if (import.meta.env.PROD && AUDIO_FALLBACK_BASE) return `${AUDIO_FALLBACK_BASE}${src}`;
-    return src;
+    
+    // GitHub Release Direct Download URL (Plan E)
+    const fileName = src.split('/').pop();
+    return `https://github.com/Airdox/Webseite/releases/download/v1.0.0/${encodeURIComponent(fileName)}`;
 };
 const encodeAudioSrc = (src) => {
     if (!src) return src;

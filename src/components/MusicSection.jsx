@@ -4,6 +4,7 @@ import './MusicSection.css';
 import { t } from '../utils/i18n';
 
 import { sets } from '../data/musicSets';
+import { VINYL_IMAGES } from '../data/vinylImages';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 
 const isDev = import.meta.env?.DEV;
@@ -274,11 +275,8 @@ const MusicSection = () => {
                                         <div className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''}`}>
                                             {isSetPlaying && (
                                                 <img
-                                                    src={set.isChristmasGift ? "/santa_vinyl.png" : "/airdox-vinyl.jpg"}
+                                                    src={set.isChristmasGift ? VINYL_IMAGES.santa : VINYL_IMAGES.standard}
                                                     alt="Vinyl Label"
-                                                    loading="lazy"
-                                                    decoding="async"
-                                                    fetchpriority="low"
                                                     className={`vinyl-image ${set.isChristmasGift ? 'santa-style' : ''}`}
                                                 />
                                             )}
