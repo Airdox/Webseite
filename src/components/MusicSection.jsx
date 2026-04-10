@@ -275,9 +275,10 @@ const MusicSection = () => {
                                         <div className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''}`}>
                                             {isSetPlaying && (
                                                 <img
-                                                    src={set.isChristmasGift ? VINYL_IMAGES.santa : VINYL_IMAGES.standard}
+                                                    src={set.isChristmasGift ? "/santa_vinyl.png" : "/airdox-vinyl.jpg"}
                                                     alt="Vinyl Label"
                                                     className={`vinyl-image ${set.isChristmasGift ? 'santa-style' : ''}`}
+                                                    style={{ display: 'block', opacity: 1, visibility: 'visible', zIndex: 100 }}
                                                 />
                                             )}
                                             {!isSetPlaying && <div className="mini-vinyl-label"></div>}
