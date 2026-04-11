@@ -25,9 +25,8 @@ const GlobalPlayer = () => {
     currentTime,
     duration,
     seek,
-    volume,
-    changeVolume,
   } = useAudio();
+
 
   if (!currentTrack) return null;
 
