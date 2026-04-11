@@ -1,0 +1,13 @@
+HIER DEINE VIP SETS REINKOPIEREN! (Passwort-geschützt)
+
+1. Kopiere deine exklusiven MP3/ZIP/WAV-Dateien in diesen Ordner.
+2. Benenne sie am besten einfach, z.B.:
+   - unreleased_vol1.zip
+   - studio_session.wav
+   - private_party.mp3
+
+3. Diese Dateien sind nur über den VIP-Bereich erreichbar.
+
+4. WICHTIG:
+   Wenn du die Dateien hier reinkopiert hast, musst du die Namen
+   in der Datei "src/components/Downloads.jsx" anpassen!

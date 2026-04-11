@@ -312,7 +312,14 @@ export const AudioProvider = ({ children }) => {
             actionsRef.current.playTrack(fallbackTrack);
         };
 
-        const handlePlay = () => trackAudioEvent('play');
+        const handlePlay = () => {
+            trackAudioEvent('play');
+            if (currentTrackRef.current) {
+                import('../utils/stats-sync').then(({ statsSync }) => {
+                    statsSync.trackPlay(currentTrackRef.current.id);
+                });
+            }
+        };
         const handlePause = () => {
             if (!audio.ended) trackAudioEvent('pause');
         };

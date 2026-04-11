@@ -1,8 +1,10 @@
 {
   "name": "airdox-webseite",
+  "main": "src/server/worker.js",
   "compatibility_date": "2026-04-11",
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "single-page-application",
+    "binding": "ASSETS"
   }
 }
