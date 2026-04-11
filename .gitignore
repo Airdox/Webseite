@@ -31,6 +31,7 @@ dist-ssr
 
 # Large music sets and audio files (tracked via Git LFS)
 BACKUP_AUDIO/
+public/sets/
 
 .vercel
 
