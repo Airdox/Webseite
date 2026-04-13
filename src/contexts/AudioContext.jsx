@@ -314,6 +314,8 @@ export const AudioProvider = ({ children }) => {
 
         const handlePlay = () => {
             trackAudioEvent('play');
+        };
+        const handlePlaying = () => {
             if (currentTrackRef.current) {
                 import('../utils/stats-sync').then(({ statsSync }) => {
                     statsSync.trackPlay(currentTrackRef.current.id);
@@ -329,6 +331,7 @@ export const AudioProvider = ({ children }) => {
         audio.addEventListener('ended', onEnded);
         audio.addEventListener('error', onError);
         audio.addEventListener('play', handlePlay);
+        audio.addEventListener('playing', handlePlaying);
         audio.addEventListener('pause', handlePause);
 
         return () => {
@@ -338,6 +341,7 @@ export const AudioProvider = ({ children }) => {
             audio.removeEventListener('ended', onEnded);
             audio.removeEventListener('error', onError);
             audio.removeEventListener('play', handlePlay);
+            audio.removeEventListener('playing', handlePlaying);
             audio.removeEventListener('pause', handlePause);
         };
     }, []); // Empty dependency array -> Runs once

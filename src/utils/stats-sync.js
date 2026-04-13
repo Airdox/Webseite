@@ -8,7 +8,7 @@ const devWarn = (...args) => isDev && console.warn('[StatsSync]', ...args);
 // Configuration from environment or defaults
 const PRODUCTION_URL = 'https://airdox.pages.dev';
 const isMobileApp = window.location.protocol === 'file:' || (window.location.hostname === 'localhost' && !!window.Capacitor);
-const STATS_API_BASE = (import.meta.env?.VITE_STATS_API_BASE || (isMobileApp ? PRODUCTION_URL : '')).replace(/\/+$/, '');
+const STATS_API_BASE = (import.meta.env?.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
 const STATS_API_FALLBACK = (import.meta.env?.VITE_STATS_API_FALLBACK || '').replace(/\/+$/, '');
 
 const buildStatsUrl = (base) => (base ? `${base}/api/stats` : '/api/stats');
@@ -23,9 +23,46 @@ class StatsSync {
         // Listen for online event
         if (typeof window !== 'undefined') {
             window.addEventListener('online', () => this.sync());
-            // Initial sync attempt
-            setTimeout(() => this.sync(), 2000);
+            // Initial sync and fetch attempt
+            setTimeout(() => {
+                this.sync();
+                this.fetchAllStats();
+            }, 1500);
         }
+    }
+
+    async fetchAllStats() {
+        devLog('Fetching latest global stats...');
+        try {
+            const res = await fetch(PRIMARY_STATS_URL);
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            const data = await res.json();
+            
+            if (data && typeof data === 'object') {
+                localStorage.setItem(GLOBAL_STATS_KEY, JSON.stringify(data));
+                window.dispatchEvent(new CustomEvent('airdox_stats_updated', { detail: data }));
+                devLog('Global stats updated successfully');
+                return data;
+            }
+        } catch (err) {
+            devWarn('Failed to fetch global stats', err);
+            
+            // Try fallback if primary fails
+            if (FALLBACK_STATS_URL && FALLBACK_STATS_URL !== PRIMARY_STATS_URL) {
+                try {
+                    const fallbackRes = await fetch(FALLBACK_STATS_URL);
+                    if (fallbackRes.ok) {
+                        const fallbackData = await fallbackRes.json();
+                        localStorage.setItem(GLOBAL_STATS_KEY, JSON.stringify(fallbackData));
+                        window.dispatchEvent(new CustomEvent('airdox_stats_updated', { detail: fallbackData }));
+                        return fallbackData;
+                    }
+                } catch (fallbackErr) {
+                    devWarn('Fallback stats fetch also failed', fallbackErr);
+                }
+            }
+        }
+        return null;
     }
 
     loadQueue() {

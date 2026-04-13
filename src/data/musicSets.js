@@ -1,11 +1,21 @@
 export const sets = [
   {
+      id: 'recording_2026_04_12',
+      title: 'REC 12.04.2026',
+      date: 'APR 2026',
+      file: 'Airdox_REC_2026_04_12.mp3',
+      cover: '/assets/recording_2026_04_12.png',
+      duration: '2:30:15',
+      isNew: true,
+      vinylColor: '#ccff00'
+  },
+  {
       id: 'recording_2026_03_15',
       title: 'REC 15.03.2026',
       date: 'MAR 2026',
       file: 'Airdox_REC_2026_03_15.mp3',
       duration: '1:36:22',
-      isNew: true,
+      isNew: false,
       vinylColor: '#ff6600'
   },
   {

@@ -5,6 +5,7 @@ import { t } from '../utils/i18n';
 
 import { sets } from '../data/musicSets';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
+import { statsSync } from '../utils/stats-sync';
 
 const isDev = import.meta.env?.DEV;
 const devWarn = (...args) => {
@@ -93,9 +94,7 @@ const MusicSection = () => {
             }
         }));
 
-        import('../utils/stats-sync').then(({ statsSync }) => {
-            statsSync.trackVote(setId, typeToSend);
-        });
+        statsSync.trackVote(setId, typeToSend);
 
         const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
         if (analytics?.trackEvent) {
@@ -157,7 +156,7 @@ const MusicSection = () => {
                                         <div className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''}`}>
                                             {isSetPlaying ? (
                                                 <img
-                                                    src={set.isChristmasGift ? "/assets/santa_vinyl.png" : "/assets/airdox-vinyl.jpg"}
+                                                    src={set.isChristmasGift ? "/assets/santa_vinyl.png" : (set.cover || "/assets/airdox-vinyl.jpg")}
                                                     alt="Vinyl Label"
                                                     loading="lazy"
                                                     decoding="async"

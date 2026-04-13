@@ -63,12 +63,19 @@ const ensureInitialized = async (sql) => {
 
             initialized = true;
         })().catch((error) => {
+            console.error('Database Initialization ERROR:', error);
             initPromise = null;
             throw error;
         });
     }
 
-    await initPromise;
+    try {
+        await initPromise;
+    } catch (e) {
+        // Clear promise so we can retry on next request
+        initPromise = null;
+        throw e;
+    }
 };
 
 const errorBody = (message, details) => {
