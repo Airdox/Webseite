@@ -1,82 +1,67 @@
-# 🚀 AIRDOX - Deployment Guide
+# 🚀 AIRDOX - Cloudflare Deployment Guide
 
 ## ✅ Deployment Status
 
-**Production Build:** ✅ Erfolgreich
-- Bundle Size: ~87 KB (gzipped)
-- All assets optimized
-- Ready for deployment
+**Projekt:** airdox-webseite
+**Plattform:** Cloudflare Pages (Frontend) & Cloudflare Workers (API)
+**Live URL:** <https://airdox.de>
 
-## 📦 Was wurde gebaut?
+## 📦 Was wird gebaut?
 
 Der `dist` Ordner enthält:
+
 - Optimierte HTML, CSS, JS
-- Komprimierte Assets
-- Alle MP3-Dateien und Covers
+- Aggressives Caching via `_headers`
+- Komprimierte Assets & PWA Manifest
 
-## 🌐 Deployment zu Netlify
+## 🌐 Deployment zu Cloudflare
 
-### Option 1: Netlify CLI (Empfohlen)
+### Option 1: Automatisches Deployment (GitHub)
+
+1. Push das Projekt zu GitHub: `git push`
+2. Cloudflare Pages baut und deployt automatisch bei jedem Push.
+
+### Option 2: Manuelles Deployment via CLI
 
 ```bash
-# Im Projektordner:
-cd z:\teszt
+# Produktions-Build erstellen:
+npm run build
 
-# Netlify CLI installieren (falls noch nicht geschehen):
-npm install -g netlify-cli
-
-# Login:
-netlify login
-
-# Site verknüpfen (falls noch nicht verknüpft):
-netlify link
-
-# Deployment:
-netlify deploy --prod
+# Deployment zu Cloudflare Pages:
+npx wrangler pages deploy dist
 ```
 
-### Option 2: Drag & Drop
+## 🔧 Backend / API Konfiguration
 
-1. Öffne https://app.netlify.com/drop
-2. Ziehe den `z:\teszt\dist` Ordner ins Fenster
-3. Fertig! 🎉
+Die API läuft über einen Cloudflare Worker (`src/server/worker.js`).
 
-### Option 3: Git-basiert (Continuous Deployment)
+- **Endpunkte:** `/api/stats`, `/api/booking`
+- **Datenbank:** Neon PostgreSQL (Variable `DATABASE_URL` in Cloudflare hinterlegt)
 
-1. Push das Projekt zu GitHub
-2. Verbinde das Repo mit Netlify
-3. Netlify baut und deployt automatisch bei jedem Push
+## ⚡ Performance & Caching
 
-## 🔧 Konfiguration
+Die Datei `public/_headers` ist für maximale Performance optimiert:
 
-Die Datei `netlify.toml` ist bereits erstellt und konfiguriert:
-- Build Command: `npm run build`
-- Publish Directory: `dist`
-- SPA Redirects: Alle Routen → `index.html`
+- **Fonts/JS/CSS:** 1 Jahr Cache (Immutable)
+- **Bilder:** 30 Tage Cache
+- **HTML:** Kein Cache (Sofortige Updates)
 
 ## 🎯 Nach dem Deployment
 
-### Teste diese Features:
-- [ ] Audio Player funktioniert
-- [ ] Downloads funktionieren
-- [ ] VIP-Bereich mit Passwort zugänglich
-- [ ] Cookie-Banner erscheint beim ersten Besuch
-- [ ] Analytics (Secret: `Strg+Shift+A`) funktioniert
+### Teste diese Features
 
-### Admin-Zugang:
+- [ ] Audio Player (Waveforms & Playlist)
+- [ ] Buchungsformular (Nachricht in der Neon-DB prüfen)
+- [ ] Analytics Dashboard (`Strg + Shift + A`)
+- [ ] PWA Installation auf dem Handy
+
+### Admin-Zugang
+
 - **Analytics Dashboard:** `Strg + Shift + A` oder URL mit `#admin`
-- **VIP Password:** `BerlinTechno2024`
-
-## 📊 Performance Metrics (Erwartet)
-
-Nach dem Deployment auf Netlify:
-- Lighthouse Score: > 90
-- First Contentful Paint: < 1.5s
-- Time to Interactive: < 3s
-- Total Bundle Size: ~87 KB gzipped ✅
+- **VIP Password:** Siehe `src/components/Downloads.jsx`
 
 ## 🔗 Nächste Schritte
 
-1. **Deploy it!** (siehe Optionen oben)
-2. **Teste die Live-Site**
-3. **Teile den Link** 🎵
+1. **Deploy it!** via GitHub oder Wrangler CLI.
+2. **Teste die neue Domain** <https://airdox.de>.
+3. **PWA aktualisieren** (Browser-Tab neu laden).

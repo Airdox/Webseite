@@ -30,8 +30,12 @@ Eine moderne, Progressive Web App für den Berlin Techno DJ AIRDOX.
   - Download Tracking
   - DSGVO-konform
 
+- 📩 **Buchungsformular**
+  - Integrierte Cloudflare Worker API
+  - Sicherung in Neon PostgreSQL
+
 ## 🌐 Live Demo
-👉 **[https://airdox.netlify.app](https://airdox.netlify.app)**
+👉 **[https://airdox.de](https://airdox.de)**
 
 ## Lokale Entwicklung
 
@@ -39,11 +43,11 @@ Eine moderne, Progressive Web App für den Berlin Techno DJ AIRDOX.
 # Abhängigkeiten installieren
 npm install
 
-# Einfacher Development-Server
-npm run dev
+# Cloudflare Wrangler (für lokale API & Worker)
+npx wrangler dev
 
-# Netlify Dev (für Datenbank & Funktionen)
-npm run dev:netlify
+# Frontend Development-Server
+npm run dev
 
 # Produktions-Build erstellen
 npm run build
@@ -55,32 +59,24 @@ Die Datei `.env.example` enthält alle benötigten Variablen (ohne Secrets). Fü
 
 Client (Vite):
 - `VITE_STATS_API_BASE`
-- `VITE_STATS_API_FALLBACK`
-- `VITE_AUDIO_FALLBACK_BASE`
-- `VITE_DISABLE_SW`
+- `VITE_AUDIO_BASE` (Basis-URL für Audio-Dateien)
 
-Serverless/DB (Netlify/Vercel):
-- `DATABASE_URL`
-- `POSTGRES_URL`
-- `NEON_DATABASE_URL`
-- `NETLIFY_DATABASE_URL`
-- `NETLIFY_DATABASE_URL_UNPOOLED`
+Cloudflare/Database:
+- `DATABASE_URL` / `NEON_DATABASE_URL`
 
-Audio Deploy Workflow (optional):
-1. Deploy die Audio-Dateien einmalig auf eine separate Netlify‑Site. Command: `npm run deploy:audio`
-2. Setze in der Haupt‑Site `VITE_AUDIO_FALLBACK_BASE` auf die Audio‑Site URL.
-3. Deploys der Haupt‑Site nutzen `npm run build:site` und entfernen `dist/sets`,
-   damit MP3s nicht bei jedem Deploy erneut hochgeladen werden.
-
-## 📊 Track Stats API
+## 📊 API Endpunkte
 
 - `GET /api/stats`: Alle Track-Statistiken abrufen.
 - `POST /api/stats`: Plays und Likes aktualisieren.
-- `GET /api/db-health`: Datenbank-Verbindung prüfen.
+- `POST /api/booking`: Buchungsanfragen senden.
 
 ## Deployment
 
-Siehe [DEPLOYMENT.md](./DEPLOYMENT.md) für detaillierte Anweisungen.
+Das Deployment erfolgt vollautomatisch über **Cloudflare Pages**.
+Zusätzlich kann manuell über Wrangler deployt werden:
+```bash
+npx wrangler pages deploy dist
+```
 
 ## Passwort ändern
 
@@ -90,8 +86,9 @@ VIP-Passwort in `src/components/Downloads.jsx` Zeile 5 ändern.
 
 - React 19
 - Vite 5
-- CSS (Custom Properties)
-- PWA (Service Worker + Manifest)
+- Cloudflare Workers / Pages
+- Neon (Serverless PostgreSQL)
+- Drizzle ORM
 
 ## Lizenz
 
