@@ -36,12 +36,7 @@ export const sets = [
       file: 'Airdox_REC_2026_03_09.mp3',
       duration: '50:23',
       isNew: false,
-      vinylColor: '#00ffcc',
-      tracks: [
-          { time: '00:00', artist: 'Airdox', title: 'First Track' },
-          { time: '05:30', artist: 'Charlotte de Witte', title: 'Second Track' },
-          { time: '12:15', artist: 'Amelie Lens', title: 'Third Track' }
-      ]
+      vinylColor: '#00ffcc'
     },
   {
       id: 'secret_set_2025_12_22',
