@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://airdox-webseite.beuth62.workers.dev',
+        target: 'http://127.0.0.1:8788',
         changeOrigin: true,
       },
     },

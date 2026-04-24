@@ -7,7 +7,13 @@ export const sets = [
       cover: '/assets/recording_2026_04_12.png',
       duration: '2:30:15',
       isNew: true,
-      vinylColor: '#ccff00'
+      vinylColor: '#ccff00',
+      tracks: [
+          { time: '00:00', artist: 'Nico Moreno', title: 'Purple Widow' },
+          { time: '05:42', artist: 'Klangkuenstler', title: 'Weltschmerz' },
+          { time: '11:15', artist: 'I Hate Models', title: 'Daydream' },
+          { time: '18:30', artist: 'Airdox', title: 'Unreleased ID' }
+      ]
   },
   {
       id: 'recording_2026_03_15',
@@ -16,7 +22,12 @@ export const sets = [
       file: 'Airdox_REC_2026_03_15.mp3',
       duration: '1:36:22',
       isNew: false,
-      vinylColor: '#ff6600'
+      vinylColor: '#ff6600',
+      tracks: [
+          { time: '00:00', artist: 'Amelie Lens', title: 'Feel It' },
+          { time: '04:55', artist: 'Charlotte de Witte', title: 'Do It' },
+          { time: '10:20', artist: 'Enrico Sangiuliano', title: 'Astral Projection' }
+      ]
   },
   {
       id: 'recording_2026_03_09',

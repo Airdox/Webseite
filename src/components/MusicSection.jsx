@@ -107,6 +107,18 @@ const MusicSection = () => {
     const getSetStats = (setId) => globalStats[setId] || { plays: 0, likes: 0, dislikes: 0 };
     const getUserVote = (setId) => userVotes[setId];
 
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('airdox_token'));
+
+    useEffect(() => {
+        const checkLogin = () => setIsLoggedIn(!!localStorage.getItem('airdox_token'));
+        window.addEventListener('airdox_login_success', checkLogin);
+        window.addEventListener('airdox_logout', checkLogin);
+        return () => {
+            window.removeEventListener('airdox_login_success', checkLogin);
+            window.removeEventListener('airdox_logout', checkLogin);
+        };
+    }, []);
+
     return (
         <section className="music-section section" id="music" ref={sectionRef}>
             {/* Background */}
@@ -224,6 +236,36 @@ const MusicSection = () => {
                                         <span className="set-date">{set.date}</span>
                                         {set.duration && <span className="set-duration">{set.duration}</span>}
                                     </div>
+                                    {isLoggedIn && (
+                                        <a 
+                                            href={`/audio/${set.file}`} 
+                                            download={set.file}
+                                            className="vip-download-link"
+                                            onClick={(e) => e.stopPropagation()}
+                                            title="Download VIP Access"
+                                        >
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                                            </svg>
+                                            VIP DOWNLOAD
+                                        </a>
+                                    )}
+
+                                    {isLoggedIn && set.tracks && set.tracks.length > 0 && (
+                                        <div className="vip-tracklist">
+                                            <h4 className="tracklist-title">VIP Tracklist</h4>
+                                            <ul className="tracklist-items">
+                                                {set.tracks.map((track, idx) => (
+                                                    <li key={idx} className="tracklist-item">
+                                                        <span className="track-time">{track.time}</span>
+                                                        <span className="track-details">
+                                                            <span className="track-artist">{track.artist}</span> - <span className="track-title">{track.title}</span>
+                                                        </span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
 
 
                                 </div>

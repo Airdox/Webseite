@@ -1,5 +1,6 @@
 /* global Buffer */
 import { neon } from '@neondatabase/serverless';
+import crypto from 'crypto';
 
 const CACHE_CONTROL = 'public, s-maxage=10, stale-while-revalidate=30';
 const SEED_PLAYS = {
@@ -61,6 +62,27 @@ const ensureInitialized = async (sql) => {
                     event TEXT,
                     message TEXT,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            `;
+
+            // Users Table
+            await sql`
+                CREATE TABLE IF NOT EXISTS users (
+                    id SERIAL PRIMARY KEY,
+                    username TEXT NOT NULL UNIQUE,
+                    password TEXT NOT NULL,
+                    salt TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            `;
+
+            // Sessions Table
+            await sql`
+                CREATE TABLE IF NOT EXISTS sessions (
+                    id TEXT PRIMARY KEY,
+                    user_id INTEGER NOT NULL REFERENCES users(id),
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    expires_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '7 days')
                 );
             `;
 
@@ -182,6 +204,97 @@ export const handleBookingRequest = async ({ body, env }) => {
     } catch (error) {
         console.error('Booking Error:', error);
         return { status: 500, body: errorBody('Failed to store booking', error.message) };
+    }
+};
+
+// --- AUTH HANDLER ---
+const HASH_CONFIG = { N: 16384, r: 8, p: 1, klen: 64 };
+
+const hashPassword = (password, salt) => {
+    return crypto.scryptSync(password, salt, HASH_CONFIG.klen, {
+        N: HASH_CONFIG.N,
+        r: HASH_CONFIG.r,
+        p: HASH_CONFIG.p
+    }).toString('hex');
+};
+
+const generateSalt = () => crypto.randomBytes(16).toString('hex');
+const generateToken = () => crypto.randomBytes(32).toString('hex');
+
+export const handleAuthRequest = async ({ body, env }) => {
+    const sql = getSqlClient(env);
+    if (!sql) return { status: 500, body: errorBody('Database not configured') };
+
+    const { action, username, password, token } = body;
+    
+    // Validate Token (Session)
+    if (action === 'validate') {
+        if (!token) return { status: 401, body: errorBody('No token provided') };
+        try {
+            const [session] = await sql`
+                SELECT s.id, u.id as user_id, u.username 
+                FROM sessions s 
+                JOIN users u ON s.user_id = u.id 
+                WHERE s.id = ${token} AND s.expires_at > CURRENT_TIMESTAMP
+            `;
+            if (!session) return { status: 401, body: errorBody('Invalid or expired session') };
+            return { status: 200, body: { ok: true, user: { id: session.user_id, username: session.username } } };
+        } catch (e) { return { status: 500, body: errorBody('Validation failed') }; }
+    }
+
+    if (!action || !username || !password) {
+        return { status: 400, body: errorBody('Missing required fields') };
+    }
+
+    try {
+        await ensureInitialized(sql);
+
+        if (action === 'register') {
+            const salt = generateSalt();
+            const hashedPassword = hashPassword(password, salt);
+            try {
+                await sql`
+                    INSERT INTO users (username, password, salt)
+                    VALUES (${username}, ${hashedPassword}, ${salt});
+                `;
+                return { status: 200, body: { ok: true, message: 'User registered successfully' } };
+            } catch (error) {
+                if (error.message.includes('unique constraint') || error.message.includes('already exists')) {
+                    return { status: 400, body: errorBody('Username already exists') };
+                }
+                throw error;
+            }
+        }
+
+        if (action === 'login') {
+            const [user] = await sql`SELECT * FROM users WHERE username = ${username}`;
+            if (!user) return { status: 401, body: errorBody('Invalid username or password') };
+
+            const hashedPassword = hashPassword(password, user.salt);
+            if (hashedPassword !== user.password) {
+                return { status: 401, body: errorBody('Invalid username or password') };
+            }
+
+            const token = generateToken();
+            await sql`
+                INSERT INTO sessions (id, user_id)
+                VALUES (${token}, ${user.id});
+            `;
+
+            return { 
+                status: 200, 
+                body: { 
+                    ok: true, 
+                    token,
+                    user: { id: user.id, username: user.username } 
+                } 
+            };
+        }
+
+        return { status: 400, body: errorBody('Invalid action') };
+    } catch (error) {
+        console.error('Auth Error:', error);
+        return { status: 500, body: errorBody('Authentication failed', error.message) };
     }
 };
 
