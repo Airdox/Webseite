@@ -6,14 +6,12 @@ import { resolve } from 'path'
 export default defineConfig({
   plugins: [react()],
   server: {
-    // Proxy temporarily disabled for debugging
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://localhost:8888/.netlify/functions',
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/api/, ''),
-    //   },
-    // },
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8788',
+        changeOrigin: true,
+      },
+    },
   },
   preview: {
     // Proxy temporarily disabled for debugging

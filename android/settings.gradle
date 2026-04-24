@@ -1,4 +1,8 @@
-include ':app'
+rootProject.name = 'airdox-web-android'
+include ':web-app'
+project(':web-app').projectDir = new File('app')
+
+
 include ':capacitor-cordova-android-plugins'
 project(':capacitor-cordova-android-plugins').projectDir = new File('./capacitor-cordova-android-plugins/')
 

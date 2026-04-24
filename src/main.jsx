@@ -5,6 +5,7 @@ import './styles/global.css'
 import App from './App.jsx'
 import { getLocale } from './utils/i18n.js'
 import { maybeLoadAnalytics } from './utils/analyticsLoader.js'
+import { statsSync } from './utils/stats-sync.js'
 
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 

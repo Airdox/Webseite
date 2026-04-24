@@ -7,6 +7,7 @@ import SmoothScroll from './components/SmoothScroll';
 
 // Lazy load components below the fold
 const MusicSection = lazy(() => import('./components/MusicSection'));
+const VIPSection = lazy(() => import('./components/VIPSection'));
 const BioSection = lazy(() => import('./components/BioSection'));
 const BookingSection = lazy(() => import('./components/BookingSection'));
 const Footer = lazy(() => import('./components/Footer'));
@@ -110,6 +111,9 @@ function App() {
           </Suspense>
           <Suspense fallback={<SectionLoading />}>
             <MusicSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoading />}>
+            <VIPSection />
           </Suspense>
           <Suspense fallback={<SectionLoading />}>
             <BookingSection />

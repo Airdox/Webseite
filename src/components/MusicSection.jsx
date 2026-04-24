@@ -1,18 +1,11 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAudio } from '../contexts/AudioContext';
 import './MusicSection.css';
 import { t } from '../utils/i18n';
 
 import { sets } from '../data/musicSets';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
-
-const isDev = import.meta.env?.DEV;
-const devWarn = (...args) => {
-    if (isDev) console.warn(...args);
-};
-const devLog = (...args) => {
-    if (isDev) console.log(...args);
-};
+import { statsSync } from '../utils/stats-sync';
 
 const MusicSection = () => {
     const {
@@ -38,146 +31,19 @@ const MusicSection = () => {
     const sectionRef = useRef(null);
     useRevealOnScroll(sectionRef, '.reveal, .reveal-scale');
 
-    const [offlineQueue, setOfflineQueue] = useState(() => {
-        try { return JSON.parse(localStorage.getItem('airdox_offline_queue') || '[]'); }
-        catch { return []; }
-    });
-
-    const isMobileApp = window.location.protocol === 'file:' || (window.location.hostname === 'localhost' && !!window.Capacitor);
-    const PRODUCTION_URL = 'https://airdox.pages.dev'; // Cloudflare Pages URL
-
-    const STATS_API_BASE = (import.meta.env?.VITE_STATS_API_BASE || (isMobileApp ? PRODUCTION_URL : '')).replace(/\/+$/, '');
-    const STATS_API_FALLBACK = (import.meta.env?.VITE_STATS_API_FALLBACK || '').replace(/\/+$/, '');
-
-    const buildStatsUrl = (base) => (base ? `${base}/api/stats` : '/api/stats');
-    const PRIMARY_STATS_URL = buildStatsUrl(STATS_API_BASE);
-    const FALLBACK_STATS_URL = STATS_API_FALLBACK ? buildStatsUrl(STATS_API_FALLBACK) : null;
-
-    const fetchJson = useCallback(async (url, options) => {
-        const res = await fetch(url, options);
-        if (!res.ok) return { ok: false, status: res.status };
-        const data = await res.json();
-        if (data && data._fallback) return { ok: false, fallback: true, data };
-        return { ok: true, data };
+    // Sync bei Änderungen der globalen Stats (durch StatsSync oder andere Komponenten)
+    useEffect(() => {
+        const handleStatsUpdate = (e) => setGlobalStats(e.detail);
+        window.addEventListener('airdox_stats_updated', handleStatsUpdate);
+        return () => window.removeEventListener('airdox_stats_updated', handleStatsUpdate);
     }, []);
-
-    // Stats beim Laden holen (mit Cache & Retry)
-    useEffect(() => {
-        let retryCount = 0;
-        const maxRetries = 3;
-
-        const fetchStats = async () => {
-            try {
-                let result = await fetchJson(PRIMARY_STATS_URL);
-                if (!result.ok && FALLBACK_STATS_URL && FALLBACK_STATS_URL !== PRIMARY_STATS_URL) {
-                    result = await fetchJson(FALLBACK_STATS_URL);
-                }
-
-                if (result.ok) {
-                    setGlobalStats(result.data);
-                    // Cache f??r den n??chsten Refresh sichern
-                    localStorage.setItem('airdox_global_stats', JSON.stringify(result.data));
-                } else if (retryCount < maxRetries) {
-                    retryCount++;
-                    setTimeout(fetchStats, 2000 * retryCount);
-                }
-            } catch (err) {
-                devWarn('Failed to fetch stats, using cache:', err);
-                if (retryCount < maxRetries) {
-                    retryCount++;
-                    setTimeout(fetchStats, 3000);
-                }
-            }
-        };
-        fetchStats();
-    }, [FALLBACK_STATS_URL, PRIMARY_STATS_URL, fetchJson]);
-
-    // API Call Helfer
-    const updateApi = useCallback(async (id, type, isQueueRetry = false) => {
-        try {
-            const payload = JSON.stringify({ id, type });
-            const postOnce = (url) => fetchJson(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: payload
-            });
-
-            let result = await postOnce(PRIMARY_STATS_URL);
-            if (!result.ok && FALLBACK_STATS_URL && FALLBACK_STATS_URL !== PRIMARY_STATS_URL) {
-                result = await postOnce(FALLBACK_STATS_URL);
-            }
-
-            if (result.ok) {
-                const newRow = result.data;
-                setGlobalStats(prev => {
-                    const updated = { ...prev, [id]: newRow };
-                    localStorage.setItem('airdox_global_stats', JSON.stringify(updated));
-                    return updated;
-                });
-                return true;
-            } else {
-                if (!isQueueRetry) addToQueue(id, type);
-                return false;
-            }
-        } catch (err) {
-            devWarn('Failed to update stats:', err);
-            if (!isQueueRetry) addToQueue(id, type);
-            return false;
-        }
-    }, [PRIMARY_STATS_URL, FALLBACK_STATS_URL, fetchJson]);
-
-    const addToQueue = (id, type) => {
-        setOfflineQueue(prev => {
-            // Keine Duplikate für 'play' direkt hintereinander (optional)
-            const updated = [...prev, { id, type, timestamp: Date.now() }];
-            localStorage.setItem('airdox_offline_queue', JSON.stringify(updated));
-            return updated;
-        });
-    };
-
-    const syncOfflineQueue = useCallback(async () => {
-        if (offlineQueue.length === 0) return;
-        
-        devLog(`Syncing ${offlineQueue.length} offline actions...`);
-        const queueCopy = [...offlineQueue];
-        const remaining = [];
-
-        for (const action of queueCopy) {
-            const success = await updateApi(action.id, action.type, true);
-            if (!success) {
-                remaining.push(action);
-            }
-        }
-
-        setOfflineQueue(remaining);
-        localStorage.setItem('airdox_offline_queue', JSON.stringify(remaining));
-    }, [offlineQueue, updateApi]);
-
-    // Sync beim Start und wenn die Komponente online geht
-    useEffect(() => {
-        syncOfflineQueue();
-        
-        const handleOnline = () => syncOfflineQueue();
-        window.addEventListener('online', handleOnline);
-        return () => window.removeEventListener('online', handleOnline);
-    }, [syncOfflineQueue]);
 
     const handlePlayClick = (set) => {
         if (currentTrack?.id === set.id) {
             togglePlay();
         } else {
             playTrack(set);
-
-            // Optimistic Update: Sofort im UI hochzählen
-            setGlobalStats(prev => ({
-                ...prev,
-                [set.id]: {
-                    ...prev[set.id],
-                    plays: (prev[set.id]?.plays || 0) + 1
-                }
-            }));
-
-            updateApi(set.id, 'play');
+            // Das tatsächliche Play-Tracking passiert jetzt im AudioContext via statsSync
         }
     };
 
@@ -203,7 +69,7 @@ const MusicSection = () => {
         } else {
             // New vote or switch
             if (currentVote) {
-                updateApi(setId, `un${currentVote}`);
+                statsSync.trackVote(setId, `un${currentVote}`);
             }
 
             const newVotes = { ...userVotes, [setId]: voteType };
@@ -211,8 +77,16 @@ const MusicSection = () => {
             localStorage.setItem('airdox_user_votes', JSON.stringify(newVotes));
         }
 
-        // Optimistic Update für sofortiges Feedback (optional API update)
-        updateApi(setId, typeToSend);
+        // Optimistic Update für sofortiges Feedback
+        setGlobalStats(prev => ({
+            ...prev,
+            [setId]: {
+                ...prev[setId],
+                [voteType === 'like' ? 'likes' : 'dislikes']: (prev[setId]?.[voteType === 'like' ? 'likes' : 'dislikes'] || 0) + 1
+            }
+        }));
+
+        statsSync.trackVote(setId, typeToSend);
 
         const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
         if (analytics?.trackEvent) {
@@ -224,6 +98,18 @@ const MusicSection = () => {
 
     const getSetStats = (setId) => globalStats[setId] || { plays: 0, likes: 0, dislikes: 0 };
     const getUserVote = (setId) => userVotes[setId];
+
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('airdox_token'));
+
+    useEffect(() => {
+        const checkLogin = () => setIsLoggedIn(!!localStorage.getItem('airdox_token'));
+        window.addEventListener('airdox_login_success', checkLogin);
+        window.addEventListener('airdox_logout', checkLogin);
+        return () => {
+            window.removeEventListener('airdox_login_success', checkLogin);
+            window.removeEventListener('airdox_logout', checkLogin);
+        };
+    }, []);
 
     return (
         <section className="music-section section" id="music" ref={sectionRef}>
@@ -271,10 +157,12 @@ const MusicSection = () => {
                                             '--vinyl-index': index
                                         }}
                                     >
-                                        <div className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''}`}>
+                                        <div
+                                            className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''} ${index === 0 && isSetPlaying ? 'no-hole' : ''}`}
+                                        >
                                             {isSetPlaying ? (
                                                 <img
-                                                    src={set.isChristmasGift ? "/assets/santa_vinyl.png" : "/assets/airdox-vinyl.jpg"}
+                                                    src={set.isChristmasGift ? "/assets/santa_vinyl.png" : (set.cover || "/assets/airdox-vinyl.jpg")}
                                                     alt="Vinyl Label"
                                                     loading="lazy"
                                                     decoding="async"
@@ -340,6 +228,36 @@ const MusicSection = () => {
                                         <span className="set-date">{set.date}</span>
                                         {set.duration && <span className="set-duration">{set.duration}</span>}
                                     </div>
+                                    {isLoggedIn && (
+                                        <a 
+                                            href={`/audio/${set.file}`} 
+                                            download={set.file}
+                                            className="vip-download-link"
+                                            onClick={(e) => e.stopPropagation()}
+                                            title="Download VIP Access"
+                                        >
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                                            </svg>
+                                            VIP DOWNLOAD
+                                        </a>
+                                    )}
+
+                                    {isLoggedIn && set.tracks && set.tracks.length > 0 && (
+                                        <div className="vip-tracklist">
+                                            <h4 className="tracklist-title">VIP Tracklist</h4>
+                                            <ul className="tracklist-items">
+                                                {set.tracks.map((track, idx) => (
+                                                    <li key={idx} className="tracklist-item">
+                                                        <span className="track-time">{track.time}</span>
+                                                        <span className="track-details">
+                                                            <span className="track-artist">{track.artist}</span> - <span className="track-title">{track.title}</span>
+                                                        </span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
 
 
                                 </div>

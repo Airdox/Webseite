@@ -39,17 +39,13 @@ const BookingSection = () => {
 
         const form = e.target;
         const data = new FormData(form);
-
-        // Ensure Netlify knows which form this is
-        if (!data.get('form-name')) {
-            data.append('form-name', 'booking');
-        }
+        const payload = Object.fromEntries(data.entries());
 
         try {
-            const response = await fetch('/', {
+            const response = await fetch('/api/booking', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams(data).toString()
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
             });
 
             if (response.ok) {
@@ -57,15 +53,17 @@ const BookingSection = () => {
                 setFormData({ name: '', email: '', event: '', message: '' });
                 const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
                 if (analytics?.trackEvent) {
-                    analytics.trackEvent('booking_submit', { source: 'booking_form' });
+                    analytics.trackEvent('booking_submit', { source: 'booking_form_cloudflare' });
                 }
             } else {
-                throw new Error('Fehler beim Senden');
+                const errData = await response.json();
+                throw new Error(errData.error || 'Fehler beim Senden');
             }
         } catch (err) {
             devError('Form submission error:', err);
-            setError(`Nachricht konnte nicht gesendet werden. (Error: ${err.message}) Please try later.`);
+            setError(`Nachricht konnte nicht gesendet werden. (Error: ${err.message})`);
         }
+
     };
 
     return (
@@ -165,11 +163,8 @@ const BookingSection = () => {
                                 onSubmit={handleSubmit}
                                 name="booking"
                                 method="POST"
-                                data-netlify="true"
-                                netlify-honeypot="bot-field"
                             >
-                                <input type="hidden" name="form-name" value="booking" />
-                                <input type="hidden" name="bot-field" />
+
 
                                 <h3 className="form-title">{t('booking.formTitle')}</h3>
 

@@ -1,0 +1,11 @@
+HIER DEINE ÖFFENTLICHEN SETS REINKOPIEREN!
+
+1. Kopiere deine MP3-Dateien in diesen Ordner.
+2. Benenne sie am besten einfach (keine Leerzeichen), z.B.:
+   - berghain_2023.mp3
+   - mix_vol1.mp3
+   - warehouse_2024.mp3
+
+3. WICHTIG:
+   Wenn du die Dateien hier reinkopiert hast, musst du die Namen
+   in der Datei "src/components/Downloads.jsx" anpassen!

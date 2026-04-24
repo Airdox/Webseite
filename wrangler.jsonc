@@ -1,8 +1,14 @@
 {
   "name": "airdox-webseite",
+  "main": "src/server/worker.js",
   "compatibility_date": "2026-04-11",
+  "routes": [
+    { "pattern": "airdox.info", "custom_domain": true },
+    { "pattern": "www.airdox.info", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application"
-  }
+  },
+  "pages_build_output_dir": "dist"
 }

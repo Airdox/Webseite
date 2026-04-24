@@ -1,35 +1,22 @@
-# AIRDOX - Berlin Techno DJ Website
+# ☯️ AIRDOX - Project Duality
 
-Eine moderne, Progressive Web App für den Berlin Techno DJ AIRDOX.
+[![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)]()
+[![Tech Stack](https://img.shields.io/badge/Stack-React_19_%7C_Vite_%7C_Neon_%7C_Cloudflare-blue.svg)]()
+[![PWA](https://img.shields.io/badge/PWA-Ready-orange.svg)]()
 
-## Features
+**Airdox** is a cutting-edge, high-performance web application and platform for the Berlin-based Techno DJ **AIRDOX**. Built with a focus on "Project Duality," the platform explores the tension between Light (Angel) and Shadow (Devil) through an immersive interface and professional audio experience.
 
-- 🎵 **Zwei-Stufen-Download-System**
-  - Öffentliche Sets für maximale Reichweite
-  - VIP-Bereich mit Passwort-Schutz für exklusive Inhalte
-  
-- 📱 **Progressive Web App (PWA)**
-  - Installierbar auf Handy & Desktop
-  - Funktioniert offline
-  - App-ähnliches Erlebnis
-  
-- 🎨 **Modernes Design**
-  - Neon-Gradienten (Cyan/Pink/Purple)
-  - Glassmorphism-Effekte
-  - Animierte Hintergründe
-  - Responsive für alle Geräte
+---
 
-- 🎧 **High-End Audio Player**
-  - "The Blade" Design (Glassmorphism)
-  - Waveform Visualisierung
-  - Playlist Management
-  - Keyboard Shortcuts
+## 🏛️ Vision & Philosophy: Project Duality
+The platform is not just a DJ portfolio; it is an interactive exploration of dualism.
+- **The Angel Modus:** Melodic Techno, Trance vibes, Gold/Cyan aesthetics.
+- **The Devil Modus:** Hard Techno, Industrial Acid, Black/Red aesthetics.
+- **The Red Thread:** A philosophical journey asking the user: *"Who wins in the end?"*
 
-- 📊 **Analytics Dashboard**
-  - Stealth Mode (Admin Access)
-  - Download Tracking
-  - DSGVO-konform
+---
 
+## 🚀 Key Features
 - 📩 **Buchungsformular**
   - Integrierte Cloudflare Worker API
   - Sicherung in Neon PostgreSQL
@@ -37,25 +24,77 @@ Eine moderne, Progressive Web App für den Berlin Techno DJ AIRDOX.
 ## 🌐 Live Demo
 👉 **[https://airdox.de](https://airdox.de)**
 
-## Lokale Entwicklung
+*   🎧 **High-End Audio Experience:** "The Blade" glassmorphism player with real-time waveform visualization.
+*   🔐 **Secure VIP Area:** Custom authentication system (SHA-256) with registration, login, and exclusive high-quality MP3 downloads.
+*   📱 **Multi-Platform Support:** Fully responsive web app, installable PWA, and native mobile builds via Capacitor.
+*   📊 **Stealth Analytics:** Private admin dashboard for tracking downloads and engagement (GDPR compliant).
+*   📩 **Integrated Booking:** Direct communication channel backed by Cloudflare Workers and Neon PostgreSQL.
 
-```bash
-# Abhängigkeiten installieren
-npm install
+---
 
-# Cloudflare Wrangler (für lokale API & Worker)
-npx wrangler dev
+## 🛠️ Tech Stack
 
-# Frontend Development-Server
-npm run dev
+### Frontend
+- **React 19:** Utilizing the latest concurrent features and hooks.
+- **Vite 5:** Lightning-fast development and optimized production builds.
+- **Lenis:** Smooth scrolling for a premium, non-native feel.
+- **Vanilla CSS / Modules:** Custom styled for maximum performance and design control.
 
-# Produktions-Build erstellen
-npm run build
+### Backend & Infrastructure
+- **Cloudflare Workers / Pages:** Edge-computing for APIs and global static hosting.
+- **Neon PostgreSQL:** Serverless database for booking and analytics.
+- **Drizzle ORM:** Type-safe database interactions.
+- **Wrangler:** CLI for local API simulation and deployments.
+
+### Mobile & Tools
+- **Capacitor:** Bridging the web app to Android/iOS ecosystems.
+- **Playwright / Vitest:** Comprehensive E2E and unit testing suite.
+- **ESLint:** Strict coding standards enforcement.
+
+---
+
+## ⚙️ Technical Standards
+
+### Coding Philosophy
+- **Clean Code:** Use descriptive naming, modular components, and avoid side effects in hooks.
+- **Performance First:** Lazy loading for heavy assets, optimized image formats, and efficient state management.
+- **Full-Stack Safety:** Type-safe database queries and validated API inputs.
+
+### Project Structure
+```text
+├── api/                # Cloudflare Worker API logic
+├── android/            # Capacitor Android project files
+├── functions/          # Serverless functions (Cloudflare)
+├── public/             # Static assets (logos, icons)
+├── src/
+│   ├── components/     # Reusable UI elements
+│   ├── contexts/       # Global state (Theme, Audio)
+│   ├── hooks/          # Custom React logic
+│   ├── styles/         # Global CSS and themes
+│   └── lib/            # External library configurations
+├── scripts/            # Build and utility scripts
+└── ...
 ```
 
-## Umgebungsvariablen
+---
 
-Die Datei `.env.example` enthält alle benötigten Variablen (ohne Secrets). Für lokale Tests nutze `.env` (ist in `.gitignore`).
+## 🛠️ Getting Started
+
+### Prerequisites
+- **Node.js** (v18+)
+- **NPM** (v9+)
+- **Cloudflare Account** (for Workers/Pages)
+
+### Installation
+```bash
+git clone https://github.com/airdox/webseeite-main.git
+cd webseeite-main
+npm install
+```
+
+### Configuration
+1. Copy `.env.example` to `.env`.
+2. Fill in your `DATABASE_URL` and API keys.
 
 Client (Vite):
 - `VITE_STATS_API_BASE`
@@ -64,13 +103,26 @@ Client (Vite):
 Cloudflare/Database:
 - `DATABASE_URL` / `NEON_DATABASE_URL`
 
+---
+
+## 🏃 Development & Scripts
+
+| Command | Action |
+| :--- | :--- |
+| `npm run dev` | Start Vite development server |
+| `npx wrangler dev` | Simulate local Cloudflare environment |
+| `npm run build` | Generate production-ready static files |
+| `npm run lint` | Check code quality via ESLint |
+| `npm run test` | Run unit and integration tests |
+| `npm run test:e2e` | Run Playwright E2E tests |
+
 ## 📊 API Endpunkte
 
 - `GET /api/stats`: Alle Track-Statistiken abrufen.
 - `POST /api/stats`: Plays und Likes aktualisieren.
 - `POST /api/booking`: Buchungsanfragen senden.
 
-## Deployment
+---
 
 Das Deployment erfolgt vollautomatisch über **Cloudflare Pages**.
 Zusätzlich kann manuell über Wrangler deployt werden:
@@ -78,18 +130,14 @@ Zusätzlich kann manuell über Wrangler deployt werden:
 npx wrangler pages deploy dist
 ```
 
-## Passwort ändern
+## 📖 Internal Documentation
+For deeper technical dives, refer to our specialized guides:
+- [Masterplan (Vision)](PROJECT_MASTERPLAN.md)
+- [Analytics Documentation](ANALYTICS_V2_DOKUMENTATION.md)
+- [Deployment Guide](DEPLOYMENT.md)
+- [Audio Player Logic](AUDIO_PLAYER_DOCS.md)
 
-VIP-Passwort in `src/components/Downloads.jsx` Zeile 5 ändern.
+---
 
-## Technologie-Stack
-
-- React 19
-- Vite 5
-- Cloudflare Workers / Pages
-- Neon (Serverless PostgreSQL)
-- Drizzle ORM
-
-## Lizenz
-
-Privates Projekt - Alle Rechte vorbehalten.
+## ⚖️ License
+Private Project - © 2026 AIRDOX. All rights reserved.

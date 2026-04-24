@@ -1,0 +1,49 @@
+functionsDirectory = "D:\\webseeite-main\\netlify\\functions"
+functionsDirectoryOrigin = "config"
+redirectsOrigin = "config"
+headers = []
+
+[build]
+publish = "D:\\webseeite-main\\dist"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "npm run build:site"
+functions = "D:\\webseeite-main\\netlify\\functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[functions]
+
+[functions."*"]
+node_bundler = "esbuild"
+
+[[plugins]]
+origin = "ui"
+package = "@netlify/plugin-lighthouse"
+pinned_version = "6"
+
+[plugins.inputs]
+
+[[redirects]]
+from = "/api/*"
+to = "/.netlify/functions/:splat"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

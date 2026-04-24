@@ -72,6 +72,7 @@ const AnalyticsDashboard = () => {
                 <div className="stat-label">SESSIONS</div>
               </div>
               <div className="stat-card">
+                {/* Download stats remain for analytics, but no download links are provided to users */}
                 <div className="stat-value">{stats.total?.downloads || 0}</div>
                 <div className="stat-label">DOWNLOADS</div>
               </div>

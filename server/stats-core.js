@@ -4,6 +4,12 @@ export const statsCorsHeaders = buildCorsHeaders('GET, POST, OPTIONS');
 export const statsCacheHeaders = {
     'Cache-Control': 'public, max-age=0, s-maxage=10, stale-while-revalidate=30'
 };
+const emptyStatsRow = {
+    plays: 0,
+    likes: 0,
+    dislikes: 0,
+    last_played_at: null
+};
 
 const seedPlays = {
     secret_set_2025_12_22: 44
@@ -20,14 +26,20 @@ const ensureInit = async (sql) => {
                 id TEXT PRIMARY KEY,
                 plays INTEGER DEFAULT 0,
                 likes INTEGER DEFAULT 0,
-                dislikes INTEGER DEFAULT 0
+                dislikes INTEGER DEFAULT 0,
+                last_played_at TIMESTAMP NULL
             );
+        `;
+
+        await sql`
+            ALTER TABLE track_stats
+            ADD COLUMN IF NOT EXISTS last_played_at TIMESTAMP NULL;
         `;
 
         for (const [id, plays] of Object.entries(seedPlays)) {
             await sql`
-                INSERT INTO track_stats (id, plays, likes, dislikes)
-                VALUES (${id}, ${plays}, 0, 0)
+                INSERT INTO track_stats (id, plays, likes, dislikes, last_played_at)
+                VALUES (${id}, ${plays}, 0, 0, NULL)
                 ON CONFLICT (id) DO UPDATE
                 SET plays = GREATEST(track_stats.plays, EXCLUDED.plays);
             `;
@@ -58,13 +70,18 @@ export const updateStats = async (sql, id, type) => {
     await ensureInit(sql);
 
     await sql`
-        INSERT INTO track_stats (id, plays, likes, dislikes)
-        VALUES (${id}, 0, 0, 0)
+        INSERT INTO track_stats (id, plays, likes, dislikes, last_played_at)
+        VALUES (${id}, 0, 0, 0, NULL)
         ON CONFLICT (id) DO NOTHING;
     `;
 
     if (type === 'play') {
-        await sql`UPDATE track_stats SET plays = plays + 1 WHERE id = ${id}`;
+        await sql`
+            UPDATE track_stats
+            SET plays = plays + 1,
+                last_played_at = CURRENT_TIMESTAMP
+            WHERE id = ${id}
+        `;
     } else if (type === 'like') {
         await sql`UPDATE track_stats SET likes = likes + 1 WHERE id = ${id}`;
     } else if (type === 'dislike') {
@@ -76,5 +93,5 @@ export const updateStats = async (sql, id, type) => {
     }
 
     const [updated] = await sql`SELECT * FROM track_stats WHERE id = ${id}`;
-    return updated;
+    return updated || { id, ...emptyStatsRow };
 };

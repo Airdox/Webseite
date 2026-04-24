@@ -11,6 +11,7 @@ import Svg, { Path } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors, FontSizes, Spacing, BorderRadius } from '../theme/colors';
 import { useAudio } from '../contexts/AudioContext';
+import Visualizer from './Visualizer';
 
 const { width } = Dimensions.get('window');
 
@@ -24,9 +25,8 @@ const GlobalPlayer = () => {
     currentTime,
     duration,
     seek,
-    volume,
-    changeVolume,
   } = useAudio();
+
 
   if (!currentTrack) return null;
 
@@ -46,6 +46,10 @@ const GlobalPlayer = () => {
         colors={['rgba(10, 10, 20, 0.98)', 'rgba(5, 5, 15, 0.99)']}
         style={StyleSheet.absoluteFillObject}
       />
+
+      {/* Visualizer Background */}
+      <Visualizer isPlaying={isPlaying} />
+
 
       {/* Top border glow */}
       <LinearGradient
