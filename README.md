@@ -17,6 +17,12 @@ The platform is not just a DJ portfolio; it is an interactive exploration of dua
 ---
 
 ## 🚀 Key Features
+- 📩 **Buchungsformular**
+  - Integrierte Cloudflare Worker API
+  - Sicherung in Neon PostgreSQL
+
+## 🌐 Live Demo
+👉 **[https://airdox.de](https://airdox.de)**
 
 *   🎧 **High-End Audio Experience:** "The Blade" glassmorphism player with real-time waveform visualization.
 *   🔐 **Secure VIP Area:** Custom authentication system (SHA-256) with registration, login, and exclusive high-quality MP3 downloads.
@@ -90,6 +96,13 @@ npm install
 1. Copy `.env.example` to `.env`.
 2. Fill in your `DATABASE_URL` and API keys.
 
+Client (Vite):
+- `VITE_STATS_API_BASE`
+- `VITE_AUDIO_BASE` (Basis-URL für Audio-Dateien)
+
+Cloudflare/Database:
+- `DATABASE_URL` / `NEON_DATABASE_URL`
+
 ---
 
 ## 🏃 Development & Scripts
@@ -103,7 +116,19 @@ npm install
 | `npm run test` | Run unit and integration tests |
 | `npm run test:e2e` | Run Playwright E2E tests |
 
+## 📊 API Endpunkte
+
+- `GET /api/stats`: Alle Track-Statistiken abrufen.
+- `POST /api/stats`: Plays und Likes aktualisieren.
+- `POST /api/booking`: Buchungsanfragen senden.
+
 ---
+
+Das Deployment erfolgt vollautomatisch über **Cloudflare Pages**.
+Zusätzlich kann manuell über Wrangler deployt werden:
+```bash
+npx wrangler pages deploy dist
+```
 
 ## 📖 Internal Documentation
 For deeper technical dives, refer to our specialized guides:

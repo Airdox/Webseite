@@ -4,7 +4,7 @@ export const sets = [
       title: 'REC 12.04.2026',
       date: 'APR 2026',
       file: 'Airdox_REC_2026_04_12.mp3',
-      cover: '/assets/je_prohibition_sign.png',
+      cover: '/assets/recording_2026_04_12.png',
       duration: '2:30:15',
       isNew: true,
       vinylColor: '#ccff00',
