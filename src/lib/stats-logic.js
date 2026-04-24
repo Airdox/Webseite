@@ -1,6 +1,5 @@
 /* global Buffer */
 import { neon } from '@neondatabase/serverless';
-import crypto from 'crypto';
 
 const CACHE_CONTROL = 'public, s-maxage=10, stale-while-revalidate=30';
 const SEED_PLAYS = {
@@ -208,18 +207,22 @@ export const handleBookingRequest = async ({ body, env }) => {
 };
 
 // --- AUTH HANDLER ---
-const HASH_CONFIG = { N: 16384, r: 8, p: 1, klen: 64 };
-
-const hashPassword = (password, salt) => {
-    return crypto.scryptSync(password, salt, HASH_CONFIG.klen, {
-        N: HASH_CONFIG.N,
-        r: HASH_CONFIG.r,
-        p: HASH_CONFIG.p
-    }).toString('hex');
+const hashPassword = async (password, saltString) => {
+    const enc = new TextEncoder();
+    const data = enc.encode(password + saltString);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 };
 
-const generateSalt = () => crypto.randomBytes(16).toString('hex');
-const generateToken = () => crypto.randomBytes(32).toString('hex');
+const generateRandomHex = (bytes) => {
+    const array = new Uint8Array(bytes);
+    crypto.getRandomValues(array);
+    return Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('');
+};
+
+const generateSalt = () => generateRandomHex(16);
+const generateToken = () => generateRandomHex(32);
 
 export const handleAuthRequest = async ({ body, env }) => {
     const sql = getSqlClient(env);
@@ -251,7 +254,7 @@ export const handleAuthRequest = async ({ body, env }) => {
 
         if (action === 'register') {
             const salt = generateSalt();
-            const hashedPassword = hashPassword(password, salt);
+            const hashedPassword = await hashPassword(password, salt);
             try {
                 await sql`
                     INSERT INTO users (username, password, salt)
@@ -270,7 +273,7 @@ export const handleAuthRequest = async ({ body, env }) => {
             const [user] = await sql`SELECT * FROM users WHERE username = ${username}`;
             if (!user) return { status: 401, body: errorBody('Invalid username or password') };
 
-            const hashedPassword = hashPassword(password, user.salt);
+            const hashedPassword = await hashPassword(password, user.salt);
             if (hashedPassword !== user.password) {
                 return { status: 401, body: errorBody('Invalid username or password') };
             }
