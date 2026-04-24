@@ -115,6 +115,14 @@
     overflow: hidden;
 }
 
+/* Entferne das Loch bei erstem Player */
+.mini-vinyl.active-disc.no-hole {
+    -webkit-mask: none;
+    mask: none;
+    /* Stelle sicher, dass die Mitte klickbar bleibt */
+    pointer-events: auto;
+}
+
 .vinyl-image {
     width: 100%;
     height: 100%;
@@ -143,6 +151,7 @@
     background: var(--vinyl-color, var(--gradient-primary));
 }
 
+
 .cover-overlay {
     position: absolute;
     top: 0;
@@ -155,6 +164,13 @@
     background: rgba(0, 0, 0, 0.4);
     opacity: 0;
     transition: opacity var(--duration-normal);
+    pointer-events: none;
+}
+
+.set-cover:hover .cover-overlay,
+.set-cover:focus .cover-overlay {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .set-cover:hover .cover-overlay {
@@ -172,6 +188,7 @@
     align-items: center;
     justify-content: center;
     transition: transform var(--duration-normal);
+    pointer-events: auto;
 }
 
 .play-btn:hover {

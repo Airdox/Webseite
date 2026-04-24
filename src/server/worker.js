@@ -1,7 +1,63 @@
+
 import { Router } from './router.js';
 import { handleStatsRequest, handleBookingRequest } from '../lib/stats-logic.js';
 
+// Utility to sanitize filename (prevent path traversal)
+function sanitizeFilename(filename) {
+    return filename.replace(/[^a-zA-Z0-9_\-.]/g, '');
+}
+
 const router = new Router();
+// GET /api/audio/:filename - Secure audio streaming endpoint
+router.get('/api/audio/:filename', async (request, env, ctx, params) => {
+    const { filename } = params;
+    if (!filename || !/\.mp3$/i.test(filename)) {
+        return new Response('Invalid audio file', { status: 400 });
+    }
+    // Sanitize filename to prevent path traversal
+    const safeFilename = sanitizeFilename(filename);
+    // Assume audio files are in R2 bucket bound as env.AUDIO or env.PUBLIC (adjust as needed)
+    // Try PUBLIC first (Cloudflare R2 binding)
+    let object = null;
+    if (env.PUBLIC && env.PUBLIC.get) {
+        object = await env.PUBLIC.get(safeFilename);
+    }
+    if (!object) {
+        return new Response('Audio file not found', { status: 404 });
+    }
+    // Set headers for streaming audio
+    const headers = {
+        'Content-Type': 'audio/mpeg',
+        'Accept-Ranges': 'bytes',
+        'Cache-Control': 'public, max-age=86400',
+        ...corsHeaders
+    };
+    // Support range requests for seeking
+    const range = request.headers.get('Range');
+    if (range) {
+        const size = object.size;
+        const match = /bytes=(\d+)-(\d*)/.exec(range);
+        if (match) {
+            const start = parseInt(match[1], 10);
+            const end = match[2] ? parseInt(match[2], 10) : size - 1;
+            if (start >= size || end >= size) {
+                return new Response('Requested range not satisfiable', { status: 416, headers: { ...headers, 'Content-Range': `bytes */${size}` } });
+            }
+            const sliced = object.body.slice(start, end + 1);
+            return new Response(sliced, {
+                status: 206,
+                headers: {
+                    ...headers,
+                    'Content-Range': `bytes ${start}-${end}/${size}`,
+                    'Content-Length': (end - start + 1).toString(),
+                }
+            });
+        }
+    }
+    // Full file
+    headers['Content-Length'] = object.size.toString();
+    return new Response(object.body, { status: 200, headers });
+});
 
 // CORS Headers Utility
 const corsHeaders = {

@@ -153,7 +153,9 @@ const MusicSection = () => {
                                             '--vinyl-index': index
                                         }}
                                     >
-                                        <div className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''}`}>
+                                        <div
+                                            className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''} ${index === 0 && isSetPlaying ? 'no-hole' : ''}`}
+                                        >
                                             {isSetPlaying ? (
                                                 <img
                                                     src={set.isChristmasGift ? "/assets/santa_vinyl.png" : (set.cover || "/assets/airdox-vinyl.jpg")}

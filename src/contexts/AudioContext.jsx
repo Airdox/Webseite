@@ -9,14 +9,15 @@ const devWarn = (...args) => {
     if (isDev) console.warn(...args);
 };
 
-const AUDIO_BASE = (import.meta.env?.VITE_AUDIO_BASE || import.meta.env?.VITE_AUDIO_FALLBACK_BASE || 'https://pub-c65c35191de241338a08b07b45f1495f.r2.dev/public').replace(/\/+$/, '');
+// Use API endpoint for audio streaming
+const AUDIO_BASE = '/api/audio';
 const AUDIO_MAX_PARTS = 25;
-const isAbsoluteUrl = (url) => /^https?:\/\//i.test(url);
 const resolveAudioSrc = (src) => {
     if (!src) return src;
-    if (isAbsoluteUrl(src)) return src;
-    if (AUDIO_BASE) return `${AUDIO_BASE}/${src.replace(/^\/+/, '')}`;
-    return src;
+    // Always use API endpoint for audio
+    // Only keep filename (strip path)
+    const filename = src.split('/').pop();
+    return `${AUDIO_BASE}/${filename}`;
 };
 const encodeAudioSrc = (src) => {
     if (!src) return src;
