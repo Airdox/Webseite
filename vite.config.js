@@ -13,16 +13,7 @@ export default defineConfig({
       },
     },
   },
-  preview: {
-    // Proxy temporarily disabled for debugging
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://localhost:8888/.netlify/functions',
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/api/, ''),
-    //   },
-    // },
-  },
+  preview: {},
   build: {
     emptyOutDir: true,
     rollupOptions: {

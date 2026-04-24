@@ -29,9 +29,11 @@ dist-ssr
 # Cloudflare
 .wrangler
 
-# Large music sets and audio files (tracked via Git LFS or external hosting)
+# Large music sets and audio files (hosted on Cloudflare R2)
 BACKUP_AUDIO/
 public/sets/
+audio_backup/
+audio_processing/
 
 # Mobile Apps (keep these folders untracked if they are managed separately)
 android/
@@ -40,6 +42,16 @@ apk-builds/
 platform-tools/
 airdox-mobile/
 
+# Netlify (legacy, migrated to Cloudflare)
+.netlify/
+netlify/
+netlify.toml
+
 # Playwright
 playwright-report/
 test-results/
+
+# Junk / accidental files
+*.exe
+file_list.txt
+downloaded_main.js

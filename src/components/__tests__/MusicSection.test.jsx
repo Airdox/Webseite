@@ -78,7 +78,7 @@ describe('MusicSection Synchronisation', () => {
         await waitFor(() => {
             // Sollte die Produktions-URL enthalten
             expect(fetch).toHaveBeenCalledWith(
-                expect.stringContaining('https://airdox.netlify.app/api/stats'),
+                expect.stringContaining('https://airdox.info/api/stats'),
                 undefined
             );
         });
