@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAudio } from '../contexts/AudioContext';
 import './MusicSection.css';
 import { t } from '../utils/i18n';
@@ -6,14 +6,6 @@ import { t } from '../utils/i18n';
 import { sets } from '../data/musicSets';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { statsSync } from '../utils/stats-sync';
-
-const isDev = import.meta.env?.DEV;
-const devWarn = (...args) => {
-    if (isDev) console.warn(...args);
-};
-const devLog = (...args) => {
-    if (isDev) console.log(...args);
-};
 
 const MusicSection = () => {
     const {
@@ -77,7 +69,7 @@ const MusicSection = () => {
         } else {
             // New vote or switch
             if (currentVote) {
-                updateApi(setId, `un${currentVote}`);
+                statsSync.trackVote(setId, `un${currentVote}`);
             }
 
             const newVotes = { ...userVotes, [setId]: voteType };
