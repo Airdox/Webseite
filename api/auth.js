@@ -28,5 +28,11 @@ export default async function handler(request, response) {
         env: process.env
     });
 
+    if (result.headers) {
+        Object.entries(result.headers).forEach(([key, value]) => {
+            response.setHeader(key, value);
+        });
+    }
+
     return response.status(result.status).json(result.body);
 }

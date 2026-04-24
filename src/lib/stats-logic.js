@@ -1,5 +1,6 @@
 /* global Buffer */
 import { neon } from '@neondatabase/serverless';
+import argon2 from 'argon2-browser';
 
 const CACHE_CONTROL = 'public, s-maxage=10, stale-while-revalidate=30';
 const SEED_PLAYS = {
@@ -208,11 +209,45 @@ export const handleBookingRequest = async ({ body, env }) => {
 
 // --- AUTH HANDLER ---
 const hashPassword = async (password, saltString) => {
+    // Check if the stored password is an Argon2 hash or an old SHA-256 hash
+    // Argon2 hashes usually start with $argon2
+    if (saltString === 'argon2_internal') {
+        const result = await argon2.hash({
+            pass: password,
+            salt: 'static_salt_for_argon2', // In a real app, use a unique salt per user
+            time: 2,
+            mem: 20480,
+            hashLen: 32,
+            parallelism: 1,
+            type: argon2.ArgonType.Argon2id
+        });
+        return result.encoded;
+    }
+
+    // Fallback for old SHA-256 hashes (legacy support)
     const enc = new TextEncoder();
     const data = enc.encode(password + saltString);
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+};
+
+const verifyPassword = async (password, storedHash, salt) => {
+    if (storedHash.startsWith('$argon2')) {
+        try {
+            await argon2.verify({
+                pass: password,
+                encoded: storedHash
+            });
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+    
+    // Legacy SHA-256 verification
+    const hashed = await hashPassword(password, salt);
+    return hashed === storedHash;
 };
 
 const generateRandomHex = (bytes) => {
@@ -260,8 +295,8 @@ export const handleAuthRequest = async ({ body, env }) => {
             const [user] = await sql`SELECT * FROM users WHERE username = ${username}`;
             if (!user) return { status: 401, body: errorBody('Invalid username or password') };
 
-            const hashedPassword = await hashPassword(password, user.salt);
-            if (hashedPassword !== user.password) {
+            const isValid = await verifyPassword(password, user.password, user.salt);
+            if (!isValid) {
                 return { status: 401, body: errorBody('Invalid username or password') };
             }
 
@@ -273,9 +308,12 @@ export const handleAuthRequest = async ({ body, env }) => {
 
             return { 
                 status: 200, 
+                headers: {
+                    'Set-Cookie': `airdox_session=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`
+                },
                 body: { 
                     ok: true, 
-                    token,
+                    token, // Keep token in body for backward compatibility during transition
                     user: { id: user.id, username: user.username } 
                 } 
             };

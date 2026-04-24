@@ -1,6 +1,6 @@
 
 import { Router } from './router.js';
-import { handleStatsRequest, handleBookingRequest } from '../lib/stats-logic.js';
+import { handleStatsRequest, handleBookingRequest, handleAuthRequest } from '../lib/stats-logic.js';
 
 // Utility to sanitize filename (prevent path traversal)
 function sanitizeFilename(filename) {
@@ -95,6 +95,28 @@ router.post('/api/booking', async (request, env) => {
         return new Response(JSON.stringify(result.body), {
             status: result.status,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    } catch (error) {
+        return new Response(JSON.stringify({ ok: false, error: 'Invalid Request' }), {
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    }
+});
+
+// POST /api/auth
+router.post('/api/auth', async (request, env) => {
+    try {
+        const body = await request.json();
+        const result = await handleAuthRequest({ body, env });
+        const headers = { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            ...(result.headers || {})
+        };
+        return new Response(JSON.stringify(result.body), {
+            status: result.status,
+            headers
         });
     } catch (error) {
         return new Response(JSON.stringify({ ok: false, error: 'Invalid Request' }), {
