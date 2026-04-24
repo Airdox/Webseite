@@ -253,20 +253,7 @@ export const handleAuthRequest = async ({ body, env }) => {
         await ensureInitialized(sql);
 
         if (action === 'register') {
-            const salt = generateSalt();
-            const hashedPassword = await hashPassword(password, salt);
-            try {
-                await sql`
-                    INSERT INTO users (username, password, salt)
-                    VALUES (${username}, ${hashedPassword}, ${salt});
-                `;
-                return { status: 200, body: { ok: true, message: 'User registered successfully' } };
-            } catch (error) {
-                if (error.message.includes('unique constraint') || error.message.includes('already exists')) {
-                    return { status: 400, body: errorBody('Username already exists') };
-                }
-                throw error;
-            }
+            return { status: 403, body: errorBody('Registration is currently disabled. Please contact the administrator.') };
         }
 
         if (action === 'login') {

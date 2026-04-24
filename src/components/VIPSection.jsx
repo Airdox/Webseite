@@ -132,16 +132,10 @@ const VIPSection = () => {
                 <div className="auth-container reveal-scale">
                     <div className="auth-tabs">
                         <button 
-                            className={`auth-tab ${isLogin ? 'active' : ''}`}
-                            onClick={() => setIsLogin(true)}
+                            className="auth-tab active"
+                            style={{ width: '100%' }}
                         >
-                            LOGIN
-                        </button>
-                        <button 
-                            className={`auth-tab ${!isLogin ? 'active' : ''}`}
-                            onClick={() => setIsLogin(false)}
-                        >
-                            REGISTER
+                            VIP LOGIN
                         </button>
                     </div>
 
@@ -175,7 +169,7 @@ const VIPSection = () => {
                         {success && <div className="auth-success" style={{ color: 'var(--neon-cyan)', fontSize: '0.8rem', textAlign: 'center' }}>{success}</div>}
 
                         <button type="submit" className="auth-submit" disabled={loading}>
-                            {loading ? 'Processing...' : (isLogin ? 'Login Access' : 'Create Account')}
+                            {loading ? 'Processing...' : 'Login Access'}
                         </button>
                     </form>
                 </div>

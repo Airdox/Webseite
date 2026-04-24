@@ -9,8 +9,9 @@ function sanitizeFilename(filename) {
 
 const router = new Router();
 // GET /api/audio/:filename - Secure audio streaming endpoint
-router.get('/api/audio/:filename', async (request, env, ctx, params) => {
-    const { filename } = params;
+router.get('/api/audio', async (request, env, ctx) => {
+    const url = new URL(request.url);
+    const filename = url.searchParams.get('file');
     if (!filename || !/\.mp3$/i.test(filename)) {
         return new Response('Invalid audio file', { status: 400 });
     }
@@ -61,7 +62,7 @@ router.get('/api/audio/:filename', async (request, env, ctx, params) => {
 
 // CORS Headers Utility
 const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'https://airdox.de', // Restrict to main domain
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
@@ -96,7 +97,7 @@ router.post('/api/booking', async (request, env) => {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
     } catch (error) {
-        return new Response(JSON.stringify({ ok: false, error: 'Invalid Request', details: error.message }), {
+        return new Response(JSON.stringify({ ok: false, error: 'Invalid Request' }), {
             status: 400,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
@@ -120,8 +121,7 @@ export default {
                 console.error('API Error:', error);
                 return new Response(JSON.stringify({ 
                     ok: false, 
-                    error: 'Internal Server Error',
-                    details: error.message 
+                    error: 'Internal Server Error'
                 }), {
                     status: 500,
                     headers: { 'Content-Type': 'application/json', ...corsHeaders },
