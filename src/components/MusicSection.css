@@ -165,6 +165,7 @@
     opacity: 0;
     transition: opacity var(--duration-normal);
     pointer-events: none;
+    z-index: 10;
 }
 
 .set-cover:hover .cover-overlay,
