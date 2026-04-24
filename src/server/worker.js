@@ -8,10 +8,14 @@ function sanitizeFilename(filename) {
 }
 
 const router = new Router();
-// GET /api/audio/:filename - Secure audio streaming endpoint
-router.get('/api/audio', async (request, env, ctx) => {
-    const url = new URL(request.url);
-    const filename = url.searchParams.get('file');
+    // GET /api/audio/:filename - Secure audio streaming endpoint
+    router.get('/api/audio', async (request, env, ctx) => {
+        const url = new URL(request.url);
+        // Support both /api/audio?file=name.mp3 and /api/audio/name.mp3
+        let filename = url.searchParams.get('file');
+        if (!filename && url.pathname.startsWith('/api/audio/')) {
+            filename = url.pathname.substring('/api/audio/'.length);
+        }
     if (!filename || !/\.mp3$/i.test(filename)) {
         return new Response('Invalid audio file', { status: 400 });
     }
@@ -138,7 +142,26 @@ export default {
         // Try API routes
         if (url.pathname.startsWith('/api/')) {
             try {
-                return await router.handle(request, env, ctx);
+                // Adjust for /api/audio/:filename which is a dynamic path
+                const originalPathname = url.pathname;
+                if (url.pathname.startsWith('/api/audio/')) {
+                    url.pathname = '/api/audio';
+                    // We modify a copy of the request or handle it specially in router
+                }
+                
+                // The current router only does exact matches, so we need to be careful.
+                // Since we can't easily modify the Request object's URL property, 
+                // let's adjust the router logic or the way we call it.
+                
+                // Let's modify the fetch handler to pass a modified request if it's an audio path
+                let modifiedRequest = request;
+                if (originalPathname.startsWith('/api/audio/')) {
+                    const newUrl = new URL(request.url);
+                    newUrl.pathname = '/api/audio';
+                    modifiedRequest = new Request(newUrl.toString(), request);
+                }
+
+                return await router.handle(modifiedRequest, env, ctx);
             } catch (error) {
                 console.error('API Error:', error);
                 return new Response(JSON.stringify({ 

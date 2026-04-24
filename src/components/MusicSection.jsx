@@ -230,7 +230,7 @@ const MusicSection = () => {
                                     </div>
                                     {isLoggedIn && (
                                         <a 
-                                            href={`/audio/${set.file}`} 
+                                            href={`/api/audio/${set.file}`} 
                                             download={set.file}
                                             className="vip-download-link"
                                             onClick={(e) => e.stopPropagation()}
