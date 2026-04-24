@@ -110,50 +110,8 @@ const VIPSection = () => {
                             <span className="vip-badge">VIP AREA</span>
                             <h2 className="section-title text-gradient">Willkommen, {user.username}</h2>
                             <p className="section-subtitle">
-                                Hier findest du alle Sets zum Download in höchster Qualität.
+                                Dein VIP-Zugang ist aktiv. Du findest die exklusiven MP3-Downloads und Tracklisten nun direkt in der Set-Übersicht oben!
                             </p>
-                        </div>
-
-                        <div className="download-grid">
-                            {sets.map((set) => (
-                                <div key={set.id} className="download-card">
-                                    <div className="download-info">
-                                        <h3 className="download-title">{set.title}</h3>
-                                        <p className="set-date">{set.date} • {set.duration}</p>
-                                    </div>
-                                    <a 
-                                        href={`/audio/${set.file}`} 
-                                        download={set.file}
-                                        className="download-btn"
-                                        onClick={() => {
-                                            if (window.airdoxAnalyticsV2) {
-                                                window.airdoxAnalyticsV2.trackEvent('download', { setId: set.id });
-                                            }
-                                        }}
-                                    >
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                                        </svg>
-                                        Download MP3
-                                    </a>
-
-                                    {set.tracks && set.tracks.length > 0 && (
-                                        <div className="vip-tracklist-section">
-                                            <h4 className="tracklist-title">Tracklist</h4>
-                                            <ul className="tracklist-items">
-                                                {set.tracks.map((track, idx) => (
-                                                    <li key={idx} className="tracklist-item">
-                                                        <span className="track-time">{track.time}</span>
-                                                        <span className="track-details">
-                                                            <span className="track-artist">{track.artist}</span> - <span className="track-title">{track.title}</span>
-                                                        </span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
                         </div>
 
                         <button className="logout-btn" onClick={handleLogout}>
