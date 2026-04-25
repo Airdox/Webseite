@@ -2,7 +2,13 @@ const fs = require('node:fs/promises');
 const fsSync = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
+const electron = require('electron');
+
+const app = electron?.app;
+const BrowserWindow = electron?.BrowserWindow;
+const dialog = electron?.dialog;
+const ipcMain = electron?.ipcMain;
+const shell = electron?.shell;
 
 const DEV_DESKTOP_URL = process.env.VITE_DEV_SERVER_URL || 'http://127.0.0.1:4174/desktop.html';
 
@@ -73,6 +79,11 @@ process.on('unhandledRejection', async (error) => {
 });
 
 writeStartupLogSync('main module loaded');
+
+if (!app || !BrowserWindow || !dialog || !ipcMain || !shell) {
+  writeStartupLogSync(`electron bootstrap invalid type=${typeof electron} runAsNode=${process.env.ELECTRON_RUN_AS_NODE || '<unset>'}`);
+  throw new Error('Electron main APIs are unavailable. Ensure ELECTRON_RUN_AS_NODE is unset before launch.');
+}
 
 const toCsv = (rows = []) => {
   if (!rows.length) return '';
@@ -301,6 +312,73 @@ ipcMain.handle('flightdeck:reveal-path', async (_event, payload) => {
   if (!payload?.filePath) return false;
   shell.showItemInFolder(payload.filePath);
   return true;
+});
+
+ipcMain.handle('flightdeck:get-analytics-data', async (_event, payload) => {
+  try {
+    const { getAnalyticsData } = await import('./services/admin.mjs');
+    const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
+    // Note: This would need actual database connection in production
+    // For now, return mock data
+    return getAnalyticsData(null, workspaceRoot);
+  } catch (error) {
+    await writeStartupLog(`Analytics error: ${error.message}`);
+    return {};
+  }
+});
+
+ipcMain.handle('flightdeck:export-analytics-report', async (_event, payload) => {
+  try {
+    const result = await dialog.showSaveDialog(mainWindow, {
+      defaultPath: `analytics-report-${new Date().toISOString().split('T')[0]}.${payload?.type || 'json'}`,
+      title: 'Export Analytics Report',
+    });
+
+    if (result.canceled || !result.filePath) return null;
+
+    const reportData = {
+      generated: new Date().toISOString(),
+      type: payload?.type || 'json',
+      workspace: payload?.workspaceRoot,
+    };
+
+    const serialized = JSON.stringify(reportData, null, 2);
+    await fs.writeFile(result.filePath, serialized, 'utf8');
+    return { filePath: result.filePath };
+  } catch (error) {
+    await writeStartupLog(`Export analytics error: ${error.message}`);
+    return null;
+  }
+});
+
+ipcMain.handle('flightdeck:get-system-stats', async (_event, payload) => {
+  try {
+    const { getSystemStats } = await import('./services/admin.mjs');
+    return getSystemStats();
+  } catch (error) {
+    await writeStartupLog(`System stats error: ${error.message}`);
+    return {};
+  }
+});
+
+ipcMain.handle('flightdeck:clear-cache', async (_event, payload) => {
+  try {
+    const { clearCache } = await import('./services/admin.mjs');
+    return clearCache();
+  } catch (error) {
+    await writeStartupLog(`Clear cache error: ${error.message}`);
+    return { cleared: false, error: error.message };
+  }
+});
+
+ipcMain.handle('flightdeck:optimize-system', async (_event, payload) => {
+  try {
+    const { optimizeSystem } = await import('./services/admin.mjs');
+    return optimizeSystem();
+  } catch (error) {
+    await writeStartupLog(`Optimize system error: ${error.message}`);
+    return { optimized: false, error: error.message };
+  }
 });
 
 app.whenReady().then(async () => {

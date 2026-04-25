@@ -4,6 +4,8 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 $viteProcess = $null
 
 try {
+    Remove-Item Env:ELECTRON_RUN_AS_NODE -ErrorAction SilentlyContinue
+
     $viteProcess = Start-Process -FilePath "npm.cmd" `
         -ArgumentList @("run", "dev", "--", "--host", "127.0.0.1", "--port", "4174") `
         -WorkingDirectory $repoRoot `

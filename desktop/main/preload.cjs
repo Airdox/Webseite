@@ -20,4 +20,10 @@ contextBridge.exposeInMainWorld('flightDeckApi', {
   syncTrackStats: (payload) => ipcRenderer.invoke('flightdeck:sync-track-stats', payload),
   exportRecords: (payload) => ipcRenderer.invoke('flightdeck:export-records', payload),
   revealPath: (payload) => ipcRenderer.invoke('flightdeck:reveal-path', payload),
+  // New admin API handlers
+  getAnalyticsData: (payload) => ipcRenderer.invoke('flightdeck:get-analytics-data', payload),
+  exportAnalyticsReport: (payload) => ipcRenderer.invoke('flightdeck:export-analytics-report', payload),
+  getSystemStats: (payload) => ipcRenderer.invoke('flightdeck:get-system-stats', payload),
+  clearCache: (payload) => ipcRenderer.invoke('flightdeck:clear-cache', payload),
+  optimizeSystem: (payload) => ipcRenderer.invoke('flightdeck:optimize-system', payload),
 });

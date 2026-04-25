@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "desktop:dev": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/desktop-dev.ps1",
-    "desktop:start": "electron .",
+    "desktop:start": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"Remove-Item Env:ELECTRON_RUN_AS_NODE -ErrorAction SilentlyContinue; electron .\"",
     "desktop:dist": "npm run build && electron-builder --win portable",
     "desktop:test": "vitest run src/desktop/__tests__",
     "lint": "eslint .",
@@ -41,7 +41,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "drizzle-kit": "^0.31.8",
     "electron": "^41.3.0",
-    "electron-builder": "^26.8.1",
+    "electron-builder": "^26.9.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
@@ -57,6 +57,9 @@
     "directories": {
       "output": "release"
     },
+    "toolsets": {
+      "winCodeSign": "1.0.0"
+    },
     "files": [
       "dist/**/*",
       "desktop/**/*",
@@ -64,6 +67,7 @@
       "package.json"
     ],
     "win": {
+      "signAndEditExecutable": false,
       "target": [
         "portable"
       ],

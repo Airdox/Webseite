@@ -1,17 +1,28 @@
 import React, { startTransition, useCallback, useDeferredValue, useEffect, useState } from 'react';
-import { CircleAlert, Database, LayoutDashboard, RadioTower, UploadCloud } from 'lucide-react';
+import {
+  CircleAlert, Database, LayoutDashboard, RadioTower, UploadCloud,
+  BarChart3, Settings2, Package, Activity
+} from 'lucide-react';
 import { flightDeckApi } from './api.js';
 import OverviewTab from './components/OverviewTab.jsx';
 import DataExplorerTab from './components/DataExplorerTab.jsx';
 import SetImportTab from './components/SetImportTab.jsx';
 import FlightDeckTab from './components/FlightDeckTab.jsx';
+import AdvancedAnalyticsTab from './components/AdvancedAnalyticsTab.jsx';
+import BatchImportTab from './components/BatchImportTab.jsx';
+import AdvancedSettingsTab from './components/AdvancedSettingsTab.jsx';
+import SystemMonitorTab from './components/SystemMonitorTab.jsx';
 import './desktop.css';
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+  { id: 'analytics', label: 'Analytics', icon: BarChart3 },
   { id: 'explorer', label: 'Data Explorer', icon: Database },
   { id: 'import', label: 'Set Import', icon: UploadCloud },
+  { id: 'batch', label: 'Batch Import', icon: Package },
   { id: 'flightdeck', label: 'Flight Deck', icon: RadioTower },
+  { id: 'settings', label: 'Advanced Settings', icon: Settings2 },
+  { id: 'monitor', label: 'System Monitor', icon: Activity },
 ];
 
 const matchesSearch = (row, search) => {
@@ -52,6 +63,12 @@ const DesktopApp = () => {
   const [warnings, setWarnings] = useState([]);
   const [publishLogs, setPublishLogs] = useState([]);
   const [lastPublish, setLastPublish] = useState(null);
+  const [analyticsData, setAnalyticsData] = useState({});
+  const [batchQueue, setBatchQueue] = useState([]);
+  const [isBatchRunning, setIsBatchRunning] = useState(false);
+  const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
+  const [systemStats, setSystemStats] = useState({});
+  const [saveStatus, setSaveStatus] = useState(null);
 
   const deferredSearch = useDeferredValue(search);
   const filteredRows = rows.filter((row) => matchesSearch(row, deferredSearch));
@@ -274,6 +291,159 @@ const DesktopApp = () => {
           onTrackRemove={removeTrack}
           publishLogs={publishLogs}
           lastPublish={lastPublish}
+        />
+      );
+    }
+
+    if (activeTab === 'analytics') {
+      return (
+        <AdvancedAnalyticsTab
+          analyticsData={analyticsData}
+          onExport={(type) => runAsyncAction(
+            () => flightDeckApi.exportAnalyticsReport({ workspaceRoot: settingsDraft?.workspaceRoot, type }),
+            `${type} Report exportiert.`,
+          )}
+          onRefresh={async () => {
+            const data = await runAsyncAction(
+              () => flightDeckApi.getAnalyticsData({ workspaceRoot: settingsDraft?.workspaceRoot }),
+              'Analytics aktualisiert.',
+            );
+            if (data) setAnalyticsData(data);
+          }}
+          busy={busy}
+        />
+      );
+    }
+
+    if (activeTab === 'batch') {
+      return (
+        <BatchImportTab
+          batchQueue={batchQueue}
+          onAddItems={async (files) => {
+            const items = files.map((file) => ({
+              id: `${Date.now()}-${Math.random()}`,
+              fileName: file.name,
+              status: 'pending',
+              progress: 0,
+            }));
+            setBatchQueue([...batchQueue, ...items]);
+          }}
+          onRemoveItem={(index) => {
+            setBatchQueue(batchQueue.filter((_, i) => i !== index));
+          }}
+          onStartBatch={async () => {
+            setIsBatchRunning(true);
+            const total = batchQueue.filter((item) => item.status === 'pending').length;
+            let current = 0;
+            setBatchProgress({ current, total });
+
+            for (let i = 0; i < batchQueue.length; i += 1) {
+              const item = batchQueue[i];
+              if (item.status !== 'pending') {
+                 
+                continue;
+              }
+
+              try {
+                setBatchQueue((prev) =>
+                  prev.map((it, idx) => (idx === i ? { ...it, status: 'processing' } : it)),
+                );
+
+                // Simulate batch processing
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+
+                current += 1;
+                setBatchProgress({ current, total });
+
+                setBatchQueue((prev) =>
+                  prev.map((it, idx) =>
+                    idx === i ? { ...it, status: 'success', message: 'Import erfolgreich' } : it,
+                  ),
+                );
+              } catch (error) {
+                setBatchQueue((prev) =>
+                  prev.map((it, idx) =>
+                    idx === i ? { ...it, status: 'error', errorMessage: error.message } : it,
+                  ),
+                );
+              }
+            }
+
+            setIsBatchRunning(false);
+          }}
+          onClearCompleted={() => {
+            setBatchQueue(batchQueue.filter((item) => item.status === 'pending'));
+          }}
+          onPauseBatch={() => {
+            setIsBatchRunning(false);
+          }}
+          isBatchRunning={isBatchRunning}
+          batchProgress={batchProgress}
+        />
+      );
+    }
+
+    if (activeTab === 'settings') {
+      return (
+        <AdvancedSettingsTab
+          settings={settingsDraft}
+          onSettingChange={(field, value) => setSettingsDraft((prev) => ({ ...prev, [field]: value }))}
+          onSave={async (newSettings) => {
+            setSaveStatus({ type: 'pending', message: 'Speichern...' });
+            const saved = await runAsyncAction(
+              () => flightDeckApi.saveSettings(newSettings),
+              'Settings gespeichert.',
+            );
+            if (saved) {
+              setSettingsDraft(saved);
+              setSaveStatus({ type: 'success', message: 'Erfolgreich gespeichert!' });
+              setTimeout(() => setSaveStatus(null), 3000);
+            } else {
+              setSaveStatus({ type: 'error', message: 'Speichern fehlgeschlagen.' });
+            }
+          }}
+          onReset={async () => {
+            const state = await runAsyncAction(
+              () => flightDeckApi.getState(),
+              'Settings zurückgesetzt.',
+            );
+            if (state) {
+              setSettingsDraft(state.settings);
+              setSaveStatus({ type: 'success', message: 'Zurückgesetzt!' });
+              setTimeout(() => setSaveStatus(null), 3000);
+            }
+          }}
+          gitStatus={appState.gitStatus}
+          busy={busy}
+          saveStatus={saveStatus}
+        />
+      );
+    }
+
+    if (activeTab === 'monitor') {
+      return (
+        <SystemMonitorTab
+          systemStats={systemStats}
+          onRefresh={async () => {
+            const stats = await runAsyncAction(
+              () => flightDeckApi.getSystemStats({ workspaceRoot: settingsDraft?.workspaceRoot }),
+              'System Monitor aktualisiert.',
+            );
+            if (stats) setSystemStats(stats);
+          }}
+          onClearCache={async () => {
+            await runAsyncAction(
+              () => flightDeckApi.clearCache({ workspaceRoot: settingsDraft?.workspaceRoot }),
+              'Cache gelöschrt.',
+            );
+          }}
+          onOptimize={async () => {
+            await runAsyncAction(
+              () => flightDeckApi.optimizeSystem({ workspaceRoot: settingsDraft?.workspaceRoot }),
+              'System optimiert.',
+            );
+          }}
+          busy={busy}
         />
       );
     }

@@ -177,31 +177,32 @@ Erfolgreich ausgefuehrt:
 - `npm run desktop:test`
 - `npm run build`
 - `npx playwright test e2e/desktop-flightdeck.spec.js`
+- `npm run desktop:dist`
 - gezieltes ESLint fuer `src/desktop`, `desktop/main`, `scratch/analyze_db.js`
+- Smoke-Start Quell-App (`electron.exe .`) mit bereinigter Umgebung
+- Smoke-Start `release/win-unpacked/AIRDOX Flight Deck.exe`
 
 Wichtig:
 
 - Das globale Repo-`lint` ist weiterhin rot, aber wegen bereits bestehender Altfehler ausserhalb des neuen Flight-Deck-Scopes, unter anderem in `.wrangler`, `Navigation.jsx`, `Magnetic.jsx`, `VIPSection.jsx`, `stats-sync.js` und weiteren vorhandenen Dateien.
-- Der direkte Dev-Start ueber `electron .` ist auf diesem Windows-Host nicht verlaesslich reproduzierbar. Die UI- und Renderer-Tests sind gruen, die Prozessverifikation des nativen Electron-Hosts bleibt in dieser Umgebung aber eingeschraenkt.
+- Falls die Umgebungsvariable `ELECTRON_RUN_AS_NODE` gesetzt ist, fehlen im Main-Prozess APIs wie `ipcMain.handle`. `desktop:dev` und `desktop:start` entfernen diese Variable deshalb explizit vor dem Start.
 
 ## Windows-Artefakte
 
 Erzeugte Artefakte:
 
+- Portable Windows-App: `release/AIRDOX-Flight-Deck-0.1.2.exe`
 - Unpacked App: `release/win-unpacked/`
-- Zip des unpacked Builds: `release/AIRDOX-Flight-Deck-win-unpacked.zip`
 
 Packaging-Hinweis:
 
-- `electron-builder` bricht in dieser Umgebung beim `winCodeSign`-Hilfspaket ab, weil 7-Zip dort symbolische Links nicht entpacken darf.
-- Der eigentliche App-Ordner `release/win-unpacked/` wird trotzdem erzeugt.
-- Das Problem liegt im lokalen Packaging-/Signing-Helfer, nicht im Vite-/Renderer-Build.
-- Der `win-unpacked`-Build wurde erzeugt, laesst sich in dieser nicht-interaktiven Session aber nicht belastbar bis zur sichtbaren GUI verifizieren. Die abgesicherten Nachweise in dieser Session sind daher Build, Unit-Tests, Browser-E2E und die erzeugten Windows-Artefakte.
+- `electron-builder` laeuft in dieser Umgebung erfolgreich durch und erstellt Portable-EXE plus `win-unpacked`.
+- Es gibt weiterhin eine Build-Warnung, dass kein eigenes App-Icon (`icon.ico`) im Projekt vorhanden ist; dann nutzt Electron das Fallback-Icon.
 
 ## Empfohlener naechster Schritt
 
 Fuer eine saubere finale Windows-Auslieferung:
 
-1. Windows-Developer-Mode oder Admin-Rechte fuer Symlink-Erstellung aktivieren.
-2. Optional ein eigenes `icon.ico` im Repo hinterlegen.
-3. Danach `npm run desktop:dist` erneut ausfuehren.
+1. Eigenes `icon.ico` im Repo hinterlegen.
+2. Optional Code-Signing-Zertifikat fuer finale Releases konfigurieren.
+3. CI-Job fuer `desktop:test`, Playwright und `desktop:dist` als Release-Gate setzen.
