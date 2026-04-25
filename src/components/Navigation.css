@@ -145,10 +145,54 @@
     width: 24px;
 }
 
-/* CTA Button */
+/* CTA Buttons Container */
+.nav-ctas {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.nav-auth-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-auth-btn:hover {
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px rgba(255, 16, 240, 0.5);
+}
+
 .nav-cta {
     padding: var(--space-2) var(--space-6);
     font-size: var(--text-xs);
+}
+
+/* Mobile Auth Buttons */
+.mobile-auth-btns {
+    display: flex;
+    gap: var(--space-4);
+    width: 100%;
+}
+
+.mobile-auth-btns .btn {
+    flex: 1;
+    font-size: 0.8rem;
+    padding: 15px;
+}
+
+.mobile-contact-link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-decoration: underline;
+    margin-top: 10px;
 }
 
 /* Mobile Menu Toggle */
@@ -292,7 +336,7 @@
    ===================================================== */
 
 @media (max-width: 1024px) {
-    .nav-cta {
+    .nav-ctas {
         display: none;
     }
 

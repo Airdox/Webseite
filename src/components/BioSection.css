@@ -428,3 +428,82 @@
         transform: rotate(180deg);
     }
 }
+
+/* =====================================================
+   RESIDENT ADVISOR TEASER
+   ===================================================== */
+
+.bio-ra-teaser {
+    margin-top: var(--space-10);
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    padding: var(--space-4);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius-md);
+    transition: all var(--duration-normal);
+}
+
+.bio-ra-teaser:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.ra-logo-mini {
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.ra-text p {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    margin: 0 0 5px 0;
+}
+
+.ra-link {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.ra-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #fff;
+    transition: width 0.3s ease;
+}
+
+.ra-link:hover::after {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .bio-ra-teaser {
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+}

@@ -1,6 +1,6 @@
 
 import { Router } from './router.js';
-import { handleStatsRequest, handleBookingRequest, handleAuthRequest } from '../lib/stats-logic.js';
+import { handleStatsRequest, handleBookingRequest, handleAuthRequest, handleSubscribeRequest } from '../lib/stats-logic.js';
 
 // Utility to sanitize filename (prevent path traversal but allow spaces)
 function sanitizeFilename(filename) {
@@ -120,7 +120,20 @@ router.get('/api/stats', async (request, env) => {
 // POST /api/stats
 router.post('/api/stats', async (request, env) => {
     const body = await request.json();
-    const result = await handleStatsRequest({ method: 'POST', rawBody: body, env });
+    
+    // Add Cloudflare metadata and User-Agent info to the body
+    const enrichedBody = {
+        ...body,
+        cf: request.cf, // Geolocation (Country, City, etc.)
+        referrer: request.headers.get('Referer'),
+    };
+
+    const result = await handleStatsRequest({ 
+        method: 'POST', 
+        rawBody: enrichedBody, 
+        env 
+    });
+    
     return new Response(JSON.stringify(result.body), {
         status: result.status,
         headers: { ...result.headers, ...corsHeaders, 'Content-Type': 'application/json' }
@@ -164,6 +177,25 @@ router.post('/api/auth', async (request, env) => {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
     }
+});
+
+// Alias routes for convenience [NEW]
+router.post('/api/login', async (request, env) => {
+    const body = await request.json();
+    const result = await handleAuthRequest({ body: { ...body, action: 'login' }, env });
+    return new Response(JSON.stringify(result.body), {
+        status: result.status,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+});
+
+router.post('/api/register', async (request, env) => {
+    const body = await request.json();
+    const result = await handleAuthRequest({ body: { ...body, action: 'register' }, env });
+    return new Response(JSON.stringify(result.body), {
+        status: result.status,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
 });
 
 export default {

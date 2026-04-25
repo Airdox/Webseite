@@ -117,6 +117,15 @@ const BioSection = () => {
                             <span className="tag">HYPNOTIC</span>
                             <span className="tag">UNDERGROUND</span>
                         </div>
+
+                        {/* Resident Advisor Teaser [NEW] */}
+                        <div className="bio-ra-teaser reveal stagger-4">
+                            <div className="ra-logo-mini">RA</div>
+                            <div className="ra-text">
+                                <p>OFFICIAL RESIDENT ADVISOR ARTIST PAGE</p>
+                                <a href="https://ra.co/dj/airdox" target="_blank" rel="noopener noreferrer" className="ra-link">VIEW PROFILE</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

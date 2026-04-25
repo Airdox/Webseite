@@ -1,0 +1,26 @@
+.global-visualizer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* Behind everything */
+    pointer-events: none;
+    opacity: 0.3;
+    transition: opacity 2s ease;
+    filter: blur(40px); /* Soft immersive look */
+}
+
+.global-visualizer.active {
+    opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+    .global-visualizer {
+        filter: blur(60px);
+        opacity: 0.2;
+    }
+    .global-visualizer.active {
+        opacity: 0.4;
+    }
+}

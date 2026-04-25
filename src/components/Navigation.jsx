@@ -9,7 +9,7 @@ const Navigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
-        const sectionIds = ['home', 'bio', 'music', 'vip', 'booking'];
+        const sectionIds = ['home', 'bio', 'press', 'music', 'vip', 'booking'];
         let rafId = null;
 
         const handleScroll = () => {
@@ -66,6 +66,7 @@ const Navigation = () => {
     const navItems = [
         { id: 'home', label: t('nav.home') },
         { id: 'bio', label: t('nav.about') },
+        { id: 'press', label: 'EPK' },
         { id: 'music', label: t('nav.music') },
         { id: 'vip', label: 'VIP' },
         { id: 'booking', label: t('nav.booking') },
@@ -131,14 +132,23 @@ const Navigation = () => {
                         </a>
                     </div>
 
-                    {/* CTA Button */}
-                    <a
-                        href="mailto:airdox82@gmail.com"
-                        className="nav-cta btn btn-primary interactive"
-                        onClick={() => trackNav('contact_email')}
-                    >
-                        {t('nav.contact')}
-                    </a>
+                    {/* CTA Buttons */}
+                    <div className="nav-ctas">
+                        <button
+                            type="button"
+                            className="nav-auth-btn interactive"
+                            onClick={() => onOpenAuth('login')}
+                        >
+                            LOGIN
+                        </button>
+                        <a
+                            href="mailto:airdox82@gmail.com"
+                            className="nav-cta btn btn-primary interactive"
+                            onClick={() => trackNav('contact_email')}
+                        >
+                            {t('nav.contact')}
+                        </a>
+                    </div>
 
                     {/* Mobile Menu Button */}
                     <button
@@ -177,12 +187,17 @@ const Navigation = () => {
                     ))}
 
                     <div className="mobile-menu-footer">
-                        <a href="mailto:airdox82@gmail.com" className="btn btn-primary">
+                        <div className="mobile-auth-btns">
+                            <button onClick={() => onOpenAuth('login')} className="btn btn-secondary">LOGIN</button>
+                            <button onClick={() => onOpenAuth('register')} className="btn btn-primary">JOIN VIP</button>
+                        </div>
+                        <a href="mailto:airdox82@gmail.com" className="mobile-contact-link">
                             {t('nav.getInTouch')}
                         </a>
                         <div className="mobile-socials">
                             <a href="https://soundcloud.com/airdox" target="_blank" rel="noopener noreferrer" onClick={() => window.airdoxAnalytics?.trackOutboundLink('SoundCloud_MobileNav', 'https://soundcloud.com/airdox')}>SoundCloud</a>
                             <a href="https://instagram.com/airdox_bln" target="_blank" rel="noopener noreferrer" onClick={() => window.airdoxAnalytics?.trackOutboundLink('Instagram_MobileNav', 'https://instagram.com/airdox_bln')}>Instagram</a>
+                            <a href="https://ra.co/dj/airdox" target="_blank" rel="noopener noreferrer" onClick={() => window.airdoxAnalytics?.trackOutboundLink('RA_MobileNav', 'https://ra.co/dj/airdox')}>Resident Advisor</a>
                         </div>
                         <div className="mobile-lang-toggle">
                             <a

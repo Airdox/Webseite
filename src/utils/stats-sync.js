@@ -15,6 +15,42 @@ const buildStatsUrl = (base) => (base ? `${base}/api/stats` : '/api/stats');
 const PRIMARY_STATS_URL = buildStatsUrl(STATS_API_BASE);
 const FALLBACK_STATS_URL = STATS_API_FALLBACK ? buildStatsUrl(STATS_API_FALLBACK) : null;
 
+// Helper to get device/browser/os info
+const getMetadata = () => {
+    if (typeof navigator === 'undefined') return {};
+    const ua = navigator.userAgent;
+    let browser = "Other";
+    let os = "Other";
+    let device = "Desktop";
+
+    if (/Mobi|Android|iPhone/i.test(ua)) device = "Mobile";
+    else if (/Tablet|iPad/i.test(ua)) device = "Tablet";
+
+    if (ua.includes("Firefox")) browser = "Firefox";
+    else if (ua.includes("Chrome")) browser = "Chrome";
+    else if (ua.includes("Safari") && !ua.includes("Chrome")) browser = "Safari";
+    else if (ua.includes("Edge")) browser = "Edge";
+
+    if (ua.includes("Windows NT")) os = "Windows";
+    else if (ua.includes("Mac OS X")) os = "macOS";
+    else if (ua.includes("Android")) os = "Android";
+    else if (ua.includes("iPhone") || ua.includes("iPad")) os = "iOS";
+    else if (ua.includes("Linux")) os = "Linux";
+
+    return { device, browser, os };
+};
+
+// Generate or get persistent session ID
+const getSessionId = () => {
+    if (typeof localStorage === 'undefined') return null;
+    let sid = localStorage.getItem('airdox_sid');
+    if (!sid) {
+        sid = 's_' + Math.random().toString(36).substring(2, 15);
+        localStorage.setItem('airdox_sid', sid);
+    }
+    return sid;
+};
+
 class StatsSync {
     constructor() {
         this.queue = this.loadQueue();
@@ -88,7 +124,13 @@ class StatsSync {
     }
 
     async updateStats(id, type, isQueueRetry = false) {
-        const payload = JSON.stringify({ id, type });
+        const metadata = getMetadata();
+        const payload = JSON.stringify({ 
+            id, 
+            type, 
+            sessionId: getSessionId(),
+            ...metadata 
+        });
         
         const postOnce = async (url) => {
             try {

@@ -24,6 +24,7 @@ const Footer = () => {
         { name: 'SoundCloud', url: 'https://soundcloud.com/airdox' },
         { name: 'Mixcloud', url: 'https://www.mixcloud.com/Airdox/' },
         { name: 'Instagram', url: 'https://instagram.com/airdox_bln' },
+        { name: 'Resident Advisor', url: 'https://ra.co/dj/airdox' }, // [NEW]
         { name: 'Email', url: 'mailto:airdox82@gmail.com' },
     ];
 

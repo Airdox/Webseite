@@ -9,8 +9,12 @@ import SmoothScroll from './components/SmoothScroll';
 const MusicSection = lazy(() => import('./components/MusicSection'));
 const VIPSection = lazy(() => import('./components/VIPSection'));
 const BioSection = lazy(() => import('./components/BioSection'));
+const EPKSection = lazy(() => import('./components/EPKSection')); // [NEW]
+const Newsletter = lazy(() => import('./components/Newsletter')); // [NEW]
 const BookingSection = lazy(() => import('./components/BookingSection'));
 const Footer = lazy(() => import('./components/Footer'));
+const Visualizer = lazy(() => import('./components/Visualizer')); // [NEW]
+const AuthModal = lazy(() => import('./components/AuthModal')); // [NEW]
 import GlobalPlayer from './components/GlobalPlayer';
 
 import SetNotification from './components/SetNotification';
@@ -48,6 +52,10 @@ const LoadingScreen = ({ progress, isLoaded }) => (
 function App() {
   const [loading, setLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [authModal, setAuthModal] = useState({ isOpen: false, mode: 'login' });
+
+  const openAuth = (mode = 'login') => setAuthModal({ isOpen: true, mode });
+  const closeAuth = () => setAuthModal({ ...authModal, isOpen: false });
 
   useEffect(() => {
     // Simulate loading progress
@@ -104,13 +112,22 @@ function App() {
         <SmoothScroll>
           <LoadingScreen progress={loadingProgress} isLoaded={!loading} />
           <div className="app">
-            <Navigation />
+            <Suspense fallback={null}>
+              <Visualizer />
+            </Suspense>
+            <Navigation onOpenAuth={openAuth} />
           <Hero />
           <Suspense fallback={<SectionLoading />}>
             <BioSection />
           </Suspense>
           <Suspense fallback={<SectionLoading />}>
+            <EPKSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoading />}>
             <MusicSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoading />}>
+            <Newsletter />
           </Suspense>
           <Suspense fallback={<SectionLoading />}>
             <VIPSection />
@@ -125,6 +142,13 @@ function App() {
           <CookieBanner />
           <GlobalPlayer />
           <AnalyticsDashboard />
+          <Suspense fallback={null}>
+            <AuthModal 
+              isOpen={authModal.isOpen} 
+              onClose={closeAuth} 
+              initialMode={authModal.mode} 
+            />
+          </Suspense>
           </div>
         </SmoothScroll>
       </AudioProvider>
