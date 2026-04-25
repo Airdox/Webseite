@@ -1,8 +1,13 @@
 {
   "name": "airdox-webseite",
+  "main": "src/server/worker.js",
   "compatibility_date": "2026-04-11",
   "compatibility_flags": ["nodejs_compat"],
-  "pages_build_output_dir": "dist",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application",
+    "binding": "ASSETS"
+  },
   "r2_buckets": [
     {
       "binding": "PUBLIC",
