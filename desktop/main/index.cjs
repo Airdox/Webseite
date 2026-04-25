@@ -1,18 +1,78 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron';
-import { getDashboardSnapshot, listTableRows, updateTrackStats, updateSubscriber, deleteRecords, createVipUser, resetVipPassword, revokeSession, runReadonlyQuery, seedTrackStats } from './services/database.mjs';
-import { readSets } from './services/manifest.mjs';
-import { prepareImportBundle, publishSet } from './services/pipeline.mjs';
-import { loadSettings, saveSettings } from './services/state.mjs';
-import { getGitStatus, isWorkspaceRoot } from './services/workspace.mjs';
+const fs = require('node:fs/promises');
+const fsSync = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DIST_DESKTOP_PATH = path.resolve(__dirname, '../../dist/desktop.html');
 const DEV_DESKTOP_URL = process.env.VITE_DEV_SERVER_URL || 'http://127.0.0.1:4174/desktop.html';
 
 let mainWindow = null;
+let servicesPromise = null;
+
+const getServices = async () => {
+  if (!servicesPromise) {
+    servicesPromise = Promise.all([
+      import('./services/database.mjs'),
+      import('./services/manifest.mjs'),
+      import('./services/pipeline.mjs'),
+      import('./services/state.mjs'),
+      import('./services/workspace.mjs'),
+    ]).then(([database, manifest, pipeline, state, workspace]) => ({
+      ...database,
+      readSets: manifest.readSets,
+      prepareImportBundle: pipeline.prepareImportBundle,
+      publishSet: pipeline.publishSet,
+      loadSettings: state.loadSettings,
+      saveSettings: state.saveSettings,
+      getGitStatus: workspace.getGitStatus,
+      isWorkspaceRoot: workspace.isWorkspaceRoot,
+    }));
+  }
+
+  return servicesPromise;
+};
+
+const getStartupLogPath = () => {
+  try {
+    if (app.isReady()) {
+      return path.join(app.getPath('userData'), 'flightdeck-startup.log');
+    }
+  } catch {
+    // fall through to temp log path
+  }
+
+  return path.join(os.tmpdir(), 'airdox-flightdeck-startup.log');
+};
+
+const writeStartupLog = async (message) => {
+  try {
+    const logPath = getStartupLogPath();
+    await fs.mkdir(path.dirname(logPath), { recursive: true });
+    await fs.appendFile(logPath, `[${new Date().toISOString()}] ${message}\n`, 'utf8');
+  } catch {
+    // ignore logging failures
+  }
+};
+
+const writeStartupLogSync = (message) => {
+  try {
+    const logPath = getStartupLogPath();
+    fsSync.mkdirSync(path.dirname(logPath), { recursive: true });
+    fsSync.appendFileSync(logPath, `[${new Date().toISOString()}] ${message}\n`, 'utf8');
+  } catch {
+    // ignore logging failures
+  }
+};
+
+process.on('uncaughtException', async (error) => {
+  await writeStartupLog(`uncaughtException: ${error.stack || error.message}`);
+});
+
+process.on('unhandledRejection', async (error) => {
+  await writeStartupLog(`unhandledRejection: ${error?.stack || error?.message || error}`);
+});
+
+writeStartupLogSync('main module loaded');
 
 const toCsv = (rows = []) => {
   if (!rows.length) return '';
@@ -25,14 +85,18 @@ const toCsv = (rows = []) => {
   return `${lines.join('\n')}\n`;
 };
 
+const getUserDataPath = () => app.getPath('userData');
+
 const resolveWorkspaceRoot = async (explicitWorkspaceRoot = '') => {
   if (explicitWorkspaceRoot) return explicitWorkspaceRoot;
-  const settings = await loadSettings();
+  const { loadSettings } = await getServices();
+  const settings = await loadSettings(getUserDataPath());
   return settings.workspaceRoot;
 };
 
 const getAppState = async () => {
-  const settings = await loadSettings();
+  const { loadSettings, readSets, getDashboardSnapshot, getGitStatus, isWorkspaceRoot } = await getServices();
+  const settings = await loadSettings(getUserDataPath());
   const workspaceValid = await isWorkspaceRoot(settings.workspaceRoot);
 
   if (!workspaceValid) {
@@ -61,6 +125,10 @@ const getAppState = async () => {
 };
 
 const createWindow = async () => {
+  const appRoot = app.getAppPath();
+  const preloadPath = path.join(__dirname, 'preload.cjs');
+  const distDesktopPath = path.join(appRoot, 'dist', 'desktop.html');
+
   mainWindow = new BrowserWindow({
     width: 1600,
     height: 1040,
@@ -69,27 +137,56 @@ const createWindow = async () => {
     backgroundColor: '#141916',
     title: 'AIRDOX Flight Deck',
     webPreferences: {
-      preload: path.join(__dirname, 'preload.mjs'),
+      preload: preloadPath,
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: false,
     },
   });
 
-  if (!app.isPackaged) {
-    await mainWindow.loadURL(DEV_DESKTOP_URL);
-    mainWindow.webContents.openDevTools({ mode: 'detach' });
-    return;
-  }
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
 
-  await mainWindow.loadFile(DIST_DESKTOP_PATH);
+  mainWindow.webContents.on('did-fail-load', async (_event, errorCode, errorDescription, validatedURL) => {
+    await writeStartupLog(`did-fail-load code=${errorCode} description=${errorDescription} url=${validatedURL}`);
+  });
+
+  mainWindow.webContents.on('render-process-gone', async (_event, details) => {
+    await writeStartupLog(`render-process-gone reason=${details.reason} exitCode=${details.exitCode}`);
+  });
+
+  try {
+    if (!app.isPackaged) {
+      try {
+        await mainWindow.loadURL(DEV_DESKTOP_URL);
+        mainWindow.webContents.openDevTools({ mode: 'detach' });
+        await writeStartupLog(`loaded dev url ${DEV_DESKTOP_URL}`);
+        return;
+      } catch (error) {
+        await writeStartupLog(`dev url failed, falling back to dist file: ${error.message}`);
+      }
+    }
+
+    await mainWindow.loadFile(distDesktopPath);
+    await writeStartupLog(`loaded desktop file ${distDesktopPath}`);
+  } catch (error) {
+    await writeStartupLog(`window startup error: ${error.stack || error.message}`);
+    throw error;
+  }
 };
 
 ipcMain.handle('flightdeck:get-state', getAppState);
 
-ipcMain.handle('flightdeck:get-settings', async () => loadSettings());
+ipcMain.handle('flightdeck:get-settings', async () => {
+  const { loadSettings } = await getServices();
+  return loadSettings(getUserDataPath());
+});
 
-ipcMain.handle('flightdeck:save-settings', async (_event, patch) => saveSettings(patch));
+ipcMain.handle('flightdeck:save-settings', async (_event, patch) => {
+  const { saveSettings } = await getServices();
+  return saveSettings(getUserDataPath(), patch);
+});
 
 ipcMain.handle('flightdeck:select-workspace', async () => {
   const result = await dialog.showOpenDialog(mainWindow, {
@@ -98,7 +195,8 @@ ipcMain.handle('flightdeck:select-workspace', async () => {
   });
 
   if (result.canceled || !result.filePaths[0]) return null;
-  return saveSettings({ workspaceRoot: result.filePaths[0] });
+  const { saveSettings } = await getServices();
+  return saveSettings(getUserDataPath(), { workspaceRoot: result.filePaths[0] });
 });
 
 ipcMain.handle('flightdeck:pick-import-files', async () => {
@@ -110,7 +208,8 @@ ipcMain.handle('flightdeck:pick-import-files', async () => {
 });
 
 ipcMain.handle('flightdeck:prepare-import', async (_event, payload) => {
-  const settings = payload?.settings || await loadSettings();
+  const { loadSettings, prepareImportBundle } = await getServices();
+  const settings = payload?.settings || await loadSettings(getUserDataPath());
   return prepareImportBundle({
     filePaths: payload?.filePaths || [],
     settings,
@@ -118,7 +217,8 @@ ipcMain.handle('flightdeck:prepare-import', async (_event, payload) => {
 });
 
 ipcMain.handle('flightdeck:publish-set', async (_event, payload) => {
-  const settings = await loadSettings();
+  const { loadSettings, publishSet } = await getServices();
+  const settings = await loadSettings(getUserDataPath());
   const workspaceRoot = payload?.workspaceRoot || settings.workspaceRoot;
   return publishSet({
     workspaceRoot,
@@ -128,46 +228,55 @@ ipcMain.handle('flightdeck:publish-set', async (_event, payload) => {
 });
 
 ipcMain.handle('flightdeck:list-table', async (_event, payload) => {
+  const { listTableRows } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
   return listTableRows(workspaceRoot, payload?.table, payload?.limit || 200);
 });
 
 ipcMain.handle('flightdeck:update-track-stats', async (_event, payload) => {
+  const { updateTrackStats } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
   return updateTrackStats(workspaceRoot, payload?.row);
 });
 
 ipcMain.handle('flightdeck:update-subscriber', async (_event, payload) => {
+  const { updateSubscriber } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
   return updateSubscriber(workspaceRoot, payload?.row);
 });
 
 ipcMain.handle('flightdeck:delete-records', async (_event, payload) => {
+  const { deleteRecords } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
   return deleteRecords(workspaceRoot, payload?.table, payload?.ids);
 });
 
 ipcMain.handle('flightdeck:create-vip-user', async (_event, payload) => {
+  const { createVipUser } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
   return createVipUser(workspaceRoot, payload);
 });
 
 ipcMain.handle('flightdeck:reset-vip-password', async (_event, payload) => {
+  const { resetVipPassword } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
   return resetVipPassword(workspaceRoot, payload);
 });
 
 ipcMain.handle('flightdeck:revoke-session', async (_event, payload) => {
+  const { revokeSession } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
   return revokeSession(workspaceRoot, payload?.sessionId);
 });
 
 ipcMain.handle('flightdeck:run-readonly-query', async (_event, payload) => {
+  const { runReadonlyQuery } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
   return runReadonlyQuery(workspaceRoot, payload?.queryText || '');
 });
 
 ipcMain.handle('flightdeck:sync-track-stats', async (_event, payload) => {
+  const { readSets, seedTrackStats } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
   const sets = await readSets(workspaceRoot);
   await seedTrackStats(workspaceRoot, sets.map((entry) => entry.id));
@@ -195,6 +304,7 @@ ipcMain.handle('flightdeck:reveal-path', async (_event, payload) => {
 });
 
 app.whenReady().then(async () => {
+  await writeStartupLog('app.whenReady resolved');
   await createWindow();
 
   app.on('activate', async () => {

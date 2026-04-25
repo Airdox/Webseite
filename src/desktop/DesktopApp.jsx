@@ -1,4 +1,4 @@
-import React, { startTransition, useDeferredValue, useEffect, useState } from 'react';
+import React, { startTransition, useCallback, useDeferredValue, useEffect, useState } from 'react';
 import { CircleAlert, Database, LayoutDashboard, RadioTower, UploadCloud } from 'lucide-react';
 import { flightDeckApi } from './api.js';
 import OverviewTab from './components/OverviewTab.jsx';
@@ -72,21 +72,21 @@ const DesktopApp = () => {
     }
   };
 
-  const refreshTable = async (currentTable = tableName) => {
+  const refreshTable = useCallback(async (currentTable = tableName, workspaceRoot = settingsDraft?.workspaceRoot) => {
     if (!appState.workspaceValid) {
       setRows([]);
       return;
     }
     setBusy(true);
     try {
-      const nextRows = await flightDeckApi.listTable({ table: currentTable, workspaceRoot: settingsDraft?.workspaceRoot });
+      const nextRows = await flightDeckApi.listTable({ table: currentTable, workspaceRoot });
       startTransition(() => setRows(nextRows));
     } catch (error) {
       setNotice({ tone: 'error', message: error.message });
     } finally {
       setBusy(false);
     }
-  };
+  }, [appState.workspaceValid, settingsDraft?.workspaceRoot, tableName]);
 
   useEffect(() => {
     refreshState();
@@ -94,9 +94,9 @@ const DesktopApp = () => {
 
   useEffect(() => {
     if (settingsDraft) {
-      refreshTable(tableName);
+      refreshTable(tableName, settingsDraft.workspaceRoot);
     }
-  }, [tableName, appState.workspaceValid]);
+  }, [tableName, appState.workspaceValid, refreshTable, settingsDraft]);
 
   const runAsyncAction = async (work, successMessage) => {
     setBusy(true);
@@ -108,7 +108,7 @@ const DesktopApp = () => {
       return result;
     } catch (error) {
       setNotice({ tone: 'error', message: error.message });
-      throw error;
+      return null;
     } finally {
       setBusy(false);
     }
@@ -121,6 +121,7 @@ const DesktopApp = () => {
       () => flightDeckApi.prepareImport({ filePaths: selectedPaths, settings: settingsDraft }),
       'Import-Draft aktualisiert.',
     );
+    if (!result) return;
     setDraft(result.draft);
     setWarnings(result.warnings || []);
     setActiveTab('import');
@@ -131,6 +132,7 @@ const DesktopApp = () => {
       () => flightDeckApi.saveSettings(settingsDraft),
       'Flight-Deck-Settings gespeichert.',
     );
+    if (!nextSettings) return;
     setSettingsDraft(nextSettings);
     await refreshState();
   };
@@ -158,6 +160,7 @@ const DesktopApp = () => {
       }),
       `Set ${draft.id} publiziert.`,
     );
+    if (!result) return;
     setPublishLogs(result.logs || []);
     setLastPublish(result);
     await refreshState();
@@ -248,6 +251,7 @@ const DesktopApp = () => {
               () => flightDeckApi.runReadonlyQuery({ workspaceRoot: settingsDraft?.workspaceRoot, queryText }),
               'Read-only Query ausgefuehrt.',
             );
+            if (!result) return;
             setQueryResult(result);
           }}
         />

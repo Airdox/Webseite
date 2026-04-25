@@ -189,7 +189,7 @@ const SessionsAdmin = ({ rows, onRevoke }) => (
           </button>
         </div>
         <p>{row.email}</p>
-        <small>{formatCell(row.created_at)} -> {formatCell(row.expires_at)}</small>
+        <small>{formatCell(row.created_at)} {'->'} {formatCell(row.expires_at)}</small>
       </section>
     ))}
   </div>

@@ -133,6 +133,7 @@ npx wrangler pages deploy dist
 ## 📖 Internal Documentation
 For deeper technical dives, refer to our specialized guides:
 - [Masterplan (Vision)](PROJECT_MASTERPLAN.md)
+- [Windows Flight Deck](docs/WINDOWS_FLIGHTDECK.md)
 - [Analytics Documentation](ANALYTICS_V2_DOKUMENTATION.md)
 - [Deployment Guide](DEPLOYMENT.md)
 - [Audio Player Logic](AUDIO_PLAYER_DOCS.md)

@@ -9,17 +9,20 @@ const formatDateTime = (value) => {
   }).format(new Date(value));
 };
 
-const MetricCard = ({ icon: Icon, label, value, tone }) => (
-  <section className={`fd-metric-card tone-${tone}`}>
-    <div className="fd-metric-icon">
-      <Icon size={18} />
-    </div>
-    <div>
-      <div className="fd-metric-label">{label}</div>
-      <div className="fd-metric-value">{value}</div>
-    </div>
-  </section>
-);
+const MetricCard = ({ icon, label, value, tone }) => {
+  const IconComponent = icon;
+  return (
+    <section className={`fd-metric-card tone-${tone}`}>
+      <div className="fd-metric-icon">
+        <IconComponent size={18} />
+      </div>
+      <div>
+        <div className="fd-metric-label">{label}</div>
+        <div className="fd-metric-value">{value}</div>
+      </div>
+    </section>
+  );
+};
 
 const OverviewTab = ({ snapshot, gitStatus, onRefresh, onSyncStats, busy }) => {
   if (!snapshot) {

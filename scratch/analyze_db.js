@@ -1,9 +1,15 @@
+/* global process */
 import { neon } from '@neondatabase/serverless';
-import fs from 'fs';
+import 'dotenv/config';
 
-const dbUrl = "postgresql://neondb_owner:npg_W1Yj3DiMLxsI@ep-crimson-unit-agr0rcfu-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
+const dbUrl = process.env.DATABASE_URL || process.env.NEON_DATABASE_URL || process.env.POSTGRES_URL;
 
 async function analyze() {
+    if (!dbUrl) {
+        console.error('No database URL configured in .env');
+        process.exit(1);
+    }
+
     const sql = neon(dbUrl);
     
     console.log("--- AIRDOX DATABASE ANALYSIS ---");
