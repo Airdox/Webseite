@@ -12,7 +12,8 @@
     "test": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "pages:deploy": "wrangler pages deploy dist --project-name=airdox-webseite"
   },
   "dependencies": {
     "@capacitor/android": "^8.3.0",
