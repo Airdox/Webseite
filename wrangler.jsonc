@@ -2,6 +2,7 @@
   "name": "airdox-webseite",
   "main": "src/server/worker.js",
   "compatibility_date": "2026-04-11",
+  "compatibility_flags": ["nodejs_compat"],
   "routes": [
     { "pattern": "airdox.info", "custom_domain": true },
     { "pattern": "www.airdox.info", "custom_domain": true }
