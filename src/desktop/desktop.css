@@ -1147,3 +1147,274 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+.fd-tutorial-hero,
+.fd-tutorial-card,
+.fd-tutorial-modal {
+  background: rgba(20, 25, 22, 0.92);
+  border: 1px solid rgba(146, 164, 152, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.24);
+}
+
+.fd-tutorial-hero {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.fd-tutorial-hero h2,
+.fd-tutorial-card h4 {
+  margin: 0;
+}
+
+.fd-tutorial-hero p,
+.fd-tutorial-card p,
+.fd-workflow-card p,
+.fd-tutorial-step p,
+.fd-checklist-copy span {
+  color: #aeb8ae;
+}
+
+.fd-tutorial-checklist,
+.fd-principle-list,
+.fd-tutorial-workflows,
+.fd-tutorial-steps,
+.fd-tutorial-mini-checklist,
+.fd-control-list,
+.fd-risk-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fd-principle-card,
+.fd-checklist-item,
+.fd-workflow-card,
+.fd-tutorial-step,
+.fd-mini-check,
+.fd-control-item,
+.fd-risk-item {
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.fd-principle-card,
+.fd-checklist-item,
+.fd-mini-check {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.fd-checklist-item.done,
+.fd-mini-check.done {
+  border-color: rgba(154, 223, 107, 0.28);
+  background: rgba(154, 223, 107, 0.08);
+}
+
+.fd-checklist-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fd-principle-card {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 14px 16px;
+}
+
+.fd-workflow-card,
+.fd-tutorial-card,
+.fd-tutorial-step,
+.fd-control-item {
+  padding: 16px;
+}
+
+.fd-workflow-card ol,
+.fd-tutorial-card ul,
+.fd-tutorial-card ol {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.fd-tutorial-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.fd-tutorial-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fd-tutorial-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fd-tour-meta,
+.fd-control-head,
+.fd-step-detail,
+.fd-risk-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.fd-tour-meta {
+  align-items: center;
+}
+
+.fd-tour-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.fd-tour-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #aeb8ae;
+  font-size: 0.78rem;
+}
+
+.fd-tour-badge.intent {
+  border-color: rgba(154, 223, 107, 0.24);
+  background: rgba(154, 223, 107, 0.1);
+  color: #d8f5bf;
+}
+
+.fd-control-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.fd-control-list.compact {
+  grid-template-columns: 1fr;
+}
+
+.fd-control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fd-control-head {
+  align-items: center;
+}
+
+.fd-control-head span,
+.fd-step-detail span {
+  color: #89a08e;
+  font-size: 0.82rem;
+}
+
+.fd-control-item p,
+.fd-control-item small,
+.fd-step-detail p {
+  margin: 0;
+}
+
+.fd-step-detail {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding-top: 4px;
+}
+
+.fd-step-detail.warning span {
+  color: #f3bd74;
+}
+
+.fd-risk-item {
+  align-items: flex-start;
+  padding: 12px 14px;
+  color: #f1d2a8;
+}
+
+.fd-risk-item span {
+  color: #f3d8b0;
+}
+
+.fd-tutorial-modal-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 16px;
+}
+
+.fd-tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.fd-tutorial-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 8, 7, 0.74);
+  backdrop-filter: blur(8px);
+}
+
+.fd-tutorial-modal {
+  position: relative;
+  z-index: 1;
+  width: min(980px, calc(100vw - 48px));
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fd-tutorial-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #aeb8ae;
+}
+
+.fd-mini-check {
+  width: 100%;
+  color: inherit;
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.fd-mini-check span {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .fd-tutorial-hero,
+  .fd-checklist-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fd-tutorial-grid,
+  .fd-control-list,
+  .fd-tutorial-modal-grid {
+    grid-template-columns: 1fr;
+  }
+}

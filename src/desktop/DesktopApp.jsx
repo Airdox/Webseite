@@ -1,7 +1,7 @@
 import React, { startTransition, useCallback, useDeferredValue, useEffect, useState } from 'react';
 import {
   CircleAlert, Database, LayoutDashboard, RadioTower, UploadCloud,
-  BarChart3, Settings2, Package, Activity
+  BarChart3, Settings2, Package, Activity, BookOpen
 } from 'lucide-react';
 import { flightDeckApi } from './api.js';
 import OverviewTab from './components/OverviewTab.jsx';
@@ -12,6 +12,9 @@ import AdvancedAnalyticsTab from './components/AdvancedAnalyticsTab.jsx';
 import BatchImportTab from './components/BatchImportTab.jsx';
 import AdvancedSettingsTab from './components/AdvancedSettingsTab.jsx';
 import SystemMonitorTab from './components/SystemMonitorTab.jsx';
+import TutorialTab from './components/TutorialTab.jsx';
+import GuidedTutorialOverlay from './components/GuidedTutorialOverlay.jsx';
+import { TUTORIAL_TOURS } from './lib/tutorialContent.js';
 import './desktop.css';
 
 const TABS = [
@@ -23,7 +26,20 @@ const TABS = [
   { id: 'flightdeck', label: 'Flight Deck', icon: RadioTower },
   { id: 'settings', label: 'Advanced Settings', icon: Settings2 },
   { id: 'monitor', label: 'System Monitor', icon: Activity },
+  { id: 'tutorial', label: 'Tutorial', icon: BookOpen },
 ];
+
+const TUTORIAL_CHECKLIST_KEY = 'flightdeck-tutorial-checklist';
+const TUTORIAL_WELCOME_KEY = 'flightdeck-tutorial-welcome-dismissed';
+const DEFAULT_TOUR_ID = 'full';
+
+const loadTutorialChecklist = () => {
+  try {
+    return JSON.parse(window.localStorage.getItem(TUTORIAL_CHECKLIST_KEY) || '{}');
+  } catch {
+    return {};
+  }
+};
 
 const matchesSearch = (row, search) => {
   if (!search) return true;
@@ -69,9 +85,31 @@ const DesktopApp = () => {
   const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
   const [systemStats, setSystemStats] = useState({});
   const [saveStatus, setSaveStatus] = useState(null);
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [tutorialTourId, setTutorialTourId] = useState(DEFAULT_TOUR_ID);
+  const [tutorialStepIndex, setTutorialStepIndex] = useState(0);
+  const [tutorialChecklist, setTutorialChecklist] = useState(loadTutorialChecklist);
 
   const deferredSearch = useDeferredValue(search);
   const filteredRows = rows.filter((row) => matchesSearch(row, deferredSearch));
+  const activeTutorialTour = TUTORIAL_TOURS[tutorialTourId] || TUTORIAL_TOURS[DEFAULT_TOUR_ID];
+  const tutorialSteps = activeTutorialTour.steps;
+
+  const markTutorialVisited = useCallback((tabId) => {
+    if (!tabId || tabId === 'tutorial') return;
+    setTutorialChecklist((currentChecklist) => {
+      if (currentChecklist[tabId]) {
+        return currentChecklist;
+      }
+      const nextChecklist = { ...currentChecklist, [tabId]: true };
+      try {
+        window.localStorage.setItem(TUTORIAL_CHECKLIST_KEY, JSON.stringify(nextChecklist));
+      } catch {
+        // ignore persistence errors
+      }
+      return nextChecklist;
+    });
+  }, []);
 
   const refreshState = async () => {
     setBusy(true);
@@ -110,10 +148,37 @@ const DesktopApp = () => {
   }, []);
 
   useEffect(() => {
+    markTutorialVisited(activeTab);
+  }, [activeTab, markTutorialVisited]);
+
+  useEffect(() => {
+    if (!flightDeckApi.isElectron) return;
+    try {
+      const dismissed = window.localStorage.getItem(TUTORIAL_WELCOME_KEY);
+      if (!dismissed) {
+        setTutorialOpen(true);
+      }
+    } catch {
+      setTutorialOpen(true);
+    }
+  }, []);
+
+  useEffect(() => {
     if (settingsDraft) {
       refreshTable(tableName, settingsDraft.workspaceRoot);
     }
   }, [tableName, appState.workspaceValid, refreshTable, settingsDraft]);
+
+  useEffect(() => {
+    if (!tutorialOpen) return;
+    const currentStep = tutorialSteps[tutorialStepIndex];
+    if (currentStep?.tabId && currentStep.tabId !== activeTab) {
+      setActiveTab(currentStep.tabId);
+    }
+    if (currentStep?.checklistId && currentStep.checklistId !== 'tutorial') {
+      markTutorialVisited(currentStep.checklistId);
+    }
+  }, [activeTab, markTutorialVisited, tutorialOpen, tutorialStepIndex, tutorialSteps]);
 
   const runAsyncAction = async (work, successMessage) => {
     setBusy(true);
@@ -206,6 +271,58 @@ const DesktopApp = () => {
       ...prev,
       tracks: (prev.tracks || []).filter((_, trackIndex) => trackIndex !== index),
     }));
+  };
+
+  const openTutorial = (target = null) => {
+    let nextTourId = DEFAULT_TOUR_ID;
+    let nextIndex = 0;
+
+    if (typeof target === 'string') {
+      if (TUTORIAL_TOURS[target]) {
+        nextTourId = target;
+      } else {
+        const defaultSteps = TUTORIAL_TOURS[DEFAULT_TOUR_ID].steps;
+        nextIndex = Math.max(defaultSteps.findIndex((step) => step.tabId === target), 0);
+      }
+    }
+
+    if (target && typeof target === 'object') {
+      if (target.tourId && TUTORIAL_TOURS[target.tourId]) {
+        nextTourId = target.tourId;
+      }
+      const nextSteps = TUTORIAL_TOURS[nextTourId].steps;
+      if (target.stepId) {
+        nextIndex = Math.max(nextSteps.findIndex((step) => step.id === target.stepId), 0);
+      } else if (target.tabId) {
+        nextIndex = Math.max(nextSteps.findIndex((step) => step.tabId === target.tabId), 0);
+      }
+    }
+
+    setTutorialTourId(nextTourId);
+    setTutorialStepIndex(nextIndex);
+    setTutorialOpen(true);
+  };
+
+  const closeTutorial = () => {
+    setTutorialOpen(false);
+    try {
+      window.localStorage.setItem(TUTORIAL_WELCOME_KEY, 'true');
+    } catch {
+      // ignore persistence errors
+    }
+  };
+
+  const goToTutorialStep = (direction) => {
+    const nextIndex = Math.min(
+      Math.max(tutorialStepIndex + direction, 0),
+      tutorialSteps.length - 1,
+    );
+    setTutorialStepIndex(nextIndex);
+  };
+
+  const jumpToTab = (tabId) => {
+    setActiveTab(tabId);
+    markTutorialVisited(tabId);
   };
 
   const renderTab = () => {
@@ -448,6 +565,16 @@ const DesktopApp = () => {
       );
     }
 
+    if (activeTab === 'tutorial') {
+      return (
+        <TutorialTab
+          checklistState={tutorialChecklist}
+          onJumpToTab={jumpToTab}
+          onStartTour={openTutorial}
+        />
+      );
+    }
+
     return (
       <FlightDeckTab
         settings={settingsDraft}
@@ -476,6 +603,14 @@ const DesktopApp = () => {
           <p>{settingsDraft?.workspaceRoot || 'Kein Workspace gewaehlt'}</p>
         </div>
         <div className="fd-runtime-meta">
+          <button
+            type="button"
+            className="fd-button secondary"
+            onClick={() => openTutorial({ tourId: DEFAULT_TOUR_ID, tabId: activeTab })}
+          >
+            <BookOpen size={16} />
+            Interaktive Tour
+          </button>
           <span className={`fd-status-pill ${appState.workspaceValid ? 'ok' : 'warn'}`}>
             {appState.workspaceValid ? 'Workspace verbunden' : 'Workspace fehlt'}
           </span>
@@ -511,6 +646,26 @@ const DesktopApp = () => {
       <main className="fd-main-content">
         {settingsDraft && renderTab()}
       </main>
+
+      <GuidedTutorialOverlay
+        isOpen={tutorialOpen}
+        tour={activeTutorialTour}
+        step={tutorialSteps[tutorialStepIndex]}
+        stepIndex={tutorialStepIndex}
+        totalSteps={tutorialSteps.length}
+        checklistState={tutorialChecklist}
+        onClose={closeTutorial}
+        onPrevious={() => goToTutorialStep(-1)}
+        onNext={() => {
+          if (tutorialStepIndex >= tutorialSteps.length - 1) {
+            closeTutorial();
+            jumpToTab('tutorial');
+            return;
+          }
+          goToTutorialStep(1);
+        }}
+        onJumpToTab={jumpToTab}
+      />
     </div>
   );
 };
