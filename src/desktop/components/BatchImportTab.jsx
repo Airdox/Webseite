@@ -208,7 +208,9 @@ const BatchImportTab = ({
                   item={item}
                   index={idx}
                   onRemove={(i) => onRemoveItem(i)}
-                  onStatusChange={() => {}}
+                  onStatusChange={() => {
+                    // Optional: implement retry logic
+                  }}
                 />
               ))}
             </div>

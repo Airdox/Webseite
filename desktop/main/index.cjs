@@ -2,15 +2,19 @@ const fs = require('node:fs/promises');
 const fsSync = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const { pathToFileURL } = require('node:url');
 const electron = require('electron');
 
 const app = electron?.app;
 const BrowserWindow = electron?.BrowserWindow;
 const dialog = electron?.dialog;
 const ipcMain = electron?.ipcMain;
+const net = electron?.net;
+const protocol = electron?.protocol;
 const shell = electron?.shell;
 
 const DEV_DESKTOP_URL = process.env.VITE_DEV_SERVER_URL || 'http://127.0.0.1:4174/desktop.html';
+const PACKAGED_DESKTOP_URL = 'app://flightdeck/desktop.html';
 
 let mainWindow = null;
 let servicesPromise = null;
@@ -80,7 +84,22 @@ process.on('unhandledRejection', async (error) => {
 
 writeStartupLogSync('main module loaded');
 
-if (!app || !BrowserWindow || !dialog || !ipcMain || !shell) {
+if (protocol?.registerSchemesAsPrivileged) {
+  protocol.registerSchemesAsPrivileged([
+    {
+      scheme: 'app',
+      privileges: {
+        standard: true,
+        secure: true,
+        supportFetchAPI: true,
+        corsEnabled: true,
+        stream: true,
+      },
+    },
+  ]);
+}
+
+if (!app || !BrowserWindow || !dialog || !ipcMain || !net || !protocol || !shell) {
   writeStartupLogSync(`electron bootstrap invalid type=${typeof electron} runAsNode=${process.env.ELECTRON_RUN_AS_NODE || '<unset>'}`);
   throw new Error('Electron main APIs are unavailable. Ensure ELECTRON_RUN_AS_NODE is unset before launch.');
 }
@@ -135,6 +154,21 @@ const getAppState = async () => {
   };
 };
 
+const registerAppProtocol = () => {
+  protocol.handle('app', (request) => {
+    const url = new URL(request.url);
+    const distRoot = path.join(app.getAppPath(), 'dist');
+    const relativePath = decodeURIComponent(url.pathname === '/' ? '/desktop.html' : url.pathname);
+    const assetPath = path.normalize(path.join(distRoot, relativePath));
+
+    if (!assetPath.startsWith(distRoot)) {
+      return new Response('Not found', { status: 404 });
+    }
+
+    return net.fetch(pathToFileURL(assetPath).toString());
+  });
+};
+
 const createWindow = async () => {
   const appRoot = app.getAppPath();
   const preloadPath = path.join(__dirname, 'preload.cjs');
@@ -163,6 +197,10 @@ const createWindow = async () => {
     await writeStartupLog(`did-fail-load code=${errorCode} description=${errorDescription} url=${validatedURL}`);
   });
 
+  mainWindow.webContents.on('console-message', async (_event, level, message, line, sourceId) => {
+    await writeStartupLog(`renderer-console level=${level} message=${message} line=${line} source=${sourceId}`);
+  });
+
   mainWindow.webContents.on('render-process-gone', async (_event, details) => {
     await writeStartupLog(`render-process-gone reason=${details.reason} exitCode=${details.exitCode}`);
   });
@@ -179,8 +217,8 @@ const createWindow = async () => {
       }
     }
 
-    await mainWindow.loadFile(distDesktopPath);
-    await writeStartupLog(`loaded desktop file ${distDesktopPath}`);
+    await mainWindow.loadURL(PACKAGED_DESKTOP_URL);
+    await writeStartupLog(`loaded desktop url ${PACKAGED_DESKTOP_URL} from ${distDesktopPath}`);
   } catch (error) {
     await writeStartupLog(`window startup error: ${error.stack || error.message}`);
     throw error;
@@ -383,6 +421,7 @@ ipcMain.handle('flightdeck:optimize-system', async (_event, payload) => {
 
 app.whenReady().then(async () => {
   await writeStartupLog('app.whenReady resolved');
+  registerAppProtocol();
   await createWindow();
 
   app.on('activate', async () => {
