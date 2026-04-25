@@ -20,6 +20,7 @@ import GlobalPlayer from './components/GlobalPlayer';
 import SetNotification from './components/SetNotification';
 import CookieBanner from './components/CookieBanner';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
+import AtmosphericBackground from './components/AtmosphericBackground';
 import './styles/global.css';
 
 // Loading Fallback Component
@@ -112,6 +113,7 @@ function App() {
         <SmoothScroll>
           <LoadingScreen progress={loadingProgress} isLoaded={!loading} />
           <div className="app">
+            <AtmosphericBackground />
             <Suspense fallback={null}>
               <Visualizer />
             </Suspense>

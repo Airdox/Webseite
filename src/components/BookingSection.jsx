@@ -68,18 +68,13 @@ const BookingSection = () => {
 
     return (
         <section className="booking-section section" id="booking" ref={sectionRef}>
-            <div className="booking-bg">
-                <div className="booking-gradient"></div>
-            </div>
-
             <div className="container">
                 <div className="booking-layout">
                     <div className="booking-info reveal-left">
-                        <div className="section-header">
-                            <span className="section-label">// GET IN TOUCH</span>
-                            <span className="section-label">{t('booking.sectionLabel')}</span>
+                        <div className="section-header" style={{ textAlign: 'left' }}>
+                            <span className="section-label" style={{ marginLeft: '30px' }}>{t('booking.sectionLabel')}</span>
                             <h2 className="section-title text-gradient">{t('booking.title')}</h2>
-                            <p className="section-subtitle">{t('booking.subtitle')}</p>
+                            <p className="section-subtitle" style={{ marginLeft: '0' }}>{t('booking.subtitle')}</p>
                         </div>
 
                         <div className="booking-details">
@@ -146,7 +141,7 @@ const BookingSection = () => {
 
                     <div className="booking-form-container reveal-right">
                         {submitted ? (
-                            <div className="form-success glass-card">
+                            <div className="form-success airdox-card">
                                 <div className="success-icon">✓</div>
                                 <h3>{t('booking.successTitle')}</h3>
                                 <p>{t('booking.successBody')}</p>
@@ -159,7 +154,7 @@ const BookingSection = () => {
                             </div>
                         ) : (
                             <form
-                                className="booking-form glass-card"
+                                className="booking-form airdox-card"
                                 onSubmit={handleSubmit}
                                 name="booking"
                                 method="POST"

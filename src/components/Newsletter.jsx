@@ -35,40 +35,45 @@ const Newsletter = () => {
     };
 
     return (
-        <section className="newsletter-section">
-            <div className="newsletter-container">
-                <div className="newsletter-content">
-                    <h2 className="newsletter-title">JOIN THE <span className="neon-text">UNDERGROUND</span></h2>
-                    <p className="newsletter-description">
-                        Receive exclusive sets, early access to downloads, and tour dates directly in your inbox.
-                    </p>
-                    
-                    <form className="newsletter-form" onSubmit={handleSubmit}>
-                        <div className="input-group">
-                            <input 
-                                type="email" 
-                                placeholder="YOUR-EMAIL@DOMAIN.COM" 
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                disabled={status === 'loading' || status === 'success'}
-                                required
-                                className="newsletter-input"
-                            />
-                            <button 
-                                type="submit" 
-                                className={`newsletter-submit ${status}`}
-                                disabled={status === 'loading' || status === 'success'}
-                            >
-                                {status === 'loading' ? 'SUBMITTING...' : 'SUBSCRIBE'}
-                            </button>
+        <section className="newsletter-section section">
+            <div className="container">
+                <div className="airdox-card reveal">
+                    <div className="newsletter-content">
+                        <div className="section-header" style={{ marginBottom: 'var(--space-8)' }}>
+                            <span className="section-label">COMMUNITY</span>
+                            <h2 className="section-title text-gradient" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>JOIN THE UNDERGROUND</h2>
                         </div>
-                    </form>
-                    
-                    {status !== 'idle' && (
-                        <p className={`newsletter-status-msg ${status}`}>
-                            {message}
+                        <p className="newsletter-description">
+                            Exklusive Sets, Early Access Downloads und Tourdaten direkt in dein Postfach.
                         </p>
-                    )}
+                        
+                        <form className="newsletter-form" onSubmit={handleSubmit}>
+                            <div className="input-group">
+                                <input 
+                                    type="email" 
+                                    placeholder="YOUR-EMAIL@DOMAIN.COM" 
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    disabled={status === 'loading' || status === 'success'}
+                                    required
+                                    className="newsletter-input"
+                                />
+                                <button 
+                                    type="submit" 
+                                    className={`btn btn-primary newsletter-submit ${status}`}
+                                    disabled={status === 'loading' || status === 'success'}
+                                >
+                                    {status === 'loading' ? 'SUBMITTING...' : 'SUBSCRIBE'}
+                                </button>
+                            </div>
+                        </form>
+                        
+                        {status !== 'idle' && (
+                            <p className={`newsletter-status-msg ${status}`}>
+                                {message}
+                            </p>
+                        )}
+                    </div>
                 </div>
             </div>
         </section>

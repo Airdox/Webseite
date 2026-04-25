@@ -36,34 +36,24 @@ const Visualizer = () => {
             const dataArray = new Uint8Array(bufferLength);
             analyser.getByteFrequencyData(dataArray);
 
-            // Calculate average frequency for pulsing effect
-            const average = dataArray.reduce((a, b) => a + b, 0) / bufferLength;
-            const pulse = (average / 255) * 0.15; // Max 15% pulse
-
-            // Apply pulse to the body for an immersive feel
-            document.body.style.backgroundColor = `rgba(0, ${pulse * 100}, ${pulse * 200}, 1)`;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            const barWidth = (canvas.width / bufferLength) * 2.5;
-            let barHeight;
+            const barWidth = (canvas.width / bufferLength) * 3;
             let x = 0;
 
             for (let i = 0; i < bufferLength; i++) {
-                barHeight = (dataArray[i] / 255) * canvas.height * 0.4;
-
-                // Add some glow and transparency
-                ctx.fillStyle = `rgba(${dataArray[i]}, 217, 255, ${dataArray[i] / 510})`;
+                const barHeight = (dataArray[i] / 255) * canvas.height * 0.3;
                 
-                // Draw symmetrical bars from the bottom
+                // Unified Cyan Glow for the bottom bars
+                const opacity = (dataArray[i] / 255) * 0.3;
+                ctx.fillStyle = `rgba(0, 245, 255, ${opacity})`;
                 ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
                 
-                // Subtile mirroring from top
-                ctx.fillStyle = `rgba(255, 16, 240, ${dataArray[i] / 1020})`;
-                ctx.fillRect(x, 0, barWidth, barHeight * 0.5);
+                // Subtile Pink Mirror
+                ctx.fillStyle = `rgba(255, 0, 170, ${opacity * 0.5})`;
+                ctx.fillRect(x, 0, barWidth, barHeight * 0.3);
 
-                x += barWidth + 1;
+                x += barWidth + 2;
             }
         };
 

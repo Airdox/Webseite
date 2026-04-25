@@ -17,12 +17,6 @@ const BioSection = () => {
 
     return (
         <section className="bio-section section" id="bio" ref={sectionRef}>
-            {/* Background Elements */}
-            <div className="bio-bg">
-                <div className="bio-gradient"></div>
-                <div className="bio-lines"></div>
-            </div>
-
             <div className="container">
                 <div className="bio-grid">
                     {/* Left Side - Visual */}
@@ -119,7 +113,7 @@ const BioSection = () => {
                         </div>
 
                         {/* Resident Advisor Teaser [NEW] */}
-                        <div className="bio-ra-teaser reveal stagger-4">
+                        <div className="bio-ra-teaser airdox-card reveal stagger-4">
                             <div className="ra-logo-mini">RA</div>
                             <div className="ra-text">
                                 <p>OFFICIAL RESIDENT ADVISOR ARTIST PAGE</p>

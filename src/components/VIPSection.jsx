@@ -100,23 +100,22 @@ const VIPSection = () => {
 
     if (user) {
         return (
-            <section className="vip-section" id="vip">
-                <div className="vip-bg">
-                    <div className="vip-gradient"></div>
-                </div>
+            <section className="vip-section section" id="vip">
                 <div className="container">
-                    <div className="vip-content">
-                        <div className="vip-header">
-                            <span className="vip-badge">VIP AREA</span>
-                            <h2 className="section-title text-gradient">Willkommen, {user.username}</h2>
-                            <p className="section-subtitle">
-                                Dein VIP-Zugang ist aktiv. Du findest die exklusiven MP3-Downloads und Tracklisten nun direkt in der Set-Übersicht oben!
-                            </p>
-                        </div>
+                    <div className="airdox-card reveal">
+                        <div className="vip-content">
+                            <div className="section-header" style={{ marginBottom: 'var(--space-8)' }}>
+                                <span className="section-label">MEMBERS ONLY</span>
+                                <h2 className="section-title text-gradient" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>WILLKOMMEN, {user.username}</h2>
+                                <p className="section-subtitle">
+                                    Dein VIP-Zugang ist aktiv. Du findest die exklusiven MP3-Downloads und Tracklisten nun direkt in der Set-Übersicht oben!
+                                </p>
+                            </div>
 
-                        <button className="logout-btn" onClick={handleLogout}>
-                            Abmelden
-                        </button>
+                            <button className="logout-btn" onClick={handleLogout}>
+                                Abmelden
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -124,12 +123,14 @@ const VIPSection = () => {
     }
 
     return (
-        <section className="vip-section" id="vip">
-            <div className="vip-bg">
-                <div className="vip-gradient"></div>
-            </div>
+        <section className="vip-section section" id="vip">
             <div className="container">
-                <div className="auth-container reveal-scale">
+                <div className="auth-container airdox-card reveal">
+                    <div className="section-header" style={{ marginBottom: 'var(--space-8)' }}>
+                        <span className="section-label">ACCESS CONTROL</span>
+                        <h2 className="section-title text-gradient" style={{ fontSize: '2rem' }}>VIP LOGIN</h2>
+                    </div>
+                    
                     <div className="auth-tabs">
                         <button 
                             className={`auth-tab ${isLogin ? 'active' : ''}`}
@@ -147,7 +148,7 @@ const VIPSection = () => {
 
                     <form className="auth-form" onSubmit={handleSubmit}>
                         <div className="input-group">
-                            <label htmlFor="username">Username</label>
+                            <label htmlFor="username">Username / Email</label>
                             <input 
                                 type="text" 
                                 id="username" 
@@ -171,10 +172,10 @@ const VIPSection = () => {
                             />
                         </div>
 
-                        {error && <div className="auth-error" style={{ color: 'var(--neon-pink)', fontSize: '0.8rem', textAlign: 'center' }}>{error}</div>}
-                        {success && <div className="auth-success" style={{ color: 'var(--neon-cyan)', fontSize: '0.8rem', textAlign: 'center' }}>{success}</div>}
+                        {error && <div className="auth-error">{error}</div>}
+                        {success && <div className="auth-success">{success}</div>}
 
-                        <button type="submit" className="auth-submit" disabled={loading}>
+                        <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
                             {loading ? 'Processing...' : (isLogin ? 'Login Access' : 'Create Account')}
                         </button>
                     </form>

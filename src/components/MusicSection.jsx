@@ -113,11 +113,6 @@ const MusicSection = () => {
 
     return (
         <section className="music-section section" id="music" ref={sectionRef}>
-            {/* Background */}
-            <div className="music-bg">
-                <div className="music-gradient"></div>
-            </div>
-
             <div className="container">
                 {/* Header */}
                 <div className="section-header reveal">
