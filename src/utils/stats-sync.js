@@ -6,7 +6,7 @@ const devLog = (...args) => isDev && console.log('[StatsSync]', ...args);
 const devWarn = (...args) => isDev && console.warn('[StatsSync]', ...args);
 
 // Configuration from environment or defaults
-const PRODUCTION_URL = 'https://airdox.pages.dev';
+const PRODUCTION_URL = 'https://airdox.info';
 const isMobileApp = window.location.protocol === 'file:' || (window.location.hostname === 'localhost' && !!window.Capacitor);
 const STATS_API_BASE = (import.meta.env?.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
 const STATS_API_FALLBACK = (import.meta.env?.VITE_STATS_API_FALLBACK || '').replace(/\/+$/, '');

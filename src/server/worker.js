@@ -11,25 +11,52 @@ const router = new Router();
     // GET /api/audio/:filename - Secure audio streaming endpoint
     router.get('/api/audio', async (request, env, ctx) => {
         const url = new URL(request.url);
-        // Support both /api/audio?file=name.mp3 and /api/audio/name.mp3
+        // We get the filename from the original request URL passed via headers if needed,
+        // but since we're using a router, let's just use the current URL.
+        // Wait, the fetch handler modifies the URL to /api/audio to match this route.
+        // So we should get the original filename from the request.url before it was modified,
+        // or just use a regex on the original URL.
+        
+        const originalUrl = new URL(request.url);
         let filename = url.searchParams.get('file');
-        if (!filename && url.pathname.startsWith('/api/audio/')) {
-            filename = url.pathname.substring('/api/audio/'.length);
+        
+        // If not in search params, it's in the path. But the path was changed to /api/audio.
+        // We need to pass the original path or look at the request.
+        // Let's assume the fetch handler passed the original path in a custom header or just use the current one.
+        // Actually, let's look at how we modified it in the fetch handler.
+        
+        if (!filename) {
+            // Get from original pathname header passed by fetch handler
+            const originalPathname = request.headers.get('x-original-pathname');
+            if (originalPathname) {
+                const pathParts = originalPathname.split('/');
+                filename = pathParts[pathParts.length - 1];
+            } else {
+                // Fallback: look at the URL that triggered this
+                const pathParts = originalUrl.pathname.split('/');
+                filename = pathParts[pathParts.length - 1];
+            }
         }
-    if (!filename || !/\.mp3$/i.test(filename)) {
-        return new Response('Invalid audio file', { status: 400 });
-    }
-    // Sanitize filename to prevent path traversal
-    const safeFilename = sanitizeFilename(filename);
-    // Assume audio files are in R2 bucket bound as env.AUDIO or env.PUBLIC (adjust as needed)
-    // Try PUBLIC first (Cloudflare R2 binding)
-    let object = null;
-    if (env.PUBLIC && env.PUBLIC.get) {
-        object = await env.PUBLIC.get(safeFilename);
-    }
-    if (!object) {
-        return new Response('Audio file not found', { status: 404 });
-    }
+
+        if (!filename || !/\.mp3$/i.test(filename)) {
+            return new Response('Invalid audio file: ' + filename, { status: 400 });
+        }
+        
+        const safeFilename = sanitizeFilename(filename);
+        
+        let object = null;
+        if (env.PUBLIC && env.PUBLIC.get) {
+            // Try with 'public/' prefix first (based on .env)
+            object = await env.PUBLIC.get(`public/${safeFilename}`);
+            if (!object) {
+                // Try without prefix
+                object = await env.PUBLIC.get(safeFilename);
+            }
+        }
+        
+        if (!object) {
+            return new Response('Audio file not found: ' + safeFilename, { status: 404 });
+        }
     // Set headers for streaming audio
     const headers = {
         'Content-Type': 'audio/mpeg',
@@ -66,7 +93,7 @@ const router = new Router();
 
 // CORS Headers Utility
 const corsHeaders = {
-    'Access-Control-Allow-Origin': 'https://airdox.de', // Restrict to main domain
+    'Access-Control-Allow-Origin': 'https://airdox.info', // Update to main domain
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
@@ -158,7 +185,14 @@ export default {
                 if (originalPathname.startsWith('/api/audio/')) {
                     const newUrl = new URL(request.url);
                     newUrl.pathname = '/api/audio';
-                    modifiedRequest = new Request(newUrl.toString(), request);
+                    const newHeaders = new Headers(request.headers);
+                    newHeaders.set('x-original-pathname', originalPathname);
+                    modifiedRequest = new Request(newUrl.toString(), {
+                        method: request.method,
+                        headers: newHeaders,
+                        body: request.body,
+                        redirect: request.redirect
+                    });
                 }
 
                 return await router.handle(modifiedRequest, env, ctx);
