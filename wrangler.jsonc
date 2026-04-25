@@ -2,6 +2,7 @@
   "name": "airdox-webseite",
   "main": "src/server/worker.js",
   "compatibility_date": "2026-04-11",
+  "compatibility_flags": ["nodejs_compat"],
   "routes": [
     { "pattern": "airdox.info", "custom_domain": true },
     { "pattern": "www.airdox.info", "custom_domain": true }
@@ -10,5 +11,11 @@
     "directory": "./dist",
     "not_found_handling": "single-page-application"
   },
-  "pages_build_output_dir": "dist"
+  "pages_build_output_dir": "dist",
+  "r2_buckets": [
+    {
+      "binding": "PUBLIC",
+      "bucket_name": "airdox-assets-prod"
+    }
+  ]
 }
