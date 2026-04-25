@@ -1,54 +1,31 @@
 import { handleStatsRequest } from '../../src/lib/stats-logic.js';
 
-export async function onRequest(context) {
+const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Max-Age': '86400',
+};
+
+export async function onRequestGet(context) {
+    const { env } = context;
+    const result = await handleStatsRequest({ method: 'GET', env });
+    return new Response(JSON.stringify(result.body), {
+        status: result.status,
+        headers: { ...result.headers, ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+}
+
+export async function onRequestPost(context) {
     const { request, env } = context;
+    const body = await request.json();
+    const result = await handleStatsRequest({ method: 'POST', rawBody: body, env });
+    return new Response(JSON.stringify(result.body), {
+        status: result.status,
+        headers: { ...result.headers, ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+}
 
-    // Handle CORS preflight
-    if (request.method === 'OPTIONS') {
-        return new Response(null, {
-            status: 204,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type',
-                'Access-Control-Max-Age': '86400',
-            },
-        });
-    }
-
-    try {
-        let body = null;
-        
-        if (request.method === 'POST') {
-            body = await request.json();
-        }
-
-        const result = await handleStatsRequest({
-            method: request.method,
-            rawBody: body,
-            env: env, // Cloudflare env variables are passed here
-            allowNetlify: false
-        });
-
-        return new Response(JSON.stringify(result.body), {
-            status: result.status,
-            headers: {
-                ...result.headers,
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-        });
-    } catch (error) {
-        return new Response(JSON.stringify({ 
-            ok: false, 
-            error: 'Internal Server Error',
-            details: error.message 
-        }), {
-            status: 500,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-        });
-    }
+export async function onRequestOptions() {
+    return new Response(null, { headers: corsHeaders });
 }

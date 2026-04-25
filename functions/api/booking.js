@@ -1,4 +1,4 @@
-import { handleAuthRequest } from '../../src/lib/stats-logic.js';
+import { handleBookingRequest } from '../../src/lib/stats-logic.js';
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -11,15 +11,10 @@ export async function onRequestPost(context) {
     const { request, env } = context;
     try {
         const body = await request.json();
-        const result = await handleAuthRequest({ body, env });
-        const headers = {
-            ...corsHeaders,
-            'Content-Type': 'application/json',
-            ...(result.headers || {})
-        };
+        const result = await handleBookingRequest({ body, env });
         return new Response(JSON.stringify(result.body), {
             status: result.status,
-            headers
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
     } catch (error) {
         return new Response(JSON.stringify({ ok: false, error: 'Invalid Request' }), {
