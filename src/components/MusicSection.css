@@ -106,21 +106,10 @@
     top: 0;
     left: 0;
     transform: none;
-    /* Donut Mask for Play Button */
-    -webkit-mask: radial-gradient(transparent 18%, black 19%);
-    mask: radial-gradient(transparent 18%, black 19%);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-}
-
-/* Entferne das Loch bei erstem Player */
-.mini-vinyl.active-disc.no-hole {
-    -webkit-mask: none;
-    mask: none;
-    /* Stelle sicher, dass die Mitte klickbar bleibt */
-    pointer-events: auto;
 }
 
 .vinyl-image {
@@ -169,13 +158,9 @@
 }
 
 .set-cover:hover .cover-overlay,
-.set-cover:focus .cover-overlay {
+.set-cover:focus-visible .cover-overlay {
     opacity: 1;
     pointer-events: auto;
-}
-
-.set-cover:hover .cover-overlay {
-    opacity: 1;
 }
 
 .play-btn {

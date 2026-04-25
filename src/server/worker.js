@@ -88,13 +88,16 @@ router.get('/api/audio', async (request, env, ctx) => {
                     headers: { ...headers, 'Content-Range': `bytes */${size}` } 
                 });
             }
-            const sliced = object.body.slice(start, end + 1);
-            return new Response(sliced, {
+            const rangeLength = end - start + 1;
+            const rangeObject = await env.PUBLIC.get(object.key, {
+                range: { offset: start, length: rangeLength }
+            });
+            return new Response(rangeObject ? rangeObject.body : object.body, {
                 status: 206,
                 headers: {
                     ...headers,
                     'Content-Range': `bytes ${start}-${end}/${size}`,
-                    'Content-Length': (end - start + 1).toString(),
+                    'Content-Length': rangeLength.toString(),
                 }
             });
         }

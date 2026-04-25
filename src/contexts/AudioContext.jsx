@@ -19,6 +19,7 @@ const resolveAudioSrc = (src) => {
     const filename = src.split('/').pop();
     return `${AUDIO_BASE}/${filename}`;
 };
+const isAbsoluteUrl = (url) => /^https?:\/\//i.test(url);
 const encodeAudioSrc = (src) => {
     if (!src) return src;
     try {

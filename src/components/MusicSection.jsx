@@ -158,7 +158,7 @@ const MusicSection = () => {
                                         }}
                                     >
                                         <div
-                                            className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''} ${(index === 0 || set.id === 'recording_2026_04_12') && isSetPlaying ? 'no-hole' : ''}`}
+                                            className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''}`}
                                         >
                                             {isSetPlaying ? (
                                                 <img
