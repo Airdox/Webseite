@@ -20,6 +20,20 @@ describe('setManifest helpers', () => {
     ]);
   });
 
+  it('parses watcher json tracklists using timestamp fallback', () => {
+    const tracks = parseTracklistText(JSON.stringify({
+      tracks: [
+        { timestamp: '0:00:00', artist: 'Airdox', title: 'Opening ID' },
+        { time: '', timestamp: '0:07:15', artist: 'Alignment', title: 'Voyager' },
+      ],
+    }));
+
+    expect(tracks).toEqual([
+      { time: '00:00:00', artist: 'Airdox', title: 'Opening ID' },
+      { time: '00:07:15', artist: 'Alignment', title: 'Voyager' },
+    ]);
+  });
+
   it('derives dates from filename hints', () => {
     expect(parseDateHint('Airdox_REC_2026_04_12.mp3')).toEqual({
       isoDate: '2026-04-12',
@@ -50,6 +64,22 @@ describe('setManifest helpers', () => {
       cover: '/assets/cover.png',
     });
     expect(draft.tracks).toHaveLength(1);
+  });
+
+  it('uses default vinyl cover when no custom cover is provided', () => {
+    const draft = buildDraftFromImportedFiles({
+      audioPath: 'D:\\Music\\Airdox_REC_2026_04_13.mp3',
+      metadataTitle: '',
+      durationSeconds: 1800,
+      parsedDate: parseDateHint('2026_04_13'),
+      tracklistText: '',
+      imagePath: '',
+      embeddedCoverDataUrl: '',
+      defaultVinylColor: '#112233',
+      defaultCoverPath: '/assets/airdox-vinyl.jpg',
+    });
+
+    expect(draft.cover).toBe('/assets/airdox-vinyl.jpg');
   });
 
   it('inserts or replaces manifest entries at the top by default', () => {

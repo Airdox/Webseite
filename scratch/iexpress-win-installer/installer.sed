@@ -1,0 +1,30 @@
+[Version]
+Class=IEXPRESS
+SEDVersion=3
+[Options]
+PackagePurpose=InstallApp
+ShowInstallProgramWindow=0
+HideExtractAnimation=0
+UseLongFileName=1
+InsideCompressed=0
+CAB_FixedSize=0
+CAB_ResvCodeSigning=0
+RebootMode=N
+InstallPrompt=
+DisplayLicense=
+FinishMessage=
+TargetName=D:\webseeite-main\release\AIRDOX-Flight-Deck-Installer-0.1.2.exe
+FriendlyName=AIRDOX Flight Deck Installer
+AppLaunched=powershell.exe -NoProfile -ExecutionPolicy Bypass -File "install-win-tool.ps1"
+PostInstallCmd=<None>
+AdminQuietInstCmd=
+UserQuietInstCmd=
+SourceFiles=SourceFiles
+[SourceFiles]
+SourceFiles0=D:\webseeite-main\scratch\iexpress-win-installer
+[SourceFiles0]
+%FILE0%=install-win-tool.ps1
+%FILE1%=app.zip
+[Strings]
+FILE0=install-win-tool.ps1
+FILE1=app.zip

@@ -1,7 +1,7 @@
 import React, { startTransition, useCallback, useDeferredValue, useEffect, useState } from 'react';
 import {
   CircleAlert, Database, LayoutDashboard, RadioTower, UploadCloud,
-  BarChart3, Settings2, Package, Activity, BookOpen
+  BarChart3, Settings2, Package, Activity, BookOpen, Rocket
 } from 'lucide-react';
 import { flightDeckApi } from './api.js';
 import OverviewTab from './components/OverviewTab.jsx';
@@ -89,6 +89,12 @@ const DesktopApp = () => {
   const [tutorialTourId, setTutorialTourId] = useState(DEFAULT_TOUR_ID);
   const [tutorialStepIndex, setTutorialStepIndex] = useState(0);
   const [tutorialChecklist, setTutorialChecklist] = useState(loadTutorialChecklist);
+  const canGoLive = Boolean(
+    settingsDraft?.workspaceRoot
+    && draft?.id
+    && draft?.file
+    && (draft?.sourceAudioPath || draft?.file),
+  );
 
   const deferredSearch = useDeferredValue(search);
   const filteredRows = rows.filter((row) => matchesSearch(row, deferredSearch));
@@ -249,6 +255,38 @@ const DesktopApp = () => {
     await refreshTable();
   };
 
+  const goLiveNow = async () => {
+    if (!draft?.id || !draft?.file) {
+      setNotice({ tone: 'error', message: 'Bitte zuerst ein Set importieren und Draft-Felder pruefen.' });
+      setActiveTab('import');
+      return;
+    }
+
+    setBusy(true);
+    try {
+      const savedSettings = await flightDeckApi.saveSettings(settingsDraft);
+      setSettingsDraft(savedSettings);
+
+      const result = await flightDeckApi.publishSet({
+        workspaceRoot: savedSettings?.workspaceRoot,
+        draft,
+        settings: savedSettings,
+      });
+
+      setPublishLogs(result?.logs || []);
+      setLastPublish(result);
+      setNotice({ tone: 'success', message: `Go Live ausgefuehrt: ${draft.id}` });
+      await refreshState();
+      await refreshTable();
+      setActiveTab('import');
+    } catch (error) {
+      setNotice({ tone: 'error', message: error.message });
+      setActiveTab('import');
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const updateDraftField = (field, value) => {
     setDraft((prev) => ({ ...prev, [field]: value }));
   };
@@ -402,6 +440,7 @@ const DesktopApp = () => {
           onPickFiles={loadImport}
           onLoadDemo={() => loadImport([])}
           onPublish={publishCurrentDraft}
+          onGoLive={goLiveNow}
           onDraftChange={updateDraftField}
           onTrackChange={updateTrack}
           onTrackAdd={addTrack}
@@ -603,6 +642,16 @@ const DesktopApp = () => {
           <p>{settingsDraft?.workspaceRoot || 'Kein Workspace gewaehlt'}</p>
         </div>
         <div className="fd-runtime-meta">
+          <button
+            type="button"
+            className="fd-button"
+            onClick={goLiveNow}
+            disabled={busy || !canGoLive}
+            title="Speichert aktuelle Settings und fuehrt Publish + Build/Deploy/Push gemaess Konfiguration aus."
+          >
+            <Rocket size={16} />
+            Alles ausfuehren & Live
+          </button>
           <button
             type="button"
             className="fd-button secondary"

@@ -138,6 +138,12 @@ const AdvancedSettingsTab = ({
               onChange={(v) => handleChange('coverOutputDir', v)}
               placeholder="public/assets/covers/"
             />
+            <TextSetting
+              label="Default Cover Path"
+              value={localSettings.defaultCoverPath}
+              onChange={(v) => handleChange('defaultCoverPath', v)}
+              placeholder="/assets/airdox-vinyl.jpg"
+            />
           </SettingGroup>
 
           <SettingGroup

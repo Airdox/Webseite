@@ -11,6 +11,7 @@ const SetImportTab = ({
   onPickFiles,
   onLoadDemo,
   onPublish,
+  onGoLive = () => {},
   onDraftChange,
   onTrackChange,
   onTrackAdd,
@@ -84,11 +85,22 @@ const SetImportTab = ({
           <div className="fd-form-grid">
             <label>Audio Source<input value={draft.sourceAudioPath || ''} readOnly /></label>
             <label>Cover Source<input value={draft.sourceImagePath || ''} readOnly /></label>
+            <label>Tracklist Source<input value={draft.sourceTracklistPath || ''} readOnly /></label>
           </div>
           <div className="fd-toolbar-actions">
             <button type="button" className="fd-button primary" onClick={onPublish} disabled={busy || !draft.id || !draft.file}>
               <Upload size={16} />
               Publish Set
+            </button>
+            <button
+              type="button"
+              className="fd-button"
+              onClick={onGoLive}
+              disabled={busy || !draft.id || !draft.file}
+              title="Speichert Settings und startet die komplette Live-Pipeline gemaess deiner Flight-Deck-Konfiguration."
+            >
+              <Upload size={16} />
+              Alles ausfuehren & Live
             </button>
           </div>
         </section>

@@ -40,6 +40,7 @@ const FlightDeckTab = ({ settings, gitStatus, busy, onSettingChange, onSave, onS
           <label>Workspace Root<input value={settings.workspaceRoot || ''} readOnly /></label>
           <label>R2 Prefix<input value={settings.r2ObjectPrefix || ''} onChange={(event) => onSettingChange('r2ObjectPrefix', event.target.value)} /></label>
           <label>Cover Output Dir<input value={settings.coverOutputDir || ''} onChange={(event) => onSettingChange('coverOutputDir', event.target.value)} /></label>
+          <label>Default Cover Path<input value={settings.defaultCoverPath || '/assets/airdox-vinyl.jpg'} onChange={(event) => onSettingChange('defaultCoverPath', event.target.value)} /></label>
           <label>Build Command<input value={settings.buildCommand || ''} onChange={(event) => onSettingChange('buildCommand', event.target.value)} /></label>
           <label>Deploy Command<input value={settings.deployCommand || ''} onChange={(event) => onSettingChange('deployCommand', event.target.value)} /></label>
           <label>Commit Template<input value={settings.gitCommitTemplate || ''} onChange={(event) => onSettingChange('gitCommitTemplate', event.target.value)} /></label>

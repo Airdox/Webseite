@@ -1,6 +1,6 @@
 const MONTH_LABELS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
-export const AUDIO_EXTENSIONS = ['.mp3', '.wav', '.m4a', '.aac', '.flac'];
+export const AUDIO_EXTENSIONS = ['.mp3', '.wav', '.wave', '.m4a', '.aac', '.flac'];
 export const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp'];
 export const TRACKLIST_EXTENSIONS = ['.txt', '.md', '.csv', '.json'];
 
@@ -14,8 +14,9 @@ export const DEFAULT_FLIGHT_DECK_SETTINGS = {
   autoDeploy: false,
   autoCommit: false,
   autoPush: false,
-  extractEmbeddedCover: true,
+  extractEmbeddedCover: false,
   defaultVinylColor: '#9adf6b',
+  defaultCoverPath: '/assets/airdox-vinyl.jpg',
   r2ObjectPrefix: 'public',
   coverOutputDir: 'public/assets',
   buildCommand: 'npm run build',
@@ -105,9 +106,30 @@ export const deriveSetTitle = ({ stem, metadataTitle, parsedDate }) => {
   return humanizeStem(stem).toUpperCase();
 };
 
+const normalizeTrackTime = (value = '') => {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+
+  const match = raw.match(/^(?<a>\d{1,2}):(?<b>\d{2})(?::(?<c>\d{2}))?$/);
+  if (!match?.groups) return raw;
+
+  const partA = match.groups.a.padStart(2, '0');
+  const partB = match.groups.b;
+  const partC = match.groups.c;
+  return partC !== undefined ? `${partA}:${partB}:${partC}` : `${partA}:${partB}`;
+};
+
+const pickTrackTime = (track = {}) => {
+  const candidates = [track.time, track.timestamp];
+  const value = candidates
+    .map((candidate) => String(candidate ?? '').trim())
+    .find(Boolean) || '';
+  return normalizeTrackTime(value);
+};
+
 export const sanitizeTrack = (track = {}) => {
   const cleaned = {
-    time: String(track.time || '').trim(),
+    time: pickTrackTime(track),
     artist: String(track.artist || '').trim(),
     title: String(track.title || '').trim(),
   };
@@ -142,6 +164,18 @@ export const parseTracklistText = (text = '') => {
     const csvMatch = line.match(/^(?<time>[^,]*),(?<artist>[^,]*),(?<title>.+)$/);
     if (csvMatch?.groups) {
       return sanitizeTrack(csvMatch.groups);
+    }
+
+    // Support watcher format: "Artist - Title - HH:MM:SS"
+    const trailingTimeMatch = line.match(
+      /^(?<artist>.+?)\s*(?:-|–|—|\|)\s*(?<title>.+?)\s*(?:-|–|—|\|)\s*(?<time>\d{1,2}:\d{2}(?::\d{2})?)$/i,
+    );
+    if (trailingTimeMatch?.groups) {
+      return sanitizeTrack({
+        time: trailingTimeMatch.groups.time,
+        artist: trailingTimeMatch.groups.artist,
+        title: trailingTimeMatch.groups.title,
+      });
     }
 
     const timeMatch = line.match(/^(?<time>\d{1,2}:\d{2}(?::\d{2})?)\s*(?:[-|–—]\s*)?(?<rest>.+)$/);
@@ -255,12 +289,15 @@ export const buildDraftFromImportedFiles = ({
   imagePath,
   embeddedCoverDataUrl,
   defaultVinylColor = DEFAULT_FLIGHT_DECK_SETTINGS.defaultVinylColor,
+  defaultCoverPath = DEFAULT_FLIGHT_DECK_SETTINGS.defaultCoverPath,
 }) => {
   const filename = extractFilename(audioPath || '');
   const stem = stripExtension(filename);
   const tracks = parseTracklistText(tracklistText);
   const title = deriveSetTitle({ stem, metadataTitle, parsedDate });
-  const cover = imagePath ? `/assets/${extractFilename(imagePath)}` : undefined;
+  const cover = imagePath
+    ? `/assets/${extractFilename(imagePath)}`
+    : String(defaultCoverPath || DEFAULT_FLIGHT_DECK_SETTINGS.defaultCoverPath);
   return {
     id: deriveSetId(stem, parsedDate),
     title,

@@ -17,6 +17,182 @@ import { ensureDirectory, getWorkspacePaths, getGitStatus, isWorkspaceRoot, runC
 
 const matchesExtension = (filePath, extensions) => extensions.includes(path.extname(filePath).toLowerCase());
 
+const fileExists = async (filePath) => {
+  try {
+    await fs.access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const getAncestorDirs = (startDir, maxDepth = 8) => {
+  const result = [];
+  let current = path.resolve(startDir);
+  for (let i = 0; i < maxDepth; i += 1) {
+    result.push(current);
+    const parent = path.dirname(current);
+    if (parent === current) break;
+    current = parent;
+  }
+  return result;
+};
+
+const buildTracklistCandidates = (audioPath) => {
+  const dir = path.dirname(audioPath);
+  const parsed = path.parse(audioPath);
+  const baseNoExt = path.join(dir, parsed.name);
+  const candidates = [
+    `${baseNoExt}.tracks.json`,
+    `${baseNoExt}.mixcloud.txt`,
+    `${baseNoExt}.txt`,
+    path.join(dir, '_mixcloud_tracklists', `${parsed.name}.tracks.json`),
+    path.join(dir, '_mixcloud_tracklists', `${parsed.name}.mixcloud.txt`),
+  ];
+
+  const ancestors = getAncestorDirs(dir, 8);
+  for (const ancestor of ancestors) {
+    const rel = path.relative(ancestor, audioPath);
+    if (!rel || rel.startsWith('..')) continue;
+    const ext = path.extname(rel);
+    const relNoExt = ext ? rel.slice(0, -ext.length) : rel;
+    candidates.push(path.join(ancestor, '_mixcloud_tracklists', `${relNoExt}.tracks.json`));
+    candidates.push(path.join(ancestor, '_mixcloud_tracklists', `${relNoExt}.mixcloud.txt`));
+  }
+
+  return [...new Set(candidates)];
+};
+
+const findCueSidecarTracklist = async (audioPath) => {
+  const audioDir = path.dirname(audioPath);
+  const audioFileName = path.basename(audioPath).toLowerCase();
+
+  const entries = await fs.readdir(audioDir, { withFileTypes: true });
+  const cuePaths = entries
+    .filter((entry) => entry.isFile() && path.extname(entry.name).toLowerCase() === '.cue')
+    .map((entry) => path.join(audioDir, entry.name));
+
+  if (!cuePaths.length) return '';
+
+  const matchingCuePaths = [];
+  for (const cuePath of cuePaths) {
+    let content = '';
+    try {
+      content = await fs.readFile(cuePath, 'utf8');
+    } catch {
+      content = '';
+    }
+    if (content.toLowerCase().includes(audioFileName)) {
+      matchingCuePaths.push(cuePath);
+    }
+  }
+
+  const targets = matchingCuePaths.length
+    ? matchingCuePaths
+    : (cuePaths.length === 1 ? cuePaths : []);
+
+  for (const cuePath of targets) {
+    const cueBase = path.join(audioDir, path.parse(cuePath).name);
+    const sidecars = [`${cueBase}.tracks.json`, `${cueBase}.mixcloud.txt`, `${cueBase}.txt`];
+    for (const candidate of sidecars) {
+      if (await fileExists(candidate)) {
+        return candidate;
+      }
+    }
+  }
+
+  return '';
+};
+
+const resolveTracklistPath = async ({ audioPath, explicitTracklistPath = '' }) => {
+  if (explicitTracklistPath && await fileExists(explicitTracklistPath)) {
+    return {
+      tracklistPath: explicitTracklistPath,
+      source: 'explicit',
+    };
+  }
+
+  const cueSidecar = await findCueSidecarTracklist(audioPath);
+  if (cueSidecar) {
+    return {
+      tracklistPath: cueSidecar,
+      source: 'cue-sidecar',
+    };
+  }
+
+  const autoCandidates = buildTracklistCandidates(audioPath);
+  for (const candidate of autoCandidates) {
+    if (await fileExists(candidate)) {
+      return {
+        tracklistPath: candidate,
+        source: 'auto',
+      };
+    }
+  }
+
+  return {
+    tracklistPath: '',
+    source: 'none',
+  };
+};
+
+const convertWavToMp3 = async (wavPath, workspaceRoot) => {
+  const dir = path.dirname(wavPath);
+  const basename = path.parse(wavPath).name;
+  const mp3Path = path.join(dir, `${basename}.mp3`);
+
+  const ffmpegCheck = await runCommand({ command: 'ffmpeg -version', cwd: workspaceRoot });
+  if (!ffmpegCheck.ok) {
+    throw new Error('ffmpeg is not installed. Please install ffmpeg to convert WAV files to MP3.');
+  }
+
+  const wavStat = await fs.stat(wavPath);
+  try {
+    const mp3Stat = await fs.stat(mp3Path);
+    if (mp3Stat.mtimeMs >= wavStat.mtimeMs) {
+      return {
+        mp3Path,
+        converted: false,
+      };
+    }
+  } catch {
+    // MP3 does not exist yet, continue with conversion.
+  }
+
+  const convertResult = await runCommand({
+    command: `ffmpeg -hide_banner -loglevel error -y -i "${wavPath}" -vn -af "loudnorm=I=-14:LRA=11:TP=-1.5" -codec:a libmp3lame -b:a 320k "${mp3Path}"`,
+    cwd: workspaceRoot,
+  });
+
+  if (!convertResult.ok) {
+    throw new Error(`Failed to convert WAV to MP3: ${convertResult.stderr || convertResult.stdout}`);
+  }
+
+  return {
+    mp3Path,
+    converted: true,
+  };
+};
+
+const ensureMp3Format = async (audioPath, workspaceRoot) => {
+  const ext = path.extname(audioPath).toLowerCase();
+
+  if (ext === '.wav' || ext === '.wave') {
+    const conversion = await convertWavToMp3(audioPath, workspaceRoot);
+    return {
+      converted: conversion.converted,
+      filePath: conversion.mp3Path,
+      originalPath: audioPath,
+    };
+  }
+
+  return {
+    converted: false,
+    filePath: audioPath,
+    originalPath: audioPath,
+  };
+};
+
 const dataUrlToBuffer = (dataUrl) => {
   const match = dataUrl.match(/^data:(.+?);base64,(.+)$/);
   if (!match) throw new Error('Invalid embedded cover data.');
@@ -83,8 +259,17 @@ export const prepareImportBundle = async ({ filePaths = [], settings = DEFAULT_F
     throw new Error('No supported audio file found in dropped files.');
   }
 
+  // Check if the audio file is WAV format
+  const audioExt = path.extname(audioPath).toLowerCase();
+  const isWavFile = audioExt === '.wav' || audioExt === '.wave';
+
   const imagePath = filePaths.find((candidate) => matchesExtension(candidate, IMAGE_EXTENSIONS)) || '';
-  const tracklistPath = filePaths.find((candidate) => matchesExtension(candidate, TRACKLIST_EXTENSIONS)) || '';
+  const selectedTracklistPath = filePaths.find((candidate) => matchesExtension(candidate, TRACKLIST_EXTENSIONS)) || '';
+  const resolvedTracklist = await resolveTracklistPath({
+    audioPath,
+    explicitTracklistPath: selectedTracklistPath,
+  });
+  const tracklistPath = resolvedTracklist.tracklistPath;
   const metadata = await parseFile(audioPath, { duration: true });
   const tracklistText = await getTracklistText(tracklistPath);
   const audioStat = await fs.stat(audioPath);
@@ -95,7 +280,8 @@ export const prepareImportBundle = async ({ filePaths = [], settings = DEFAULT_F
     parseDateHint(audioStat.mtime.toISOString());
 
   const embeddedPicture = metadata.common.picture?.[0];
-  const embeddedCoverDataUrl = (!imagePath && embeddedPicture && mergedSettings.extractEmbeddedCover)
+  const embeddedPictureDetected = Boolean(!imagePath && embeddedPicture);
+  const embeddedCoverDataUrl = (embeddedPictureDetected && mergedSettings.extractEmbeddedCover)
     ? `data:${embeddedPicture.format};base64,${embeddedPicture.data.toString('base64')}`
     : '';
 
@@ -108,7 +294,13 @@ export const prepareImportBundle = async ({ filePaths = [], settings = DEFAULT_F
     imagePath,
     embeddedCoverDataUrl,
     defaultVinylColor: mergedSettings.defaultVinylColor,
+    defaultCoverPath: mergedSettings.defaultCoverPath,
   });
+
+  if (isWavFile) {
+    draft.file = draft.file.replace(/\.(wav|wave)$/i, '.mp3');
+  }
+  draft.sourceTracklistPath = tracklistPath;
 
   return {
     draft,
@@ -118,8 +310,20 @@ export const prepareImportBundle = async ({ filePaths = [], settings = DEFAULT_F
       tracklistPath,
     },
     warnings: [
+      ...(isWavFile ? ['WAV file detected. It will be converted to MP3 before publish/deploy.'] : []),
+      ...(resolvedTracklist.source === 'cue-sidecar'
+        ? [`Tracklist auto-detected from cue sidecar: ${tracklistPath}`]
+        : []),
+      ...(resolvedTracklist.source === 'auto'
+        ? [`Tracklist auto-detected: ${tracklistPath}`]
+        : []),
       ...(!tracklistPath ? ['No tracklist file detected. You can add tracks manually before publishing.'] : []),
-      ...(!imagePath && !embeddedCoverDataUrl ? ['No cover file detected. The site will use the fallback vinyl image.'] : []),
+      ...(embeddedPictureDetected && !mergedSettings.extractEmbeddedCover
+        ? [`Embedded cover detected but disabled. Default cover will be used: ${mergedSettings.defaultCoverPath}`]
+        : []),
+      ...(!imagePath && !embeddedPictureDetected
+        ? [`No custom cover detected. Default cover will be used: ${mergedSettings.defaultCoverPath}`]
+        : []),
     ],
   };
 };
@@ -141,6 +345,8 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
   const logs = [];
   const changedPaths = [];
   const publishDraft = { ...draft };
+  const defaultCoverPath = String(mergedSettings.defaultCoverPath || '/assets/airdox-vinyl.jpg').trim();
+  const configuredCoverPolicy = Boolean(mergedSettings.extractEmbeddedCover);
 
   if (!publishDraft.id || !publishDraft.title || !publishDraft.file) {
     throw new Error('Draft is missing required fields (id, title, file).');
@@ -150,18 +356,52 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
     throw new Error('Safe mode blocked publish: the source audio path is missing.');
   }
 
+  if (publishDraft.sourceAudioPath) {
+    const audioConversion = await ensureMp3Format(publishDraft.sourceAudioPath, workspaceRoot);
+    if (audioConversion.originalPath !== audioConversion.filePath) {
+      pushLog(
+        logs,
+        'audio',
+        audioConversion.converted ? 'success' : 'info',
+        audioConversion.converted
+          ? `Converted WAV to MP3: ${path.basename(audioConversion.originalPath)} -> ${path.basename(audioConversion.filePath)}`
+          : `Using existing MP3 for WAV source: ${path.basename(audioConversion.filePath)}`,
+      );
+    }
+    publishDraft.sourceAudioPath = audioConversion.filePath;
+  }
+
+  if (/\.(wav|wave)$/i.test(publishDraft.file)) {
+    publishDraft.file = publishDraft.file.replace(/\.(wav|wave)$/i, '.mp3');
+  }
+
+  if (/\.(wav|wave)$/i.test(publishDraft.file)) {
+    throw new Error('WAV files are not allowed for publish. Provide an MP3 or a WAV with source path for conversion.');
+  }
+
+  if (!publishDraft.cover) {
+    publishDraft.cover = defaultCoverPath;
+  }
+
+  const currentCoverPath = String(publishDraft.cover || '').trim();
+  const hasManualCustomCover = Boolean(currentCoverPath && currentCoverPath !== defaultCoverPath);
+
   if (publishDraft.sourceImagePath) {
     const coverResult = await copyCoverFile(workspaceRoot, publishDraft.sourceImagePath);
     publishDraft.cover = coverResult.relativePath;
     changedPaths.push(path.relative(workspaceRoot, coverResult.targetPath));
     pushLog(logs, 'cover', 'success', `Copied cover asset to ${coverResult.relativePath}`);
-  } else if (publishDraft.embeddedCoverDataUrl) {
+  } else if (configuredCoverPolicy && publishDraft.embeddedCoverDataUrl) {
     const coverResult = await writeEmbeddedCover(workspaceRoot, publishDraft.id, publishDraft.embeddedCoverDataUrl);
     publishDraft.cover = coverResult.relativePath;
     changedPaths.push(path.relative(workspaceRoot, coverResult.targetPath));
     pushLog(logs, 'cover', 'success', `Extracted embedded cover to ${coverResult.relativePath}`);
+  } else if (hasManualCustomCover) {
+    publishDraft.cover = currentCoverPath;
+    pushLog(logs, 'cover', 'info', `Using explicit cover path ${currentCoverPath}`);
   } else {
-    pushLog(logs, 'cover', 'info', 'No cover update performed.');
+    publishDraft.cover = defaultCoverPath;
+    pushLog(logs, 'cover', 'info', `Using default cover ${defaultCoverPath}`);
   }
 
   if (mergedSettings.uploadAudioToR2 && publishDraft.sourceAudioPath) {
