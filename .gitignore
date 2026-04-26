@@ -50,3 +50,6 @@ airdox-mobile/
 # Playwright
 playwright-report/
 test-results/
+
+# Local temporary debug artifacts
+tmp-*
