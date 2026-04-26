@@ -13,7 +13,7 @@
 }
 
 .nav-scrolled {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.72);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-subtle);
@@ -34,7 +34,7 @@
     height: 100%;
     background: var(--gradient-primary);
     transition: width 0.1s linear;
-    box-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+    box-shadow: 0 0 6px rgba(0, 245, 255, 0.22);
 }
 
 /* Nav Container */
@@ -57,7 +57,7 @@
 }
 
 .nav-logo:hover {
-    transform: scale(1.05);
+    transform: scale(1.015);
 }
 
 .logo-text {
@@ -75,7 +75,7 @@
     height: 8px;
     background: var(--neon-cyan);
     border-radius: 50%;
-    animation: pulse 2s infinite;
+    animation: none;
 }
 
 /* Nav Links */
@@ -165,7 +165,26 @@
 
 .nav-auth-btn:hover {
     color: var(--neon-pink);
-    text-shadow: 0 0 10px rgba(255, 16, 240, 0.5);
+    text-shadow: none;
+}
+
+.nav-register-btn {
+    background: rgba(0, 245, 255, 0.05);
+    border: 1px solid rgba(0, 245, 255, 0.22);
+    color: var(--neon-cyan);
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-register-btn:hover {
+    background: rgba(0, 245, 255, 0.1);
+    box-shadow: 0 0 10px rgba(0, 245, 255, 0.16);
+    transform: none;
 }
 
 .nav-cta {

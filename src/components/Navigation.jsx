@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { t, getCurrentLocale } from '../utils/i18n';
 import './Navigation.css';
 
-const Navigation = () => {
+const Navigation = ({ onOpenAuth = () => {} }) => {
     const [scrolled, setScrolled] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
     const [activeSection, setActiveSection] = useState('home');
@@ -140,6 +140,13 @@ const Navigation = () => {
                             onClick={() => onOpenAuth('login')}
                         >
                             LOGIN
+                        </button>
+                        <button
+                            type="button"
+                            className="nav-register-btn interactive"
+                            onClick={() => onOpenAuth('register')}
+                        >
+                            REGISTER
                         </button>
                         <a
                             href="mailto:airdox82@gmail.com"

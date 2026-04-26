@@ -42,16 +42,26 @@ const Visualizer = () => {
             let x = 0;
 
             for (let i = 0; i < bufferLength; i++) {
-                const barHeight = (dataArray[i] / 255) * canvas.height * 0.3;
-                
-                // Unified Cyan Glow for the bottom bars
-                const opacity = (dataArray[i] / 255) * 0.3;
-                ctx.fillStyle = `rgba(0, 245, 255, ${opacity})`;
-                ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-                
-                // Subtile Pink Mirror
-                ctx.fillStyle = `rgba(255, 0, 170, ${opacity * 0.5})`;
-                ctx.fillRect(x, 0, barWidth, barHeight * 0.3);
+                const value = dataArray[i];
+                const intensity = value / 255;
+                const barHeight = intensity * canvas.height * 0.3;
+                const bottomY = canvas.height;
+                const topY = bottomY - barHeight;
+
+                const barGradient = ctx.createLinearGradient(0, topY, 0, bottomY);
+                barGradient.addColorStop(0, `rgba(255, 104, 208, ${0.22 + intensity * 0.45})`);
+                barGradient.addColorStop(0.5, `rgba(0, 245, 255, ${0.2 + intensity * 0.55})`);
+                barGradient.addColorStop(1, `rgba(144, 255, 203, ${0.16 + intensity * 0.5})`);
+
+                ctx.fillStyle = barGradient;
+                ctx.fillRect(x, topY, barWidth, barHeight);
+
+                const mirrorHeight = barHeight * 0.35;
+                const mirrorGradient = ctx.createLinearGradient(0, 0, 0, mirrorHeight);
+                mirrorGradient.addColorStop(0, `rgba(186, 127, 255, ${0.05 + intensity * 0.2})`);
+                mirrorGradient.addColorStop(1, `rgba(0, 245, 255, ${0.03 + intensity * 0.15})`);
+                ctx.fillStyle = mirrorGradient;
+                ctx.fillRect(x, 0, barWidth, mirrorHeight);
 
                 x += barWidth + 2;
             }

@@ -7,6 +7,29 @@
     margin: 0 auto;
 }
 
+.vip-gate {
+    text-align: center;
+}
+
+.vip-gate-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.vip-gate-actions .btn {
+    min-width: 150px;
+}
+
+.vip-gate-hint {
+    margin-top: 18px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+}
+
 .auth-tabs {
     display: flex;
     gap: 20px;
@@ -108,4 +131,90 @@
     color: white;
     border-color: var(--neon-cyan);
     box-shadow: 0 0 15px rgba(0, 245, 255, 0.2);
+}
+
+.turnstile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.turnstile-widget {
+    min-height: 65px;
+}
+
+.vip-sets-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.vip-set-card {
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.vip-set-head h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.vip-set-head span {
+    display: block;
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+}
+
+.vip-set-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.vip-play-btn {
+    border: 1px solid var(--border-subtle);
+    background: rgba(0, 245, 255, 0.08);
+    color: var(--neon-cyan);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+}
+
+.vip-set-actions .vip-download-link {
+    margin-top: 0;
+    text-decoration: none;
+}
+
+.vip-tracklist-items {
+    list-style: none;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.12);
+    display: grid;
+    gap: 6px;
+    font-size: 0.78rem;
+}
+
+.vip-tracklist-items li {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 8px;
+    align-items: center;
+    color: var(--text-muted);
+    padding: 5px 8px;
+    border-radius: 6px;
+    transition: background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+}
+
+.vip-tracklist-items li.current-track {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.16);
+    font-weight: 600;
 }

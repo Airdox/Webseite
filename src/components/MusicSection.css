@@ -42,9 +42,16 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    --vinyl-bounce-x: 0px;
+    --vinyl-bounce-y: 0px;
+    transform: translate(
+        calc(-50% + var(--vinyl-bounce-x)),
+        calc(-50% + var(--vinyl-bounce-y))
+    );
     width: 70%;
     aspect-ratio: 1;
+    will-change: transform;
+    pointer-events: none;
 }
 
 .mini-vinyl {
@@ -71,6 +78,10 @@
     overflow: hidden;
 }
 
+.mini-vinyl.spinning-disc {
+    animation: spin 4s linear infinite;
+}
+
 .vinyl-image {
     width: 100%;
     height: 100%;
@@ -83,10 +94,6 @@
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
-}
-
-.spinning {
-    animation: spin 4s linear infinite;
 }
 
 .cover-overlay {
@@ -211,6 +218,25 @@
     font-size: 0.65rem;
     color: var(--text-muted);
     margin-bottom: 5px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    transition: background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+}
+
+.tracklist-item.current-track {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.16);
+}
+
+.tracklist-item.current-track .track-time {
+    color: #ffffff;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.45);
+}
+
+.tracklist-item.current-track .track-details {
+    color: #ffffff;
+    font-weight: 600;
 }
 
 .track-time { color: var(--neon-cyan); margin-right: 8px; }

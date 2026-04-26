@@ -19,6 +19,9 @@ const VALID_UPDATE_TYPES = new Set([
     'unlike',
     'undislike'
 ]);
+const REGISTER_RATE_LIMIT_WINDOW_MINUTES = 60;
+const REGISTER_RATE_LIMIT_MAX_ATTEMPTS = 8;
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 let sqlClient = null;
 let initPromise = null;
@@ -89,6 +92,22 @@ const ensureInitialized = async (sql) => {
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     expires_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '7 days')
                 );
+            `;
+
+            await sql`
+                CREATE TABLE IF NOT EXISTS auth_attempts (
+                    id SERIAL PRIMARY KEY,
+                    action TEXT NOT NULL,
+                    ip_address TEXT,
+                    identifier TEXT,
+                    success BOOLEAN DEFAULT FALSE,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            `;
+
+            await sql`
+                CREATE INDEX IF NOT EXISTS idx_auth_attempts_ip_action_created_at
+                ON auth_attempts (ip_address, action, created_at DESC);
             `;
 
             // Analytics Logs Table [NEW]
@@ -304,44 +323,163 @@ const generateRandomHex = (bytes) => {
 const generateSalt = () => generateRandomHex(16);
 const generateToken = () => generateRandomHex(32);
 
+const resolveTurnstileSecret = (env) => (
+    env.TURNSTILE_SECRET_KEY
+    || env.TURNSTILE_SECRET
+    || env.CAPTCHA_SECRET_KEY
+    || ''
+);
+
+const isCaptchaRequired = (env) => {
+    const flag = String(env.REQUIRE_CAPTCHA || '').trim().toLowerCase();
+    if (flag === 'false' || flag === '0' || flag === 'off' || flag === 'no') return false;
+    return true;
+};
+
+const normalizeIp = (value) => String(value || '').trim().slice(0, 128);
+
+const recordAuthAttempt = async (sql, { action, clientIp, identifier, success }) => {
+    try {
+        await sql`
+            INSERT INTO auth_attempts (action, ip_address, identifier, success)
+            VALUES (${action}, ${clientIp || null}, ${identifier || null}, ${Boolean(success)});
+        `;
+    } catch (error) {
+        console.error('Auth attempt log failed:', error);
+    }
+};
+
+const isRegisterRateLimited = async (sql, clientIp) => {
+    if (!clientIp) return false;
+    const [row] = await sql`
+        SELECT COUNT(*)::int AS attempts
+        FROM auth_attempts
+        WHERE action = 'register'
+          AND ip_address = ${clientIp}
+          AND created_at > CURRENT_TIMESTAMP - (${REGISTER_RATE_LIMIT_WINDOW_MINUTES} * INTERVAL '1 minute');
+    `;
+    return Number(row?.attempts || 0) >= REGISTER_RATE_LIMIT_MAX_ATTEMPTS;
+};
+
+const verifyTurnstileCaptcha = async ({ token, clientIp, env }) => {
+    if (!token) return { ok: false, error: 'CAPTCHA token missing' };
+    const secret = resolveTurnstileSecret(env);
+    if (!secret) return { ok: false, error: 'CAPTCHA service not configured' };
+
+    try {
+        const formBody = new URLSearchParams();
+        formBody.set('secret', secret);
+        formBody.set('response', token);
+        if (clientIp) formBody.set('remoteip', clientIp);
+
+        const response = await fetch(TURNSTILE_VERIFY_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formBody.toString(),
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok || !payload?.success) {
+            return { ok: false, error: 'CAPTCHA verification failed' };
+        }
+
+        return { ok: true };
+    } catch (error) {
+        console.error('CAPTCHA verification error:', error);
+        return { ok: false, error: 'CAPTCHA verification failed' };
+    }
+};
+
 export const handleAuthRequest = async ({ body, env }) => {
     const sql = getSqlClient(env);
     if (!sql) return { status: 500, body: errorBody('Database not configured') };
 
-    const { action, username, email, password, token } = body;
-    
+    try {
+        await ensureInitialized(sql);
+    } catch (error) {
+        return { status: 500, body: errorBody('Database initialization failed', error?.message) };
+    }
+
+    const {
+        action,
+        username,
+        email,
+        password,
+        token,
+        captchaToken,
+        clientIp: rawClientIp,
+    } = body || {};
+    const clientIp = normalizeIp(rawClientIp);
+    const normalizedUsername = String(username || '').trim();
+    const normalizedEmail = String(email || '').trim().toLowerCase();
+    const loginIdentifier = String(email || username || '').trim();
+
     // Validate Token (Session)
     if (action === 'validate') {
         if (!token) return { status: 401, body: errorBody('No token provided') };
         try {
             const [session] = await sql`
-                SELECT s.id, u.id as user_id, u.username, u.email 
-                FROM sessions s 
-                JOIN users u ON s.user_id = u.id 
+                SELECT s.id, u.id as user_id, u.username, u.email
+                FROM sessions s
+                JOIN users u ON s.user_id = u.id
                 WHERE s.id = ${token} AND s.expires_at > CURRENT_TIMESTAMP
             `;
             if (!session) return { status: 401, body: errorBody('Invalid or expired session') };
             return { status: 200, body: { ok: true, user: { id: session.user_id, username: session.username, email: session.email } } };
-        } catch (e) { return { status: 500, body: errorBody('Validation failed') }; }
+        } catch {
+            return { status: 500, body: errorBody('Validation failed') };
+        }
     }
 
-    if (!action || !password || (action === 'register' && (!username || !email)) || (action === 'login' && !username && !email)) {
+    if (!action || !password || (action === 'register' && (!normalizedUsername || !normalizedEmail)) || (action === 'login' && !loginIdentifier)) {
         return { status: 400, body: errorBody('Missing required fields') };
     }
 
     try {
-        await ensureInitialized(sql);
-
         if (action === 'register') {
+            const isLimited = await isRegisterRateLimited(sql, clientIp);
+            if (isLimited) {
+                return { status: 429, body: errorBody('Too many registration attempts. Please try again later.') };
+            }
+
+            if (isCaptchaRequired(env)) {
+                const captchaResult = await verifyTurnstileCaptcha({
+                    token: captchaToken,
+                    clientIp,
+                    env,
+                });
+                if (!captchaResult.ok) {
+                    await recordAuthAttempt(sql, {
+                        action: 'register',
+                        clientIp,
+                        identifier: normalizedEmail || normalizedUsername,
+                        success: false,
+                    });
+                    return { status: 400, body: errorBody(captchaResult.error) };
+                }
+            }
+
             const salt = generateSalt();
             const hashedPassword = await hashPassword(password, salt);
             try {
                 await sql`
                     INSERT INTO users (username, email, password, salt)
-                    VALUES (${username}, ${email}, ${hashedPassword}, ${salt});
+                    VALUES (${normalizedUsername}, ${normalizedEmail}, ${hashedPassword}, ${salt});
                 `;
+                await recordAuthAttempt(sql, {
+                    action: 'register',
+                    clientIp,
+                    identifier: normalizedEmail || normalizedUsername,
+                    success: true,
+                });
                 return { status: 200, body: { ok: true, message: 'User registered successfully' } };
             } catch (error) {
+                await recordAuthAttempt(sql, {
+                    action: 'register',
+                    clientIp,
+                    identifier: normalizedEmail || normalizedUsername,
+                    success: false,
+                });
                 if (error.message.includes('unique constraint') || error.message.includes('already exists')) {
                     const field = error.message.includes('email') ? 'Email' : 'Username';
                     return { status: 400, body: errorBody(`${field} already exists`) };
@@ -351,8 +489,7 @@ export const handleAuthRequest = async ({ body, env }) => {
         }
 
         if (action === 'login') {
-            const identifier = email || username;
-            const [user] = await sql`SELECT * FROM users WHERE email = ${identifier} OR username = ${identifier}`;
+            const [user] = await sql`SELECT * FROM users WHERE email = ${loginIdentifier} OR username = ${loginIdentifier}`;
             if (!user) return { status: 401, body: errorBody('Invalid credentials') };
 
             const hashedPassword = await hashPassword(password, user.salt);

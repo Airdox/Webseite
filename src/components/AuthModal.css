@@ -190,6 +190,14 @@
     animation: spin 0.8s linear infinite;
 }
 
+.turnstile-field {
+    margin-bottom: 20px;
+}
+
+.turnstile-widget {
+    min-height: 65px;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }

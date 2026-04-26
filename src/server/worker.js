@@ -1,6 +1,8 @@
 
 import { Router } from './router.js';
-import { handleStatsRequest, handleBookingRequest, handleAuthRequest, handleSubscribeRequest } from '../lib/stats-logic.js';
+import { handleStatsRequest, handleBookingRequest, handleAuthRequest } from '../lib/stats-logic.js';
+import { sets } from '../data/musicSets.js';
+import { normalizeAudioBaseFilename, partitionSetsByAccess } from '../lib/set-access.js';
 
 // Utility to sanitize filename (prevent path traversal but allow spaces)
 function sanitizeFilename(filename) {
@@ -11,13 +13,52 @@ function sanitizeFilename(filename) {
 }
 
 const router = new Router();
+const { publicSets } = partitionSetsByAccess(sets);
+const KNOWN_AUDIO_BASES = new Set(sets.map((set) => normalizeAudioBaseFilename(set.file)).filter(Boolean));
+const PUBLIC_AUDIO_BASES = new Set(publicSets.map((set) => normalizeAudioBaseFilename(set.file)).filter(Boolean));
 
 // CORS Headers Utility
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Airdox-Token',
     'Access-Control-Max-Age': '86400',
+};
+
+const getClientIp = (request) => {
+    const cfIp = request.headers.get('CF-Connecting-IP');
+    if (cfIp) return cfIp;
+    const forwarded = request.headers.get('X-Forwarded-For');
+    if (!forwarded) return '';
+    const [first] = forwarded.split(',');
+    return String(first || '').trim();
+};
+
+const buildAuthBody = (request, body, forcedAction) => ({
+    ...(body || {}),
+    ...(forcedAction ? { action: forcedAction } : {}),
+    clientIp: getClientIp(request),
+    userAgent: request.headers.get('User-Agent') || '',
+    referrer: request.headers.get('Referer') || '',
+});
+
+const getAuthTokenFromRequest = (request, url) => {
+    const queryToken = url.searchParams.get('token');
+    if (queryToken) return queryToken;
+
+    const headerToken = request.headers.get('x-airdox-token');
+    if (headerToken) return headerToken;
+
+    const authorization = request.headers.get('Authorization') || '';
+    const bearerMatch = authorization.match(/^Bearer\s+(.+)$/i);
+    if (bearerMatch?.[1]) return bearerMatch[1].trim();
+    return '';
+};
+
+const isVipOnlyAudio = (filename) => {
+    const base = normalizeAudioBaseFilename(filename);
+    if (!base || !KNOWN_AUDIO_BASES.has(base)) return false;
+    return !PUBLIC_AUDIO_BASES.has(base);
 };
 
 // GET /api/audio/:filename - Secure audio streaming endpoint
@@ -42,6 +83,27 @@ router.get('/api/audio', async (request, env, ctx) => {
     
     const safeFilename = sanitizeFilename(filename);
     console.log(`[Audio] Requesting: "${safeFilename}" (original: "${filename}")`);
+
+    if (isVipOnlyAudio(safeFilename)) {
+        const token = getAuthTokenFromRequest(request, url);
+        if (!token) {
+            return new Response(JSON.stringify({ error: 'VIP access requires login token' }), {
+                status: 401,
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+            });
+        }
+
+        const sessionResult = await handleAuthRequest({
+            body: { action: 'validate', token },
+            env
+        });
+        if (sessionResult.status !== 200 || !sessionResult.body?.ok) {
+            return new Response(JSON.stringify({ error: 'Invalid or expired VIP session' }), {
+                status: 401,
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+            });
+        }
+    }
     
     let object = null;
     if (env.PUBLIC && env.PUBLIC.get) {
@@ -161,7 +223,7 @@ router.post('/api/booking', async (request, env) => {
 router.post('/api/auth', async (request, env) => {
     try {
         const body = await request.json();
-        const result = await handleAuthRequest({ body, env });
+        const result = await handleAuthRequest({ body: buildAuthBody(request, body), env });
         const headers = { 
             ...corsHeaders, 
             'Content-Type': 'application/json',
@@ -182,7 +244,7 @@ router.post('/api/auth', async (request, env) => {
 // Alias routes for convenience [NEW]
 router.post('/api/login', async (request, env) => {
     const body = await request.json();
-    const result = await handleAuthRequest({ body: { ...body, action: 'login' }, env });
+    const result = await handleAuthRequest({ body: buildAuthBody(request, body, 'login'), env });
     return new Response(JSON.stringify(result.body), {
         status: result.status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -191,7 +253,7 @@ router.post('/api/login', async (request, env) => {
 
 router.post('/api/register', async (request, env) => {
     const body = await request.json();
-    const result = await handleAuthRequest({ body: { ...body, action: 'register' }, env });
+    const result = await handleAuthRequest({ body: buildAuthBody(request, body, 'register'), env });
     return new Response(JSON.stringify(result.body), {
         status: result.status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }

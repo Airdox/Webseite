@@ -4,16 +4,57 @@ import './MusicSection.css';
 import { t } from '../utils/i18n';
 
 import { sets } from '../data/musicSets';
+import { buildAudioApiHref, partitionSetsByAccess } from '../lib/set-access';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { statsSync } from '../utils/stats-sync';
 
+const { publicSets } = partitionSetsByAccess(sets);
+
+const parseTrackTimeToSeconds = (value = '') => {
+    const parts = String(value || '')
+        .trim()
+        .split(':')
+        .map((chunk) => Number.parseInt(chunk, 10));
+    if (!parts.length || parts.some((part) => Number.isNaN(part))) return null;
+    if (parts.length === 3) {
+        const [hours, minutes, seconds] = parts;
+        return (hours * 3600) + (minutes * 60) + seconds;
+    }
+    if (parts.length === 2) {
+        const [minutes, seconds] = parts;
+        return (minutes * 60) + seconds;
+    }
+    if (parts.length === 1) {
+        return parts[0];
+    }
+    return null;
+};
+
+const getCurrentTracklistIndex = (tracks = [], currentTimeSeconds = 0) => {
+    if (!Array.isArray(tracks) || !tracks.length || !Number.isFinite(currentTimeSeconds)) return -1;
+    let activeIndex = -1;
+    for (let index = 0; index < tracks.length; index += 1) {
+        const trackAt = parseTrackTimeToSeconds(tracks[index]?.time);
+        if (!Number.isFinite(trackAt)) continue;
+        if (currentTimeSeconds >= trackAt) {
+            activeIndex = index;
+            continue;
+        }
+        break;
+    }
+    return activeIndex;
+};
+
 const MusicSection = () => {
     const {
+        analyserRef,
         currentTrack,
         isPlaying,
+        currentTime,
         playTrack,
         togglePlay
     } = useAudio();
+    const currentTrackId = currentTrack?.id ?? null;
 
     // Globale Stats (von Datenbank) mit LocalStorage Fallback
     const [globalStats, setGlobalStats] = useState(() => {
@@ -29,6 +70,19 @@ const MusicSection = () => {
     });
 
     const sectionRef = useRef(null);
+    const billiardStateRef = useRef({
+        x: 0,
+        y: 0,
+        vx: 140,
+        vy: 118,
+        maxX: 0,
+        maxY: 0,
+        trackKey: '',
+        lastTs: 0
+    });
+    const billiardRafRef = useRef(null);
+    const animatedVinylRef = useRef(null);
+    const frequencyBufferRef = useRef(null);
     useRevealOnScroll(sectionRef, '.reveal, .reveal-scale');
 
     // Sync bei Änderungen der globalen Stats (durch StatsSync oder andere Komponenten)
@@ -99,10 +153,15 @@ const MusicSection = () => {
     const getSetStats = (setId) => globalStats[setId] || { plays: 0, likes: 0, dislikes: 0 };
     const getUserVote = (setId) => userVotes[setId];
 
-    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('airdox_token'));
+    const [authToken, setAuthToken] = useState(() => localStorage.getItem('airdox_token') || '');
+    const [isLoggedIn, setIsLoggedIn] = useState(Boolean(authToken));
 
     useEffect(() => {
-        const checkLogin = () => setIsLoggedIn(!!localStorage.getItem('airdox_token'));
+        const checkLogin = () => {
+            const token = localStorage.getItem('airdox_token') || '';
+            setAuthToken(token);
+            setIsLoggedIn(Boolean(token));
+        };
         window.addEventListener('airdox_login_success', checkLogin);
         window.addEventListener('airdox_logout', checkLogin);
         return () => {
@@ -110,6 +169,141 @@ const MusicSection = () => {
             window.removeEventListener('airdox_logout', checkLogin);
         };
     }, []);
+
+    useEffect(() => {
+        const clearAnimatedVinyl = () => {
+            if (!animatedVinylRef.current) return;
+            animatedVinylRef.current.style.removeProperty('--vinyl-bounce-x');
+            animatedVinylRef.current.style.removeProperty('--vinyl-bounce-y');
+            animatedVinylRef.current = null;
+        };
+
+        if (!isPlaying || !currentTrackId) {
+            clearAnimatedVinyl();
+            return undefined;
+        }
+
+        const prefersReducedMotion = window.matchMedia
+            && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+            clearAnimatedVinyl();
+            return undefined;
+        }
+
+        let disposed = false;
+        const physics = billiardStateRef.current;
+        const randomDirection = () => (Math.random() >= 0.5 ? 1 : -1);
+
+        const findCurrentVinyl = () => {
+            const cards = document.querySelectorAll('.set-card[data-set-id]');
+            for (const card of cards) {
+                if (card.dataset.setId !== String(currentTrackId)) continue;
+                const cover = card.querySelector('.set-cover');
+                const vinyl = card.querySelector('.cover-vinyl');
+                if (!cover || !vinyl) return null;
+                return { cover, vinyl };
+            }
+            return null;
+        };
+
+        const readAudioEnergy = () => {
+            const analyser = analyserRef?.current;
+            if (!analyser) return 0.35;
+            if (!frequencyBufferRef.current || frequencyBufferRef.current.length !== analyser.frequencyBinCount) {
+                frequencyBufferRef.current = new Uint8Array(analyser.frequencyBinCount);
+            }
+            const frequencyBuffer = frequencyBufferRef.current;
+            analyser.getByteFrequencyData(frequencyBuffer);
+            const binsToRead = Math.min(frequencyBuffer.length, 48);
+            if (!binsToRead) return 0.35;
+            let sum = 0;
+            for (let i = 0; i < binsToRead; i += 1) {
+                sum += frequencyBuffer[i];
+            }
+            return sum / (binsToRead * 255);
+        };
+
+        const animate = (timestamp) => {
+            if (disposed) return;
+
+            const activeElements = findCurrentVinyl();
+            if (!activeElements) {
+                billiardRafRef.current = requestAnimationFrame(animate);
+                return;
+            }
+
+            const { cover, vinyl } = activeElements;
+            if (animatedVinylRef.current && animatedVinylRef.current !== vinyl) {
+                animatedVinylRef.current.style.removeProperty('--vinyl-bounce-x');
+                animatedVinylRef.current.style.removeProperty('--vinyl-bounce-y');
+            }
+            animatedVinylRef.current = vinyl;
+
+            const coverRect = cover.getBoundingClientRect();
+            const vinylRect = vinyl.getBoundingClientRect();
+            const maxX = Math.max(0, coverRect.width - vinylRect.width);
+            const maxY = Math.max(0, coverRect.height - vinylRect.height);
+            const trackKey = String(currentTrackId);
+
+            const hasViewportChange = Math.abs(physics.maxX - maxX) > 0.5 || Math.abs(physics.maxY - maxY) > 0.5;
+            if (physics.trackKey !== trackKey || hasViewportChange) {
+                physics.trackKey = trackKey;
+                physics.maxX = maxX;
+                physics.maxY = maxY;
+                physics.x = maxX / 2;
+                physics.y = maxY / 2;
+                physics.vx = 140 * randomDirection();
+                physics.vy = 118 * randomDirection();
+                physics.lastTs = timestamp;
+            }
+
+            if (!physics.lastTs) {
+                physics.lastTs = timestamp;
+            }
+            const deltaSec = Math.min(0.05, Math.max(0.008, (timestamp - physics.lastTs) / 1000));
+            physics.lastTs = timestamp;
+
+            const energy = readAudioEnergy();
+            const speedFactor = 0.85 + (energy * 1.7);
+            physics.x += physics.vx * speedFactor * deltaSec;
+            physics.y += physics.vy * speedFactor * deltaSec;
+
+            if (physics.x <= 0) {
+                physics.x = 0;
+                physics.vx = Math.abs(physics.vx);
+            } else if (physics.x >= maxX) {
+                physics.x = maxX;
+                physics.vx = -Math.abs(physics.vx);
+            }
+
+            if (physics.y <= 0) {
+                physics.y = 0;
+                physics.vy = Math.abs(physics.vy);
+            } else if (physics.y >= maxY) {
+                physics.y = maxY;
+                physics.vy = -Math.abs(physics.vy);
+            }
+
+            const offsetX = physics.x - (maxX / 2);
+            const offsetY = physics.y - (maxY / 2);
+            vinyl.style.setProperty('--vinyl-bounce-x', `${offsetX.toFixed(2)}px`);
+            vinyl.style.setProperty('--vinyl-bounce-y', `${offsetY.toFixed(2)}px`);
+
+            billiardRafRef.current = requestAnimationFrame(animate);
+        };
+
+        billiardRafRef.current = requestAnimationFrame(animate);
+
+        return () => {
+            disposed = true;
+            if (billiardRafRef.current) {
+                cancelAnimationFrame(billiardRafRef.current);
+                billiardRafRef.current = null;
+            }
+            physics.lastTs = 0;
+            clearAnimatedVinyl();
+        };
+    }, [analyserRef, currentTrackId, isPlaying]);
 
     return (
         <section className="music-section section" id="music" ref={sectionRef}>
@@ -123,11 +317,14 @@ const MusicSection = () => {
 
                 {/* Sets Grid */}
                 <div className="sets-grid">
-                    {sets.map((set, index) => {
+                    {publicSets.map((set, index) => {
                         const stats = getSetStats(set.id);
                         const userVote = getUserVote(set.id);
                         const isSetPlaying = currentTrack?.id === set.id && isPlaying;
                         const isSetCurrent = currentTrack?.id === set.id;
+                        const activeTrackIndex = isSetCurrent
+                            ? getCurrentTracklistIndex(set.tracks, currentTime)
+                            : -1;
 
 
 
@@ -135,6 +332,7 @@ const MusicSection = () => {
                             <div
                                 key={set.id}
                                 className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''}`}
+                                data-set-id={set.id}
                             >
                                 {/* Cover Art */}
                                 <div
@@ -146,14 +344,14 @@ const MusicSection = () => {
                                     aria-label={`${isSetPlaying ? 'Pause' : 'Play'} ${set.title}`}
                                 >
                                     <div
-                                        className={`cover-vinyl ${isSetPlaying ? 'spinning' : ''}`}
+                                        className="cover-vinyl"
                                         style={{
                                             '--vinyl-color': set.vinylColor || 'var(--neon-cyan)',
                                             '--vinyl-index': index
                                         }}
                                     >
                                         <div
-                                            className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''}`}
+                                            className={`mini-vinyl ${isSetPlaying ? 'active-disc spinning-disc' : ''}`}
                                         >
                                             {isSetPlaying ? (
                                                 <img
@@ -225,7 +423,7 @@ const MusicSection = () => {
                                     </div>
                                     {isLoggedIn && (
                                         <a 
-                                            href={`/audio/${set.file}`} 
+                                            href={buildAudioApiHref(set.file, authToken)} 
                                             download={set.file}
                                             className="vip-download-link"
                                             onClick={(e) => e.stopPropagation()}
@@ -238,12 +436,16 @@ const MusicSection = () => {
                                         </a>
                                     )}
 
-                                    {isLoggedIn && set.tracks && set.tracks.length > 0 && (
+                                    {set.tracks && set.tracks.length > 0 && (
                                         <div className="vip-tracklist">
-                                            <h4 className="tracklist-title">VIP Tracklist</h4>
+                                            <h4 className="tracklist-title">Tracklist</h4>
                                             <ul className="tracklist-items">
                                                 {set.tracks.map((track, idx) => (
-                                                    <li key={idx} className="tracklist-item">
+                                                    <li
+                                                        key={idx}
+                                                        className={`tracklist-item ${idx === activeTrackIndex ? 'current-track' : ''}`}
+                                                        aria-current={idx === activeTrackIndex ? 'true' : undefined}
+                                                    >
                                                         <span className="track-time">{track.time}</span>
                                                         <span className="track-details">
                                                             <span className="track-artist">{track.artist}</span> - <span className="track-title">{track.title}</span>

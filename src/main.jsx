@@ -27,20 +27,12 @@ try {
   // no-op
 }
 
-// Service Worker registrieren (für PWA-Funktionalität)
-// In dev or when explicitly disabled, unregister to avoid stale caches.
-const shouldDisableServiceWorker = import.meta.env.DEV || import.meta.env.VITE_DISABLE_SW === 'true'
-if (shouldDisableServiceWorker && 'serviceWorker' in navigator) {
+// Always unregister stale service workers to avoid serving old cached assets.
+if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
-      for (let registration of registrations) {
-        registration.unregister()
-          .then(() => {
-            if (import.meta.env.DEV) console.log('SW unregistered successfully')
-          })
-          .catch(err => {
-            if (import.meta.env.DEV) console.warn('SW unregistration failed:', err)
-          })
+      for (const registration of registrations) {
+        registration.unregister().catch(() => {});
       }
     });
   });

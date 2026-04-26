@@ -18,8 +18,6 @@ const GlobalPlayer = () => {
         seek,
         volume,
         changeVolume,
-        analyserRef,
-
     } = useAudio();
 
     // Keyboard Shortcuts
@@ -52,13 +50,7 @@ const GlobalPlayer = () => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [togglePlay, seek, currentTime, duration]);
 
-    const [isPageVisible, setIsPageVisible] = React.useState(() => !document.hidden);
-
-
-    const canvasRef = useRef(null);
-    const animationRef = useRef(null);
     const progressRef = useRef(null);
-    const waveformRef = useRef({ trackId: null, points: [] });
     const playerRef = useRef(null);
     const isVisible = !!currentTrack;
 
@@ -86,7 +78,7 @@ const GlobalPlayer = () => {
 
     // Format time helpers (mm:ss)
     const formatTime = (time) => {
-        if (!time && time !== 0) return "0:00";
+        if (!time && time !== 0) return '0:00';
         const minutes = Math.floor(time / 60);
         const seconds = Math.floor(time % 60);
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
@@ -102,98 +94,6 @@ const GlobalPlayer = () => {
         seek(percentage * duration);
     };
 
-    // Visualizer Loop
-    useEffect(() => {
-        const handleVisibility = () => setIsPageVisible(!document.hidden);
-        document.addEventListener('visibilitychange', handleVisibility);
-        return () => document.removeEventListener('visibilitychange', handleVisibility);
-    }, []);
-
-    useEffect(() => {
-        if (!analyserRef.current || !canvasRef.current) return;
-
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        const analyser = analyserRef.current;
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const isCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-        const barStep = isCoarsePointer ? 2 : 1;
-
-        if (waveformRef.current.trackId !== currentTrack?.id) {
-            waveformRef.current.trackId = currentTrack?.id || null;
-            waveformRef.current.points = Array.from({ length: 100 }, () => 0.2 + Math.random() * 0.5);
-        }
-
-        const drawBaseWaveform = () => {
-            const waveformPoints = waveformRef.current.points;
-            if (!waveformPoints.length) return;
-
-            const width = canvas.width;
-            const height = canvas.height;
-
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgba(0, 243, 255, 0.1)';
-            ctx.lineWidth = 2;
-            const step = width / (waveformPoints.length - 1);
-            for (let i = 0; i < waveformPoints.length; i++) {
-                const x = i * step;
-                const y = height - (waveformPoints[i] * height * 0.6);
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-        };
-
-        const drawFrame = () => {
-            animationRef.current = requestAnimationFrame(drawFrame);
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const width = canvas.width;
-            const height = canvas.height;
-
-            // 1. Static waveform background
-            drawBaseWaveform();
-
-            // 2. Reactive peaks (Foreground)
-            analyser.getByteFrequencyData(dataArray);
-            const visibleBars = Math.ceil(bufferLength / barStep);
-            const barWidth = width / visibleBars;
-            let x = 0;
-
-            for (let i = 0; i < bufferLength; i += barStep) {
-                const value = dataArray[i];
-                const barHeight = (value / 255) * height * 0.8;
-
-                ctx.fillStyle = `rgba(0, 243, 255, ${0.3 + (value / 255) * 0.7})`;
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = 'rgba(0, 243, 255, 0.5)';
-
-                ctx.fillRect(x, height - barHeight, barWidth, barHeight);
-
-                ctx.shadowBlur = 0;
-                x += barWidth;
-            }
-        };
-
-        if (animationRef.current) {
-            cancelAnimationFrame(animationRef.current);
-            animationRef.current = null;
-        }
-
-        const shouldAnimate = isPlaying && isPageVisible && !prefersReducedMotion;
-        if (shouldAnimate) {
-            drawFrame();
-            return () => {
-                if (animationRef.current) cancelAnimationFrame(animationRef.current);
-            };
-        }
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawBaseWaveform();
-    }, [isPlaying, analyserRef, currentTrack, isPageVisible]);
-
     const progressPercent = duration ? (currentTime / duration) * 100 : 0;
 
     return (
@@ -202,13 +102,9 @@ const GlobalPlayer = () => {
             ref={playerRef}
             style={{
                 visibility: isVisible ? 'visible' : 'hidden',
-                pointerEvents: isVisible ? 'auto' : 'none'
+                pointerEvents: isVisible ? 'auto' : 'none',
             }}
         >
-
-            {/* Visualizer Background */}
-            <canvas ref={canvasRef} className="gp-visualizer" width="900" height="100" />
-
             {/* Track Info */}
             <div className="gp-track-info">
                 <div className="gp-track-title" title={currentTrack?.title || ''}>
@@ -244,7 +140,7 @@ const GlobalPlayer = () => {
                     <span className="gp-time">{formatTime(currentTime)}</span>
 
                     <div className="gp-progress-bar" ref={progressRef} onClick={handleProgressClick}>
-                        <div className="gp-progress-fill" style={{ width: `${progressPercent}%` }}></div>
+                        <div className="gp-progress-fill" style={{ width: `${progressPercent}%` }} />
                     </div>
 
                     <span className="gp-time">{formatTime(duration)}</span>
@@ -270,7 +166,6 @@ const GlobalPlayer = () => {
                     aria-label="Volume"
                 />
             </div>
-
         </div>
     );
 };

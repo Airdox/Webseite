@@ -277,8 +277,8 @@ button {
 .airdox-card:hover {
     background: rgba(15, 15, 15, 0.6);
     border-color: rgba(0, 245, 255, 0.2);
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 245, 255, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.32), 0 0 14px rgba(0, 245, 255, 0.08);
 }
 
 .airdox-card:hover::before {
@@ -326,7 +326,7 @@ button {
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: var(--glow-combined);
+    box-shadow: 0 0 18px rgba(0, 245, 255, 0.25);
 }
 
 .btn-outline {
@@ -337,7 +337,7 @@ button {
 
 .btn-outline:hover {
     background: rgba(0, 245, 255, 0.1);
-    box-shadow: var(--glow-cyan);
+    box-shadow: 0 0 14px rgba(0, 245, 255, 0.2);
     transform: translateY(-2px);
 }
 
@@ -362,7 +362,7 @@ button {
 /* Fallback for browsers without animation-timeline support (uses JS observer -> .visible) */
 .reveal {
     opacity: 0;
-    transform: translateY(60px);
+    transform: translateY(34px);
     transition: opacity var(--duration-slower) var(--ease-out),
         transform var(--duration-slower) var(--ease-out);
 }
@@ -370,7 +370,7 @@ button {
 
 .reveal-left {
     opacity: 0;
-    transform: translateX(-60px);
+    transform: translateX(-30px);
     transition: opacity var(--duration-slower) var(--ease-out),
         transform var(--duration-slower) var(--ease-out);
 }
@@ -378,7 +378,7 @@ button {
 
 .reveal-right {
     opacity: 0;
-    transform: translateX(60px);
+    transform: translateX(30px);
     transition: opacity var(--duration-slower) var(--ease-out),
         transform var(--duration-slower) var(--ease-out);
 }
@@ -386,7 +386,7 @@ button {
 
 .reveal-scale {
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.92);
     transition: opacity var(--duration-slower) var(--ease-out),
         transform var(--duration-slower) var(--ease-spring);
 }
@@ -418,19 +418,19 @@ button {
     }
 
     @keyframes revealUp {
-        0% { opacity: 0; transform: translateY(60px); }
+        0% { opacity: 0; transform: translateY(34px); }
         100% { opacity: 1; transform: translateY(0); }
     }
     @keyframes revealLeft {
-        0% { opacity: 0; transform: translateX(-60px); }
+        0% { opacity: 0; transform: translateX(-30px); }
         100% { opacity: 1; transform: translateX(0); }
     }
     @keyframes revealRight {
-        0% { opacity: 0; transform: translateX(60px); }
+        0% { opacity: 0; transform: translateX(30px); }
         100% { opacity: 1; transform: translateX(0); }
     }
     @keyframes revealScale {
-        0% { opacity: 0; transform: scale(0.8); }
+        0% { opacity: 0; transform: scale(0.92); }
         100% { opacity: 1; transform: scale(1); }
     }
 }

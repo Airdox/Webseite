@@ -12,6 +12,15 @@ const devWarn = (...args) => {
 // Use API endpoint for audio streaming
 const AUDIO_BASE = '/api/audio';
 const AUDIO_MAX_PARTS = 25;
+
+const getAuthToken = () => {
+    try {
+        return localStorage.getItem('airdox_token') || '';
+    } catch {
+        return '';
+    }
+};
+
 const resolveAudioSrc = (src) => {
     if (!src) return src;
     // Always use API endpoint for audio
@@ -29,7 +38,22 @@ const encodeAudioSrc = (src) => {
         return encodeURI(src);
     }
 };
-const toPlayableSrc = (src) => encodeAudioSrc(resolveAudioSrc(src));
+
+const appendTokenParam = (src) => {
+    const token = getAuthToken();
+    if (!src || !token) return src;
+    try {
+        const url = new URL(src);
+        if (!url.searchParams.has('token')) {
+            url.searchParams.set('token', token);
+        }
+        return url.toString();
+    } catch {
+        return src;
+    }
+};
+
+const toPlayableSrc = (src) => appendTokenParam(encodeAudioSrc(resolveAudioSrc(src)));
 const padPartIndex = (index) => String(index).padStart(3, '0');
 const toPart000 = (file) => {
     if (!file || !/\.mp3$/i.test(file)) return null;

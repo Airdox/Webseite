@@ -7,10 +7,10 @@
     z-index: -5; /* Above AtmosphericBackground, but below everything else */
     pointer-events: none;
     opacity: 0;
-    transition: opacity 2s ease;
-    mix-blend-mode: screen;
+    transition: opacity 1.2s ease;
+    mix-blend-mode: lighten;
 }
 
 .global-visualizer.active {
-    opacity: 1;
+    opacity: 0.42;
 }

@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import TurnstileCaptcha from './TurnstileCaptcha';
 import './AuthModal.css';
+
+const API_BASE = (import.meta.env.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
 
 const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
     const [mode, setMode] = useState(initialMode); // 'login' or 'register'
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+    const [captchaToken, setCaptchaToken] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -14,7 +19,15 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
         setMode(initialMode);
         setError('');
         setSuccess('');
+        setCaptchaToken('');
     }, [initialMode, isOpen]);
+
+    const switchMode = (nextMode) => {
+        setMode(nextMode);
+        setError('');
+        setSuccess('');
+        setCaptchaToken('');
+    };
 
     if (!isOpen) return null;
 
@@ -24,10 +37,19 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
         setError('');
         
         try {
-            const endpoint = mode === 'login' ? '/api/login' : '/api/register';
+            if (mode === 'register') {
+                if (!TURNSTILE_SITE_KEY) {
+                    throw new Error('Registrierung deaktiviert: CAPTCHA nicht konfiguriert.');
+                }
+                if (!captchaToken) {
+                    throw new Error('Bitte CAPTCHA bestaetigen.');
+                }
+            }
+
+            const endpoint = mode === 'login' ? `${API_BASE}/api/login` : `${API_BASE}/api/register`;
             const payload = mode === 'login' 
                 ? { email, password } 
-                : { email, password, username };
+                : { email, password, username, captchaToken };
 
             const response = await fetch(endpoint, {
                 method: 'POST',
@@ -50,7 +72,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                 }, 1500);
             } else {
                 setSuccess('Registration successful! You can now login.');
-                setMode('login');
+                switchMode('login');
             }
         } catch (err) {
             setError(err.message);
@@ -68,13 +90,13 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                     <div className="modal-tabs">
                         <button 
                             className={`modal-tab ${mode === 'login' ? 'active' : ''}`}
-                            onClick={() => setMode('login')}
+                            onClick={() => switchMode('login')}
                         >
                             LOGIN
                         </button>
                         <button 
                             className={`modal-tab ${mode === 'register' ? 'active' : ''}`}
-                            onClick={() => setMode('register')}
+                            onClick={() => switchMode('register')}
                         >
                             REGISTER
                         </button>
@@ -125,8 +147,19 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                                 required
                             />
                         </div>
+                        {mode === 'register' && (
+                            <TurnstileCaptcha
+                                enabled={true}
+                                siteKey={TURNSTILE_SITE_KEY}
+                                onTokenChange={setCaptchaToken}
+                            />
+                        )}
                         
-                        <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
+                        <button
+                            type="submit"
+                            className="btn btn-primary btn-block"
+                            disabled={loading || (mode === 'register' && (!TURNSTILE_SITE_KEY || !captchaToken))}
+                        >
                             {loading ? (
                                 <span className="loader-mini"></span>
                             ) : (
@@ -141,7 +174,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                         {mode === 'login' 
                             ? "Don't have an account?" 
                             : "Already have an account?"}
-                        <button onClick={() => setMode(mode === 'login' ? 'register' : 'login')}>
+                        <button onClick={() => switchMode(mode === 'login' ? 'register' : 'login')}>
                             {mode === 'login' ? 'Register here' : 'Login here'}
                         </button>
                     </p>

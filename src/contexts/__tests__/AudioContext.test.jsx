@@ -83,7 +83,7 @@ describe('AudioContext Gapless Playback', () => {
             contextValues.playTrack(multiPartTrack);
         });
 
-        expect(audioMock.src).toContain('/sets/part0.mp3');
+        expect(audioMock.src).toContain('/api/audio/part0.mp3');
 
         // 2. Simulate "ended" event on part 0
         // We need to find the specific event listener for 'ended'
@@ -94,7 +94,7 @@ describe('AudioContext Gapless Playback', () => {
         });
 
         // 3. Verify it switched to part 1
-        expect(audioMock.src).toContain('/sets/part1.mp3');
+        expect(audioMock.src).toContain('/api/audio/part1.mp3');
         expect(audioMock.play).toHaveBeenCalledTimes(2); // Initial play + Part switch play
     });
 
