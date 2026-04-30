@@ -7,12 +7,35 @@ import { sets } from '../data/musicSets';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { statsSync } from '../utils/stats-sync';
 
+const parseTrackTimeToSeconds = (value = '') => {
+    const parts = String(value || '')
+        .trim()
+        .split(':')
+        .map((chunk) => Number.parseInt(chunk, 10));
+    if (!parts.length || parts.some((part) => Number.isNaN(part))) return null;
+    if (parts.length === 3) {
+        const [hours, minutes, seconds] = parts;
+        return (hours * 3600) + (minutes * 60) + seconds;
+    }
+    if (parts.length === 2) {
+        const [minutes, seconds] = parts;
+        return (minutes * 60) + seconds;
+    }
+    if (parts.length === 1) {
+        return parts[0];
+    }
+    return null;
+};
+
 const MusicSection = () => {
     const {
+        analyserRef,
         currentTrack,
         isPlaying,
+        currentTime,
         playTrack,
-        togglePlay
+        togglePlay,
+        seek
     } = useAudio();
 
     // Globale Stats (von Datenbank) mit LocalStorage Fallback
@@ -28,6 +51,8 @@ const MusicSection = () => {
         catch { return {}; }
     });
 
+    const [collapsedTracklists, setCollapsedTracklists] = useState({});
+
     const sectionRef = useRef(null);
     useRevealOnScroll(sectionRef, '.reveal, .reveal-scale');
 
@@ -38,13 +63,34 @@ const MusicSection = () => {
         return () => window.removeEventListener('airdox_stats_updated', handleStatsUpdate);
     }, []);
 
+
+
     const handlePlayClick = (set) => {
         if (currentTrack?.id === set.id) {
             togglePlay();
         } else {
             playTrack(set);
-            // Das tatsächliche Play-Tracking passiert jetzt im AudioContext via statsSync
         }
+    };
+
+    const handleTrackClick = (set, track) => {
+        const timeInSeconds = parseTrackTimeToSeconds(track.time);
+        if (timeInSeconds === null) return;
+
+        if (currentTrack?.id !== set.id) {
+            playTrack(set);
+            // Wait for track to start loading before seeking
+            // Audio element usually needs a moment to update duration/currentTime
+            setTimeout(() => {
+                seek(timeInSeconds);
+            }, 500);
+        } else {
+            seek(timeInSeconds);
+        }
+    };
+
+    const toggleTracklist = (setId) => {
+        setCollapsedTracklists(prev => ({ ...prev, [setId]: !prev[setId] }));
     };
 
     const handleCoverKeyDown = (event, set) => {
@@ -55,19 +101,17 @@ const MusicSection = () => {
     };
 
     const handleVote = (setId, voteType) => {
-        const currentVote = userVotes[setId]; // 'like' | 'dislike' | undefined
+        const currentVote = userVotes[setId];
 
-        let typeToSend = voteType; // 'like' or 'dislike'
+        let typeToSend = voteType;
 
         if (currentVote === voteType) {
-            // Toggle off (rückgängig machen)
-            typeToSend = `un${voteType}`; // 'unlike' or 'undislike'
+            typeToSend = `un${voteType}`;
             const newVotes = { ...userVotes };
             delete newVotes[setId];
             setUserVotes(newVotes);
             localStorage.setItem('airdox_user_votes', JSON.stringify(newVotes));
         } else {
-            // New vote or switch
             if (currentVote) {
                 statsSync.trackVote(setId, `un${currentVote}`);
             }
@@ -77,7 +121,6 @@ const MusicSection = () => {
             localStorage.setItem('airdox_user_votes', JSON.stringify(newVotes));
         }
 
-        // Optimistic Update für sofortiges Feedback
         setGlobalStats(prev => ({
             ...prev,
             [setId]: {
@@ -93,8 +136,6 @@ const MusicSection = () => {
             analytics.trackEvent('vote', { setId, vote: typeToSend });
         }
     };
-
-
 
     const getSetStats = (setId) => globalStats[setId] || { plays: 0, likes: 0, dislikes: 0 };
     const getUserVote = (setId) => userVotes[setId];
@@ -114,14 +155,12 @@ const MusicSection = () => {
     return (
         <section className="music-section section" id="music" ref={sectionRef}>
             <div className="container">
-                {/* Header */}
                 <div className="section-header reveal">
                     <span className="section-label">{t('music.sectionLabel')}</span>
                     <h2 className="section-title text-gradient">{t('music.title')}</h2>
                     <p className="section-subtitle">{t('music.subtitle')}</p>
                 </div>
 
-                {/* Sets Grid */}
                 <div className="sets-grid">
                     {sets.map((set, index) => {
                         const stats = getSetStats(set.id);
@@ -129,14 +168,19 @@ const MusicSection = () => {
                         const isSetPlaying = currentTrack?.id === set.id && isPlaying;
                         const isSetCurrent = currentTrack?.id === set.id;
 
-
+                        const activeTrackIndex = isSetCurrent && set.tracks 
+                            ? set.tracks.reduce((acc, t, i) => {
+                                const startTime = parseTrackTimeToSeconds(t.time);
+                                if (startTime !== null && currentTime >= startTime) return i;
+                                return acc;
+                            }, -1) 
+                            : -1;
 
                         return (
                             <div
                                 key={set.id}
                                 className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''}`}
                             >
-                                {/* Cover Art */}
                                 <div
                                     className="set-cover"
                                     onClick={() => handlePlayClick(set)}
@@ -186,7 +230,6 @@ const MusicSection = () => {
                                     {set.isChristmasGift && <span className="xmas-badge">🎄 GIFT</span>}
                                     {set.isNew && !set.isChristmasGift && <span className="new-badge">NEW</span>}
 
-                                    {/* Christmas Ribbon Overlay */}
                                     {set.isChristmasGift && (
                                         <div className="gift-ribbon">
                                             <div className="ribbon-vertical"></div>
@@ -199,7 +242,6 @@ const MusicSection = () => {
                                         </div>
                                     )}
 
-                                    {/* Visualizer (Local on Card) */}
                                     {isSetPlaying && (
                                         <div className="visualizer-container active">
                                             {[...Array(12)].map((_, i) => (
@@ -216,7 +258,6 @@ const MusicSection = () => {
                                     )}
                                 </div>
 
-                                {/* Set Info */}
                                 <div className="set-info">
                                     <h3 className="set-title">{set.title}</h3>
                                     <div className="set-meta">
@@ -238,12 +279,31 @@ const MusicSection = () => {
                                         </a>
                                     )}
 
-                                    {isLoggedIn && set.tracks && set.tracks.length > 0 && (
-                                        <div className="vip-tracklist">
-                                            <h4 className="tracklist-title">VIP Tracklist</h4>
+                                    {set.tracks && set.tracks.length > 0 && (
+                                        <div className={`vip-tracklist ${collapsedTracklists[set.id] ? 'collapsed' : ''}`}>
+                                            <button
+                                                type="button"
+                                                className="tracklist-toggle"
+                                                onClick={(e) => { e.stopPropagation(); toggleTracklist(set.id); }}
+                                                aria-expanded={!collapsedTracklists[set.id]}
+                                                aria-label={collapsedTracklists[set.id] ? 'Show tracklist' : 'Hide tracklist'}
+                                            >
+                                                <h4 className="tracklist-title">Tracklist</h4>
+                                                <svg className={`tracklist-chevron ${collapsedTracklists[set.id] ? 'chevron-collapsed' : ''}`} viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
+                                                </svg>
+                                            </button>
                                             <ul className="tracklist-items">
                                                 {set.tracks.map((track, idx) => (
-                                                    <li key={idx} className="tracklist-item">
+                                                    <li
+                                                        key={idx}
+                                                        className={`tracklist-item ${idx === activeTrackIndex ? 'current-track' : ''}`}
+                                                        aria-current={idx === activeTrackIndex ? 'true' : undefined}
+                                                        onClick={(e) => { e.stopPropagation(); handleTrackClick(set, track); }}
+                                                        role="button"
+                                                        tabIndex={0}
+                                                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTrackClick(set, track); } }}
+                                                    >
                                                         <span className="track-time">{track.time}</span>
                                                         <span className="track-details">
                                                             <span className="track-artist">{track.artist}</span> - <span className="track-title">{track.title}</span>
@@ -253,11 +313,8 @@ const MusicSection = () => {
                                             </ul>
                                         </div>
                                     )}
-
-
                                 </div>
 
-                                {/* Stats & Like Buttons */}
                                 <div className="set-stats">
                                     <div className="play-count">
                                         <svg viewBox="0 0 24 24" fill="currentColor">

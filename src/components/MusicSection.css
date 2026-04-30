@@ -194,23 +194,113 @@
     border-top: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
+/* Toggle button for collapse/expand */
+.tracklist-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0 0 10px 0;
+    cursor: pointer;
+    color: inherit;
+}
+
+.tracklist-toggle:hover .tracklist-title {
+    color: var(--neon-cyan);
+}
+
+.tracklist-chevron {
+    width: 18px;
+    height: 18px;
+    color: var(--neon-pink);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.tracklist-chevron.chevron-collapsed {
+    transform: rotate(-90deg);
+}
+
 .tracklist-title {
     font-family: var(--font-mono);
     font-size: 0.6rem;
     color: var(--neon-pink);
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin: 0;
+    letter-spacing: 0.1em;
+    transition: color 0.25s ease;
 }
 
-.tracklist-items {
+/* Collapse/expand animation */
+.vip-tracklist .tracklist-items {
     list-style: none;
+    max-height: 600px;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
+    opacity: 1;
 }
 
+.vip-tracklist.collapsed .tracklist-items {
+    max-height: 0;
+    opacity: 0;
+}
+
+/* Clickable tracklist items (hotlist) */
 .tracklist-item {
     font-family: var(--font-mono);
     font-size: 0.65rem;
     color: var(--text-muted);
     margin-bottom: 5px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, transform 0.15s ease;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
 }
 
-.track-time { color: var(--neon-cyan); margin-right: 8px; }
+.tracklist-item:hover {
+    background: rgba(0, 245, 255, 0.08);
+    color: var(--text-primary, #fff);
+    transform: translateX(4px);
+}
+
+.tracklist-item:active {
+    transform: translateX(2px) scale(0.99);
+}
+
+.tracklist-item.current-track {
+    color: #ffffff;
+    background: rgba(0, 245, 255, 0.12);
+    box-shadow: inset 3px 0 0 var(--neon-cyan), 0 0 16px rgba(0, 245, 255, 0.1);
+}
+
+.tracklist-item.current-track .track-time {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 12px rgba(0, 245, 255, 0.45);
+}
+
+.tracklist-item.current-track .track-details {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.track-time {
+    color: var(--neon-cyan);
+    margin-right: 8px;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.track-details {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

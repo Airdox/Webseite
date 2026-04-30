@@ -31,7 +31,7 @@ export const sets = [
   },
   {
       id: 'recording_2026_03_09',
-      title: 'wenn man einfach keinen grund hat',
+      title: 'REC 09.03.2026',
       date: 'MAR 2026',
       file: 'Airdox_REC_2026_03_09.mp3',
       duration: '50:23',
@@ -97,9 +97,9 @@ export const sets = [
       vinylColor: '#9370db'
     },
   {
-      id: '6',
+      id: 'recording_2024_02_20',
       title: 'SOLLTE NICHT SEIN',
-      date: 'FEB 2025',
+      date: 'FEB 2024',
       file: 'Airdox vs Jette_sollte nicht sein_2024_02_full.mp3',
       duration: '2:49:00',
       vinylColor: '#ff0044'
