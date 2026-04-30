@@ -52,12 +52,33 @@ const MusicSection = () => {
         isPlaying,
         currentTime,
         playTrack,
-        togglePlay
+        togglePlay,
+        seek
     } = useAudio();
     const currentTrackId = currentTrack?.id ?? null;
 
-    // Globale Stats (von Datenbank) mit LocalStorage Fallback
-    const [globalStats, setGlobalStats] = useState(() => {
+    const [collapsedTracklists, setCollapsedTracklists] = useState({});
+
+    const toggleTracklist = (setId) => {
+        setCollapsedTracklists(prev => ({
+            ...prev,
+            [setId]: !prev[setId]
+        }));
+    };
+
+    const handleTrackClick = (set, track) => {
+        const timeInSeconds = parseTrackTimeToSeconds(track.time);
+        if (timeInSeconds === null) return;
+
+        if (currentTrack?.id !== set.id) {
+            playTrack(set);
+            setTimeout(() => {
+                seek(timeInSeconds);
+            }, 500);
+        } else {
+            seek(timeInSeconds);
+        }
+    };
         try {
             return JSON.parse(localStorage.getItem('airdox_global_stats') || '{}');
         } catch { return {}; }
@@ -437,14 +458,26 @@ const MusicSection = () => {
                                     )}
 
                                     {set.tracks && set.tracks.length > 0 && (
-                                        <div className="vip-tracklist">
-                                            <h4 className="tracklist-title">Tracklist</h4>
+                                        <div className={`vip-tracklist ${collapsedTracklists[set.id] ? 'collapsed' : ''}`}>
+                                            <div className="tracklist-header" onClick={() => toggleTracklist(set.id)}>
+                                                <h4 className="tracklist-title">Tracklist</h4>
+                                                <button 
+                                                    className="tracklist-toggle"
+                                                    aria-expanded={!collapsedTracklists[set.id]}
+                                                    aria-label="Toggle Tracklist"
+                                                >
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="chevron-icon">
+                                                        <path d="M6 9l6 6 6-6"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
                                             <ul className="tracklist-items">
                                                 {set.tracks.map((track, idx) => (
                                                     <li
                                                         key={idx}
                                                         className={`tracklist-item ${idx === activeTrackIndex ? 'current-track' : ''}`}
                                                         aria-current={idx === activeTrackIndex ? 'true' : undefined}
+                                                        onClick={() => handleTrackClick(set, track)}
                                                     >
                                                         <span className="track-time">{track.time}</span>
                                                         <span className="track-details">
