@@ -218,3 +218,82 @@
     box-shadow: 0 0 16px rgba(255, 255, 255, 0.16);
     font-weight: 600;
 }
+
+/* ARCHIVE TEASER BANNER */
+.archive-teaser-banner {
+    background: linear-gradient(135deg, rgba(0, 245, 255, 0.05) 0%, rgba(20, 20, 20, 0.6) 100%);
+    border: 1px solid rgba(0, 245, 255, 0.1);
+    border-radius: 20px;
+    padding: var(--space-8);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.archive-teaser-banner:hover {
+    background: linear-gradient(135deg, rgba(0, 245, 255, 0.1) 0%, rgba(30, 30, 30, 0.8) 100%);
+    border-color: rgba(0, 245, 255, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.teaser-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    justify-content: space-between;
+}
+
+.lock-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 245, 255, 0.1);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-cyan);
+}
+
+.lock-icon svg {
+    width: 30px;
+    height: 30px;
+}
+
+.teaser-text {
+    flex: 1;
+    text-align: left;
+}
+
+.teaser-text h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-1);
+    color: #fff;
+    font-family: var(--font-primary);
+}
+
+.teaser-text p {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+}
+
+@media (max-width: 768px) {
+    .teaser-content {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-6);
+    }
+    
+    .teaser-text {
+        text-align: center;
+    }
+    
+    .teaser-action {
+        width: 100%;
+    }
+}

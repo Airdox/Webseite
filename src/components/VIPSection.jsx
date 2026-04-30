@@ -101,27 +101,27 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
         return (
             <section className="vip-section section" id="vip">
                 <div className="container">
-                    <div className="auth-container airdox-card reveal vip-gate">
-                        <div className="section-header" style={{ marginBottom: 'var(--space-7)' }}>
-                            <span className="section-label">VIP ACCESS</span>
-                            <h2 className="section-title text-gradient" style={{ fontSize: '2rem' }}>ARCHIVE ZUGANG</h2>
-                            <p className="section-subtitle">
-                                Die aelteren Sets liegen im VIP-Bereich fuer alle, die nicht genug bekommen.
-                            </p>
+                    <div 
+                        className="archive-teaser-banner reveal interactive" 
+                        onClick={() => onOpenAuth('login')}
+                        role="button"
+                        tabIndex={0}
+                    >
+                        <div className="teaser-content">
+                            <div className="lock-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                </svg>
+                            </div>
+                            <div className="teaser-text">
+                                <h3>ARCHIV ZUGANG</h3>
+                                <p>{vipSets.length} EXKLUSIVE SETS ENTDECKEN</p>
+                            </div>
+                            <div className="teaser-action">
+                                <span className="btn btn-primary">ARCHIV ÖFFNEN</span>
+                            </div>
                         </div>
-
-                        <div className="vip-gate-actions">
-                            <button type="button" className="btn btn-outline" onClick={() => onOpenAuth('login')}>
-                                LOGIN
-                            </button>
-                            <button type="button" className="btn btn-primary" onClick={() => onOpenAuth('register')}>
-                                REGISTER
-                            </button>
-                        </div>
-
-                        <p className="vip-gate-hint">
-                            {validatingSession ? 'Session wird geprueft...' : `${vipSets.length} VIP-Sets warten im Archiv.`}
-                        </p>
                     </div>
                 </div>
             </section>

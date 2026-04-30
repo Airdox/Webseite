@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import TurnstileCaptcha from './TurnstileCaptcha';
+import { partitionSetsByAccess } from '../lib/set-access';
+import { sets } from '../data/musicSets';
 import './AuthModal.css';
 
 const API_BASE = (import.meta.env.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
+const { vipSets } = partitionSetsByAccess(sets);
 
 const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
     const [mode, setMode] = useState(initialMode); // 'login' or 'register'
@@ -104,6 +107,15 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                 </div>
 
                 <div className="modal-body">
+                    <div className="modal-vip-banner">
+                        <span className="modal-vip-label">VIP ACCESS</span>
+                        <p className="modal-vip-text">
+                            Die aelteren Sets liegen im VIP-Bereich fuer alle, die nicht genug bekommen.
+                            Werde Teil der Community und erhalte Zugriff auf das gesamte Archiv.
+                        </p>
+                        <span className="modal-vip-count">{vipSets.length} VIP-Sets warten im Archiv.</span>
+                    </div>
+
                     <h2 className="modal-title">
                         {mode === 'login' ? 'Welcome Back' : 'Join the Underground'}
                     </h2>

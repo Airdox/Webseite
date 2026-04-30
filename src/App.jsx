@@ -120,13 +120,13 @@ function App() {
             <Navigation onOpenAuth={openAuth} />
           <Hero />
           <Suspense fallback={<SectionLoading />}>
+            <BioSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoading />}>
             <MusicSection />
           </Suspense>
           <Suspense fallback={<SectionLoading />}>
             <VIPSection onOpenAuth={openAuth} />
-          </Suspense>
-          <Suspense fallback={<SectionLoading />}>
-            <BioSection />
           </Suspense>
           <Suspense fallback={<SectionLoading />}>
             <EPKSection />

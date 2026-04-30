@@ -313,13 +313,15 @@ const MusicSection = () => {
                 </div>
 
                 <div className="sets-grid">
-                    {sets.map((set, index) => {
-                        const stats = getSetStats(set.id);
-                        const userVote = getUserVote(set.id);
-                        const isVIP = vipIdSet.has(set.id);
-                        const canAccessVIP = isLoggedIn;
-                        const isSetPlaying = currentTrack?.id === set.id && isPlaying;
-                        const isSetCurrent = currentTrack?.id === set.id;
+                    {sets
+                        .filter(set => !vipIdSet.has(set.id) || isLoggedIn)
+                        .map((set, index) => {
+                            const stats = getSetStats(set.id);
+                            const userVote = getUserVote(set.id);
+                            const isVIP = vipIdSet.has(set.id);
+                            const canAccessVIP = isLoggedIn;
+                            const isSetPlaying = currentTrack?.id === set.id && isPlaying;
+                            const isSetCurrent = currentTrack?.id === set.id;
 
                         const activeTrackIndex = isSetCurrent && set.tracks 
                             ? set.tracks.reduce((acc, t, i) => {

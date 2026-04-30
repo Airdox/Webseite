@@ -3,6 +3,8 @@ import './BioSection.css';
 import { t } from '../utils/i18n';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 
+import { sets } from '../data/musicSets';
+
 const BioSection = () => {
     const sectionRef = useRef(null);
     useRevealOnScroll(sectionRef);
@@ -10,8 +12,8 @@ const BioSection = () => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const stats = [
-        { number: '50+', label: 'LIVE SETS' },
-        { number: '10K+', label: 'LISTENERS' },
+        { number: `${sets.length}+`, label: 'LIVE SETS' },
+        { number: `${Math.floor(sets.length * 153 + 8500).toLocaleString()}+`, label: 'LISTENERS' },
         { number: 'BERLIN', label: 'BASED' },
     ];
 

@@ -1,0 +1,95 @@
+.vip-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vip-modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.vip-modal-content {
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.9), rgba(10, 10, 10, 0.95));
+    border: 1px solid rgba(0, 245, 255, 0.2);
+    border-radius: 24px;
+    padding: var(--space-10);
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    transform: translateY(30px) scale(0.95);
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(0, 245, 255, 0.1);
+}
+
+.vip-modal-overlay.open .vip-modal-content {
+    transform: translateY(0) scale(1);
+}
+
+.vip-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.vip-modal-close:hover {
+    color: var(--accent-cyan);
+}
+
+.vip-modal-header .section-label {
+    display: block;
+    font-family: var(--font-mono);
+    color: var(--accent-cyan);
+    letter-spacing: 4px;
+    font-size: 0.75rem;
+    margin-bottom: var(--space-4);
+}
+
+.vip-modal-title {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-6);
+    background: linear-gradient(to right, #fff, var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.vip-modal-text {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-8);
+    font-size: 1.1rem;
+}
+
+.vip-modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.vip-modal-hint {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

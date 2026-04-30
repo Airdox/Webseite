@@ -30,136 +30,119 @@ export const sets = [
     publishedAt: '2026-04-26'
   },
   {
-    id: 'recording_2026_04_12',
+    id: '134',
     title: 'REC 12.04.2026',
-    date: 'APR 2026',
+    date: '12.04.2026',
     file: 'Airdox_REC_2026_04_12.mp3',
     cover: '/assets/airdox-vinyl.jpg',
     duration: '2:30:15',
     isNew: true,
     vinylColor: '#ccff00',
     tracks: [
-      {
-        time: '00:00',
-        artist: 'Nico Moreno',
-        title: 'Purple Widow'
-      },
-      {
-        time: '05:42',
-        artist: 'Klangkuenstler',
-        title: 'Weltschmerz'
-      },
-      {
-        time: '11:15',
-        artist: 'I Hate Models',
-        title: 'Daydream'
-      },
-      {
-        time: '18:30',
-        artist: 'Airdox',
-        title: 'Unreleased ID'
-      }
-    ]
+      { time: '00:00', artist: 'Nico Moreno', title: 'Purple Widow' },
+      { time: '05:42', artist: 'Klangkuenstler', title: 'Weltschmerz' },
+      { time: '11:15', artist: 'I Hate Models', title: 'Daydream' },
+      { time: '18:30', artist: 'Airdox', title: 'Unreleased ID' }
+    ],
+    publishedAt: '2026-04-12'
   },
   {
-    id: 'recording_2026_03_15',
+    id: '133',
     title: 'REC 15.03.2026',
-    date: 'MAR 2026',
+    date: '15.03.2026',
     file: 'Airdox_REC_2026_03_15.mp3',
     duration: '1:36:22',
     isNew: false,
     vinylColor: '#ff6600',
     tracks: [
-      {
-        time: '00:00',
-        artist: 'Amelie Lens',
-        title: 'Feel It'
-      },
-      {
-        time: '04:55',
-        artist: 'Charlotte de Witte',
-        title: 'Do It'
-      },
-      {
-        time: '10:20',
-        artist: 'Enrico Sangiuliano',
-        title: 'Astral Projection'
-      }
-    ]
+      { time: '00:00', artist: 'Amelie Lens', title: 'Feel It' },
+      { time: '04:55', artist: 'Charlotte de Witte', title: 'Do It' },
+      { time: '10:20', artist: 'Enrico Sangiuliano', title: 'Astral Projection' }
+    ],
+    publishedAt: '2026-03-15'
   },
   {
-      id: 'recording_2026_03_09',
-      title: 'REC 09.03.2026',
-    date: 'MAR 2026',
+    id: '132',
+    title: 'REC 09.03.2026',
+    date: '09.03.2026',
     file: 'Airdox_REC_2026_03_09.mp3',
     duration: '50:23',
     isNew: false,
-    vinylColor: '#00ffcc'
+    vinylColor: '#00ffcc',
+    publishedAt: '2026-03-09'
   },
   {
-    id: 'secret_set_2025_12_22',
+    id: '131',
     title: 'SECRET SET (PIRATE STUDIO)',
     date: '22.12.2025',
     file: 'Airdox_Secret_Set_Pirate_Studio_22_12_2025_full.mp3',
     duration: '2:46:56',
     isNew: false,
-    vinylColor: '#ff00ff'
+    vinylColor: '#ff00ff',
+    publishedAt: '2025-12-22'
   },
   {
-    id: '0',
+    id: '130',
     title: 'PIRATE STUDIO (17.12.)',
     date: '17.12.2025',
     file: 'Airdox Pirate Studio_17.12.2025.mp3',
     isNew: false,
     duration: '1:05:00',
-    vinylColor: '#00f5ff'
+    vinylColor: '#00f5ff',
+    publishedAt: '2025-12-17'
   },
   {
-    id: '1',
-    title: 'PIRATE STUDIO (OLD)',
-    date: 'DEC 2025',
+    id: '129',
+    title: 'PIRATE STUDIO (03.12.)',
+    date: '03.12.2025',
     file: 'Airdox Pirate-Studio 3_12_2025.mp3',
     duration: '1:02:34',
-    vinylColor: '#ff00aa'
+    vinylColor: '#ff00aa',
+    publishedAt: '2025-12-03'
   },
   {
-    id: '2',
+    id: '128',
     title: 'OVER AND OUT',
     date: 'FEB 2024',
     file: 'Over and OUt_full.mp3',
     duration: '58:22',
-    vinylColor: '#7cfc00'
+    vinylColor: '#7cfc00',
+    publishedAt: '2024-02-01'
   },
   {
-    id: '3',
+    id: '127',
     title: '65',
     date: 'JAN 2024',
     file: '65_full.mp3',
     duration: '1:05:00',
-    vinylColor: '#ffd700'
+    vinylColor: '#ffd700',
+    publishedAt: '2024-01-01'
   },
   {
-    id: '4',
+    id: '126',
     title: 'TSCHAU MÄRKISCHE',
     date: 'MAR 2024',
     file: 'Airdox_tschau_märkische_full.mp3',
     duration: '45:18',
-    vinylColor: '#ff4500'
+    vinylColor: '#ff4500',
+    publishedAt: '2024-03-01'
   },
   {
-    id: '5',
+    id: '125',
     title: 'OHBOY',
     date: 'APR 2024',
     file: 'ohboy_full.mp3',
     duration: '52:45',
-    vinylColor: '#9370db'
+    vinylColor: '#9370db',
+    publishedAt: '2024-04-01'
   },
   {
-      id: 'recording_2024_02_20',
-      title: 'SOLLTE NICHT SEIN',
-      date: 'FEB 2024',
+    id: '124',
+    title: 'SOLLTE NICHT SEIN',
+    date: 'FEB 2024',
     file: 'Airdox vs Jette_sollte nicht sein_2024_02_full.mp3',
     duration: '2:49:00',
-    vinylColor: '#ff0044'
+    vinylColor: '#ff0044',
+    publishedAt: '2024-02-20'
   }
 ];

@@ -66,10 +66,9 @@ export const partitionSetsByAccess = (allSets = []) => {
 
   ranked.forEach((entry, i) => {
     if (!entry.set?.id) return;
-    // Index 0 & 1 -> Public (Plätze 1 & 2)
-    // Index 2 & 3 -> VIP (Plätze 3 & 4)
-    // Index 4+ -> Public (Plätze 5+)
-    if (i === 2 || i === 3) {
+    // Nur die ersten zwei (Index 0 & 1) sind Public
+    // Alle anderen (Index 2+) sind VIP
+    if (i >= 2) {
       vipIdSet.add(entry.set.id);
     } else {
       publicIdSet.add(entry.set.id);
