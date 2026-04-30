@@ -8,7 +8,7 @@ import { buildAudioApiHref, partitionSetsByAccess } from '../lib/set-access';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { statsSync } from '../utils/stats-sync';
 
-const { publicSets } = partitionSetsByAccess(sets);
+const { publicIdSet, vipIdSet } = partitionSetsByAccess(sets);
 
 const parseTrackTimeToSeconds = (value = '') => {
     const parts = String(value || '')
@@ -30,21 +30,6 @@ const parseTrackTimeToSeconds = (value = '') => {
     return null;
 };
 
-const getCurrentTracklistIndex = (tracks = [], currentTimeSeconds = 0) => {
-    if (!Array.isArray(tracks) || !tracks.length || !Number.isFinite(currentTimeSeconds)) return -1;
-    let activeIndex = -1;
-    for (let index = 0; index < tracks.length; index += 1) {
-        const trackAt = parseTrackTimeToSeconds(tracks[index]?.time);
-        if (!Number.isFinite(trackAt)) continue;
-        if (currentTimeSeconds >= trackAt) {
-            activeIndex = index;
-            continue;
-        }
-        break;
-    }
-    return activeIndex;
-};
-
 const MusicSection = () => {
     const {
         analyserRef,
@@ -55,30 +40,9 @@ const MusicSection = () => {
         togglePlay,
         seek
     } = useAudio();
-    const currentTrackId = currentTrack?.id ?? null;
 
-    const [collapsedTracklists, setCollapsedTracklists] = useState({});
-
-    const toggleTracklist = (setId) => {
-        setCollapsedTracklists(prev => ({
-            ...prev,
-            [setId]: !prev[setId]
-        }));
-    };
-
-    const handleTrackClick = (set, track) => {
-        const timeInSeconds = parseTrackTimeToSeconds(track.time);
-        if (timeInSeconds === null) return;
-
-        if (currentTrack?.id !== set.id) {
-            playTrack(set);
-            setTimeout(() => {
-                seek(timeInSeconds);
-            }, 500);
-        } else {
-            seek(timeInSeconds);
-        }
-    };
+    // Globale Stats (von Datenbank) mit LocalStorage Fallback
+    const [globalStats, setGlobalStats] = useState(() => {
         try {
             return JSON.parse(localStorage.getItem('airdox_global_stats') || '{}');
         } catch { return {}; }
@@ -89,6 +53,8 @@ const MusicSection = () => {
         try { return JSON.parse(localStorage.getItem('airdox_user_votes') || '{}'); }
         catch { return {}; }
     });
+
+    const [collapsedTracklists, setCollapsedTracklists] = useState({});
 
     const sectionRef = useRef(null);
     const billiardStateRef = useRef({
@@ -113,13 +79,34 @@ const MusicSection = () => {
         return () => window.removeEventListener('airdox_stats_updated', handleStatsUpdate);
     }, []);
 
+
+
     const handlePlayClick = (set) => {
         if (currentTrack?.id === set.id) {
             togglePlay();
         } else {
             playTrack(set);
-            // Das tatsächliche Play-Tracking passiert jetzt im AudioContext via statsSync
         }
+    };
+
+    const handleTrackClick = (set, track) => {
+        const timeInSeconds = parseTrackTimeToSeconds(track.time);
+        if (timeInSeconds === null) return;
+
+        if (currentTrack?.id !== set.id) {
+            playTrack(set);
+            // Wait for track to start loading before seeking
+            // Audio element usually needs a moment to update duration/currentTime
+            setTimeout(() => {
+                seek(timeInSeconds);
+            }, 500);
+        } else {
+            seek(timeInSeconds);
+        }
+    };
+
+    const toggleTracklist = (setId) => {
+        setCollapsedTracklists(prev => ({ ...prev, [setId]: !prev[setId] }));
     };
 
     const handleCoverKeyDown = (event, set) => {
@@ -130,19 +117,17 @@ const MusicSection = () => {
     };
 
     const handleVote = (setId, voteType) => {
-        const currentVote = userVotes[setId]; // 'like' | 'dislike' | undefined
+        const currentVote = userVotes[setId];
 
-        let typeToSend = voteType; // 'like' or 'dislike'
+        let typeToSend = voteType;
 
         if (currentVote === voteType) {
-            // Toggle off (rückgängig machen)
-            typeToSend = `un${voteType}`; // 'unlike' or 'undislike'
+            typeToSend = `un${voteType}`;
             const newVotes = { ...userVotes };
             delete newVotes[setId];
             setUserVotes(newVotes);
             localStorage.setItem('airdox_user_votes', JSON.stringify(newVotes));
         } else {
-            // New vote or switch
             if (currentVote) {
                 statsSync.trackVote(setId, `un${currentVote}`);
             }
@@ -152,7 +137,6 @@ const MusicSection = () => {
             localStorage.setItem('airdox_user_votes', JSON.stringify(newVotes));
         }
 
-        // Optimistic Update für sofortiges Feedback
         setGlobalStats(prev => ({
             ...prev,
             [setId]: {
@@ -169,27 +153,10 @@ const MusicSection = () => {
         }
     };
 
-
-
     const getSetStats = (setId) => globalStats[setId] || { plays: 0, likes: 0, dislikes: 0 };
     const getUserVote = (setId) => userVotes[setId];
 
-    const [authToken, setAuthToken] = useState(() => localStorage.getItem('airdox_token') || '');
-    const [isLoggedIn, setIsLoggedIn] = useState(Boolean(authToken));
-
-    useEffect(() => {
-        const checkLogin = () => {
-            const token = localStorage.getItem('airdox_token') || '';
-            setAuthToken(token);
-            setIsLoggedIn(Boolean(token));
-        };
-        window.addEventListener('airdox_login_success', checkLogin);
-        window.addEventListener('airdox_logout', checkLogin);
-        return () => {
-            window.removeEventListener('airdox_login_success', checkLogin);
-            window.removeEventListener('airdox_logout', checkLogin);
-        };
-    }, []);
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('airdox_token'));
 
     useEffect(() => {
         const clearAnimatedVinyl = () => {
@@ -199,7 +166,7 @@ const MusicSection = () => {
             animatedVinylRef.current = null;
         };
 
-        if (!isPlaying || !currentTrackId) {
+        if (!isPlaying || !currentTrack?.id) {
             clearAnimatedVinyl();
             return undefined;
         }
@@ -218,7 +185,7 @@ const MusicSection = () => {
         const findCurrentVinyl = () => {
             const cards = document.querySelectorAll('.set-card[data-set-id]');
             for (const card of cards) {
-                if (card.dataset.setId !== String(currentTrackId)) continue;
+                if (card.dataset.setId !== String(currentTrack?.id)) continue;
                 const cover = card.querySelector('.set-cover');
                 const vinyl = card.querySelector('.cover-vinyl');
                 if (!cover || !vinyl) return null;
@@ -264,7 +231,7 @@ const MusicSection = () => {
             const vinylRect = vinyl.getBoundingClientRect();
             const maxX = Math.max(0, coverRect.width - vinylRect.width);
             const maxY = Math.max(0, coverRect.height - vinylRect.height);
-            const trackKey = String(currentTrackId);
+            const trackKey = String(currentTrack?.id);
 
             const hasViewportChange = Math.abs(physics.maxX - maxX) > 0.5 || Math.abs(physics.maxY - maxY) > 0.5;
             if (physics.trackKey !== trackKey || hasViewportChange) {
@@ -324,38 +291,50 @@ const MusicSection = () => {
             physics.lastTs = 0;
             clearAnimatedVinyl();
         };
-    }, [analyserRef, currentTrackId, isPlaying]);
+    }, [analyserRef, currentTrack?.id, isPlaying]);
+
+    useEffect(() => {
+        const checkLogin = () => setIsLoggedIn(!!localStorage.getItem('airdox_token'));
+        window.addEventListener('airdox_login_success', checkLogin);
+        window.addEventListener('airdox_logout', checkLogin);
+        return () => {
+            window.removeEventListener('airdox_login_success', checkLogin);
+            window.removeEventListener('airdox_logout', checkLogin);
+        };
+    }, []);
 
     return (
         <section className="music-section section" id="music" ref={sectionRef}>
             <div className="container">
-                {/* Header */}
                 <div className="section-header reveal">
                     <span className="section-label">{t('music.sectionLabel')}</span>
                     <h2 className="section-title text-gradient">{t('music.title')}</h2>
                     <p className="section-subtitle">{t('music.subtitle')}</p>
                 </div>
 
-                {/* Sets Grid */}
                 <div className="sets-grid">
-                    {publicSets.map((set, index) => {
+                    {sets.map((set, index) => {
                         const stats = getSetStats(set.id);
                         const userVote = getUserVote(set.id);
+                        const isVIP = vipIdSet.has(set.id);
+                        const canAccessVIP = isLoggedIn;
                         const isSetPlaying = currentTrack?.id === set.id && isPlaying;
                         const isSetCurrent = currentTrack?.id === set.id;
-                        const activeTrackIndex = isSetCurrent
-                            ? getCurrentTracklistIndex(set.tracks, currentTime)
+
+                        const activeTrackIndex = isSetCurrent && set.tracks 
+                            ? set.tracks.reduce((acc, t, i) => {
+                                const startTime = parseTrackTimeToSeconds(t.time);
+                                if (startTime !== null && currentTime >= startTime) return i;
+                                return acc;
+                            }, -1) 
                             : -1;
-
-
 
                         return (
                             <div
                                 key={set.id}
-                                className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''}`}
+                                className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''} ${isVIP ? 'vip-locked' : ''}`}
                                 data-set-id={set.id}
                             >
-                                {/* Cover Art */}
                                 <div
                                     className="set-cover"
                                     onClick={() => handlePlayClick(set)}
@@ -368,7 +347,10 @@ const MusicSection = () => {
                                         className="cover-vinyl"
                                         style={{
                                             '--vinyl-color': set.vinylColor || 'var(--neon-cyan)',
-                                            '--vinyl-index': index
+                                            '--vinyl-index': index,
+                                            '--vinyl-bounce-x': '0px',
+                                            '--vinyl-bounce-y': '0px',
+                                            transform: 'translate(calc(-50% + var(--vinyl-bounce-x)), calc(-50% + var(--vinyl-bounce-y)))'
                                         }}
                                     >
                                         <div
@@ -404,8 +386,8 @@ const MusicSection = () => {
                                     </div>
                                     {set.isChristmasGift && <span className="xmas-badge">🎄 GIFT</span>}
                                     {set.isNew && !set.isChristmasGift && <span className="new-badge">NEW</span>}
+                                    {isVIP && <span className="vip-badge">VIP</span>}
 
-                                    {/* Christmas Ribbon Overlay */}
                                     {set.isChristmasGift && (
                                         <div className="gift-ribbon">
                                             <div className="ribbon-vertical"></div>
@@ -418,7 +400,6 @@ const MusicSection = () => {
                                         </div>
                                     )}
 
-                                    {/* Visualizer (Local on Card) */}
                                     {isSetPlaying && (
                                         <div className="visualizer-container active">
                                             {[...Array(12)].map((_, i) => (
@@ -435,16 +416,25 @@ const MusicSection = () => {
                                     )}
                                 </div>
 
-                                {/* Set Info */}
                                 <div className="set-info">
                                     <h3 className="set-title">{set.title}</h3>
                                     <div className="set-meta">
                                         <span className="set-date">{set.date}</span>
                                         {set.duration && <span className="set-duration">{set.duration}</span>}
                                     </div>
+                                    {isVIP && !canAccessVIP && (
+                                        <div className="vip-restriction-notice">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                            </svg>
+                                            <span>{t('music.vipOnly')}</span>
+                                        </div>
+                                    )}
+
                                     {isLoggedIn && (
                                         <a 
-                                            href={buildAudioApiHref(set.file, authToken)} 
+                                            href={buildAudioApiHref(set.file, localStorage.getItem('airdox_token'))} 
                                             download={set.file}
                                             className="vip-download-link"
                                             onClick={(e) => e.stopPropagation()}
@@ -459,25 +449,28 @@ const MusicSection = () => {
 
                                     {set.tracks && set.tracks.length > 0 && (
                                         <div className={`vip-tracklist ${collapsedTracklists[set.id] ? 'collapsed' : ''}`}>
-                                            <div className="tracklist-header" onClick={() => toggleTracklist(set.id)}>
+                                            <button
+                                                type="button"
+                                                className="tracklist-toggle"
+                                                onClick={(e) => { e.stopPropagation(); toggleTracklist(set.id); }}
+                                                aria-expanded={!collapsedTracklists[set.id]}
+                                                aria-label={collapsedTracklists[set.id] ? 'Show tracklist' : 'Hide tracklist'}
+                                            >
                                                 <h4 className="tracklist-title">Tracklist</h4>
-                                                <button 
-                                                    className="tracklist-toggle"
-                                                    aria-expanded={!collapsedTracklists[set.id]}
-                                                    aria-label="Toggle Tracklist"
-                                                >
-                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="chevron-icon">
-                                                        <path d="M6 9l6 6 6-6"/>
-                                                    </svg>
-                                                </button>
-                                            </div>
+                                                <svg className={`tracklist-chevron ${collapsedTracklists[set.id] ? 'chevron-collapsed' : ''}`} viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
+                                                </svg>
+                                            </button>
                                             <ul className="tracklist-items">
                                                 {set.tracks.map((track, idx) => (
                                                     <li
                                                         key={idx}
                                                         className={`tracklist-item ${idx === activeTrackIndex ? 'current-track' : ''}`}
                                                         aria-current={idx === activeTrackIndex ? 'true' : undefined}
-                                                        onClick={() => handleTrackClick(set, track)}
+                                                        onClick={(e) => { e.stopPropagation(); handleTrackClick(set, track); }}
+                                                        role="button"
+                                                        tabIndex={0}
+                                                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTrackClick(set, track); } }}
                                                     >
                                                         <span className="track-time">{track.time}</span>
                                                         <span className="track-details">
@@ -488,11 +481,8 @@ const MusicSection = () => {
                                             </ul>
                                         </div>
                                     )}
-
-
                                 </div>
 
-                                {/* Stats & Like Buttons */}
                                 <div className="set-stats">
                                     <div className="play-count">
                                         <svg viewBox="0 0 24 24" fill="currentColor">
