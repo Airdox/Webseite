@@ -67,7 +67,7 @@ const formatHhMmSs = (totalSeconds) => {
   return `${pad2(hours)}:${pad2(minutes)}:${pad2(seconds)}`;
 };
 
-const timestampToSeconds = (value = '') => {
+const timestampToSeconds = (value = '', isCue = false) => {
   const parts = String(value)
     .trim()
     .split(':')
@@ -75,6 +75,12 @@ const timestampToSeconds = (value = '') => {
   if (parts.some((n) => Number.isNaN(n))) return null;
 
   if (parts.length === 3) {
+    if (isCue) {
+      // CUE format is MM:SS:FF (Minutes:Seconds:Frames)
+      // Frames (FF) are 1/75th of a second, we usually ignore them for tracklists
+      const [minutes, seconds, frames] = parts;
+      return minutes * 60 + seconds;
+    }
     const [hours, minutes, seconds] = parts;
     return hours * 3600 + minutes * 60 + seconds;
   }
@@ -88,17 +94,17 @@ const timestampToSeconds = (value = '') => {
   return null;
 };
 
-const normalizeTimestamp = (value = '') => {
-  const seconds = timestampToSeconds(value);
+const normalizeTimestamp = (value = '', isCue = false) => {
+  const seconds = timestampToSeconds(value, isCue);
   if (seconds === null) return '';
   return formatHhMmSs(seconds);
 };
 
-const getTrackTimestamp = (track = {}) => {
+const getTrackTimestamp = (track = {}, isCue = false) => {
   const candidate = [track.time, track.timestamp]
     .map((value) => String(value ?? '').trim())
     .find(Boolean) || '';
-  return normalizeTimestamp(candidate) || '00:00:00';
+  return normalizeTimestamp(candidate, isCue) || '00:00:00';
 };
 
 const normalizeTrackExport = (track = {}) => {
@@ -122,14 +128,16 @@ const stripQuotes = (value = '') => {
 
 const parseArtistTitleFromFilename = (filePath = '') => {
   const stem = path.basename(filePath, path.extname(filePath)).replace(/^\d+\.\s*/, '').trim();
-  const splitters = [' - ', ' – ', ' — ', ' | '];
+  const splitters = [' - ', ' – ', ' — ', ' | ', '_'];
   for (const splitter of splitters) {
     if (!stem.includes(splitter)) continue;
-    const [artist, title] = stem.split(splitter);
-    return {
-      artist: artist?.trim() || '',
-      title: title?.trim() || '',
-    };
+    const parts = stem.split(splitter);
+    if (parts.length >= 2) {
+      return {
+        artist: parts[0]?.trim() || '',
+        title: parts.slice(1).join(splitter).trim() || '',
+      };
+    }
   }
   return { artist: '', title: stem };
 };
@@ -191,7 +199,7 @@ const parseCueContent = (content) => {
 
     const indexMatch = line.match(/^INDEX\s+01\s+(.+)$/i);
     if (indexMatch && current) {
-      current.timestamp = normalizeTimestamp(indexMatch[1]);
+      current.timestamp = normalizeTimestamp(indexMatch[1], true);
       continue;
     }
   }
