@@ -3,6 +3,9 @@
   "main": "src/server/worker.js",
   "compatibility_date": "2026-04-11",
   "compatibility_flags": ["nodejs_compat"],
+  "build": {
+    "command": "npm install && npm run build"
+  },
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application"
@@ -12,5 +15,8 @@
       "binding": "PUBLIC",
       "bucket_name": "airdox-assets-prod"
     }
-  ]
+  ],
+  "vars": {
+    "TURNSTILE_SECRET_KEY": "1x0000000000000000000000000000000AA"
+  }
 }
