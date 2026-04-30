@@ -4,8 +4,11 @@ import './MusicSection.css';
 import { t } from '../utils/i18n';
 
 import { sets } from '../data/musicSets';
+import { buildAudioApiHref, partitionSetsByAccess } from '../lib/set-access';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { statsSync } from '../utils/stats-sync';
+
+const { publicIdSet, vipIdSet } = partitionSetsByAccess(sets);
 
 const parseTrackTimeToSeconds = (value = '') => {
     const parts = String(value || '')
@@ -54,6 +57,19 @@ const MusicSection = () => {
     const [collapsedTracklists, setCollapsedTracklists] = useState({});
 
     const sectionRef = useRef(null);
+    const billiardStateRef = useRef({
+        x: 0,
+        y: 0,
+        vx: 140,
+        vy: 118,
+        maxX: 0,
+        maxY: 0,
+        trackKey: '',
+        lastTs: 0
+    });
+    const billiardRafRef = useRef(null);
+    const animatedVinylRef = useRef(null);
+    const frequencyBufferRef = useRef(null);
     useRevealOnScroll(sectionRef, '.reveal, .reveal-scale');
 
     // Sync bei Änderungen der globalen Stats (durch StatsSync oder andere Komponenten)
@@ -143,6 +159,141 @@ const MusicSection = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('airdox_token'));
 
     useEffect(() => {
+        const clearAnimatedVinyl = () => {
+            if (!animatedVinylRef.current) return;
+            animatedVinylRef.current.style.removeProperty('--vinyl-bounce-x');
+            animatedVinylRef.current.style.removeProperty('--vinyl-bounce-y');
+            animatedVinylRef.current = null;
+        };
+
+        if (!isPlaying || !currentTrack?.id) {
+            clearAnimatedVinyl();
+            return undefined;
+        }
+
+        const prefersReducedMotion = window.matchMedia
+            && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+            clearAnimatedVinyl();
+            return undefined;
+        }
+
+        let disposed = false;
+        const physics = billiardStateRef.current;
+        const randomDirection = () => (Math.random() >= 0.5 ? 1 : -1);
+
+        const findCurrentVinyl = () => {
+            const cards = document.querySelectorAll('.set-card[data-set-id]');
+            for (const card of cards) {
+                if (card.dataset.setId !== String(currentTrack?.id)) continue;
+                const cover = card.querySelector('.set-cover');
+                const vinyl = card.querySelector('.cover-vinyl');
+                if (!cover || !vinyl) return null;
+                return { cover, vinyl };
+            }
+            return null;
+        };
+
+        const readAudioEnergy = () => {
+            const analyser = analyserRef?.current;
+            if (!analyser) return 0.35;
+            if (!frequencyBufferRef.current || frequencyBufferRef.current.length !== analyser.frequencyBinCount) {
+                frequencyBufferRef.current = new Uint8Array(analyser.frequencyBinCount);
+            }
+            const frequencyBuffer = frequencyBufferRef.current;
+            analyser.getByteFrequencyData(frequencyBuffer);
+            const binsToRead = Math.min(frequencyBuffer.length, 48);
+            if (!binsToRead) return 0.35;
+            let sum = 0;
+            for (let i = 0; i < binsToRead; i += 1) {
+                sum += frequencyBuffer[i];
+            }
+            return sum / (binsToRead * 255);
+        };
+
+        const animate = (timestamp) => {
+            if (disposed) return;
+
+            const activeElements = findCurrentVinyl();
+            if (!activeElements) {
+                billiardRafRef.current = requestAnimationFrame(animate);
+                return;
+            }
+
+            const { cover, vinyl } = activeElements;
+            if (animatedVinylRef.current && animatedVinylRef.current !== vinyl) {
+                animatedVinylRef.current.style.removeProperty('--vinyl-bounce-x');
+                animatedVinylRef.current.style.removeProperty('--vinyl-bounce-y');
+            }
+            animatedVinylRef.current = vinyl;
+
+            const coverRect = cover.getBoundingClientRect();
+            const vinylRect = vinyl.getBoundingClientRect();
+            const maxX = Math.max(0, coverRect.width - vinylRect.width);
+            const maxY = Math.max(0, coverRect.height - vinylRect.height);
+            const trackKey = String(currentTrack?.id);
+
+            const hasViewportChange = Math.abs(physics.maxX - maxX) > 0.5 || Math.abs(physics.maxY - maxY) > 0.5;
+            if (physics.trackKey !== trackKey || hasViewportChange) {
+                physics.trackKey = trackKey;
+                physics.maxX = maxX;
+                physics.maxY = maxY;
+                physics.x = maxX / 2;
+                physics.y = maxY / 2;
+                physics.vx = 140 * randomDirection();
+                physics.vy = 118 * randomDirection();
+                physics.lastTs = timestamp;
+            }
+
+            if (!physics.lastTs) {
+                physics.lastTs = timestamp;
+            }
+            const deltaSec = Math.min(0.05, Math.max(0.008, (timestamp - physics.lastTs) / 1000));
+            physics.lastTs = timestamp;
+
+            const energy = readAudioEnergy();
+            const speedFactor = 0.85 + (energy * 1.7);
+            physics.x += physics.vx * speedFactor * deltaSec;
+            physics.y += physics.vy * speedFactor * deltaSec;
+
+            if (physics.x <= 0) {
+                physics.x = 0;
+                physics.vx = Math.abs(physics.vx);
+            } else if (physics.x >= maxX) {
+                physics.x = maxX;
+                physics.vx = -Math.abs(physics.vx);
+            }
+
+            if (physics.y <= 0) {
+                physics.y = 0;
+                physics.vy = Math.abs(physics.vy);
+            } else if (physics.y >= maxY) {
+                physics.y = maxY;
+                physics.vy = -Math.abs(physics.vy);
+            }
+
+            const offsetX = physics.x - (maxX / 2);
+            const offsetY = physics.y - (maxY / 2);
+            vinyl.style.setProperty('--vinyl-bounce-x', `${offsetX.toFixed(2)}px`);
+            vinyl.style.setProperty('--vinyl-bounce-y', `${offsetY.toFixed(2)}px`);
+
+            billiardRafRef.current = requestAnimationFrame(animate);
+        };
+
+        billiardRafRef.current = requestAnimationFrame(animate);
+
+        return () => {
+            disposed = true;
+            if (billiardRafRef.current) {
+                cancelAnimationFrame(billiardRafRef.current);
+                billiardRafRef.current = null;
+            }
+            physics.lastTs = 0;
+            clearAnimatedVinyl();
+        };
+    }, [analyserRef, currentTrack?.id, isPlaying]);
+
+    useEffect(() => {
         const checkLogin = () => setIsLoggedIn(!!localStorage.getItem('airdox_token'));
         window.addEventListener('airdox_login_success', checkLogin);
         window.addEventListener('airdox_logout', checkLogin);
@@ -165,6 +316,8 @@ const MusicSection = () => {
                     {sets.map((set, index) => {
                         const stats = getSetStats(set.id);
                         const userVote = getUserVote(set.id);
+                        const isVIP = vipIdSet.has(set.id);
+                        const canAccessVIP = isLoggedIn;
                         const isSetPlaying = currentTrack?.id === set.id && isPlaying;
                         const isSetCurrent = currentTrack?.id === set.id;
 
@@ -179,7 +332,8 @@ const MusicSection = () => {
                         return (
                             <div
                                 key={set.id}
-                                className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''}`}
+                                className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''} ${isVIP ? 'vip-locked' : ''}`}
+                                data-set-id={set.id}
                             >
                                 <div
                                     className="set-cover"
@@ -190,14 +344,17 @@ const MusicSection = () => {
                                     aria-label={`${isSetPlaying ? 'Pause' : 'Play'} ${set.title}`}
                                 >
                                     <div
-                                        className={`cover-vinyl ${isSetPlaying ? 'spinning' : ''}`}
+                                        className="cover-vinyl"
                                         style={{
                                             '--vinyl-color': set.vinylColor || 'var(--neon-cyan)',
-                                            '--vinyl-index': index
+                                            '--vinyl-index': index,
+                                            '--vinyl-bounce-x': '0px',
+                                            '--vinyl-bounce-y': '0px',
+                                            transform: 'translate(calc(-50% + var(--vinyl-bounce-x)), calc(-50% + var(--vinyl-bounce-y)))'
                                         }}
                                     >
                                         <div
-                                            className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''}`}
+                                            className={`mini-vinyl ${isSetPlaying ? 'active-disc spinning-disc' : ''}`}
                                         >
                                             {isSetPlaying ? (
                                                 <img
@@ -229,6 +386,7 @@ const MusicSection = () => {
                                     </div>
                                     {set.isChristmasGift && <span className="xmas-badge">🎄 GIFT</span>}
                                     {set.isNew && !set.isChristmasGift && <span className="new-badge">NEW</span>}
+                                    {isVIP && <span className="vip-badge">VIP</span>}
 
                                     {set.isChristmasGift && (
                                         <div className="gift-ribbon">
@@ -264,9 +422,19 @@ const MusicSection = () => {
                                         <span className="set-date">{set.date}</span>
                                         {set.duration && <span className="set-duration">{set.duration}</span>}
                                     </div>
+                                    {isVIP && !canAccessVIP && (
+                                        <div className="vip-restriction-notice">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                            </svg>
+                                            <span>{t('music.vipOnly')}</span>
+                                        </div>
+                                    )}
+
                                     {isLoggedIn && (
                                         <a 
-                                            href={`/audio/${set.file}`} 
+                                            href={buildAudioApiHref(set.file, localStorage.getItem('airdox_token'))} 
                                             download={set.file}
                                             className="vip-download-link"
                                             onClick={(e) => e.stopPropagation()}
