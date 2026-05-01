@@ -1,5 +1,4 @@
 const MONTHS = {
-<<<<<<< HEAD
   JAN: 0,
   FEB: 1,
   MAR: 2,
@@ -15,13 +14,6 @@ const MONTHS = {
 };
 
 export const PUBLIC_SET_COUNT = 2;
-
-=======
-  JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5,
-  JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11,
-};
-
->>>>>>> website
 const toTimestamp = (value) => {
   if (!value) return Number.NaN;
   const parsed = Date.parse(String(value));
@@ -59,24 +51,10 @@ const deriveSetTimestamp = (set = {}, index = 0) => {
   );
   if (!Number.isNaN(byMonthLabel)) return byMonthLabel;
 
-<<<<<<< HEAD
-  // Fallback: preserve source order (top entries are considered newer)
   return Number.MAX_SAFE_INTEGER - index;
 };
 
 export const partitionSetsByAccess = (allSets = [], publicCount = PUBLIC_SET_COUNT) => {
-=======
-  return Number.MAX_SAFE_INTEGER - index;
-};
-
-/**
- * Logik-Automatisierung für Set-Zugriff:
- * - Top 2 (neueste): Public
- * - Plätze 3 und 4: VIP
- * - Alles ab Platz 5: Public
- */
-export const partitionSetsByAccess = (allSets = []) => {
->>>>>>> website
   const ranked = allSets
     .map((set, index) => ({
       set,
@@ -88,10 +66,15 @@ export const partitionSetsByAccess = (allSets = []) => {
       return left.index - right.index;
     });
 
-<<<<<<< HEAD
   const publicIdSet = new Set(
     ranked
       .slice(0, Math.max(0, Number(publicCount) || 0))
+      .map((entry) => entry.set?.id)
+      .filter(Boolean),
+  );
+  const vipIdSet = new Set(
+    ranked
+      .slice(Math.max(0, Number(publicCount) || 0))
       .map((entry) => entry.set?.id)
       .filter(Boolean),
   );
@@ -107,33 +90,11 @@ export const partitionSetsByAccess = (allSets = []) => {
     }
   }
 
-  return { publicSets, vipSets, publicIdSet };
-=======
-  const publicIdSet = new Set();
-  const vipIdSet = new Set();
-
-  ranked.forEach((entry, i) => {
-    if (!entry.set?.id) return;
-    // Index 0 & 1 -> Public (Plätze 1 & 2)
-    // Index 2 & 3 -> VIP (Plätze 3 & 4)
-    // Index 4+ -> Public (Plätze 5+)
-    if (i === 2 || i === 3) {
-      vipIdSet.add(entry.set.id);
-    } else {
-      publicIdSet.add(entry.set.id);
-    }
-  });
-
-  const publicSets = allSets.filter(s => publicIdSet.has(s.id));
-  const vipSets = allSets.filter(s => vipIdSet.has(s.id));
-
   return { publicSets, vipSets, publicIdSet, vipIdSet };
->>>>>>> website
 };
 
 export const isPublicSet = (set, publicIdSet) => Boolean(set?.id && publicIdSet?.has(set.id));
 
-<<<<<<< HEAD
 export const normalizeAudioFilename = (filename = '') => {
   const raw = String(filename || '').trim();
   if (!raw) return '';
@@ -147,9 +108,6 @@ export const normalizeAudioFilename = (filename = '') => {
 export const normalizeAudioBaseFilename = (filename = '') => normalizeAudioFilename(filename)
   .replace(/_part\d{3}(?=\.mp3$)/i, '')
   .replace(/_full(?=\.mp3$)/i, '');
-
-=======
->>>>>>> website
 export const buildAudioApiHref = (filename = '', token = '') => {
   const trimmed = String(filename || '').trim();
   if (!trimmed) return '/api/audio';
