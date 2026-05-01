@@ -1,5 +1,97 @@
 export const sets = [
   {
+    id: 'recording_2026_05_01',
+    title: 'REC-2026-05-01',
+    date: 'MAY 2026',
+    file: '01 REC-2026-05-01.wav',
+    duration: '56:10',
+    isNew: true,
+    vinylColor: '#9adf6b',
+    tracks: [
+      {
+        time: '',
+        artist: 'Martin Books',
+        title: 'Turn (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'Patrick Arbez',
+        title: 'Black Church (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'Patrick Arbez',
+        title: 'Der rote Rabauke (deKai (Berlin) Remix)'
+      },
+      {
+        time: '',
+        artist: 'Alfred Heinrichs',
+        title: 'Bitch (Original Mix)'
+      },
+      {
+        time: 'Kevin McKay',
+        artist: 'Pupa Nas T',
+        title: 'Denise Belfon - Work (CVMPANILE & Draxx Extended Remix) - 00:00:10'
+      },
+      {
+        time: '',
+        artist: 'Barnt',
+        title: 'Geffen'
+      },
+      {
+        time: '',
+        artist: '140-Airdox',
+        title: 'MJ Lan'
+      },
+      {
+        time: '',
+        artist: 'T78, Angelala',
+        title: 'No Guestlist (Extended Mix)'
+      },
+      {
+        time: '',
+        artist: 'Martin Books, Signalfarbe Schwarz',
+        title: 'Simone feat. Signalfarbe Schwarz (Original Mix)'
+      },
+      {
+        time: '',
+        artist: '140-Airdox',
+        title: 'Adam Beyer & Alan Fitzpatrick'
+      },
+      {
+        time: '',
+        artist: 'Alfred Heinrichs, Martin Books',
+        title: 'Mothers Slap (Original Mix)'
+      },
+      {
+        time: '',
+        artist: '140-Airdox',
+        title: 'Primal Beat'
+      },
+      {
+        time: '',
+        artist: '140-Airdox',
+        title: 'Martin books -Perfection'
+      },
+      {
+        time: '',
+        artist: 'Katy Perry',
+        title: 'I Kissed A Girl'
+      },
+      {
+        time: '',
+        artist: 'Drumsauw',
+        title: 'Set Back (Original Mix)'
+      },
+      {
+        time: '',
+        artist: '140-Airdox',
+        title: 'Johnny O'
+      }
+    ],
+    publishedAt: '2026-05-01'
+  },
+  {
     id: '135',
     title: 'SET 135',
     date: 'APR 2026',
@@ -9,23 +101,91 @@ export const sets = [
     isNew: true,
     vinylColor: '#9adf6b',
     tracks: [
-      { time: '00:00:00', artist: 'Nicole Moudaber, Space 92', title: 'Eyes On Me (Original Mix)' },
-      { time: '00:02:26', artist: 'Green Velvet, Harvard Bass', title: 'Lazer Beams (Adam Beyer & Massano Remix)' },
-      { time: '00:06:30', artist: 'METODI, Marie Vaunt', title: 'I Am Free (Oscar L Remix)' },
-      { time: '00:11:49', artist: 'Chuckie, LMFAO', title: 'Let The Bass Kick In Miami Bitch (Extended Mix)' },
-      { time: '00:17:12', artist: 'Alfred Heinrichs', title: 'Bitch (Original Mix)' },
-      { time: '00:20:25', artist: 'Martin Books, Signalfarbe Schwarz', title: 'Simone feat. Signalfarbe Schwarz (Original Mix)' },
-      { time: '00:25:17', artist: 'Artsychoke, Anna Brinckmann', title: 'OCD (BLK&WHT Remix)' },
-      { time: '00:27:56', artist: 'Filthy Rich, Prok & Fitch', title: 'Naga (Original Mix)' },
-      { time: '00:31:04', artist: 'Tomy Wahl, Cloz', title: 'I Call It Energy feat. That Kid Is You (RIKO & GUGGA Remix)' },
-      { time: '00:35:48', artist: 'The Reason Y', title: 'Amalthea (Kevin de Vries Version)' },
-      { time: '00:39:46', artist: 'SUDO', title: 'Real World (Original Mix)' },
-      { time: '00:45:18', artist: 'Ondamike', title: 'The SLAP (Original Mix)' },
-      { time: '00:48:52', artist: 'Nikolai', title: 'Ready to Flow (Eric Sneo Edit)' },
-      { time: '00:52:19', artist: 'savas pascalidis', title: 'superman  clap mix' },
-      { time: '00:59:01', artist: 'Seal', title: 'Randomer - Bring' },
-      { time: '01:02:36', artist: 'Dadgar', title: 'Bitch (Extended Mix)' },
-      { time: '01:04:42', artist: 'Martin Books', title: 'Buss (Original Mix)' }
+      {
+        time: '00:00:00',
+        artist: 'Nicole Moudaber, Space 92',
+        title: 'Eyes On Me (Original Mix)'
+      },
+      {
+        time: '00:02:26',
+        artist: 'Green Velvet, Harvard Bass',
+        title: 'Lazer Beams (Adam Beyer & Massano Remix)'
+      },
+      {
+        time: '00:06:30',
+        artist: 'METODI, Marie Vaunt',
+        title: 'I Am Free (Oscar L Remix)'
+      },
+      {
+        time: '00:11:49',
+        artist: 'Chuckie, LMFAO',
+        title: 'Let The Bass Kick In Miami Bitch (Extended Mix)'
+      },
+      {
+        time: '00:17:12',
+        artist: 'Alfred Heinrichs',
+        title: 'Bitch (Original Mix)'
+      },
+      {
+        time: '00:20:25',
+        artist: 'Martin Books, Signalfarbe Schwarz',
+        title: 'Simone feat. Signalfarbe Schwarz (Original Mix)'
+      },
+      {
+        time: '00:25:17',
+        artist: 'Artsychoke, Anna Brinckmann',
+        title: 'OCD (BLK&WHT Remix)'
+      },
+      {
+        time: '00:27:56',
+        artist: 'Filthy Rich, Prok & Fitch',
+        title: 'Naga (Original Mix)'
+      },
+      {
+        time: '00:31:04',
+        artist: 'Tomy Wahl, Cloz',
+        title: 'I Call It Energy feat. That Kid Is You (RIKO & GUGGA Remix)'
+      },
+      {
+        time: '00:35:48',
+        artist: 'The Reason Y',
+        title: 'Amalthea (Kevin de Vries Version)'
+      },
+      {
+        time: '00:39:46',
+        artist: 'SUDO',
+        title: 'Real World (Original Mix)'
+      },
+      {
+        time: '00:45:18',
+        artist: 'Ondamike',
+        title: 'The SLAP (Original Mix)'
+      },
+      {
+        time: '00:48:52',
+        artist: 'Nikolai',
+        title: 'Ready to Flow (Eric Sneo Edit)'
+      },
+      {
+        time: '00:52:19',
+        artist: 'savas pascalidis',
+        title: 'superman  clap mix'
+      },
+      {
+        time: '00:59:01',
+        artist: 'Seal',
+        title: 'Randomer - Bring'
+      },
+      {
+        time: '01:02:36',
+        artist: 'Dadgar',
+        title: 'Bitch (Extended Mix)'
+      },
+      {
+        time: '01:04:42',
+        artist: 'Martin Books',
+        title: 'Buss (Original Mix)'
+      }
     ],
     publishedAt: '2026-04-26'
   },
@@ -88,8 +248,8 @@ export const sets = [
     ]
   },
   {
-      id: 'recording_2026_03_09',
-      title: 'REC 09.03.2026',
+    id: 'recording_2026_03_09',
+    title: 'REC 09.03.2026',
     date: 'MAR 2026',
     file: 'Airdox_REC_2026_03_09.mp3',
     duration: '50:23',
@@ -155,9 +315,9 @@ export const sets = [
     vinylColor: '#9370db'
   },
   {
-      id: 'recording_2024_02_20',
-      title: 'SOLLTE NICHT SEIN',
-      date: 'FEB 2024',
+    id: 'recording_2024_02_20',
+    title: 'SOLLTE NICHT SEIN',
+    date: 'FEB 2024',
     file: 'Airdox vs Jette_sollte nicht sein_2024_02_full.mp3',
     duration: '2:49:00',
     vinylColor: '#ff0044'
