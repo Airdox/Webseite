@@ -431,11 +431,18 @@ ipcMain.handle('flightdeck:optimize-system', async (_event, payload) => {
 
 ipcMain.handle('flightdeck:assistant-ask', async (_event, payload) => {
   try {
-    const { answerFromWiki } = await import('./services/assistant.mjs');
+    const { answerFromWiki, answerWithOllama } = await import('./services/assistant.mjs');
     const { answerToolQuestion } = await import('../../src/desktop/lib/assistantEngine.js');
     const question = payload?.question || '';
-    const result = await answerFromWiki(question);
-    if (result?.answer) return result;
+    const wiki = await answerFromWiki(question);
+    const ollama = await answerWithOllama({ question, wikiContext: wiki?.context || wiki?.answer || '' }).catch(() => null);
+    if (ollama?.answer) {
+      return {
+        source: ollama.source,
+        answer: `${ollama.answer}\n\nKontextquelle: ${wiki?.source || 'lokales Wiki'}`,
+      };
+    }
+    if (wiki?.answer) return wiki;
     return {
       source: 'local-expert-fallback',
       answer: answerToolQuestion(question),

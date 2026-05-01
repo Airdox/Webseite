@@ -6,15 +6,35 @@ const tokenize = (text = '') => text
   .split(/\s+/)
   .filter(Boolean);
 
+const normalizeToken = (token = '') => token
+  .toLowerCase()
+  .replace(/[ä]/g, 'ae')
+  .replace(/[ö]/g, 'oe')
+  .replace(/[ü]/g, 'ue')
+  .replace(/[ß]/g, 'ss')
+  .replace(/(en|er|es|e|n|s)$/i, '');
+
 export const findBestKnowledgeMatch = (question = '') => {
-  const words = new Set(tokenize(question));
+  const rawWords = tokenize(question);
+  const words = new Set(rawWords);
+  const normalizedWords = new Set(rawWords.map(normalizeToken));
   let best = null;
   let bestScore = 0;
 
   for (const item of ASSISTANT_KNOWLEDGE) {
     const score = item.keywords.reduce((sum, keyword) => {
       const keyParts = tokenize(keyword);
-      if (keyParts.length === 1) return sum + (words.has(keyParts[0]) ? 1 : 0);
+      if (keyParts.length === 1) {
+        const key = keyParts[0];
+        const keyNorm = normalizeToken(key);
+        if (words.has(key)) return sum + 2;
+        if (normalizedWords.has(keyNorm)) return sum + 1;
+        for (const w of rawWords) {
+          if (w.includes(key) || key.includes(w)) return sum + 1;
+          if (normalizeToken(w).includes(keyNorm) || keyNorm.includes(normalizeToken(w))) return sum + 1;
+        }
+        return sum;
+      }
       const phrase = keyParts.join(' ');
       return sum + (question.toLowerCase().includes(phrase) ? 2 : 0);
     }, 0);

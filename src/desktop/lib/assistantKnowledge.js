@@ -1,5 +1,11 @@
 export const ASSISTANT_KNOWLEDGE = [
   {
+    id: 'online-publish',
+    title: 'Set online stellen (Website verfügbar machen)',
+    keywords: ['online', 'website', 'webseite', 'verfügbar', 'set online stellen', 'veröffentlichen', 'publizieren', 'go live', 'live stellen'],
+    answer: 'So stellst du ein Set online: 1) Workspace verbinden und Settings speichern. 2) Im Tab "Set Import" Audio/Cover/Tracklist laden. 3) Draft prüfen (id, title, file, tracks). 4) "Publizieren" für Manifest/Assets oder direkt "Alles ausführen & Live" für Publish + Build/Deploy. 5) Danach im Browser prüfen, ob das Set in der Music-Sektion sichtbar ist. Bei Fehlern: Build-/Deploy-Command in Advanced Settings prüfen.',
+  },
+  {
     id: 'workspace',
     title: 'Workspace konfigurieren',
     keywords: ['workspace', 'ordner', 'projekt', 'verbinden', 'pfad'],
@@ -42,4 +48,3 @@ export const ASSISTANT_KNOWLEDGE = [
     answer: 'Der System Monitor zeigt RAM/CPU/Prozesse, kann Cache leeren und Optimierung anstoßen. Nutze ihn für schnelle Diagnose vor Build/Deploy.',
   },
 ];
-

@@ -2,6 +2,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const WIKI_ROOT = path.resolve(process.cwd(), 'airdoX_wiki', 'wiki');
+const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'http://127.0.0.1:11434';
+const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'qwen3.5:4b';
+const OLLAMA_TIMEOUT_MS = Number(process.env.OLLAMA_TIMEOUT_MS || 30000);
 
 const tokenize = (text = '') => text
   .toLowerCase()
@@ -80,5 +83,66 @@ export const answerFromWiki = async (question = '') => {
   return {
     source: best.file,
     answer: `Wiki-Treffer:\n${snippet}`,
+    context: snippet,
+  };
+};
+
+const withTimeout = async (promise, ms) => {
+  let timer;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error('Ollama timeout')), ms);
+      }),
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+};
+
+export const answerWithOllama = async ({ question = '', wikiContext = '' } = {}) => {
+  const query = String(question || '').trim();
+  if (!query) return null;
+
+  const prompt = [
+    'Du bist Vicky, ein präziser Flight-Deck/Windtool-Experte.',
+    'Antworte konkret, schrittweise und ohne Halluzination.',
+    'Nutze nur den bereitgestellten Kontext. Wenn Kontext fehlt, sag das klar und gib sichere nächste Schritte.',
+    '',
+    'KONTEXT:',
+    wikiContext || 'Kein Wiki-Kontext gefunden.',
+    '',
+    `FRAGE: ${query}`,
+    '',
+    'ANTWORTFORMAT:',
+    '1) Kurzantwort',
+    '2) Schritte',
+    '3) Prüfpunkte',
+  ].join('\n');
+
+  const request = fetch(`${OLLAMA_BASE_URL}/api/generate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: OLLAMA_MODEL,
+      prompt,
+      stream: false,
+      options: {
+        temperature: 0.1,
+      },
+    }),
+  }).then(async (response) => {
+    if (!response.ok) throw new Error(`Ollama HTTP ${response.status}`);
+    return response.json();
+  });
+
+  const data = await withTimeout(request, OLLAMA_TIMEOUT_MS);
+  const text = String(data?.response || '').trim();
+  if (!text) return null;
+
+  return {
+    source: `ollama:${OLLAMA_MODEL}`,
+    answer: text,
   };
 };
