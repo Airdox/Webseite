@@ -1,7 +1,7 @@
 import React, { startTransition, useCallback, useDeferredValue, useEffect, useState } from 'react';
 import {
   CircleAlert, Database, LayoutDashboard, RadioTower, UploadCloud,
-  BarChart3, Settings2, Package, Activity, BookOpen, Rocket
+  BarChart3, Settings2, Package, Activity, BookOpen, Rocket, Bot
 } from 'lucide-react';
 import { flightDeckApi } from './api.js';
 import OverviewTab from './components/OverviewTab.jsx';
@@ -13,6 +13,7 @@ import BatchImportTab from './components/BatchImportTab.jsx';
 import AdvancedSettingsTab from './components/AdvancedSettingsTab.jsx';
 import SystemMonitorTab from './components/SystemMonitorTab.jsx';
 import TutorialTab from './components/TutorialTab.jsx';
+import AssistantTab from './components/AssistantTab.jsx';
 import GuidedTutorialOverlay from './components/GuidedTutorialOverlay.jsx';
 import { TUTORIAL_TOURS } from './lib/tutorialContent.js';
 import './desktop.css';
@@ -27,6 +28,7 @@ const TABS = [
   { id: 'settings', label: 'Advanced Settings', icon: Settings2 },
   { id: 'monitor', label: 'System Monitor', icon: Activity },
   { id: 'tutorial', label: 'Tutorial', icon: BookOpen },
+  { id: 'assistant', label: 'AI Assistant', icon: Bot },
 ];
 
 const TUTORIAL_CHECKLIST_KEY = 'flightdeck-tutorial-checklist';
@@ -617,6 +619,10 @@ const DesktopApp = () => {
           onStartTour={openTutorial}
         />
       );
+    }
+
+    if (activeTab === 'assistant') {
+      return <AssistantTab />;
     }
 
     return (

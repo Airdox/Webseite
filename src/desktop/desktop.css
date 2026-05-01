@@ -1405,6 +1405,58 @@ button {
   overflow-wrap: anywhere;
 }
 
+.fd-assistant-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 480px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.fd-assistant-msg {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.fd-assistant-msg.user {
+  border-color: rgba(96, 165, 250, 0.35);
+  background: rgba(96, 165, 250, 0.09);
+}
+
+.fd-assistant-msg.assistant {
+  border-color: rgba(154, 223, 107, 0.28);
+  background: rgba(154, 223, 107, 0.08);
+}
+
+.fd-assistant-msg pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font: inherit;
+  color: #e8eee6;
+}
+
+.fd-assistant-input {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.fd-assistant-input input {
+  min-height: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(165, 185, 168, 0.16);
+  background: rgba(8, 10, 9, 0.6);
+  color: #eef2eb;
+  padding: 0 12px;
+}
+
 @media (max-width: 900px) {
   .fd-tutorial-hero,
   .fd-checklist-item {

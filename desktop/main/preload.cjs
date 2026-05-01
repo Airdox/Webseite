@@ -26,4 +26,5 @@ contextBridge.exposeInMainWorld('flightDeckApi', {
   getSystemStats: (payload) => ipcRenderer.invoke('flightdeck:get-system-stats', payload),
   clearCache: (payload) => ipcRenderer.invoke('flightdeck:clear-cache', payload),
   optimizeSystem: (payload) => ipcRenderer.invoke('flightdeck:optimize-system', payload),
+  askAssistant: (payload) => ipcRenderer.invoke('flightdeck:assistant-ask', payload),
 });

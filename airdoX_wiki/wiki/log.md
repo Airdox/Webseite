@@ -14,3 +14,12 @@ Dieses Journal protokolliert alle Änderungen und Ingest-Vorgänge im AIRDOX Wik
 
 ### Knowledge Linting Report
 * Keine strukturellen Probleme gefunden.
+
+## 1. Mai 2026
+
+* Erweiterung der Wissensbasis für den KI-Assistenten:
+  * `flightdeck-expert-handbook.md`
+  * `flightdeck-troubleshooting.md`
+  * `flightdeck-faq.md`
+* Aktualisierung von `index.md` mit Inhaltsübersicht.
+* Ziel: Höhere Antwortabdeckung für Bedienung, Fehlerdiagnose und Lösungsanleitungen im Windtool.

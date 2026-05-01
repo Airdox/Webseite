@@ -1,4 +1,5 @@
 import { DEFAULT_FLIGHT_DECK_SETTINGS, insertOrReplaceSet } from './lib/setManifest.js';
+import { answerToolQuestion } from './lib/assistantEngine.js';
 
 const SETTINGS_KEY = 'flightdeck_mock_settings';
 const TABLES_KEY = 'flightdeck_mock_tables';
@@ -99,6 +100,74 @@ const buildSnapshot = () => {
 };
 
 const nextId = (rows) => rows.reduce((max, row) => Math.max(max, Number(row.id) || 0), 0) + 1;
+
+const defaultAnalyticsLogs = [
+  { id: 1, event_type: 'play', item_id: 'recording_2026_04_12', country: 'DE', device_type: 'desktop', created_at: '2026-04-05T09:12:00.000Z' },
+  { id: 2, event_type: 'play', item_id: 'secret_set_2025_12_22', country: 'DE', device_type: 'mobile', created_at: '2026-04-06T11:20:00.000Z' },
+  { id: 3, event_type: 'like', item_id: 'recording_2026_04_12', country: 'AT', device_type: 'mobile', created_at: '2026-04-10T19:05:00.000Z' },
+  { id: 4, event_type: 'view', item_id: 'recording_2026_04_12', country: 'US', device_type: 'desktop', created_at: '2026-04-12T22:45:00.000Z' },
+  { id: 5, event_type: 'play', item_id: 'recording_2026_04_12', country: 'CH', device_type: 'tablet', created_at: '2026-04-18T07:08:00.000Z' },
+  { id: 6, event_type: 'dislike', item_id: 'secret_set_2025_12_22', country: 'DE', device_type: 'desktop', created_at: '2026-04-21T15:31:00.000Z' },
+  { id: 7, event_type: 'play', item_id: 'recording_2026_04_12', country: 'US', device_type: 'mobile', created_at: '2026-04-25T03:16:57.139Z' },
+  { id: 8, event_type: 'like', item_id: 'secret_set_2025_12_22', country: 'DE', device_type: 'desktop', created_at: '2026-04-28T23:12:12.500Z' },
+  { id: 9, event_type: 'view', item_id: 'secret_set_2025_12_22', country: 'AT', device_type: 'desktop', created_at: '2026-05-01T08:00:00.000Z' },
+];
+
+const buildMockAnalytics = (eventLogs = defaultAnalyticsLogs) => {
+  const eventsByType = {};
+  const countryMap = {};
+  const deviceTypeBreakdown = {};
+  const setMap = {};
+  const hourlyDistribution = new Array(24).fill(0);
+
+  for (const event of eventLogs) {
+    const eventType = String(event.event_type || '').toLowerCase();
+    const country = String(event.country || '').toUpperCase();
+    const device = String(event.device_type || '').toLowerCase();
+    const itemId = String(event.item_id || '');
+
+    eventsByType[eventType] = (eventsByType[eventType] || 0) + 1;
+    if (country) countryMap[country] = (countryMap[country] || 0) + 1;
+    if (device) deviceTypeBreakdown[device] = (deviceTypeBreakdown[device] || 0) + 1;
+
+    if (itemId) {
+      if (!setMap[itemId]) setMap[itemId] = { id: itemId, plays: 0, likes: 0, dislikes: 0 };
+      if (eventType === 'play') setMap[itemId].plays += 1;
+      if (eventType === 'like') setMap[itemId].likes += 1;
+      if (eventType === 'dislike') setMap[itemId].dislikes += 1;
+    }
+
+    const date = new Date(event.created_at);
+    if (!Number.isNaN(date.getTime())) {
+      hourlyDistribution[date.getHours()] += 1;
+    }
+  }
+
+  const topCountries = Object.entries(countryMap)
+    .map(([code, count]) => ({ code, count }))
+    .sort((a, b) => b.count - a.count);
+  const topSets = Object.values(setMap)
+    .sort((a, b) => b.plays - a.plays);
+
+  const totalViews = eventLogs.length;
+  const totalPlays = eventsByType.play || 0;
+  const totalLikes = eventsByType.like || 0;
+  const totalDislikes = eventsByType.dislike || 0;
+
+  return {
+    totalViews,
+    totalPlays,
+    totalLikes,
+    totalDislikes,
+    eventsByType,
+    topSets,
+    topCountries,
+    deviceTypeBreakdown,
+    hourlyDistribution,
+    conversionRate: totalViews > 0 ? totalPlays / totalViews : 0,
+    eventLogs,
+  };
+};
 
 export const mockFlightDeckApi = {
   isElectron: false,
@@ -226,5 +295,23 @@ export const mockFlightDeckApi = {
   },
   async revealPath() {
     return true;
+  },
+  async getAnalyticsData() {
+    return buildMockAnalytics(defaultAnalyticsLogs);
+  },
+  async exportAnalyticsReport(payload) {
+    return { filePath: `C:\\Exports\\analytics-${payload?.type || 'json'}.json` };
+  },
+  async getSystemStats() {
+    return {};
+  },
+  async clearCache() {
+    return { cleared: true };
+  },
+  async optimizeSystem() {
+    return { optimized: true };
+  },
+  async askAssistant(payload) {
+    return { source: 'mock-local', answer: answerToolQuestion(payload?.question || '') };
   },
 };

@@ -14,7 +14,7 @@
     "desktop:installer": "electron-builder --prepackaged release/win-unpacked --win nsis",
     "desktop:test": "vitest run src/desktop/__tests__",
     "desktop:test:logic": "vitest run src/desktop/lib/__tests__ src/desktop/__tests__",
-    "desktop:test:e2e": "playwright test e2e/desktop-flightdeck.spec.js e2e/flightdeck-quality.spec.js",
+    "desktop:test:e2e": "playwright test e2e/desktop-flightdeck.spec.js e2e/flightdeck-quality.spec.js e2e/flightdeck-assistant.spec.js",
     "desktop:test:proof": "node scratch/capture-analytics-filter-proof.mjs",
     "desktop:test:all": "npm run desktop:test:logic && npm run desktop:test:e2e",
     "tracklist:auto": "node scripts/generate-mixcloud-tracklists.mjs",

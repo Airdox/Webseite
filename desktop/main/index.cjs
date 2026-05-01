@@ -429,6 +429,26 @@ ipcMain.handle('flightdeck:optimize-system', async (_event, payload) => {
   }
 });
 
+ipcMain.handle('flightdeck:assistant-ask', async (_event, payload) => {
+  try {
+    const { answerFromWiki } = await import('./services/assistant.mjs');
+    const { answerToolQuestion } = await import('../../src/desktop/lib/assistantEngine.js');
+    const question = payload?.question || '';
+    const result = await answerFromWiki(question);
+    if (result?.answer) return result;
+    return {
+      source: 'local-expert-fallback',
+      answer: answerToolQuestion(question),
+    };
+  } catch (error) {
+    await writeStartupLog(`Assistant error: ${error.message}`);
+    return {
+      source: 'error-fallback',
+      answer: 'Assistant konnte Wiki gerade nicht lesen. Bitte frage erneut mit Ziel + Fehlermeldung + betroffenem Tab.',
+    };
+  }
+});
+
 app.whenReady().then(async () => {
   await writeStartupLog('app.whenReady resolved');
   registerAppProtocol();
