@@ -360,11 +360,15 @@ ipcMain.handle('flightdeck:reveal-path', async (_event, payload) => {
 
 ipcMain.handle('flightdeck:get-analytics-data', async (_event, payload) => {
   try {
-    const { getAnalyticsData } = await import('./services/admin.mjs');
+    const { buildAnalyticsStatsFromEvents, normalizeEventLog } = await import('../../src/desktop/lib/analytics.js');
+    const { getAnalyticsEvents } = await getServices();
     const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
-    // Note: This would need actual database connection in production
-    // For now, return mock data
-    return getAnalyticsData(null, workspaceRoot);
+    const rows = await getAnalyticsEvents(workspaceRoot, 5000);
+    const normalized = rows.map(normalizeEventLog);
+    return {
+      ...buildAnalyticsStatsFromEvents(normalized),
+      eventLogs: rows,
+    };
   } catch (error) {
     await writeStartupLog(`Analytics error: ${error.message}`);
     return {};

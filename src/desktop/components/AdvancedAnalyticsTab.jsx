@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   BarChart3, TrendingUp, Calendar, Zap, Users, Eye, Heart, Volume2,
   Download, Filter, RotateCcw
 } from 'lucide-react';
+import { buildAnalyticsStatsFromEvents, filterEventLogs } from '../lib/analytics.js';
 
 const chartColors = ['#9adf6b', '#60a5fa', '#f97316', '#ec4899', '#8b5cf6', '#14b8a6'];
 
@@ -64,19 +65,40 @@ const AdvancedAnalyticsTab = ({
     country: 'all',
   });
 
-  const {
-    totalViews = 0,
-    totalPlays = 0,
-    totalLikes = 0,
-    eventsByType = {},
-    topSets = [],
-    topCountries = [],
-    deviceTypeBreakdown = {},
-    hourlyDistribution = [],
-    conversionRate = 0,
-  } = analyticsData;
+  const rawEvents = Array.isArray(analyticsData.eventLogs) ? analyticsData.eventLogs : [];
 
-  const maxPlays = Math.max(...(topSets.map(s => s.plays) || [1]));
+  const filteredStats = useMemo(() => {
+    const filteredEvents = filterEventLogs(rawEvents, { startDate, endDate, filters });
+    return buildAnalyticsStatsFromEvents(filteredEvents);
+  }, [rawEvents, startDate, endDate, filters]);
+
+  const fallbackStats = {
+    totalViews: analyticsData.totalViews || 0,
+    totalPlays: analyticsData.totalPlays || 0,
+    totalLikes: analyticsData.totalLikes || 0,
+    eventsByType: analyticsData.eventsByType || {},
+    topSets: analyticsData.topSets || [],
+    topCountries: analyticsData.topCountries || [],
+    deviceTypeBreakdown: analyticsData.deviceTypeBreakdown || {},
+    hourlyDistribution: analyticsData.hourlyDistribution || [],
+    conversionRate: analyticsData.conversionRate || 0,
+  };
+
+  const {
+    totalViews,
+    totalPlays,
+    totalLikes,
+    eventsByType,
+    topSets,
+    topCountries,
+    deviceTypeBreakdown,
+    hourlyDistribution,
+    conversionRate,
+  } = rawEvents.length ? filteredStats : fallbackStats;
+
+  const maxPlays = Math.max(...(topSets.map((s) => s.plays) || [1]));
+  const availableCountries = Array.from(new Set(rawEvents.map((event) => String(event.country || '').toUpperCase()).filter(Boolean))).sort();
+  const availableDevices = Array.from(new Set(rawEvents.map((event) => String(event.device_type || '').toLowerCase()).filter(Boolean))).sort();
 
   return (
     <div className="fd-panel-stack">
@@ -139,9 +161,17 @@ const AdvancedAnalyticsTab = ({
               onChange={(e) => setFilters({ ...filters, deviceType: e.target.value })}
             >
               <option value="all">Alle</option>
-              <option value="mobile">Mobile</option>
-              <option value="desktop">Desktop</option>
-              <option value="tablet">Tablet</option>
+              {availableDevices.length
+                ? availableDevices.map((device) => (
+                  <option key={device} value={device}>{device}</option>
+                ))
+                : (
+                  <>
+                    <option value="mobile">mobile</option>
+                    <option value="desktop">desktop</option>
+                    <option value="tablet">tablet</option>
+                  </>
+                )}
             </select>
           </label>
           <label>
@@ -151,10 +181,18 @@ const AdvancedAnalyticsTab = ({
               onChange={(e) => setFilters({ ...filters, country: e.target.value })}
             >
               <option value="all">Alle</option>
-              <option value="DE">Deutschland</option>
-              <option value="AT">Österreich</option>
-              <option value="CH">Schweiz</option>
-              <option value="US">USA</option>
+              {availableCountries.length
+                ? availableCountries.map((country) => (
+                  <option key={country} value={country}>{country}</option>
+                ))
+                : (
+                  <>
+                    <option value="DE">DE</option>
+                    <option value="AT">AT</option>
+                    <option value="CH">CH</option>
+                    <option value="US">US</option>
+                  </>
+                )}
             </select>
           </label>
         </div>

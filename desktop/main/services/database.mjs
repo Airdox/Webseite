@@ -291,6 +291,17 @@ export const seedTrackStats = async (workspaceRoot, manifestIds = []) => {
   return true;
 };
 
+export const getAnalyticsEvents = async (workspaceRoot, limit = 5000) => {
+  await ensureInitialized(workspaceRoot);
+  const sql = await getSql(workspaceRoot);
+  return sql.query(`
+    SELECT event_type, item_id, country, device_type, created_at
+    FROM analytics_logs
+    ORDER BY created_at DESC
+    LIMIT $1
+  `, [limit]);
+};
+
 const READONLY_PREFIX = /^\s*(select|with|explain)\b/i;
 const FORBIDDEN_TOKENS = /\b(insert|update|delete|alter|drop|truncate|grant|revoke|create)\b/i;
 
