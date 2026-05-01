@@ -53,6 +53,7 @@ const DesktopApp = () => {
     settings: null,
     sets: [],
     snapshot: null,
+    dbError: null,
     gitStatus: { branch: '', dirty: false, summary: '' },
     workspaceValid: false,
   });
@@ -125,7 +126,11 @@ const DesktopApp = () => {
         setAppState(state);
         setSettingsDraft(state.settings);
       });
-      setNotice(null);
+      if (state?.dbError) {
+        setNotice({ tone: 'error', message: `Database unavailable: ${state.dbError}` });
+      } else {
+        setNotice(null);
+      }
     } catch (error) {
       setNotice({ tone: 'error', message: error.message });
     } finally {

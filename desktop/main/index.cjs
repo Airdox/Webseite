@@ -140,15 +140,21 @@ const getAppState = async () => {
   }
 
   const sets = await readSets(settings.workspaceRoot);
-  const [snapshot, gitStatus] = await Promise.all([
-    getDashboardSnapshot(settings.workspaceRoot, sets),
+  const [snapshotResult, gitStatus] = await Promise.all([
+    getDashboardSnapshot(settings.workspaceRoot, sets)
+      .then((snapshot) => ({ snapshot, dbError: null }))
+      .catch((error) => ({
+        snapshot: null,
+        dbError: error?.message || 'Unknown database error',
+      })),
     getGitStatus(settings.workspaceRoot),
   ]);
 
   return {
     settings,
     sets,
-    snapshot,
+    snapshot: snapshotResult.snapshot,
+    dbError: snapshotResult.dbError,
     gitStatus,
     workspaceValid,
   };

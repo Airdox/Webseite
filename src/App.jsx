@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+esimport React, { useState, useEffect, Suspense, lazy } from 'react';
 import { ToastProvider } from './contexts/ToastContext';
 import { AudioProvider } from './contexts/AudioContext';
 import Hero from './components/Hero';
@@ -6,7 +6,8 @@ import Navigation from './components/Navigation';
 import SmoothScroll from './components/SmoothScroll';
 
 // Lazy load components below the fold
-const MusicSection = lazy(() => import('./components/MusicSection'));
+const MusicSectio
+y(() => import('./components/MusicSection'));
 const VIPSection = lazy(() => import('./components/VIPSection'));
 const BioSection = lazy(() => import('./components/BioSection'));
 const EPKSection = lazy(() => import('./components/EPKSection')); // [NEW]
