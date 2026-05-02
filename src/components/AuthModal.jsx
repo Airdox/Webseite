@@ -15,13 +15,30 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [captchaStatus, setCaptchaStatus] = useState('idle');
 
     useEffect(() => {
         setMode(initialMode);
         setError('');
         setSuccess('');
         setCaptchaToken('');
+        setCaptchaStatus('idle');
     }, [initialMode, isOpen]);
+
+    useEffect(() => {
+        if (!isOpen) return undefined;
+        const previousOverflow = document.body.style.overflow;
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') onClose();
+        };
+
+        document.body.style.overflow = 'hidden';
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            document.body.style.overflow = previousOverflow;
+        };
+    }, [isOpen, onClose]);
 
     useEffect(() => {
         const onMessage = (event) => {
@@ -49,9 +66,13 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
         setError('');
         setSuccess('');
         setCaptchaToken('');
+        setCaptchaStatus('idle');
     };
 
     if (!isOpen) return null;
+
+    const modalTitleId = 'auth-modal-title';
+    const modalSubtitleId = 'auth-modal-subtitle';
 
     const openSocialAuth = (provider) => {
         setError('');
@@ -72,6 +93,12 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
             if (mode === 'register') {
                 if (!TURNSTILE_SITE_KEY) {
                     throw new Error(t('auth.registrationDisabled'));
+                }
+                if (captchaStatus === 'loading') {
+                    throw new Error(t('captcha.loading'));
+                }
+                if (captchaStatus === 'error') {
+                    throw new Error(t('captcha.loadError'));
                 }
                 if (!captchaToken) {
                     throw new Error(t('auth.captchaRequired'));
@@ -115,31 +142,39 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content" onClick={e => e.stopPropagation()}>
-                <button className="modal-close" onClick={onClose} aria-label={t('auth.close')}>&times;</button>
-                
+            <div
+                className="modal-content"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={modalTitleId}
+                aria-describedby={modalSubtitleId}
+                onClick={e => e.stopPropagation()}
+            >
                 <div className="modal-header">
                     <div className="modal-tabs">
                         <button 
+                            type="button"
                             className={`modal-tab ${mode === 'login' ? 'active' : ''}`}
                             onClick={() => switchMode('login')}
                         >
                             {t('auth.loginTab')}
                         </button>
                         <button 
+                            type="button"
                             className={`modal-tab ${mode === 'register' ? 'active' : ''}`}
                             onClick={() => switchMode('register')}
                         >
                             {t('auth.registerTab')}
                         </button>
                     </div>
+                    <button type="button" className="modal-close" onClick={onClose} aria-label={t('auth.close')}>&times;</button>
                 </div>
 
                 <div className="modal-body">
-                    <h2 className="modal-title">
+                    <h2 className="modal-title" id={modalTitleId}>
                         {mode === 'login' ? t('auth.loginTitle') : t('auth.registerTitle')}
                     </h2>
-                    <p className="modal-subtitle">
+                    <p className="modal-subtitle" id={modalSubtitleId}>
                         {mode === 'login' ? t('auth.loginSubtitle') : t('auth.registerSubtitle')}
                     </p>
 
@@ -158,33 +193,42 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                     <form onSubmit={handleSubmit} className="auth-form">
                         {mode === 'register' && (
                             <div className="form-group">
-                                <label>{t('auth.username')}</label>
+                                <label htmlFor="auth-username">{t('auth.username')}</label>
                                 <input 
+                                    id="auth-username"
+                                    name="username"
                                     type="text" 
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
                                     placeholder="your_dj_name"
+                                    autoComplete="username"
                                     required
                                 />
                             </div>
                         )}
                         <div className="form-group">
-                            <label>{t('auth.email')}</label>
+                            <label htmlFor="auth-email">{t('auth.email')}</label>
                             <input 
+                                id="auth-email"
+                                name="email"
                                 type="email" 
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="name@example.com"
+                                autoComplete="email"
                                 required
                             />
                         </div>
                         <div className="form-group">
-                            <label>{t('auth.password')}</label>
+                            <label htmlFor="auth-password">{t('auth.password')}</label>
                             <input 
+                                id="auth-password"
+                                name="password"
                                 type="password" 
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
+                                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                                 required
                             />
                         </div>
@@ -192,14 +236,21 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                             <TurnstileCaptcha
                                 enabled={true}
                                 siteKey={TURNSTILE_SITE_KEY}
-                                onTokenChange={setCaptchaToken}
+                                onTokenChange={(token) => {
+                                    setCaptchaToken(token);
+                                    if (token) setError('');
+                                }}
+                                onStatusChange={(status) => {
+                                    setCaptchaStatus(status);
+                                    if (status === 'verified') setError('');
+                                }}
                             />
                         )}
                         
                         <button
                             type="submit"
                             className="btn btn-primary btn-block"
-                            disabled={loading || (mode === 'register' && (!TURNSTILE_SITE_KEY || !captchaToken))}
+                            disabled={loading || (mode === 'register' && (!TURNSTILE_SITE_KEY || captchaStatus === 'loading'))}
                         >
                             {loading ? (
                                 <span className="loader-mini"></span>
@@ -215,7 +266,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                         {mode === 'login' 
                             ? t('auth.noAccount')
                             : t('auth.hasAccount')}
-                        <button onClick={() => switchMode(mode === 'login' ? 'register' : 'login')}>
+                        <button type="button" onClick={() => switchMode(mode === 'login' ? 'register' : 'login')}>
                             {mode === 'login' ? t('auth.registerHere') : t('auth.loginHere')}
                         </button>
                     </p>
