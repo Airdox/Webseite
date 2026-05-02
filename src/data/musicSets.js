@@ -1,5 +1,217 @@
 export const sets = [
   {
+    id: 'recording_2026_05_02-1',
+    title: 'REC-2026-05-02-1',
+    date: 'MAY 2026',
+    file: '01 REC-2026-05-02.mp3',
+    duration: '4:08',
+    isNew: true,
+    vinylColor: '#9adf6b',
+    tracks: [
+      {
+        time: '',
+        artist: 'Martin Books, Signalfarbe Schwarz',
+        title: 'Simone feat. Signalfarbe Schwarz (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'MJ Lan',
+        title: 'Generate Bodies (2000)'
+      },
+      {
+        time: '',
+        artist: 'Primal Beat',
+        title: 'Blowing My Head Up (Diatek Remix)'
+      },
+      {
+        time: '',
+        artist: 'Alfred Heinrichs, Martin Books',
+        title: 'Mothers Slap (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'Patrick Arbez',
+        title: 'Der rote Rabauke (deKai (Berlin) Remix)'
+      },
+      {
+        time: 'Kevin McKay',
+        artist: 'Pupa Nas T',
+        title: 'Denise Belfon - Work (CVMPANILE & Draxx Extended Remix) - 00:11:30'
+      },
+      {
+        time: '',
+        artist: 'T78, Angelala',
+        title: 'No Guestlist (Extended Mix)'
+      },
+      {
+        time: '',
+        artist: 'Martin books',
+        title: 'Perfection'
+      },
+      {
+        time: '',
+        artist: 'puttin\' on the ritz',
+        title: 'taco'
+      },
+      {
+        time: '',
+        artist: 'Dense & Pika',
+        title: 'Colt (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'Rene Bourgeois',
+        title: '4 My Recordz'
+      },
+      {
+        time: '',
+        artist: 'Dubfire',
+        title: 'RibCage (Dense & Pika Remix)'
+      },
+      {
+        time: '',
+        artist: 'Pusha T, Tiga',
+        title: 'Bugatti (Benny Benassi & Laherte Extended Remix)'
+      },
+      {
+        time: '',
+        artist: 'Christian Löffler',
+        title: 'Veiled Grey (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'DJ Hell',
+        title: 'Je Regrette'
+      },
+      {
+        time: '',
+        artist: '140-Airdox-sissygut alles gut',
+        title: 'Greg Notill  Primitive Sparkle Freak Unique Remix'
+      },
+      {
+        time: '',
+        artist: 'HVOB',
+        title: 'The Last Song Ever Written (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'Dense & Pika',
+        title: 'Crispy Duck'
+      },
+      {
+        time: '',
+        artist: 'Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fi',
+        title: 'Tiger Blood (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'STTS',
+        title: 'Sky Pushing'
+      },
+      {
+        time: '',
+        artist: 'Mike Dehnert',
+        title: 'Chardon'
+      },
+      {
+        time: '',
+        artist: 'Jad & The Ladyboy',
+        title: 'Hey Sisters (Original Mix)'
+      },
+      {
+        time: 'DJ Disciple',
+        artist: 'Prok & Fitch',
+        title: 'Dru Hepkins - Redlight (Nothing But Funk Instrumental Mix) - 01:08:21'
+      },
+      {
+        time: '',
+        artist: 'Dot N Life',
+        title: 'Bad (Extended Mix)'
+      },
+      {
+        time: '',
+        artist: 'Martin Books',
+        title: 'Clubbing (Dub Mix)'
+      },
+      {
+        time: '',
+        artist: 'Cloonee',
+        title: 'Gospel (Prok & Fitch)'
+      },
+      {
+        time: '',
+        artist: 'DJ Hell',
+        title: 'Suicide Commando (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'Jody 6',
+        title: 'I Go Psycho (Extended Mix)'
+      },
+      {
+        time: '',
+        artist: 'Prok & Fitch, SOSA (UK)',
+        title: 'Dance Lapse (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'Rich Vom Dorf',
+        title: 'Rich Vom Dorf'
+      },
+      {
+        time: '',
+        artist: 'Wir Sind Helden',
+        title: 'Denkmal'
+      },
+      {
+        time: '',
+        artist: 'Patrick_Arbez',
+        title: '[UNRELEASED] Patrick Arbez'
+      },
+      {
+        time: '',
+        artist: 'Randomer',
+        title: 'randomer'
+      },
+      {
+        time: 'Crookers',
+        artist: 'Champion',
+        title: 'Interplanetary Criminal - Lose My Mind (Original Mix) - 01:37:13'
+      },
+      {
+        time: '',
+        artist: 'Dot N Life',
+        title: 'Trick Me (Extended Mix)'
+      },
+      {
+        time: '',
+        artist: 'Rello, Justin Rabin',
+        title: 'ICY (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'Skylin3, Nicole Del Prete',
+        title: 'Naughty Girl (Kevin McKay Extended ViP)'
+      },
+      {
+        time: '',
+        artist: 'Chris Lake',
+        title: 'Psycho (Extended Mix)'
+      },
+      {
+        time: '',
+        artist: 'jbambacht',
+        title: 'Motor'
+      },
+      {
+        time: '',
+        artist: 'Argy',
+        title: 'Closer Than Most'
+      }
+    ],
+    publishedAt: '2026-05-02'
+  },
+  {
     id: 'recording_2026_05_02',
     title: 'REC-2026-05-02',
     date: 'MAY 2026',
