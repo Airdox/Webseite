@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import DesktopApp from '../DesktopApp.jsx';
 import { flightDeckApi } from '../api.js';
+import { mockFlightDeckApi } from '../mockApi.js';
 
 vi.mock('../api.js', async () => {
   const actual = await vi.importActual('../api.js');
@@ -12,6 +13,10 @@ describe('DesktopApp', () => {
   beforeEach(() => {
     localStorage.clear();
     vi.restoreAllMocks();
+    Object.keys(flightDeckApi).forEach((key) => {
+      delete flightDeckApi[key];
+    });
+    Object.assign(flightDeckApi, mockFlightDeckApi);
   });
 
   it('renders the overview in mock mode', async () => {
@@ -219,5 +224,37 @@ describe('DesktopApp', () => {
     expect(livePayload.settings.uploadAudioToR2).toBe(true);
     expect(livePayload.settings.autoBuild).toBe(true);
     expect(livePayload.settings.autoDeploy).toBe(true);
+  });
+
+  it('keeps Go Live disabled for safe-mode drafts without an audio source path', async () => {
+    Object.assign(flightDeckApi, {
+      isElectron: false,
+      getState: vi.fn().mockResolvedValue({
+        settings: {
+          workspaceRoot: 'D:\\LATEST_WORKSPACE',
+          safeMode: true,
+        },
+        sets: [],
+        snapshot: null,
+        dbError: null,
+        gitStatus: { branch: 'main', dirty: false, summary: '' },
+        workspaceValid: true,
+      }),
+      listTable: vi.fn().mockResolvedValue([]),
+      saveSettings: vi.fn(),
+      publishSet: vi.fn(),
+    });
+
+    render(<DesktopApp />);
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+    await screen.findByText('Workspace verbunden');
+
+    fireEvent.click(screen.getByRole('button', { name: /Set Import/i }));
+    fireEvent.change(screen.getByLabelText(/^ID$/i), { target: { value: 'manual_set' } });
+    fireEvent.change(screen.getByLabelText(/^Datei$/i), { target: { value: 'manual_set.mp3' } });
+
+    await waitFor(() => {
+      expect(screen.getAllByRole('button', { name: /Alles ausfuehren & Live/i })[0]).toBeDisabled();
+    });
   });
 });

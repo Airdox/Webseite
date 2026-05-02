@@ -31,6 +31,11 @@ const Hero = () => {
     const cursorScaleRef = useRef(1);
 
     const TITLE = 'AIRDOX';
+    const reachSignals = [
+        { label: t('hero.proof.latest.label'), value: t('hero.proof.latest.value') },
+        { label: t('hero.proof.tracklists.label'), value: t('hero.proof.tracklists.value') },
+        { label: t('hero.proof.booking.label'), value: t('hero.proof.booking.value') }
+    ];
 
     const getScrollBehavior = () => (
         window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -325,6 +330,15 @@ const Hero = () => {
                         <span>{t('hero.tagline.3')}</span>
                     </p>
                     <div className="tagline-line"></div>
+                </div>
+
+                <div className="hero-proof-strip" aria-label={t('hero.proofLabel')}>
+                    {reachSignals.map((signal) => (
+                        <div className="hero-proof-item" key={signal.label}>
+                            <span className="hero-proof-label">{signal.label}</span>
+                            <span className="hero-proof-value">{signal.value}</span>
+                        </div>
+                    ))}
                 </div>
 
                 {/* CTA Buttons */}

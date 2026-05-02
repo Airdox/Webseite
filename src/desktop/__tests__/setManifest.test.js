@@ -92,6 +92,12 @@ describe('setManifest helpers', () => {
     });
   });
 
+  it('rejects invalid structured date hints instead of normalizing them', () => {
+    expect(parseDateHint('Airdox_REC_2026_02_31.mp3')).toBeNull();
+    expect(parseDateHint('Airdox_REC_31_04_2026.mp3')).toBeNull();
+    expect(parseDateHint('Airdox_REC_2026_13_01.mp3')).toBeNull();
+  });
+
   it('builds a draft from imported files', () => {
     const draft = buildDraftFromImportedFiles({
       audioPath: 'D:\\Music\\Airdox_REC_2026_04_12.mp3',

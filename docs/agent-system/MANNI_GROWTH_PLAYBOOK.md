@@ -19,7 +19,8 @@ Sekundäre KPI:
 - Klickrate auf Linkhub / Booking / Newsletter
 
 Verbindliche Gate-Regel:
-- Kein Social-Post mit externer Sichtbarkeit (live oder paid) ohne persoenliches Nutzer-OK.
+- Poster, Reels, Captions, Thumbnails und Plattform-Copy sollen aktiv als externe-ready Drafts erstellt werden.
+- Kein Social-Post mit externer Live-Sichtbarkeit und keine Paid-Ausspielung ohne persoenliches Nutzer-OK.
 
 ## Kanäle mit Priorität
 

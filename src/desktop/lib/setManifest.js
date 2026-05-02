@@ -70,27 +70,48 @@ export const formatDuration = (seconds = 0) => {
   return `${minutes}:${String(secs).padStart(2, '0')}`;
 };
 
+const parseStrictDateParts = (year, month, day) => {
+  const numericYear = Number(year);
+  const numericMonth = Number(month);
+  const numericDay = Number(day);
+  const parsed = new Date(Date.UTC(numericYear, numericMonth - 1, numericDay));
+
+  if (
+    parsed.getUTCFullYear() !== numericYear
+    || parsed.getUTCMonth() !== numericMonth - 1
+    || parsed.getUTCDate() !== numericDay
+  ) {
+    return null;
+  }
+
+  return parsed;
+};
+
 export const parseDateHint = (input = '') => {
   if (!input) return null;
   const candidates = [
     /(?<year>20\d{2})[._-](?<month>\d{2})[._-](?<day>\d{2})/,
     /(?<day>\d{2})[._-](?<month>\d{2})[._-](?<year>20\d{2})/,
   ];
+  let matchedStructuredDate = false;
 
   for (const pattern of candidates) {
     const match = input.match(pattern);
     if (!match?.groups) continue;
+    matchedStructuredDate = true;
     const { year, month, day } = match.groups;
     const isoDate = `${year}-${month}-${day}`;
-    const parsed = new Date(`${isoDate}T00:00:00Z`);
-    if (!Number.isNaN(parsed.getTime())) {
+    const parsed = parseStrictDateParts(year, month, day);
+    if (parsed) {
       return {
         isoDate,
         titleDate: `${day}.${month}.${year}`,
-        label: `${MONTH_LABELS[Number(month) - 1]} ${year}`,
+        label: `${MONTH_LABELS[parsed.getUTCMonth()]} ${year}`,
       };
     }
   }
+
+  if (matchedStructuredDate) return null;
 
   const parsed = new Date(input);
   if (Number.isNaN(parsed.getTime())) return null;

@@ -36,7 +36,7 @@ const Newsletter = () => {
     };
 
     return (
-        <section className="newsletter-section section">
+        <section className="newsletter-section section" id="newsletter">
             <div className="container">
                 <div className="airdox-card reveal">
                     <div className="newsletter-content">

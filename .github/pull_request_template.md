@@ -26,4 +26,4 @@
 
 - [ ] Freigabe liegt vor
 
-MC-APPROVED: YES
+<!-- Nur nach echter Freigabe setzen: MC-APPROVED: <YES nach Freigabe eintragen> -->

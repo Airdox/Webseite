@@ -279,7 +279,91 @@
       "enabled": true,
       "outputs": [
         "docs/agent-system/manni-reel-queue.json",
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "docs/agent-system/manni-reel-draft-pack.md"
+      ]
+    },
+    {
+      "id": "queue-readiness-review",
+      "title": "Review reel queue readiness before production",
+      "owner": "Designer",
+      "execution": "manual",
+      "manualProtocol": "Review Manni's queue for hook clarity, first-frame strength, safe-area notes, track timestamp quality, and approval status before any external asset production.",
+      "trigger": {
+        "events": [
+          "weekly_growth_review",
+          "release_candidate",
+          "manual_background"
+        ],
+        "statuses": [
+          "planning",
+          "weekly",
+          "pending_user_ok"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "social_media",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/manni-reel-queue.json",
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "docs/agent-system/manni-reel-draft-pack.md"
+      ]
+    },
+    {
+      "id": "social-draft-production",
+      "title": "Create external-ready social drafts",
+      "owner": "Designer",
+      "execution": "manual",
+      "manualProtocol": "Create poster, reel, caption, thumbnail, and platform-copy drafts from Manni's queue. Draft creation is allowed and encouraged; keep all assets unpublished until personal user OK is logged.",
+      "trigger": {
+        "events": [
+          "weekly_growth_review",
+          "release_candidate",
+          "manual_background"
+        ],
+        "statuses": [
+          "planning",
+          "weekly",
+          "drafting"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "social_media",
+      "outputVisibility": "external_draft",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/manni-reel-queue.json",
         "docs/agent-system/manni-reel-weekly-plan.md"
+      ]
+    },
+    {
+      "id": "growth-report-digest",
+      "title": "Weekly growth report digest",
+      "owner": "Manni",
+      "execution": "manual",
+      "manualProtocol": "Collect weekly KPI inputs, rank top 3 winners and losers, document reach, completion rate, shares, saves, follows, link clicks, and log the next 3 experiments in DECISION_LOG.",
+      "trigger": {
+        "events": [
+          "weekly_growth_review"
+        ],
+        "statuses": [
+          "weekly"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "social_media",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md"
       ]
     },
     {
@@ -313,7 +397,7 @@
       "title": "Personal approval gate before live social posting",
       "owner": "Manni",
       "execution": "manual",
-      "manualProtocol": "Before any external posting or paid activation goes live, get explicit personal user OK and log it in DECISION_LOG.",
+      "manualProtocol": "Drafts may be created before approval. Before any external posting or paid activation goes live, get explicit personal user OK and log date, job ID, platforms, asset IDs, and approved copy in DECISION_LOG.",
       "trigger": {
         "events": [
           "winner_detected",

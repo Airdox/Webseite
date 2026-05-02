@@ -12,6 +12,8 @@ const SetImportTab = ({
   onLoadDemo,
   onPublish,
   onGoLive = () => {},
+  canGoLive,
+  goLiveDisabledReason = '',
   onDraftChange,
   onTrackChange,
   onTrackAdd,
@@ -30,6 +32,7 @@ const SetImportTab = ({
       onLoadDemo();
     }
   };
+  const goLiveEnabled = canGoLive ?? Boolean(draft.id && draft.file);
 
   return (
     <div className="fd-panel-stack">
@@ -96,8 +99,8 @@ const SetImportTab = ({
               type="button"
               className="fd-button"
               onClick={onGoLive}
-              disabled={busy || !draft.id || !draft.file}
-              title="Speichert Settings und startet die komplette Live-Pipeline gemaess deiner Flight-Deck-Konfiguration."
+              disabled={busy || !goLiveEnabled}
+              title={goLiveEnabled ? 'Speichert Settings und startet die komplette Live-Pipeline gemaess deiner Flight-Deck-Konfiguration.' : goLiveDisabledReason}
             >
               <Upload size={16} />
               Alles ausfuehren & Live

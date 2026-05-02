@@ -13,7 +13,7 @@ const MONTHS = {
   DEC: 11,
 };
 
-export const PUBLIC_SET_COUNT = 2;
+export const PUBLIC_SET_COUNT = 4;
 const toTimestamp = (value) => {
   if (!value) return Number.NaN;
   const parsed = Date.parse(String(value));

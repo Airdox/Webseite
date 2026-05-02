@@ -4,6 +4,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const electron = require('electron');
+const { resolveAppProtocolAssetPath } = require('./protocolPath.cjs');
 
 const app = electron?.app;
 const BrowserWindow = electron?.BrowserWindow;
@@ -162,12 +163,12 @@ const getAppState = async () => {
 
 const registerAppProtocol = () => {
   protocol.handle('app', (request) => {
-    const url = new URL(request.url);
-    const distRoot = path.join(app.getAppPath(), 'dist');
-    const relativePath = decodeURIComponent(url.pathname === '/' ? '/desktop.html' : url.pathname);
-    const assetPath = path.normalize(path.join(distRoot, relativePath));
+    const assetPath = resolveAppProtocolAssetPath({
+      appRoot: app.getAppPath(),
+      requestUrl: request.url,
+    });
 
-    if (!assetPath.startsWith(distRoot)) {
+    if (!assetPath) {
       return new Response('Not found', { status: 404 });
     }
 

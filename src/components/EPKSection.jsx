@@ -17,8 +17,8 @@ const EPKSection = () => {
                         <div className="epk-icon">📸</div>
                         <h3>{t('epk.pressPhotosTitle')}</h3>
                         <p>{t('epk.pressPhotosText')}</p>
-                        <a className="btn btn-outline btn-block" href="/epk/airdox-press-assets.txt" download>
-                            {t('epk.downloadZip')}
+                        <a className="btn btn-outline btn-block" href="/epk/airdox-press-assets.txt">
+                            {t('epk.openAssetInfo')}
                         </a>
                     </div>
 

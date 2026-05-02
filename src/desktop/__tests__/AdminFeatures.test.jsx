@@ -74,8 +74,11 @@ describe('Advanced Analytics Tab', () => {
       ...defaultProps,
       analyticsData: {},
     };
-    const { container } = render(<AdvancedAnalyticsTab {...emptyProps} />);
+    const { container, getByText } = render(<AdvancedAnalyticsTab {...emptyProps} />);
     expect(container).toBeTruthy();
+    expect(getByText('Peak: n/a')).toBeTruthy();
+    expect(container.textContent).not.toContain('Infinity');
+    expect(container.textContent).not.toContain('-1:00');
   });
 
   it('applies date and dimension filters to metrics', () => {

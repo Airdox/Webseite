@@ -13,6 +13,7 @@
     flex-direction: column;
     position: relative;
     isolation: isolate;
+    scroll-margin-top: var(--space-6);
     background:
         linear-gradient(145deg, rgba(10, 14, 18, 0.24), rgba(0, 0, 0, 0.12));
     backdrop-filter: blur(8px) saturate(135%);
@@ -173,6 +174,47 @@
     letter-spacing: 0.05em;
 }
 
+.set-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: 15px;
+}
+
+.set-share-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 8px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.04);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+}
+
+.set-share-btn:hover,
+.set-share-btn:focus-visible {
+    color: var(--neon-cyan);
+    border-color: rgba(0, 245, 255, 0.34);
+    background: rgba(0, 245, 255, 0.09);
+    transform: translateY(-1px);
+}
+
+.set-share-btn.copied {
+    color: var(--neon-green);
+    border-color: rgba(0, 255, 136, 0.34);
+    background: rgba(0, 255, 136, 0.08);
+}
+
 .set-stats {
     padding: var(--space-4) var(--space-6);
     background: rgba(0, 0, 0, 0.12);
@@ -226,6 +268,10 @@
     font-family: var(--font-mono);
     font-size: 0.7rem;
     letter-spacing: 1px;
+}
+
+.set-actions .vip-download-link {
+    margin-top: 0;
 }
 
 .vip-tracklist {

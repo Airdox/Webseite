@@ -10,6 +10,7 @@ Alle gravierenden Aktionen laufen ueber den Master Controller und brauchen vorab
 Strategische Prioritaet:
 - Primaeres Systemziel ist Reichweitenwachstum und nachhaltiger Audience-Aufbau.
 - Manni fuehrt dieses Ziel operativ ueber `docs/agent-system/MANNI_GROWTH_PLAYBOOK.md`.
+- Der aktive Reichweiten-Sprint liegt in `docs/agent-system/REACH_SPRINT_2026-05-02.md`.
 
 Informationspflicht:
 - Fehlen fuer eine Aufgabe Daten oder Kontext, muss der zustaendige Agent aktiv nachfragen oder die Informationen eigenstaendig beschaffen.

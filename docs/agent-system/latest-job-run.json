@@ -1,27 +1,21 @@
 {
-  "generatedAt": "2026-05-02T09:14:13.161Z",
+  "generatedAt": "2026-05-02T15:00:35.324Z",
   "controller": "Master Controller",
-  "event": "winner_detected",
-  "status": "scale",
+  "event": "manual_background",
+  "status": "drafting",
   "summary": {
-    "selectedJobCount": 2,
+    "selectedJobCount": 1,
     "executedJobCount": 0,
-    "manualJobCount": 2,
+    "manualJobCount": 1,
     "skippedJobCount": 0,
     "failedJobCount": 0
   },
   "jobs": [
     {
-      "id": "growth-winner-amplification",
-      "owner": "Manni",
+      "id": "social-draft-production",
+      "owner": "Designer",
       "result": "manual",
-      "detail": "Escalate only top-performing organic assets into paid amplification and document budget/creative rationale."
-    },
-    {
-      "id": "social-live-publish-gate",
-      "owner": "Manni",
-      "result": "manual",
-      "detail": "Before any external posting or paid activation goes live, get explicit personal user OK and log it in DECISION_LOG."
+      "detail": "Create poster, reel, caption, thumbnail, and platform-copy drafts from Manni's queue. Draft creation is allowed and encouraged; keep all assets unpublished until personal user OK is logged."
     }
   ]
 }

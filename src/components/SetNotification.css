@@ -22,7 +22,7 @@
     background: rgba(26, 26, 26, 0.95);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(0, 245, 255, 0.3);
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 1rem;
     display: flex;
     align-items: center;
@@ -31,15 +31,31 @@
     min-width: 300px;
 }
 
-.set-icon {
+.set-notification-main {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+    color: inherit;
+    text-align: left;
+}
+
+.set-notification-main:hover .set-title,
+.set-notification-main:focus-visible .set-title {
+    color: var(--neon-cyan);
+}
+
+.set-notification .set-icon {
     font-size: 2rem;
 }
 
-.set-info {
+.set-notification .set-info {
     flex: 1;
+    min-width: 0;
 }
 
-.set-badge {
+.set-notification .set-badge {
     font-family: var(--font-mono);
     font-size: 0.625rem;
     color: var(--neon-cyan);
@@ -47,15 +63,16 @@
     margin-bottom: 0.25rem;
 }
 
-.set-title {
+.set-notification .set-title {
     font-family: var(--font-heading);
     font-size: 1rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 0.25rem;
+    transition: color 0.25s ease;
 }
 
-.set-date {
+.set-notification .set-date {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     color: var(--text-secondary);
@@ -78,6 +95,10 @@
 .set-close:hover {
     background: var(--neon-cyan);
     color: var(--bg-dark);
+}
+
+.cookie-banner-visible .set-notification {
+    display: none;
 }
 
 @media (max-width: 768px) {

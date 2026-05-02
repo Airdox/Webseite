@@ -28,17 +28,20 @@
     content="Driving rhythms and pure Berlin underground. Stream new sets and downloads." />
   <meta property="og:url" content="https://airdox.info/en/" />
   <meta property="og:image" content="https://airdox.info/og-image.png" />
+  <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="AIRDOX – Berlin Underground Techno" />
   <meta property="og:site_name" content="AIRDOX" />
   <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="de_DE" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AIRDOX | BERLIN TECHNO" />
   <meta name="twitter:description" content="Experience Berlin underground techno." />
   <meta name="twitter:image" content="https://airdox.info/og-image.png" />
+  <meta name="twitter:image:alt" content="AIRDOX – Berlin Underground Techno" />
 
   <!-- hreflang -->
   <link rel="alternate" hreflang="de" href="https://airdox.info/" />
@@ -64,19 +67,65 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "MusicGroup",
-    "name": "AIRDOX",
-    "description": "Berlin-based Techno DJ and Producer specializing in underground techno, dark industrial sounds, and hypnotic rhythms.",
-    "genre": ["Techno", "Industrial Techno", "Dark Techno", "Underground Electronic"],
-    "url": "https://airdox.info/en/",
-    "email": "airdox82@gmail.com",
-    "location": {
-      "@type": "Place",
-      "name": "Berlin, Germany"
-    },
-    "sameAs": [
-      "https://soundcloud.com/airdox",
-      "https://instagram.com/airdox_bln"
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://airdox.info/en/#website",
+        "url": "https://airdox.info/en/",
+        "name": "AIRDOX",
+        "inLanguage": "en",
+        "description": "Berlin underground techno DJ with sets, tracklists, EPK, and booking."
+      },
+      {
+        "@type": ["Person", "MusicGroup"],
+        "@id": "https://airdox.info/en/#artist",
+        "name": "AIRDOX",
+        "description": "Berlin-based techno DJ specializing in underground techno, dark industrial sounds, and hypnotic rhythms.",
+        "genre": ["Techno", "Industrial Techno", "Dark Techno", "Underground Electronic"],
+        "url": "https://airdox.info/en/",
+        "image": "https://airdox.info/og-image.png",
+        "email": "airdox82@gmail.com",
+        "areaServed": {
+          "@type": "City",
+          "name": "Berlin"
+        },
+        "sameAs": [
+          "https://soundcloud.com/airdox",
+          "https://www.mixcloud.com/Airdox/",
+          "https://instagram.com/airdox_bln",
+          "https://ra.co/dj/airdox"
+        ],
+        "subjectOf": {
+          "@type": "CreativeWork",
+          "name": "AIRDOX Electronic Press Kit",
+          "url": "https://airdox.info/epk/airdox-epk.html"
+        }
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://airdox.info/en/#latest-sets",
+        "name": "Latest AIRDOX sets",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "url": "https://airdox.info/en/#set-recording_2026_05_02",
+            "name": "REC-2026-05-02"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "url": "https://airdox.info/en/#set-recording_2026_05_01",
+            "name": "REC-2026-05-01"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "url": "https://airdox.info/en/#set-135",
+            "name": "SET 135"
+          }
+        ]
+      }
     ]
   }
   </script>
@@ -93,6 +142,13 @@
   </form>
 
   <div id="root"></div>
+  <noscript>
+    <main>
+      <h1>AIRDOX - Berlin Underground Techno DJ</h1>
+      <p>Stream recent AIRDOX sets, explore tracklists, and book AIRDOX for clubs, festivals, and events.</p>
+      <p><a href="mailto:airdox82@gmail.com">Request booking</a> · <a href="https://soundcloud.com/airdox">SoundCloud</a> · <a href="https://www.mixcloud.com/Airdox/">Mixcloud</a> · <a href="https://ra.co/dj/airdox">Resident Advisor</a></p>
+    </main>
+  </noscript>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

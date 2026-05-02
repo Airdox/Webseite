@@ -99,7 +99,11 @@ const AdvancedAnalyticsTab = ({
     conversionRate,
   } = rawEvents.length ? filteredStats : fallbackStats;
 
-  const maxPlays = Math.max(...(topSets.map((s) => s.plays) || [1]));
+  const maxPlays = Math.max(...topSets.map((set) => Number(set.plays) || 0), 1);
+  const maxCountryCount = Math.max(...topCountries.map((country) => Number(country.count) || 0), 1);
+  const safeHourlyDistribution = hourlyDistribution.length ? hourlyDistribution : new Array(24).fill(0);
+  const peakCount = Math.max(...safeHourlyDistribution, 0);
+  const peakHour = peakCount > 0 ? safeHourlyDistribution.indexOf(peakCount) : null;
   const availableCountries = Array.from(new Set(rawEvents.map((event) => String(event.country || '').toUpperCase()).filter(Boolean))).sort();
   const availableDevices = Array.from(new Set(rawEvents.map((event) => String(event.device_type || '').toLowerCase()).filter(Boolean))).sort();
 
@@ -267,7 +271,7 @@ const AdvancedAnalyticsTab = ({
                   <div
                     className="fd-bar-fill-inline"
                     style={{
-                      width: `${(country.count / Math.max(...topCountries.map(c => c.count), 1)) * 100}%`,
+                      width: `${((Number(country.count) || 0) / maxCountryCount) * 100}%`,
                     }}
                   />
                 </div>
@@ -288,7 +292,7 @@ const AdvancedAnalyticsTab = ({
             {Object.entries(deviceTypeBreakdown).map(([device, count]) => (
               <div key={device} className="fd-list-item">
                 <span className="fd-code-cell">{device}</span>
-                <span>{((count / totalViews) * 100).toFixed(1)}%</span>
+                <span>{(totalViews > 0 ? ((Number(count) || 0) / totalViews) * 100 : 0).toFixed(1)}%</span>
                 <span className="fd-value-faded">{count}</span>
               </div>
             ))}
@@ -298,22 +302,22 @@ const AdvancedAnalyticsTab = ({
         <section className="fd-surface">
           <div className="fd-section-head">
             <h3>Tageszeit-Verteilung</h3>
-            <span>{hourlyDistribution.length} Stunden</span>
+            <span>{safeHourlyDistribution.length} Stunden</span>
           </div>
           <div className="fd-sparkline">
-            {hourlyDistribution.map((count, hour) => (
+            {safeHourlyDistribution.map((count, hour) => (
               <div
                 key={hour}
                 className="fd-sparkbar"
                 style={{
-                  height: `${Math.max((count / Math.max(...hourlyDistribution, 1)) * 100, 5)}%`,
+                  height: `${Math.max((count / Math.max(...safeHourlyDistribution, 1)) * 100, 5)}%`,
                 }}
                 title={`${hour}:00 - ${count} Events`}
               />
             ))}
           </div>
           <small style={{ marginTop: '0.5rem', display: 'block' }}>
-            Peak: {hourlyDistribution.indexOf(Math.max(...hourlyDistribution))}:00 Uhr
+            Peak: {peakHour === null ? 'n/a' : `${peakHour}:00 Uhr`}
           </small>
         </section>
       </div>

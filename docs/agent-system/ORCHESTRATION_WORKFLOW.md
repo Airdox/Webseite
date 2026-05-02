@@ -50,7 +50,8 @@ Der Workflow validiert zuerst den Job-Katalog und fuehrt danach genau die Jobs f
 
 - Jobs mit `changeClass: gravierend` werden nur mit Master-Freigabe ausgefuehrt.
 - Ohne Freigabe bleiben sie im Run-Log als `skipped`.
-- Jobs mit `outputVisibility: external_live` werden ohne persoenliches Nutzer-OK ebenfalls als `skipped` protokolliert.
+- Jobs mit `outputVisibility: external_draft` duerfen ohne Nutzer-OK erstellt werden, bleiben aber unveroeffentlicht.
+- Jobs mit `outputVisibility: external_live` werden ohne persoenliches Nutzer-OK als `skipped` protokolliert.
 
 ## CI-Regel
 

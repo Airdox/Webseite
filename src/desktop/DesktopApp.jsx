@@ -160,11 +160,12 @@ const DesktopApp = () => {
   const [tutorialTourId, setTutorialTourId] = useState(DEFAULT_TOUR_ID);
   const [tutorialStepIndex, setTutorialStepIndex] = useState(0);
   const [tutorialChecklist, setTutorialChecklist] = useState(loadTutorialChecklist);
+  const liveRequiresSourceAudio = settingsDraft?.safeMode !== false;
   const canDraftGoLive = Boolean(
     settingsDraft?.workspaceRoot
     && draft?.id
     && draft?.file
-    && (draft?.sourceAudioPath || draft?.file),
+    && (!liveRequiresSourceAudio || draft?.sourceAudioPath),
   );
   const selectedBatchCount = batchQueue.filter(isBatchLiveCandidate).length;
   const canGoLive = Boolean(
@@ -197,6 +198,9 @@ const DesktopApp = () => {
     setBusy(true);
     try {
       const state = await flightDeckApi.getState();
+      if (!state?.settings) {
+        throw new Error('Flight Deck state is unavailable.');
+      }
       startTransition(() => {
         setAppState(state);
         setSettingsDraft(state.settings);
@@ -368,6 +372,11 @@ const DesktopApp = () => {
   const goLiveNow = async () => {
     if (!draft?.id || !draft?.file) {
       setNotice({ tone: 'error', message: 'Bitte zuerst ein Set importieren und Draft-Felder pruefen.' });
+      setActiveTab('import');
+      return;
+    }
+    if (liveRequiresSourceAudio && !draft?.sourceAudioPath) {
+      setNotice({ tone: 'error', message: 'Go Live braucht eine Audio Source aus dem Windows-Dateisystem.' });
       setActiveTab('import');
       return;
     }
@@ -757,6 +766,8 @@ const DesktopApp = () => {
           onLoadDemo={() => loadImport([])}
           onPublish={publishCurrentDraft}
           onGoLive={goLiveNow}
+          canGoLive={canDraftGoLive}
+          goLiveDisabledReason="Go Live braucht eine Audio Source aus dem Windows-Dateisystem."
           onDraftChange={updateDraftField}
           onTrackChange={updateTrack}
           onTrackAdd={addTrack}
@@ -871,7 +882,7 @@ const DesktopApp = () => {
           onClearCache={async () => {
             await runAsyncAction(
               () => flightDeckApi.clearCache({ workspaceRoot: settingsDraft?.workspaceRoot }),
-              'Cache gelöschrt.',
+              'Cache geloescht.',
             );
           }}
           onOptimize={async () => {

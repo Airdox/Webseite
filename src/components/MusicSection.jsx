@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Check, Share2 } from 'lucide-react';
 import { useAudio } from '../contexts/AudioContext';
 import './MusicSection.css';
 import { t } from '../utils/i18n';
 
 import { sets } from '../data/musicSets';
 import { buildAudioApiHref, partitionSetsByAccess } from '../lib/set-access';
+import { buildSetAnchorId, buildSetShareUrl, scrollToSetHash } from '../lib/set-links';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { statsSync } from '../utils/stats-sync';
 
@@ -38,7 +40,8 @@ const MusicSection = () => {
         currentTime,
         playTrack,
         togglePlay,
-        seek
+        seek,
+        setPlaylist
     } = useAudio();
 
     // Globale Stats (von Datenbank) mit LocalStorage Fallback
@@ -55,8 +58,10 @@ const MusicSection = () => {
     });
 
     const [collapsedTracklists, setCollapsedTracklists] = useState({});
+    const [copiedSetId, setCopiedSetId] = useState(null);
 
     const sectionRef = useRef(null);
+    const shareResetTimerRef = useRef(null);
     const billiardStateRef = useRef({
         x: 0,
         y: 0,
@@ -80,6 +85,99 @@ const MusicSection = () => {
         return () => window.removeEventListener('airdox_stats_updated', handleStatsUpdate);
     }, []);
 
+    useEffect(() => {
+        setPlaylist(publicSets);
+    }, [setPlaylist]);
+
+    useEffect(() => () => {
+        if (shareResetTimerRef.current) {
+            window.clearTimeout(shareResetTimerRef.current);
+        }
+    }, []);
+
+    useEffect(() => {
+        const scrollToHashSet = (behavior = 'smooth') => {
+            scrollToSetHash({ behavior });
+        };
+        const handleHashChange = () => scrollToHashSet('smooth');
+
+        const timerIds = [
+            window.setTimeout(() => scrollToHashSet('auto'), 120),
+            window.setTimeout(() => scrollToHashSet('smooth'), 700)
+        ];
+        window.addEventListener('hashchange', handleHashChange);
+
+        return () => {
+            timerIds.forEach((timerId) => window.clearTimeout(timerId));
+            window.removeEventListener('hashchange', handleHashChange);
+        };
+    }, []);
+
+    const markShareCopied = (setId) => {
+        setCopiedSetId(setId);
+        if (shareResetTimerRef.current) {
+            window.clearTimeout(shareResetTimerRef.current);
+        }
+        shareResetTimerRef.current = window.setTimeout(() => setCopiedSetId(null), 2200);
+    };
+
+    const copyToClipboard = async (value) => {
+        if (navigator.clipboard?.writeText) {
+            await navigator.clipboard.writeText(value);
+            return;
+        }
+
+        const textArea = document.createElement('textarea');
+        textArea.value = value;
+        textArea.setAttribute('readonly', '');
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+    };
+
+    const trackShare = (set, method) => {
+        const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
+        analytics?.trackEvent?.('set_share', {
+            setId: set.id,
+            setTitle: set.title,
+            method
+        });
+    };
+
+    const handleShareSet = async (event, set) => {
+        event.stopPropagation();
+
+        const url = buildSetShareUrl(set.id);
+        const payload = {
+            title: `${set.title} | AIRDOX`,
+            text: t('music.shareText'),
+            url
+        };
+
+        try {
+            if (navigator.share && (!navigator.canShare || navigator.canShare(payload))) {
+                await navigator.share(payload);
+                trackShare(set, 'native');
+                return;
+            }
+
+            await copyToClipboard(url);
+            markShareCopied(set.id);
+            trackShare(set, 'clipboard');
+        } catch (err) {
+            if (err?.name === 'AbortError') return;
+            try {
+                await copyToClipboard(url);
+                markShareCopied(set.id);
+                trackShare(set, 'clipboard_fallback');
+            } catch {
+                trackShare(set, 'share_failed');
+            }
+        }
+    };
 
 
     const handlePlayClick = (set) => {
@@ -325,6 +423,7 @@ const MusicSection = () => {
 
                         return (
                             <div
+                                id={buildSetAnchorId(set.id)}
                                 key={set.id}
                                 className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''}`}
                                 data-set-id={set.id}
@@ -415,20 +514,37 @@ const MusicSection = () => {
                                         <span className="set-date">{set.date}</span>
                                         {set.duration && <span className="set-duration">{set.duration}</span>}
                                     </div>
-                                    {isLoggedIn && (
-                                        <a 
-                                            href={buildAudioApiHref(set.file, localStorage.getItem('airdox_token'))} 
-                                            download={set.file}
-                                            className="vip-download-link"
-                                            onClick={(e) => e.stopPropagation()}
-                                            title={t('music.downloadVipAccess')}
+
+                                    <div className="set-actions">
+                                        <button
+                                            type="button"
+                                            className={`set-share-btn ${copiedSetId === set.id ? 'copied' : ''}`}
+                                            onClick={(event) => handleShareSet(event, set)}
+                                            aria-label={`${t('music.shareLabel')} ${set.title}`}
                                         >
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                                            </svg>
-                                            {t('music.vipDownload')}
-                                        </a>
-                                    )}
+                                            {copiedSetId === set.id ? (
+                                                <Check size={16} aria-hidden="true" />
+                                            ) : (
+                                                <Share2 size={16} aria-hidden="true" />
+                                            )}
+                                            <span>{copiedSetId === set.id ? t('music.shareCopied') : t('music.share')}</span>
+                                        </button>
+
+                                        {isLoggedIn && (
+                                            <a
+                                                href={buildAudioApiHref(set.file, localStorage.getItem('airdox_token'))}
+                                                download={set.file}
+                                                className="vip-download-link"
+                                                onClick={(e) => e.stopPropagation()}
+                                                title={t('music.downloadVipAccess')}
+                                            >
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                                                </svg>
+                                                {t('music.vipDownload')}
+                                            </a>
+                                        )}
+                                    </div>
 
                                     {set.tracks && set.tracks.length > 0 && (
                                         <div className={`vip-tracklist ${collapsedTracklists[set.id] ? 'collapsed' : ''}`}>

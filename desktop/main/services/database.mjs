@@ -118,8 +118,9 @@ export const getDashboardSnapshot = async (workspaceRoot, manifestSets = []) => 
       (SELECT COUNT(*)::int FROM sessions) AS sessions_count
   `);
 
-  const [topTracks, recentAnalytics, recentUsers, recentSubscribers, recentSessions] = await Promise.all([
+  const [topTracks, allTrackStats, recentAnalytics, recentUsers, recentSubscribers, recentSessions] = await Promise.all([
     sql.query('SELECT id, plays, likes, dislikes, last_played_at FROM track_stats ORDER BY plays DESC NULLS LAST, id ASC LIMIT 8'),
+    sql.query('SELECT id FROM track_stats'),
     sql.query('SELECT id, event_type, item_id, country, city, device_type, browser, os, created_at FROM analytics_logs ORDER BY created_at DESC LIMIT 12'),
     sql.query('SELECT id, username, email, created_at FROM users ORDER BY created_at DESC LIMIT 6'),
     sql.query('SELECT id, email, status, created_at FROM subscribers ORDER BY created_at DESC LIMIT 6'),
@@ -132,7 +133,7 @@ export const getDashboardSnapshot = async (workspaceRoot, manifestSets = []) => 
     `),
   ]);
 
-  const trackIds = new Set(topTracks.map((entry) => entry.id));
+  const trackIds = new Set(allTrackStats.map((entry) => entry.id));
   const manifestIds = manifestSets.map((entry) => entry.id);
   const missingStats = manifestIds.filter((id) => !trackIds.has(id));
 

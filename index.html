@@ -42,19 +42,20 @@
     content="Treibende Rhythmen und puristischer Berliner Underground. Jetzt neue Sets streamen und AIRDOX buchen." />
   <meta property="og:url" content="https://airdox.info/" />
   <meta property="og:image" content="https://airdox.info/og-image.png" />
+  <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="AIRDOX – Berlin Underground Techno" />
-  <meta property="og:image" content="https://airdox.info/og-image.svg" />
-  <meta property="og:image:type" content="image/svg+xml" />
   <meta property="og:site_name" content="AIRDOX" />
   <meta property="og:locale" content="de_DE" />
+  <meta property="og:locale:alternate" content="en_US" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AIRDOX | BERLINER TECHNO" />
   <meta name="twitter:description" content="Erlebe den Sound des Berliner Underground Techno." />
   <meta name="twitter:image" content="https://airdox.info/og-image.png" />
+  <meta name="twitter:image:alt" content="AIRDOX – Berlin Underground Techno" />
 
   <!-- hreflang -->
   <link rel="alternate" hreflang="de" href="https://airdox.info/" />
@@ -80,19 +81,65 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "MusicGroup",
-    "name": "AIRDOX",
-    "description": "Berliner Techno-DJ mit Fokus auf Underground Techno, dunkle industrielle Sounds und hypnotische Rhythmen.",
-    "genre": ["Techno", "Industrial Techno", "Dark Techno", "Underground Electronic"],
-    "url": "https://airdox.info/",
-    "email": "airdox82@gmail.com",
-    "location": {
-      "@type": "Place",
-      "name": "Berlin, Germany"
-    },
-    "sameAs": [
-      "https://soundcloud.com/airdox",
-      "https://instagram.com/airdox_bln"
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://airdox.info/#website",
+        "url": "https://airdox.info/",
+        "name": "AIRDOX",
+        "inLanguage": "de-DE",
+        "description": "Berliner Underground-Techno-DJ mit Sets, Tracklists, EPK und Booking."
+      },
+      {
+        "@type": ["Person", "MusicGroup"],
+        "@id": "https://airdox.info/#artist",
+        "name": "AIRDOX",
+        "description": "Berliner Techno-DJ mit Fokus auf Underground Techno, dunkle industrielle Sounds und hypnotische Rhythmen.",
+        "genre": ["Techno", "Industrial Techno", "Dark Techno", "Underground Electronic"],
+        "url": "https://airdox.info/",
+        "image": "https://airdox.info/og-image.png",
+        "email": "airdox82@gmail.com",
+        "areaServed": {
+          "@type": "City",
+          "name": "Berlin"
+        },
+        "sameAs": [
+          "https://soundcloud.com/airdox",
+          "https://www.mixcloud.com/Airdox/",
+          "https://instagram.com/airdox_bln",
+          "https://ra.co/dj/airdox"
+        ],
+        "subjectOf": {
+          "@type": "CreativeWork",
+          "name": "AIRDOX Electronic Press Kit",
+          "url": "https://airdox.info/epk/airdox-epk.html"
+        }
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://airdox.info/#latest-sets",
+        "name": "Aktuelle AIRDOX Sets",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "url": "https://airdox.info/#set-recording_2026_05_02",
+            "name": "REC-2026-05-02"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "url": "https://airdox.info/#set-recording_2026_05_01",
+            "name": "REC-2026-05-01"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "url": "https://airdox.info/#set-135",
+            "name": "SET 135"
+          }
+        ]
+      }
     ]
   }
   </script>
@@ -101,6 +148,13 @@
 
 <body>
   <div id="root"></div>
+  <noscript>
+    <main>
+      <h1>AIRDOX - Berliner Underground-Techno-DJ</h1>
+      <p>Streame aktuelle AIRDOX-Sets, entdecke Tracklists und buche AIRDOX fuer Clubs, Festivals und Events.</p>
+      <p><a href="mailto:airdox82@gmail.com">Booking anfragen</a> · <a href="https://soundcloud.com/airdox">SoundCloud</a> · <a href="https://www.mixcloud.com/Airdox/">Mixcloud</a> · <a href="https://ra.co/dj/airdox">Resident Advisor</a></p>
+    </main>
+  </noscript>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

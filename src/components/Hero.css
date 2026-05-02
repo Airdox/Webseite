@@ -269,6 +269,8 @@
 .hero-content {
     position: relative;
     z-index: 10;
+    width: min(100%, 1200px);
+    min-width: 0;
     text-align: center;
     padding: 0 var(--space-4);
     max-width: 1200px;
@@ -647,6 +649,56 @@
 }
 
 /* =====================================================
+   REACH PROOF STRIP
+   ===================================================== */
+
+.hero-proof-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+    width: 100%;
+    max-width: 760px;
+    margin: calc(var(--space-10) * -0.55) auto var(--space-8);
+    opacity: 0;
+    animation: fadeInUp 0.8s 1.1s forwards;
+}
+
+.hero-proof-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-height: 72px;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.26);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.hero-proof-label,
+.hero-proof-value {
+    overflow-wrap: anywhere;
+}
+
+.hero-proof-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    line-height: 1.25;
+    color: var(--neon-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+
+.hero-proof-value {
+    font-family: var(--font-heading);
+    font-size: clamp(0.85rem, 1.4vw, 1rem);
+    line-height: 1.25;
+    color: var(--text-primary);
+}
+
+/* =====================================================
    CTA BUTTONS
    ===================================================== */
 
@@ -966,6 +1018,27 @@
         display: none;
     }
 
+    .hero-proof-strip {
+        grid-template-columns: 1fr;
+        width: 100%;
+        max-width: min(320px, calc(100vw - var(--space-8)));
+        margin: calc(var(--space-5) * -0.5) auto var(--space-5);
+        gap: var(--space-2);
+    }
+
+    .hero-proof-item {
+        min-height: 0;
+        padding: var(--space-2) var(--space-3);
+    }
+
+    .hero-proof-label {
+        font-size: 0.58rem;
+    }
+
+    .hero-proof-value {
+        font-size: 0.78rem;
+    }
+
     .hero-cta {
         flex-direction: column;
         align-items: center;
@@ -1044,8 +1117,8 @@
         transform: scale(0.5); /* Make it much smaller */
         margin-bottom: -40px; /* Adjust spacing after scaling */
         margin-top: -20px;
-        width: 120%; /* Allow it to take space */
-        margin-left: -10%; /* Center it back */
+        width: 100%;
+        margin-left: 0;
     }
 
     .snake-letter-wrapper {
@@ -1086,6 +1159,10 @@
 
     .hero-tagline {
         margin-bottom: var(--space-5);
+    }
+
+    .hero-proof-strip {
+        display: none;
     }
 
     .hero-cta {
