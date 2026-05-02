@@ -34,11 +34,6 @@ export const sets = [
         title: 'Der rote Rabauke (deKai (Berlin) Remix)'
       },
       {
-        time: 'Kevin McKay',
-        artist: 'Pupa Nas T',
-        title: 'Denise Belfon - Work (CVMPANILE & Draxx Extended Remix) - 00:11:30'
-      },
-      {
         time: '',
         artist: 'T78, Angelala',
         title: 'No Guestlist (Extended Mix)'
@@ -119,11 +114,6 @@ export const sets = [
         title: 'Hey Sisters (Original Mix)'
       },
       {
-        time: 'DJ Disciple',
-        artist: 'Prok & Fitch',
-        title: 'Dru Hepkins - Redlight (Nothing But Funk Instrumental Mix) - 01:08:21'
-      },
-      {
         time: '',
         artist: 'Dot N Life',
         title: 'Bad (Extended Mix)'
@@ -172,11 +162,6 @@ export const sets = [
         time: '',
         artist: 'Randomer',
         title: 'randomer'
-      },
-      {
-        time: 'Crookers',
-        artist: 'Champion',
-        title: 'Interplanetary Criminal - Lose My Mind (Original Mix) - 01:37:13'
       },
       {
         time: '',
