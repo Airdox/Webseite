@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-05-02T08:52:10.339Z",
+  "controller": "Master Controller",
+  "event": "manual_background",
+  "status": "standard",
+  "summary": {
+    "selectedJobCount": 2,
+    "executedJobCount": 2,
+    "manualJobCount": 0,
+    "skippedJobCount": 0,
+    "failedJobCount": 0
+  },
+  "jobs": [
+    {
+      "id": "repository-hygiene-monitor",
+      "owner": "Repository",
+      "result": "executed",
+      "detail": "ok (repository:monitor:write)",
+      "startedAt": "2026-05-02T08:52:10.343Z",
+      "endedAt": "2026-05-02T08:52:12.365Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run repository:monitor:write --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "agent-audit-cycle",
+      "owner": "Guardian",
+      "result": "executed",
+      "detail": "ok (agent:audit:write)",
+      "startedAt": "2026-05-02T08:52:12.365Z",
+      "endedAt": "2026-05-02T08:52:15.303Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:audit:write --",
+      "exitCode": 0,
+      "error": ""
+    }
+  ]
+}

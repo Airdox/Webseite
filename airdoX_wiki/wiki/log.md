@@ -23,3 +23,17 @@ Dieses Journal protokolliert alle Änderungen und Ingest-Vorgänge im AIRDOX Wik
   * `flightdeck-faq.md`
 * Aktualisierung von `index.md` mit Inhaltsübersicht.
 * Ziel: Höhere Antwortabdeckung für Bedienung, Fehlerdiagnose und Lösungsanleitungen im Windtool.
+
+## 2. Mai 2026
+
+* Aufbau des Multi-Agenten-Operating-Models fuer AIRDOX:
+  * `docs/agent-system/OPERATING_MODEL.md`
+  * `docs/agent-system/DECISION_LOG.md`
+  * `scripts/agent-audit.mjs`
+* Erweiterung des lokalen Wiki-Lernsystems:
+  * `local-09-mentor-audit.md`
+  * `local-10-agent-decisions.md`
+  * `local-11-feedback-loops.md`
+  * `local-12-refactor-optimization.md`
+* Ziel: Agentenrollen, Audit-Gates, Entscheidungen und Feedbackschleifen dauerhaft nachvollziehbar machen.
+* Nachtrag: Refactor als sechsten Superagenten fuer Systemoptimierung und Verschlankung aufgenommen.

@@ -1,21 +1,40 @@
 import React, { useState, useCallback } from 'react';
-import { Upload, Trash2, FileCheck, AlertTriangle, Play, Pause } from 'lucide-react';
+import { Upload, Trash2, AlertTriangle, Play, Pause, Rocket } from 'lucide-react';
 
-const BatchImportItem = ({ item, index, onRemove, onStatusChange }) => {
+const BatchImportItem = ({ item, index, busy, onRemove, onStatusChange, onToggleSelected }) => {
   const statusColor = {
     pending: '#888888',
+    ready: '#9adf6b',
     processing: '#60a5fa',
     success: '#9adf6b',
     error: '#f87171',
+  };
+  const statusLabel = {
+    pending: 'wartet',
+    ready: 'bereit',
+    processing: 'laeuft',
+    success: 'live',
+    error: 'Fehler',
   };
 
   return (
     <div className="fd-batch-item" style={{ borderLeftColor: statusColor[item.status] }}>
       <div className="fd-batch-item-header">
+        <label className="fd-batch-select" title="Fuer Live-Aktion auswaehlen">
+          <input
+            type="checkbox"
+            checked={item.selected !== false}
+            disabled={busy || item.status === 'processing' || item.status === 'success'}
+            onChange={(event) => onToggleSelected(index, event.target.checked)}
+          />
+        </label>
         <span className="fd-batch-index">{index + 1}</span>
         <div className="fd-batch-info">
-          <strong>{item.title || item.fileName}</strong>
-          <span className="fd-batch-status">{item.status}</span>
+          <strong>{item.setId || item.title || item.fileName}</strong>
+          <span className="fd-batch-status">
+            {statusLabel[item.status] || item.status}
+            {item.filePaths?.length ? ` / ${item.filePaths.length} Datei${item.filePaths.length === 1 ? '' : 'en'}` : ''}
+          </span>
         </div>
         {item.progress && (
           <div className="fd-batch-progress">
@@ -62,11 +81,15 @@ const BatchImportTab = ({
   batchQueue = [],
   onAddItems = () => {},
   onRemoveItem = () => {},
+  onToggleItem = () => {},
+  onToggleAll = () => {},
   onStartBatch = () => {},
+  onGoLiveBatch = () => {},
   onClearCompleted = () => {},
   onPauseBatch = () => {},
   isBatchRunning = false,
   batchProgress = { current: 0, total: 0 },
+  busy = false,
 }) => {
   const [dragActive, setDragActive] = useState(false);
 
@@ -103,7 +126,18 @@ const BatchImportTab = ({
 
   const successCount = batchQueue.filter((item) => item.status === 'success').length;
   const errorCount = batchQueue.filter((item) => item.status === 'error').length;
-  const pendingCount = batchQueue.filter((item) => item.status === 'pending').length;
+  const pendingCount = batchQueue.filter((item) => ['pending', 'ready', 'processing'].includes(item.status)).length;
+  const selectableCount = batchQueue.filter((item) => item.status !== 'processing' && item.status !== 'success').length;
+  const selectedCount = batchQueue.filter((item) => (
+    item.selected !== false
+    && item.status !== 'processing'
+    && item.status !== 'success'
+  )).length;
+  const prepareCount = batchQueue.filter((item) => (
+    item.selected !== false
+    && (item.status === 'pending' || item.status === 'error')
+  )).length;
+  const actionLocked = busy || isBatchRunning;
 
   return (
     <div className="fd-panel-stack">
@@ -134,12 +168,22 @@ const BatchImportTab = ({
               type="button"
               className="fd-button"
               onClick={onStartBatch}
-              disabled={batchQueue.length === 0 || isBatchRunning}
+              disabled={prepareCount === 0 || actionLocked}
             >
               <Play size={16} />
               Start
             </button>
           )}
+          <button
+            type="button"
+            className="fd-button"
+            onClick={onGoLiveBatch}
+            disabled={batchQueue.length === 0 || selectedCount === 0 || actionLocked}
+            title="Bereitet ausgewaehlte Batch-Sets vor, laedt Audio hoch und fuehrt Build/Deploy aus."
+          >
+            <Rocket size={16} />
+            Auswahl live stellen
+          </button>
         </div>
       </section>
 
@@ -193,13 +237,23 @@ const BatchImportTab = ({
           <section className="fd-surface">
             <div className="fd-section-head">
               <h3>Import-Queue ({batchQueue.length})</h3>
-              <button
-                type="button"
-                className="fd-icon-link"
-                onClick={onClearCompleted}
-              >
-                Fertige loeschen
-              </button>
+              <div className="fd-inline-actions">
+                <button
+                  type="button"
+                  className="fd-icon-link"
+                  onClick={() => onToggleAll(selectedCount !== selectableCount)}
+                  disabled={selectableCount === 0 || actionLocked}
+                >
+                  {selectedCount === selectableCount ? 'Auswahl aufheben' : 'Alle auswaehlen'}
+                </button>
+                <button
+                  type="button"
+                  className="fd-icon-link"
+                  onClick={onClearCompleted}
+                >
+                  Fertige loeschen
+                </button>
+              </div>
             </div>
             <div className="fd-batch-queue">
               {batchQueue.map((item, idx) => (
@@ -207,7 +261,9 @@ const BatchImportTab = ({
                   key={`${item.id}-${idx}`}
                   item={item}
                   index={idx}
+                  busy={busy}
                   onRemove={(i) => onRemoveItem(i)}
+                  onToggleSelected={onToggleItem}
                   onStatusChange={() => {
                     // Optional: implement retry logic
                   }}

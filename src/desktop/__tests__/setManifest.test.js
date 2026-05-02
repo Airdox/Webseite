@@ -34,6 +34,56 @@ describe('setManifest helpers', () => {
     ]);
   });
 
+  it('parses trailing-time tracklists with commas in artist names', () => {
+    const tracks = parseTracklistText(`
+      Kevin McKay, Pupa Nas T, Denise Belfon - Work (CVMPANILE & Draxx Extended Remix) - 00:10:42
+      140-Airdox - MJ Lan - Generate Bodies (2000) - 00:19:23
+    `);
+
+    expect(tracks).toEqual([
+      {
+        time: '00:10:42',
+        artist: 'Kevin McKay, Pupa Nas T, Denise Belfon',
+        title: 'Work (CVMPANILE & Draxx Extended Remix)',
+      },
+      {
+        time: '00:19:23',
+        artist: '140-Airdox',
+        title: 'MJ Lan - Generate Bodies (2000)',
+      },
+    ]);
+  });
+
+  it('parses rekordbox cue tracklists with seekable timestamps', () => {
+    const tracks = parseTracklistText(`
+      TITLE "REC-2026-05-01"
+      PERFORMER "140-Airdox"
+      FILE "01 REC-2026-05-01.wav" WAVE
+        TRACK 01 AUDIO
+          TITLE "Turn (Original Mix)"
+          PERFORMER "Martin Books"
+          INDEX 01 00:00:00
+        TRACK 02 AUDIO
+          TITLE "Black Church (Original Mix)"
+          PERFORMER "Patrick Arbez"
+          INDEX 01 00:00:37
+        TRACK 03 AUDIO
+          TITLE "Black Church (Original Mix)"
+          PERFORMER "Patrick Arbez"
+          INDEX 01 00:05:45
+        TRACK 04 AUDIO
+          TITLE "MJ Lan - Generate Bodies (2000)"
+          FILE "G:/mp3 traktor/MJ Lan - Generate Bodies (2000).mp3" WAVE
+          INDEX 01 00:19:23
+    `);
+
+    expect(tracks).toEqual([
+      { time: '00:00:00', artist: 'Martin Books', title: 'Turn (Original Mix)' },
+      { time: '00:00:37', artist: 'Patrick Arbez', title: 'Black Church (Original Mix)' },
+      { time: '00:19:23', artist: '140-Airdox', title: 'MJ Lan - Generate Bodies (2000)' },
+    ]);
+  });
+
   it('derives dates from filename hints', () => {
     expect(parseDateHint('Airdox_REC_2026_04_12.mp3')).toEqual({
       isoDate: '2026-04-12',

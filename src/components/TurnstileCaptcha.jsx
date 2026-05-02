@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { t } from '../utils/i18n';
 
 const TURNSTILE_SCRIPT_ID = 'airdox-turnstile-script';
 const TURNSTILE_SCRIPT_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
@@ -37,13 +38,6 @@ const TurnstileCaptcha = ({ enabled = true, siteKey = '', onTokenChange }) => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (!enabled) return undefined;
-        onTokenChange?.('');
-        setError('');
-        return undefined;
-    }, [enabled, siteKey, onTokenChange]);
-
-    useEffect(() => {
         let disposed = false;
 
         const initWidget = async () => {
@@ -61,24 +55,26 @@ const TurnstileCaptcha = ({ enabled = true, siteKey = '', onTokenChange }) => {
                     sitekey: siteKey,
                     theme: 'dark',
                     callback: (token) => {
+                        setError('');
                         onTokenChange?.(token);
                     },
                     'expired-callback': () => {
                         onTokenChange?.('');
                     },
                     'error-callback': () => {
-                        setError('Captcha konnte nicht geladen werden.');
+                        setError(t('captcha.loadError'));
                         onTokenChange?.('');
                     },
                 });
             } catch {
                 if (!disposed) {
-                    setError('Captcha konnte nicht geladen werden.');
+                    setError(t('captcha.loadError'));
                     onTokenChange?.('');
                 }
             }
         };
 
+        onTokenChange?.('');
         initWidget();
 
         return () => {
@@ -96,7 +92,7 @@ const TurnstileCaptcha = ({ enabled = true, siteKey = '', onTokenChange }) => {
 
     if (!enabled) return null;
     if (!siteKey) {
-        return <div className="auth-error">Captcha ist nicht konfiguriert.</div>;
+        return <div className="auth-error">{t('captcha.missing')}</div>;
     }
 
     return (

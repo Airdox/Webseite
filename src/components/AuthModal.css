@@ -100,6 +100,13 @@
     margin-bottom: 30px;
 }
 
+.social-auth-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
 .auth-form .form-group {
     margin-bottom: 20px;
 }

@@ -92,6 +92,7 @@ export const AudioProvider = ({ children }) => {
     const playlistIndexRef = useRef(0);
     const currentPartIndexRef = useRef(0);
     const audioSourceRef = useRef(null);
+    const pendingSeekRef = useRef(null);
 
     // Initialisierung Audio Context für Visualizer
     const initAudioContext = useCallback(() => {
@@ -136,7 +137,26 @@ export const AudioProvider = ({ children }) => {
         }
     }, [currentTrack, isPlaying, initAudioContext]);
 
-    const playTrack = useCallback((track, autoPlay = true) => {
+    const seek = useCallback((time) => {
+        const targetTime = Math.max(0, Number(time) || 0);
+        const audio = audioRef.current;
+
+        if (!audio) {
+            pendingSeekRef.current = targetTime;
+            setCurrentTime(targetTime);
+            return;
+        }
+
+        try {
+            audio.currentTime = targetTime;
+            pendingSeekRef.current = null;
+        } catch {
+            pendingSeekRef.current = targetTime;
+        }
+        setCurrentTime(targetTime);
+    }, []);
+
+    const playTrack = useCallback((track, autoPlay = true, startTime = 0) => {
         devLog('playTrack called for:', track?.title);
         if (!track || !track.file) {
             devWarn('Invalid track or file missing');
@@ -164,9 +184,14 @@ export const AudioProvider = ({ children }) => {
         if (audioRef.current) {
             // Always start with the file defined in 'file' (which should be part000 for multi-part tracks)
             const encodedSrc = toPlayableSrc(track.file);
+            const targetStartTime = Math.max(0, Number(startTime) || 0);
+            pendingSeekRef.current = targetStartTime > 0 ? targetStartTime : null;
             devLog('Loading audio src:', encodedSrc);
             audioRef.current.src = encodedSrc;
             audioRef.current.load();
+            if (targetStartTime > 0) {
+                seek(targetStartTime);
+            }
             if (autoPlay) {
                 initAudioContext();
                 devLog('Attempting autoPlay');
@@ -187,14 +212,7 @@ export const AudioProvider = ({ children }) => {
         // Playlist index update
         const index = playlist.findIndex(t => t.id === track.id);
         if (index !== -1) playlistIndexRef.current = index;
-    }, [playlist, currentTrack, initAudioContext, togglePlay]);
-
-    const seek = useCallback((time) => {
-        if (audioRef.current) {
-            audioRef.current.currentTime = time;
-            setCurrentTime(time);
-        }
-    }, []);
+    }, [playlist, currentTrack, initAudioContext, togglePlay, seek]);
 
     const next = useCallback(() => {
         if (playlist.length === 0) return;
@@ -278,7 +296,18 @@ export const AudioProvider = ({ children }) => {
         };
 
         const updateTime = () => setCurrentTime(audio.currentTime);
-        const updateDuration = () => setDuration(audio.duration);
+        const updateDuration = () => {
+            setDuration(audio.duration);
+            const pendingSeek = pendingSeekRef.current;
+            if (pendingSeek === null) return;
+            try {
+                audio.currentTime = pendingSeek;
+                setCurrentTime(pendingSeek);
+                pendingSeekRef.current = null;
+            } catch {
+                // Keep pending seek until the media element accepts it.
+            }
+        };
 
         const onEnded = () => {
             const track = currentTrackRef.current;

@@ -22,6 +22,7 @@ import CookieBanner from './components/CookieBanner';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import AtmosphericBackground from './components/AtmosphericBackground';
 import './styles/global.css';
+import { t } from './utils/i18n';
 
 // Loading Fallback Component
 const SectionLoading = () => (
@@ -36,7 +37,7 @@ const SectionLoading = () => (
     fontSize: '0.8rem',
     letterSpacing: '2px'
   }}>
-    LOADING_COMPONENT...
+    {t('app.loadingComponent')}
   </div>
 );
 
@@ -120,13 +121,13 @@ function App() {
             <Navigation onOpenAuth={openAuth} />
           <Hero />
           <Suspense fallback={<SectionLoading />}>
+            <BioSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoading />}>
             <MusicSection />
           </Suspense>
           <Suspense fallback={<SectionLoading />}>
             <VIPSection onOpenAuth={openAuth} />
-          </Suspense>
-          <Suspense fallback={<SectionLoading />}>
-            <BioSection />
           </Suspense>
           <Suspense fallback={<SectionLoading />}>
             <EPKSection />

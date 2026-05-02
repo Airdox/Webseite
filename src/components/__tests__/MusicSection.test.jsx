@@ -31,6 +31,19 @@ describe('MusicSection Synchronisation', () => {
     beforeEach(() => {
         vi.clearAllMocks();
         localStorage.clear();
+        vi.spyOn(console, 'warn').mockImplementation(() => {});
+        Object.defineProperty(window.HTMLMediaElement.prototype, 'pause', {
+            configurable: true,
+            value: vi.fn()
+        });
+        Object.defineProperty(window.HTMLMediaElement.prototype, 'play', {
+            configurable: true,
+            value: vi.fn().mockResolvedValue(undefined)
+        });
+        Object.defineProperty(window.HTMLMediaElement.prototype, 'load', {
+            configurable: true,
+            value: vi.fn()
+        });
         
         // Default Mock für fetch (Success)
         vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
@@ -52,10 +65,7 @@ describe('MusicSection Synchronisation', () => {
         );
 
         await waitFor(() => {
-            expect(fetch).toHaveBeenCalledWith(
-                expect.stringContaining('/api/stats'),
-                undefined
-            );
+            expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/api/stats'));
         });
     });
 
@@ -78,8 +88,7 @@ describe('MusicSection Synchronisation', () => {
         await waitFor(() => {
             // Sollte die Produktions-URL enthalten
             expect(fetch).toHaveBeenCalledWith(
-                expect.stringContaining('https://airdox.netlify.app/api/stats'),
-                undefined
+                expect.stringContaining('https://airdox-webseite.beuth62.workers.dev/api/stats')
             );
         });
 

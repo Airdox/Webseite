@@ -16,6 +16,11 @@ import TutorialTab from './components/TutorialTab.jsx';
 import AssistantTab from './components/AssistantTab.jsx';
 import GuidedTutorialOverlay from './components/GuidedTutorialOverlay.jsx';
 import { TUTORIAL_TOURS } from './lib/tutorialContent.js';
+import {
+  AUDIO_EXTENSIONS,
+  extractFilename,
+  stripExtension,
+} from './lib/setManifest.js';
 import './desktop.css';
 
 const TABS = [
@@ -48,6 +53,69 @@ const matchesSearch = (row, search) => {
   const haystack = Object.values(row).join(' ').toLowerCase();
   return haystack.includes(search.toLowerCase());
 };
+
+const getFilePath = (file) => {
+  if (typeof file === 'string') return file;
+  return file?.path || file?.webkitRelativePath || '';
+};
+
+const getFileExtension = (filePath = '') => {
+  const filename = extractFilename(filePath);
+  const dotIndex = filename.lastIndexOf('.');
+  return dotIndex >= 0 ? filename.slice(dotIndex).toLowerCase() : '';
+};
+
+const normalizeBatchStem = (filePath = '') => stripExtension(extractFilename(filePath))
+  .replace(/\.(tracks|mixcloud)$/i, '')
+  .toLowerCase();
+
+const isAudioFilePath = (filePath = '') => AUDIO_EXTENSIONS.includes(getFileExtension(filePath));
+
+const buildBatchQueueItems = (filePaths = []) => {
+  const uniquePaths = [...new Set(filePaths.map((entry) => String(entry || '').trim()).filter(Boolean))];
+  const audioPaths = uniquePaths.filter(isAudioFilePath);
+  const sidecarPaths = uniquePaths.filter((candidate) => !isAudioFilePath(candidate));
+
+  return audioPaths.map((audioPath, index) => {
+    const audioStem = normalizeBatchStem(audioPath);
+    const matchingSidecars = sidecarPaths.filter((candidate) => normalizeBatchStem(candidate) === audioStem);
+    const fallbackSidecars = audioPaths.length === 1
+      ? sidecarPaths.filter((candidate) => !matchingSidecars.includes(candidate))
+      : [];
+    const groupedPaths = [...new Set([audioPath, ...matchingSidecars, ...fallbackSidecars])];
+
+    return {
+      id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2)}`,
+      fileName: extractFilename(audioPath),
+      filePaths: groupedPaths,
+      selected: true,
+      status: 'pending',
+      progress: 0,
+      message: `${groupedPaths.length} Datei${groupedPaths.length === 1 ? '' : 'en'} erkannt`,
+    };
+  });
+};
+
+const isBatchLiveCandidate = (item) => (
+  item?.selected !== false
+  && item?.status !== 'processing'
+  && item?.status !== 'success'
+);
+
+const buildLiveSettings = (settings = {}) => ({
+  ...settings,
+  uploadAudioToR2: true,
+  autoBuild: true,
+  autoDeploy: true,
+});
+
+const buildPublishOnlySettings = (settings = {}) => ({
+  ...settings,
+  autoBuild: false,
+  autoDeploy: false,
+  autoCommit: false,
+  autoPush: false,
+});
 
 const DesktopApp = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -92,11 +160,16 @@ const DesktopApp = () => {
   const [tutorialTourId, setTutorialTourId] = useState(DEFAULT_TOUR_ID);
   const [tutorialStepIndex, setTutorialStepIndex] = useState(0);
   const [tutorialChecklist, setTutorialChecklist] = useState(loadTutorialChecklist);
-  const canGoLive = Boolean(
+  const canDraftGoLive = Boolean(
     settingsDraft?.workspaceRoot
     && draft?.id
     && draft?.file
     && (draft?.sourceAudioPath || draft?.file),
+  );
+  const selectedBatchCount = batchQueue.filter(isBatchLiveCandidate).length;
+  const canGoLive = Boolean(
+    settingsDraft?.workspaceRoot
+    && (activeTab === 'batch' ? selectedBatchCount > 0 : (canDraftGoLive || selectedBatchCount > 0)),
   );
 
   const deferredSearch = useDeferredValue(search);
@@ -209,6 +282,27 @@ const DesktopApp = () => {
     }
   };
 
+  const refreshWorkspaceStateForPublish = async () => {
+    const latestState = await flightDeckApi.getState();
+    if (!latestState?.workspaceValid) {
+      throw new Error('Workspace ist ungueltig. Publish wurde gestoppt, bevor Daten geschrieben wurden.');
+    }
+
+    const latestWorkspaceRoot = latestState.settings?.workspaceRoot || settingsDraft?.workspaceRoot;
+    const latestSettings = {
+      ...(settingsDraft || {}),
+      ...(latestState.settings || {}),
+      workspaceRoot: latestWorkspaceRoot,
+    };
+
+    startTransition(() => {
+      setAppState({ ...latestState, settings: latestSettings });
+      setSettingsDraft(latestSettings);
+    });
+
+    return latestSettings;
+  };
+
   const loadImport = async (filePaths = []) => {
     const selectedPaths = filePaths.length ? filePaths : await flightDeckApi.pickImportFiles();
     if (!selectedPaths.length && flightDeckApi.isElectron) return;
@@ -248,11 +342,14 @@ const DesktopApp = () => {
 
   const publishCurrentDraft = async () => {
     const result = await runAsyncAction(
-      () => flightDeckApi.publishSet({
-        workspaceRoot: settingsDraft?.workspaceRoot,
-        draft,
-        settings: settingsDraft,
-      }),
+      async () => {
+        const latestSettings = await refreshWorkspaceStateForPublish();
+        return flightDeckApi.publishSet({
+          workspaceRoot: latestSettings?.workspaceRoot,
+          draft,
+          settings: buildPublishOnlySettings(latestSettings),
+        });
+      },
       `Set ${draft.id} publiziert.`,
     );
     if (!result) return;
@@ -261,6 +358,12 @@ const DesktopApp = () => {
     await refreshState();
     await refreshTable();
   };
+
+  const publishLiveDraft = (targetDraft, savedSettings) => flightDeckApi.publishSet({
+    workspaceRoot: savedSettings?.workspaceRoot,
+    draft: targetDraft,
+    settings: buildLiveSettings(savedSettings),
+  });
 
   const goLiveNow = async () => {
     if (!draft?.id || !draft?.file) {
@@ -271,14 +374,11 @@ const DesktopApp = () => {
 
     setBusy(true);
     try {
-      const savedSettings = await flightDeckApi.saveSettings(settingsDraft);
+      const latestSettings = await refreshWorkspaceStateForPublish();
+      const savedSettings = await flightDeckApi.saveSettings(latestSettings);
       setSettingsDraft(savedSettings);
 
-      const result = await flightDeckApi.publishSet({
-        workspaceRoot: savedSettings?.workspaceRoot,
-        draft,
-        settings: savedSettings,
-      });
+      const result = await publishLiveDraft(draft, savedSettings);
 
       setPublishLogs(result?.logs || []);
       setLastPublish(result);
@@ -292,6 +392,215 @@ const DesktopApp = () => {
     } finally {
       setBusy(false);
     }
+  };
+
+  const addBatchItems = async (files = []) => {
+    const filePaths = files.length
+      ? files.map(getFilePath).filter(Boolean)
+      : await flightDeckApi.pickImportFiles();
+
+    if (!filePaths.length) {
+      if (flightDeckApi.isElectron) return;
+      setNotice({ tone: 'error', message: 'Batch braucht echte Dateipfade aus dem Windows-Tool.' });
+      return;
+    }
+
+    const items = buildBatchQueueItems(filePaths);
+    if (!items.length) {
+      setNotice({ tone: 'error', message: 'Keine unterstuetzte Audio-Datei fuer den Batch gefunden.' });
+      return;
+    }
+
+    setBatchQueue((prev) => [...prev, ...items]);
+    setNotice({ tone: 'success', message: `${items.length} Set${items.length === 1 ? '' : 's'} zur Batch-Auswahl hinzugefuegt.` });
+  };
+
+  const updateBatchItem = (itemId, patch) => {
+    setBatchQueue((prev) => prev.map((item) => (
+      item.id === itemId ? { ...item, ...patch } : item
+    )));
+  };
+
+  const prepareBatchSelection = async () => {
+    const targets = batchQueue.filter((item) => (
+      item.selected !== false
+      && (item.status === 'pending' || item.status === 'error')
+    ));
+
+    if (!targets.length) {
+      setNotice({ tone: 'error', message: 'Bitte waehle mindestens ein Batch-Set aus.' });
+      return;
+    }
+
+    setIsBatchRunning(true);
+    setBatchProgress({ current: 0, total: targets.length });
+    let current = 0;
+
+    for (const item of targets) {
+      try {
+        updateBatchItem(item.id, {
+          status: 'processing',
+          progress: 20,
+          errorMessage: '',
+          message: 'Import-Draft wird vorbereitet...',
+        });
+
+        const result = await flightDeckApi.prepareImport({
+          filePaths: item.filePaths || [],
+          settings: settingsDraft,
+        });
+
+        updateBatchItem(item.id, {
+          draft: result.draft,
+          warnings: result.warnings || [],
+          title: result.draft?.title || item.title,
+          setId: result.draft?.id || item.setId,
+          status: 'ready',
+          progress: 100,
+          message: `Bereit: ${result.draft?.id || item.fileName}`,
+        });
+      } catch (error) {
+        updateBatchItem(item.id, {
+          status: 'error',
+          progress: 0,
+          errorMessage: error.message,
+          message: '',
+        });
+      } finally {
+        current += 1;
+        setBatchProgress({ current, total: targets.length });
+      }
+    }
+
+    setIsBatchRunning(false);
+  };
+
+  const goLiveBatchSelection = async () => {
+    const targets = batchQueue.filter(isBatchLiveCandidate);
+    if (!targets.length) {
+      setNotice({ tone: 'error', message: 'Bitte waehle im Batch mindestens ein Set fuer Live aus.' });
+      setActiveTab('batch');
+      return;
+    }
+
+    setBusy(true);
+    setIsBatchRunning(true);
+    setBatchProgress({ current: 0, total: targets.length });
+
+    let current = 0;
+    let successCount = 0;
+    let errorCount = 0;
+    let lastResult = null;
+    const logs = [];
+
+    try {
+      const latestSettings = await refreshWorkspaceStateForPublish();
+      const savedSettings = await flightDeckApi.saveSettings(latestSettings);
+      setSettingsDraft(savedSettings);
+
+      for (const item of targets) {
+        try {
+          updateBatchItem(item.id, {
+            status: 'processing',
+            progress: 15,
+            errorMessage: '',
+            message: 'Live-Pipeline startet...',
+          });
+
+          let itemDraft = item.draft;
+          if (!itemDraft?.id || !itemDraft?.file) {
+            const prepared = await flightDeckApi.prepareImport({
+              filePaths: item.filePaths || [],
+              settings: savedSettings,
+            });
+            itemDraft = prepared.draft;
+            updateBatchItem(item.id, {
+              draft: itemDraft,
+              warnings: prepared.warnings || [],
+              title: itemDraft?.title || item.title,
+              setId: itemDraft?.id || item.setId,
+              progress: 40,
+              message: `Draft bereit: ${itemDraft?.id || item.fileName}`,
+            });
+          }
+
+          const result = await publishLiveDraft(itemDraft, savedSettings);
+          lastResult = result;
+          successCount += 1;
+          logs.push(...(result?.logs || []).map((entry) => ({
+            ...entry,
+            step: `${itemDraft.id} / ${entry.step}`,
+          })));
+
+          updateBatchItem(item.id, {
+            draft: itemDraft,
+            status: 'success',
+            progress: 100,
+            message: `Live: ${itemDraft.id}`,
+          });
+        } catch (error) {
+          errorCount += 1;
+          logs.push({
+            timestamp: new Date().toISOString(),
+            step: item.setId || item.title || item.fileName,
+            status: 'error',
+            detail: error.message,
+          });
+          updateBatchItem(item.id, {
+            status: 'error',
+            progress: 0,
+            errorMessage: error.message,
+            message: '',
+          });
+        } finally {
+          current += 1;
+          setBatchProgress({ current, total: targets.length });
+        }
+      }
+
+      setPublishLogs(logs);
+      setLastPublish({
+        ok: errorCount === 0,
+        logs,
+        gitStatus: lastResult?.gitStatus,
+        publishedSet: lastResult?.publishedSet || null,
+        batchCount: successCount,
+      });
+
+      if (successCount > 0) {
+        await refreshState();
+        await refreshTable();
+      }
+
+      setNotice({
+        tone: errorCount > 0 ? 'error' : 'success',
+        message: errorCount > 0
+          ? `${successCount} Set${successCount === 1 ? '' : 's'} live, ${errorCount} Fehler im Batch.`
+          : `${successCount} Set${successCount === 1 ? '' : 's'} hochgeladen und live gesetzt.`,
+      });
+      setActiveTab('batch');
+    } catch (error) {
+      setNotice({ tone: 'error', message: error.message });
+      setActiveTab('batch');
+    } finally {
+      setBusy(false);
+      setIsBatchRunning(false);
+    }
+  };
+
+  const goLivePrimary = () => {
+    if (activeTab === 'batch') {
+      return goLiveBatchSelection();
+    }
+    if (canDraftGoLive) {
+      return goLiveNow();
+    }
+    if (selectedBatchCount > 0) {
+      setActiveTab('batch');
+      return goLiveBatchSelection();
+    }
+    setNotice({ tone: 'error', message: 'Bitte zuerst ein Set importieren oder Batch-Sets auswaehlen.' });
+    return null;
   };
 
   const updateDraftField = (field, value) => {
@@ -482,66 +791,31 @@ const DesktopApp = () => {
       return (
         <BatchImportTab
           batchQueue={batchQueue}
-          onAddItems={async (files) => {
-            const items = files.map((file) => ({
-              id: `${Date.now()}-${Math.random()}`,
-              fileName: file.name,
-              status: 'pending',
-              progress: 0,
-            }));
-            setBatchQueue([...batchQueue, ...items]);
-          }}
+          onAddItems={addBatchItems}
           onRemoveItem={(index) => {
             setBatchQueue(batchQueue.filter((_, i) => i !== index));
           }}
-          onStartBatch={async () => {
-            setIsBatchRunning(true);
-            const total = batchQueue.filter((item) => item.status === 'pending').length;
-            let current = 0;
-            setBatchProgress({ current, total });
-
-            for (let i = 0; i < batchQueue.length; i += 1) {
-              const item = batchQueue[i];
-              if (item.status !== 'pending') {
-                 
-                continue;
-              }
-
-              try {
-                setBatchQueue((prev) =>
-                  prev.map((it, idx) => (idx === i ? { ...it, status: 'processing' } : it)),
-                );
-
-                // Simulate batch processing
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-
-                current += 1;
-                setBatchProgress({ current, total });
-
-                setBatchQueue((prev) =>
-                  prev.map((it, idx) =>
-                    idx === i ? { ...it, status: 'success', message: 'Import erfolgreich' } : it,
-                  ),
-                );
-              } catch (error) {
-                setBatchQueue((prev) =>
-                  prev.map((it, idx) =>
-                    idx === i ? { ...it, status: 'error', errorMessage: error.message } : it,
-                  ),
-                );
-              }
-            }
-
-            setIsBatchRunning(false);
+          onToggleItem={(index, selected) => {
+            setBatchQueue((prev) => prev.map((item, idx) => (
+              idx === index ? { ...item, selected } : item
+            )));
           }}
+          onToggleAll={(selected) => {
+            setBatchQueue((prev) => prev.map((item) => (
+              item.status === 'processing' || item.status === 'success' ? item : { ...item, selected }
+            )));
+          }}
+          onStartBatch={prepareBatchSelection}
+          onGoLiveBatch={goLiveBatchSelection}
           onClearCompleted={() => {
-            setBatchQueue(batchQueue.filter((item) => item.status === 'pending'));
+            setBatchQueue(batchQueue.filter((item) => item.status !== 'success'));
           }}
           onPauseBatch={() => {
             setIsBatchRunning(false);
           }}
           isBatchRunning={isBatchRunning}
           batchProgress={batchProgress}
+          busy={busy}
         />
       );
     }
@@ -656,9 +930,9 @@ const DesktopApp = () => {
           <button
             type="button"
             className="fd-button"
-            onClick={goLiveNow}
-            disabled={busy || !canGoLive}
-            title="Speichert aktuelle Settings und fuehrt Publish + Build/Deploy/Push gemaess Konfiguration aus."
+            onClick={goLivePrimary}
+            disabled={busy || isBatchRunning || !canGoLive}
+            title="Speichert aktuelle Settings und bringt den aktuellen Draft oder die Batch-Auswahl live."
           >
             <Rocket size={16} />
             Alles ausfuehren & Live

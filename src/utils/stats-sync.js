@@ -6,14 +6,17 @@ const devLog = (...args) => isDev && console.log('[StatsSync]', ...args);
 const devWarn = (...args) => isDev && console.warn('[StatsSync]', ...args);
 
 // Configuration from environment or defaults
-const PRODUCTION_URL = 'https://airdox.pages.dev';
-const isMobileApp = window.location.protocol === 'file:' || (window.location.hostname === 'localhost' && !!window.Capacitor);
+const PRODUCTION_URL = (import.meta.env?.VITE_PUBLIC_SITE_URL || 'https://airdox-webseite.beuth62.workers.dev').replace(/\/+$/, '');
 const STATS_API_BASE = (import.meta.env?.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
 const STATS_API_FALLBACK = (import.meta.env?.VITE_STATS_API_FALLBACK || '').replace(/\/+$/, '');
 
 const buildStatsUrl = (base) => (base ? `${base}/api/stats` : '/api/stats');
-const PRIMARY_STATS_URL = buildStatsUrl(STATS_API_BASE);
-const FALLBACK_STATS_URL = STATS_API_FALLBACK ? buildStatsUrl(STATS_API_FALLBACK) : null;
+const isMobileRuntime = () => {
+    if (typeof window === 'undefined') return false;
+    return window.location.protocol === 'file:' || (window.location.hostname === 'localhost' && !!window.Capacitor);
+};
+const getPrimaryStatsUrl = () => buildStatsUrl(STATS_API_BASE || (isMobileRuntime() ? PRODUCTION_URL : ''));
+const getFallbackStatsUrl = () => (STATS_API_FALLBACK ? buildStatsUrl(STATS_API_FALLBACK) : null);
 
 // Helper to get device/browser/os info
 const getMetadata = () => {
@@ -69,8 +72,10 @@ class StatsSync {
 
     async fetchAllStats() {
         devLog('Fetching latest global stats...');
+        const primaryStatsUrl = getPrimaryStatsUrl();
+        const fallbackStatsUrl = getFallbackStatsUrl();
         try {
-            const res = await fetch(PRIMARY_STATS_URL);
+            const res = await fetch(primaryStatsUrl);
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
             const data = await res.json();
             
@@ -84,9 +89,9 @@ class StatsSync {
             devWarn('Failed to fetch global stats', err);
             
             // Try fallback if primary fails
-            if (FALLBACK_STATS_URL && FALLBACK_STATS_URL !== PRIMARY_STATS_URL) {
+            if (fallbackStatsUrl && fallbackStatsUrl !== primaryStatsUrl) {
                 try {
-                    const fallbackRes = await fetch(FALLBACK_STATS_URL);
+                    const fallbackRes = await fetch(fallbackStatsUrl);
                     if (fallbackRes.ok) {
                         const fallbackData = await fallbackRes.json();
                         localStorage.setItem(GLOBAL_STATS_KEY, JSON.stringify(fallbackData));
@@ -125,6 +130,8 @@ class StatsSync {
 
     async updateStats(id, type, isQueueRetry = false) {
         const metadata = getMetadata();
+        const primaryStatsUrl = getPrimaryStatsUrl();
+        const fallbackStatsUrl = getFallbackStatsUrl();
         const payload = JSON.stringify({ 
             id, 
             type, 
@@ -147,9 +154,9 @@ class StatsSync {
             }
         };
 
-        let result = await postOnce(PRIMARY_STATS_URL);
-        if (!result.ok && FALLBACK_STATS_URL && FALLBACK_STATS_URL !== PRIMARY_STATS_URL) {
-            result = await postOnce(FALLBACK_STATS_URL);
+        let result = await postOnce(primaryStatsUrl);
+        if (!result.ok && fallbackStatsUrl && fallbackStatsUrl !== primaryStatsUrl) {
+            result = await postOnce(fallbackStatsUrl);
         }
 
         if (result.ok) {
@@ -178,6 +185,7 @@ class StatsSync {
     }
 
     async sync() {
+        this.queue = this.loadQueue();
         if (this.isSyncing || this.queue.length === 0) return;
         if (typeof navigator !== 'undefined' && !navigator.onLine) return;
 

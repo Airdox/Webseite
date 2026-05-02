@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Newsletter.css';
+import { t } from '../utils/i18n';
 
 const Newsletter = () => {
     const [email, setEmail] = useState('');
@@ -21,15 +22,15 @@ const Newsletter = () => {
             const data = await response.json();
             if (response.ok) {
                 setStatus('success');
-                setMessage('WELCOME TO THE UNDERGROUND.');
+                setMessage(t('newsletter.success'));
                 setEmail('');
                 window.airdoxAnalyticsV2?.trackEvent('newsletter_subscribe', { status: 'success' });
             } else {
-                throw new Error(data.error || 'Subscription failed');
+                throw new Error(data.error || t('newsletter.subscriptionFailed'));
             }
         } catch (err) {
             setStatus('error');
-            setMessage(err.message || 'SOMETHING WENT WRONG.');
+            setMessage(err.message || t('newsletter.error'));
             window.airdoxAnalyticsV2?.trackEvent('newsletter_subscribe', { status: 'error', error: err.message });
         }
     };
@@ -40,18 +41,18 @@ const Newsletter = () => {
                 <div className="airdox-card reveal">
                     <div className="newsletter-content">
                         <div className="section-header" style={{ marginBottom: 'var(--space-8)' }}>
-                            <span className="section-label">COMMUNITY</span>
-                            <h2 className="section-title text-gradient" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>JOIN THE UNDERGROUND</h2>
+                            <span className="section-label">{t('newsletter.sectionLabel')}</span>
+                            <h2 className="section-title text-gradient" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>{t('newsletter.title')}</h2>
                         </div>
                         <p className="newsletter-description">
-                            Exklusive Sets, Early Access Downloads und Tourdaten direkt in dein Postfach.
+                            {t('newsletter.description')}
                         </p>
                         
                         <form className="newsletter-form" onSubmit={handleSubmit}>
                             <div className="input-group">
                                 <input 
                                     type="email" 
-                                    placeholder="YOUR-EMAIL@DOMAIN.COM" 
+                                    placeholder={t('newsletter.emailPlaceholder')} 
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     disabled={status === 'loading' || status === 'success'}
@@ -63,7 +64,7 @@ const Newsletter = () => {
                                     className={`btn btn-primary newsletter-submit ${status}`}
                                     disabled={status === 'loading' || status === 'success'}
                                 >
-                                    {status === 'loading' ? 'SUBMITTING...' : 'SUBSCRIBE'}
+                                    {status === 'loading' ? t('newsletter.submitting') : t('newsletter.subscribe')}
                                 </button>
                             </div>
                         </form>

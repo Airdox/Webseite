@@ -66,9 +66,9 @@ const Navigation = ({ onOpenAuth = () => {} }) => {
     const navItems = [
         { id: 'home', label: t('nav.home') },
         { id: 'bio', label: t('nav.about') },
-        { id: 'press', label: 'EPK' },
+        { id: 'press', label: t('nav.epk') },
         { id: 'music', label: t('nav.music') },
-        { id: 'vip', label: 'VIP' },
+        { id: 'vip', label: t('nav.vip') },
         { id: 'booking', label: t('nav.booking') },
     ];
 
@@ -91,7 +91,7 @@ const Navigation = ({ onOpenAuth = () => {} }) => {
                         type="button"
                         className="nav-logo interactive"
                         onClick={() => scrollToSection('home', 'logo')}
-                        aria-label="Go to home section"
+                        aria-label={t('nav.logoLabel')}
                     >
                         <span className="logo-text">AIRDOX</span>
                         <span className="logo-dot"></span>
@@ -139,14 +139,14 @@ const Navigation = ({ onOpenAuth = () => {} }) => {
                             className="nav-auth-btn interactive"
                             onClick={() => onOpenAuth('login')}
                         >
-                            LOGIN
+                            {t('nav.login')}
                         </button>
                         <button
                             type="button"
                             className="nav-register-btn interactive"
                             onClick={() => onOpenAuth('register')}
                         >
-                            REGISTER
+                            {t('nav.register')}
                         </button>
                         <a
                             href="mailto:airdox82@gmail.com"
@@ -162,7 +162,7 @@ const Navigation = ({ onOpenAuth = () => {} }) => {
                         type="button"
                         className={`menu-toggle interactive ${menuOpen ? 'open' : ''}`}
                         onClick={() => setMenuOpen(!menuOpen)}
-                        aria-label="Toggle menu"
+                        aria-label={t('nav.toggleMenu')}
                         aria-expanded={menuOpen}
                         aria-controls="mobile-menu"
                     >
@@ -195,8 +195,8 @@ const Navigation = ({ onOpenAuth = () => {} }) => {
 
                     <div className="mobile-menu-footer">
                         <div className="mobile-auth-btns">
-                            <button onClick={() => onOpenAuth('login')} className="btn btn-secondary">LOGIN</button>
-                            <button onClick={() => onOpenAuth('register')} className="btn btn-primary">JOIN VIP</button>
+                            <button onClick={() => onOpenAuth('login')} className="btn btn-secondary">{t('nav.login')}</button>
+                            <button onClick={() => onOpenAuth('register')} className="btn btn-primary">{t('nav.joinVip')}</button>
                         </div>
                         <a href="mailto:airdox82@gmail.com" className="mobile-contact-link">
                             {t('nav.getInTouch')}

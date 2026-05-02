@@ -1,0 +1,49 @@
+name: Web Quality
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  merge_group:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Agent audit
+        run: npm run agent:audit -- --strict
+
+      - name: Agent job catalog validation
+        run: npm run agent:jobs:validate -- --strict-warnings
+
+      - name: Superagent task gate
+        run: npm run tasks:gate
+
+      - name: Master Controller gate
+        run: npm run master:gate
+
+      - name: Repository monitor
+        run: npm run repository:monitor:strict
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm run test -- --run
+
+      - name: Build
+        run: npm run build

@@ -47,14 +47,14 @@ const defaultTables = {
   ],
   bookings: [],
   subscribers: [
-    { id: 1, email: 'vip@airdox.de', status: 'active', created_at: '2026-04-20T18:00:00.000Z' },
+    { id: 1, email: 'vip@airdox.info', status: 'active', created_at: '2026-04-20T18:00:00.000Z' },
   ],
   users: [
-    { id: 1, username: 'airdox-admin', email: 'admin@airdox.de', created_at: '2026-04-18T10:00:00.000Z' },
-    { id: 2, username: 'vip-user', email: 'vip@airdox.de', created_at: '2026-04-19T10:00:00.000Z' },
+    { id: 1, username: 'airdox-admin', email: 'admin@airdox.info', created_at: '2026-04-18T10:00:00.000Z' },
+    { id: 2, username: 'vip-user', email: 'vip@airdox.info', created_at: '2026-04-19T10:00:00.000Z' },
   ],
   sessions: [
-    { id: 'session_demo', user_id: 2, username: 'vip-user', email: 'vip@airdox.de', created_at: '2026-04-24T10:00:00.000Z', expires_at: '2026-05-01T10:00:00.000Z' },
+    { id: 'session_demo', user_id: 2, username: 'vip-user', email: 'vip@airdox.info', created_at: '2026-04-24T10:00:00.000Z', expires_at: '2026-05-01T10:00:00.000Z' },
   ],
 };
 

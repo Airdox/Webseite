@@ -10,6 +10,7 @@
     z-index: 10000;
     padding: var(--space-4);
     animation: slideUpBanner 0.5s var(--ease-out);
+    pointer-events: none;
 }
 
 @keyframes slideUpBanner {
@@ -32,6 +33,7 @@
     backdrop-filter: blur(20px);
     border: 1px solid var(--border-medium);
     border-radius: var(--border-radius-md);
+    pointer-events: auto;
 }
 
 .cookie-header {
@@ -190,15 +192,47 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+    .cookie-banner-overlay {
+        padding: var(--space-2);
+    }
+
     .cookie-banner {
-        padding: var(--space-4);
+        max-height: min(48svh, 340px);
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .cookie-header {
+        margin-bottom: var(--space-2);
+    }
+
+    .cookie-title {
+        font-size: var(--text-base);
+        margin-bottom: var(--space-1);
+    }
+
+    .cookie-text {
+        font-size: var(--text-xs);
+        line-height: 1.35;
     }
 
     .cookie-actions {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
     }
 
     .cookie-btn {
         width: 100%;
+        min-width: 0;
+        padding: 7px 6px;
+        font-size: 10px;
+        line-height: 1.1;
+        white-space: normal;
+    }
+
+    .cookie-legal {
+        margin-top: var(--space-2);
+        line-height: 1.3;
     }
 }

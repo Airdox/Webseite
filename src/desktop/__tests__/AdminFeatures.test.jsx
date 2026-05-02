@@ -91,7 +91,7 @@ describe('Advanced Analytics Tab', () => {
       },
     };
 
-    const { getByText, getAllByRole, container } = render(<AdvancedAnalyticsTab {...propsWithLogs} />);
+    const { getAllByRole, container } = render(<AdvancedAnalyticsTab {...propsWithLogs} />);
     const metricValues = () => Array.from(container.querySelectorAll('.fd-metric-value')).map((node) => node.textContent);
     expect(metricValues()[0]).toBe('3');
 

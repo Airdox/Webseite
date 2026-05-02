@@ -1,0 +1,495 @@
+{
+  "generatedAt": "2026-05-02T08:53:57.949Z",
+  "repository": "D:\\webseeite-main",
+  "controller": {
+    "name": "Master Controller",
+    "mission": "Priorisierung, Koordination, Release-Entscheidungen und Audit-Auswertung."
+  },
+  "summary": {
+    "averageScore": 89,
+    "dirtyPathCount": 86,
+    "testFileCount": 14,
+    "cssFileCount": 20
+  },
+  "gate": {
+    "status": "pass",
+    "failures": []
+  },
+  "agents": [
+    {
+      "id": "webbie",
+      "name": "Webbie",
+      "mission": "Website, UX, SEO, Responsiveness, Performance und Conversion.",
+      "score": 92,
+      "checks": [
+        {
+          "label": "React/Vite Einstieg vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "src/App.jsx und src/main.jsx bilden den Website-Einstieg."
+        },
+        {
+          "label": "Below-the-fold Lazy Loading",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "App.jsx nutzt React.lazy fuer mehrere Sektionen."
+        },
+        {
+          "label": "Kernsektionen vorhanden",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Hero, Navigation, Music, Booking und Footer sind vorhanden."
+        },
+        {
+          "label": "SEO-Meta im deutschen Entry",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "index.html enthaelt Title, Canonical, Open Graph, JSON-LD und hreflang."
+        },
+        {
+          "label": "Responsive CSS-Signale",
+          "status": "pass",
+          "weight": 1,
+          "detail": "CSS enthaelt responsive Regeln oder stabile Layout-Sizing-Signale."
+        },
+        {
+          "label": "Public SEO/PWA Assets",
+          "status": "pass",
+          "weight": 1,
+          "detail": "robots, sitemap, manifest und OG-Bild sind vorhanden."
+        },
+        {
+          "label": "Deployment-Skripte konsistent",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Warnung, wenn netlify.toml ein fehlendes NPM-Skript referenziert."
+        },
+        {
+          "label": "Analytics Consent ohne Direktlade-Risiko",
+          "status": "warn",
+          "weight": 1,
+          "detail": "Warnung, wenn Google Tag direkt im HTML geladen wird statt nur ueber Consent-Loader."
+        },
+        {
+          "label": "CSP ohne unsafe-inline",
+          "status": "warn",
+          "weight": 1,
+          "detail": "Warnung, wenn CSP unsafe-inline benoetigt."
+        },
+        {
+          "label": "HTML-Entry-Drift begrenzt",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Warnung, wenn mehrere root HTML-Kopien SEO/Head-Drift erzeugen koennen."
+        },
+        {
+          "label": "Website E2E-Abdeckung",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Sanity- und Navigation-Playwright-Specs sind vorhanden."
+        }
+      ],
+      "nextActions": [
+        "Sitemap-lastmod bei Content-Releases automatisiert aktualisieren.",
+        "Core-Web-Vitals-Messung als Playwright/Lighthouse-Gate ergaenzen.",
+        "Visuelle Regression fuer Hero, Music und Booking etablieren."
+      ]
+    },
+    {
+      "id": "winnie",
+      "name": "Winnie",
+      "mission": "Windows Flight Deck, lokale Automatisierung, Datenbankkommunikation und Release-Stabilitaet.",
+      "score": 83,
+      "checks": [
+        {
+          "label": "Electron Main/Preload vorhanden",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Main-Prozess und sichere Preload-Bridge sind vorhanden."
+        },
+        {
+          "label": "Desktop Renderer vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "DesktopApp und desktop.html existieren."
+        },
+        {
+          "label": "Desktop Services vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Pipeline, Manifest, Datenbank und R2 sind als Services getrennt."
+        },
+        {
+          "label": "Desktop NPM-Skripte",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Desktop-Entwicklung, Start, Build und Tests sind skriptbar."
+        },
+        {
+          "label": "Desktop Tests vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Mehrere Desktop-/Flightdeck-Tests existieren."
+        },
+        {
+          "label": "Installer-/Release-Helfer vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Windows Installer-Helfer liegen unter scripts/."
+        },
+        {
+          "label": "Manifest wird nicht im Main-Prozess ausgefuehrt",
+          "status": "warn",
+          "weight": 1.5,
+          "detail": "Warnung, wenn Workspace-Dateien per dynamic import im Main-Prozess ausgefuehrt werden."
+        },
+        {
+          "label": "Shell-Kommandos eingegrenzt",
+          "status": "warn",
+          "weight": 1.5,
+          "detail": "Warnung, wenn Pipeline-Kommandos ueber shell:true laufen."
+        },
+        {
+          "label": "Electron Sandbox aktiv oder begruendet",
+          "status": "warn",
+          "weight": 1,
+          "detail": "Warnung, wenn BrowserWindow mit sandbox:false laeuft."
+        },
+        {
+          "label": "Windows-Dokumentation vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "docs/WINDOWS_FLIGHTDECK.md beschreibt Stand, Nutzung und Teststatus."
+        }
+      ],
+      "nextActions": [
+        "Release-Gate aus desktop:test:logic, desktop:test:e2e und desktop:dist definieren.",
+        "Code-Signing- und Icon-Status als eigener Release-Check aufnehmen.",
+        "Publish-Pipeline-Fehler mit reproduzierbaren Test-Fixtures abdecken."
+      ]
+    },
+    {
+      "id": "guardian",
+      "name": "Guardian",
+      "mission": "Qualitaet, Sicherheit, Stabilitaet, Regressionen und technische Schulden.",
+      "score": 87,
+      "checks": [
+        {
+          "label": "Standard Quality Scripts",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Build, Lint, Unit- und E2E-Tests sind in package.json verankert."
+        },
+        {
+          "label": "Test Runner konfiguriert",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Vitest und Playwright sind konfiguriert."
+        },
+        {
+          "label": "ESLint konfiguriert",
+          "status": "pass",
+          "weight": 1,
+          "detail": "ESLint Flat Config ist vorhanden."
+        },
+        {
+          "label": "Ausreichende Testdateien",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "14 Test-/Spec-Dateien gefunden."
+        },
+        {
+          "label": "Worker/API-Testsignale",
+          "status": "warn",
+          "weight": 1,
+          "detail": "Server-/API-Code ist vorhanden; dedizierte Testsignale werden geprueft."
+        },
+        {
+          "label": "Web-CI-Gate vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Warnung, wenn GitHub Actions kein Web-Lint/Test/Build-Gate enthaelt."
+        },
+        {
+          "label": "Arbeitsbaum sauber",
+          "status": "warn",
+          "weight": 1.5,
+          "detail": "86 uncommitted Pfade gefunden; vor Releases klaeren."
+        },
+        {
+          "label": "Env-Beispiel vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": ".env.example ist fuer sichere Konfiguration vorhanden."
+        }
+      ],
+      "nextActions": [
+        "Guardian-Strict-Gate fuer Releases verwenden: npm run agent:audit -- --strict plus build/test/lint.",
+        "Bekannte Alt-Lintfehler als debt register dokumentieren und schrittweise abbauen.",
+        "Security-Checks fuer Booking, Auth und Analytics als gezielte Tests ergaenzen."
+      ]
+    },
+    {
+      "id": "manni",
+      "name": "Manni",
+      "mission": "Promotion, Branding, EPK, Community, Conversion und Wiedererkennbarkeit.",
+      "score": 89,
+      "checks": [
+        {
+          "label": "Brand Story dokumentiert",
+          "status": "pass",
+          "weight": 1,
+          "detail": "README und Masterplan enthalten Marken-/Duality-Rahmen."
+        },
+        {
+          "label": "Conversion-Sektionen vorhanden",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "EPK, Booking, Newsletter und VIP sind als Website-Sektionen vorhanden."
+        },
+        {
+          "label": "Social Sharing Assets",
+          "status": "pass",
+          "weight": 1,
+          "detail": "OG/Twitter-Basis ist vorhanden."
+        },
+        {
+          "label": "Social Profile Signale",
+          "status": "pass",
+          "weight": 1,
+          "detail": "JSON-LD verweist auf Social-/Music-Profile."
+        },
+        {
+          "label": "EPK ohne Platzhalter-Aktionen",
+          "status": "warn",
+          "weight": 1,
+          "detail": "Warnung, wenn EPK-Downloads nur per alert/Placeholder reagieren."
+        },
+        {
+          "label": "Newsletter API geroutet",
+          "status": "warn",
+          "weight": 1,
+          "detail": "Warnung, wenn Newsletter-Frontend keinen Worker-Route-Anker hat."
+        },
+        {
+          "label": "Sitemap fuer Suchmaschinen",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Sitemap ist vorhanden und auf airdox.info ausgerichtet."
+        },
+        {
+          "label": "Mehrsprachigkeit als Reichweitenhebel",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Englische Variante und hreflang sind vorhanden."
+        },
+        {
+          "label": "Merch-/Community-Flache",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Newsletter/VIP bieten Ansatzpunkte fuer Community oder Merch."
+        }
+      ],
+      "nextActions": [
+        "EPK als klare Download-/Presseseite mit aktuellen Assets und Tech-Rider erweitern.",
+        "Kampagnenkalender fuer Releases, Sets, Newsletter und Social Clips im Wiki fuehren.",
+        "Conversion Events fuer Booking, Newsletter, VIP und Set-Play sichtbar auswerten."
+      ]
+    },
+    {
+      "id": "mentor",
+      "name": "Mentor",
+      "mission": "Wissensspeicherung, Lernschleifen, Prozessverbesserung und Agenten-Weiterentwicklung.",
+      "score": 100,
+      "checks": [
+        {
+          "label": "Wiki-Kernel vorhanden",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "AIRDOX Wiki besitzt Systemdatei und Index."
+        },
+        {
+          "label": "Wissenslog vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Wiki-Log ist fuer Erfahrungslernen vorhanden."
+        },
+        {
+          "label": "Projekt-Masterplan vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Strategischer Masterplan existiert."
+        },
+        {
+          "label": "Agenten-Operating-Model vorhanden",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Das Multi-Agenten-System ist als Operating Model dokumentiert."
+        },
+        {
+          "label": "Agenten-Decision-Log vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Strategische Agentenentscheidungen werden im Decision Log gespeichert."
+        },
+        {
+          "label": "Mentor-Wiki-Schleifen vorhanden",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Mentor-Audit, Agentenentscheidungen und Feedbackschleifen sind im Wiki verankert."
+        },
+        {
+          "label": "Agenten-Audit skriptbar",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Agenten-Audit ist per npm ausfuehrbar."
+        },
+        {
+          "label": "Entwicklerhandbuch vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Admin Suite Developer Guide beschreibt Erweiterungsmuster."
+        },
+        {
+          "label": "Assistant-Testsignale",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Assistant-Logik hat Testsignale."
+        }
+      ],
+      "nextActions": [
+        "Entscheidungen und Audit-Ergebnisse nach groesseren Aenderungen in docs/agent-system protokollieren.",
+        "Lernluecken aus fehlgeschlagenen Checks direkt in Backlog-Eintraege uebersetzen.",
+        "Agenten-Briefings quartalsweise anhand echter Projekterfahrung schaerfen."
+      ]
+    },
+    {
+      "id": "refactor",
+      "name": "Refactor",
+      "mission": "Systemoptimierung, Verschlankung, Architekturqualitaet und technische Effizienz.",
+      "score": 86,
+      "checks": [
+        {
+          "label": "Refactor-Wissensseite vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Refactor besitzt eine eigene Optimierungs- und Verschlankungsseite im Wiki."
+        },
+        {
+          "label": "Quality-Skripte vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Web- und Desktop-Quality-Gates sind in package.json abrufbar."
+        },
+        {
+          "label": "Generierte Ordner aus Lint ausgeschlossen",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Warnung, wenn generierte Build-/Wrangler-Artefakte vom Lint erfasst werden."
+        },
+        {
+          "label": "Root-HTML-Duplikate reduziert",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Keine Root-HTML-Kopien neben den Vite-Einstiegen gefunden."
+        },
+        {
+          "label": "Grosse JSX-Dateien begrenzt",
+          "status": "warn",
+          "weight": 1.5,
+          "detail": "src/desktop/DesktopApp.jsx hat 1008 Zeilen."
+        },
+        {
+          "label": "Desktop Services modularisiert",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Desktop-Main-Logik ist in mehrere Services geschnitten."
+        },
+        {
+          "label": "Deployment-Ziele konsolidiert",
+          "status": "warn",
+          "weight": 1,
+          "detail": "Warnung, wenn mehrere Deployment-Ziele parallel gepflegt werden muessen."
+        },
+        {
+          "label": "Dependency-Footprint kontrolliert",
+          "status": "pass",
+          "weight": 1,
+          "detail": "10 Runtime-Abhaengigkeiten gefunden."
+        }
+      ],
+      "nextActions": [
+        "Grosse Komponenten schrittweise in getestete Subkomponenten schneiden.",
+        "Deployment-Targets eindeutig priorisieren und historische Konfigs entfernen oder dokumentieren.",
+        "Freie Shell-/Import-Pfade im Desktop-Tool durch strukturierte APIs und Allowlists ersetzen."
+      ]
+    },
+    {
+      "id": "repository",
+      "name": "Repository",
+      "mission": "Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet.",
+      "score": 87,
+      "checks": [
+        {
+          "label": "Repository-Governance dokumentiert",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Branch-, Commit-, PR- und Merge-Regeln sind dokumentiert."
+        },
+        {
+          "label": "Web-Quality-Workflow vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "GitHub Workflow fuer Lint, Tests, Build und Audit existiert."
+        },
+        {
+          "label": "Repository-Monitoring skriptbar",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Repository hat ein eigenes Monitoring-Skript fuer Bereinigung und Ueberwachung."
+        },
+        {
+          "label": "Branching-Hinweise vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist."
+        },
+        {
+          "label": "Commit-Konvention dokumentiert",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Warnung, wenn Commit-Typen nicht klar festgelegt sind."
+        },
+        {
+          "label": "Change-Tracking vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Warnung, wenn Entscheidungen oder Audit-Historie fehlen."
+        },
+        {
+          "label": "Arbeitsbaum releasebereit",
+          "status": "warn",
+          "weight": 1.5,
+          "detail": "86 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+        },
+        {
+          "label": "Parallele Deployment-Konfigs begrenzt",
+          "status": "warn",
+          "weight": 1,
+          "detail": "Warnung, wenn zu viele Deployment-Targets parallel gepflegt werden."
+        },
+        {
+          "label": "Gefaehrdete Artefaktordner ignoriert",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Warnung, wenn Build-/Wrangler-/Release-Artefakte nicht sauber ignoriert werden."
+        }
+      ],
+      "nextActions": [
+        "Branch-Schutzregeln in GitHub mit Pflicht-Checks aus web-quality und agent:audit verknuepfen.",
+        "Release-Branches zeitlich begrenzen und nach Abschluss mergen oder schliessen.",
+        "Mehrdeutige Deployment-Strategien reduzieren und einen primaeren Pfad festlegen."
+      ]
+    }
+  ]
+}

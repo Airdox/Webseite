@@ -10,9 +10,9 @@ const BioSection = () => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const stats = [
-        { number: '50+', label: 'LIVE SETS' },
-        { number: '10K+', label: 'LISTENERS' },
-        { number: 'BERLIN', label: 'BASED' },
+        { number: '50+', label: t('bio.stats.liveSets') },
+        { number: '10K+', label: t('bio.stats.listeners') },
+        { number: 'BERLIN', label: t('bio.stats.based') },
     ];
 
     return (
@@ -105,19 +105,19 @@ const BioSection = () => {
 
                         {/* Tags */}
                         <div className="bio-tags reveal stagger-3">
-                            <span className="tag">TECHNO</span>
-                            <span className="tag">INDUSTRIAL</span>
-                            <span className="tag">DARK</span>
-                            <span className="tag">HYPNOTIC</span>
-                            <span className="tag">UNDERGROUND</span>
+                            <span className="tag">{t('bio.tag.techno')}</span>
+                            <span className="tag">{t('bio.tag.industrial')}</span>
+                            <span className="tag">{t('bio.tag.dark')}</span>
+                            <span className="tag">{t('bio.tag.hypnotic')}</span>
+                            <span className="tag">{t('bio.tag.underground')}</span>
                         </div>
 
                         {/* Resident Advisor Teaser [NEW] */}
                         <div className="bio-ra-teaser airdox-card reveal stagger-4">
                             <div className="ra-logo-mini">RA</div>
                             <div className="ra-text">
-                                <p>OFFICIAL RESIDENT ADVISOR ARTIST PAGE</p>
-                                <a href="https://ra.co/dj/airdox" target="_blank" rel="noopener noreferrer" className="ra-link">VIEW PROFILE</a>
+                                <p>{t('bio.raText')}</p>
+                                <a href="https://ra.co/dj/airdox" target="_blank" rel="noopener noreferrer" className="ra-link">{t('bio.raLink')}</a>
                             </div>
                         </div>
                     </div>

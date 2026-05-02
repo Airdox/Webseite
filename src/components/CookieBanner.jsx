@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './CookieBanner.css';
 import { t } from '../utils/i18n';
 import { ensureAnalyticsLoaded, maybeLoadAnalytics } from '../utils/analyticsLoader.js';
@@ -6,6 +6,7 @@ import { ensureAnalyticsLoaded, maybeLoadAnalytics } from '../utils/analyticsLoa
 const CookieBanner = () => {
     const [showBanner, setShowBanner] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
+    const overlayRef = useRef(null);
 
     useEffect(() => {
         // Prüfe ob bereits eine Entscheidung getroffen wurde
@@ -17,6 +18,41 @@ const CookieBanner = () => {
             maybeLoadAnalytics();
         }
     }, []);
+
+    useEffect(() => {
+        const root = document.documentElement;
+        const body = document.body;
+
+        if (!showBanner) {
+            body.classList.remove('cookie-banner-visible');
+            root.style.removeProperty('--cookie-banner-height');
+            return undefined;
+        }
+
+        body.classList.add('cookie-banner-visible');
+
+        const updateBannerHeight = () => {
+            const height = overlayRef.current?.getBoundingClientRect().height || 0;
+            root.style.setProperty('--cookie-banner-height', `${Math.ceil(height)}px`);
+        };
+
+        updateBannerHeight();
+
+        let observer = null;
+        if (window.ResizeObserver && overlayRef.current) {
+            observer = new ResizeObserver(updateBannerHeight);
+            observer.observe(overlayRef.current);
+        }
+
+        window.addEventListener('resize', updateBannerHeight);
+
+        return () => {
+            body.classList.remove('cookie-banner-visible');
+            root.style.removeProperty('--cookie-banner-height');
+            window.removeEventListener('resize', updateBannerHeight);
+            observer?.disconnect();
+        };
+    }, [showBanner, showDetails]);
 
 
 
@@ -38,7 +74,7 @@ const CookieBanner = () => {
     if (!showBanner) return null;
 
     return (
-        <div className="cookie-banner-overlay">
+        <div className="cookie-banner-overlay" ref={overlayRef}>
             <div className="cookie-banner glass-card">
                 <div className="cookie-header">
                     <h3 className="cookie-title">{t('cookie.title')}</h3>

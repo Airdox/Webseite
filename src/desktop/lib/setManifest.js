@@ -2,7 +2,7 @@ const MONTH_LABELS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'S
 
 export const AUDIO_EXTENSIONS = ['.mp3', '.wav', '.wave', '.m4a', '.aac', '.flac'];
 export const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp'];
-export const TRACKLIST_EXTENSIONS = ['.txt', '.md', '.csv', '.json'];
+export const TRACKLIST_EXTENSIONS = ['.txt', '.md', '.csv', '.json', '.cue'];
 
 export const DEFAULT_FLIGHT_DECK_SETTINGS = {
   workspaceRoot: '',
@@ -29,6 +29,21 @@ const TRACK_SPLITTERS = [' - ', ' – ', ' — ', ' | '];
 export const extractFilename = (input = '') => input.split(/[\\/]/).pop() || input;
 
 export const stripExtension = (filename = '') => filename.replace(/\.[^.]+$/, '');
+
+const parseArtistTitleFromFilename = (filePath = '') => {
+  const stem = stripExtension(extractFilename(filePath))
+    .replace(/^\d+\.\s*/, '')
+    .trim();
+  for (const splitter of TRACK_SPLITTERS) {
+    if (!stem.includes(splitter)) continue;
+    const parts = stem.split(splitter);
+    return {
+      artist: parts.shift()?.trim() || '',
+      title: parts.join(splitter).trim() || stem,
+    };
+  }
+  return { artist: '', title: stem };
+};
 
 export const slugifyValue = (value = '') => value
   .normalize('NFKD')
@@ -137,6 +152,83 @@ export const sanitizeTrack = (track = {}) => {
   return cleaned;
 };
 
+const stripCueQuotes = (value = '') => {
+  const trimmed = String(value || '').trim();
+  if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
+};
+
+const dedupeTracksByIdentity = (tracks = []) => {
+  const seen = new Set();
+  return tracks.filter((track) => {
+    const key = `${track.artist}:::${track.title}`.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
+const parseCueTracklistText = (text = '') => {
+  const lines = String(text || '').split(/\r?\n/);
+  const tracks = [];
+  let albumPerformer = '';
+  let current = null;
+
+  const flushCurrent = () => {
+    if (!current) return;
+    const derived = parseArtistTitleFromFilename(current.sourceFile);
+    const parsed = sanitizeTrack({
+      time: current.time,
+      artist: current.artist || albumPerformer || derived.artist,
+      title: current.title || derived.title,
+    });
+    if (parsed) tracks.push(parsed);
+    current = null;
+  };
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line) continue;
+
+    const trackStart = line.match(/^TRACK\s+\d+\s+AUDIO$/i);
+    if (trackStart) {
+      flushCurrent();
+      current = { time: '', artist: '', title: '', sourceFile: '' };
+      continue;
+    }
+
+    const performerMatch = line.match(/^PERFORMER\s+(.+)$/i);
+    if (performerMatch) {
+      const performer = stripCueQuotes(performerMatch[1]);
+      if (current) current.artist = performer;
+      else albumPerformer = performer;
+      continue;
+    }
+
+    const titleMatch = line.match(/^TITLE\s+(.+)$/i);
+    if (titleMatch && current) {
+      current.title = stripCueQuotes(titleMatch[1]);
+      continue;
+    }
+
+    const fileMatch = line.match(/^FILE\s+(.+?)\s+\w+$/i);
+    if (fileMatch && current) {
+      current.sourceFile = stripCueQuotes(fileMatch[1]);
+      continue;
+    }
+
+    const indexMatch = line.match(/^INDEX\s+01\s+(.+)$/i);
+    if (indexMatch && current) {
+      current.time = normalizeTrackTime(indexMatch[1]);
+    }
+  }
+
+  flushCurrent();
+  return dedupeTracksByIdentity(tracks);
+};
+
 export const parseTracklistText = (text = '') => {
   const raw = String(text || '').trim();
   if (!raw) return [];
@@ -153,22 +245,32 @@ export const parseTracklistText = (text = '') => {
     }
   }
 
+  if (/\bTRACK\s+\d+\s+AUDIO\b/i.test(raw) && /\bINDEX\s+01\b/i.test(raw)) {
+    return parseCueTracklistText(raw);
+  }
+
   const lines = raw
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter(Boolean);
+  const hasCsvHeader = /^time\s*,\s*artist\s*,\s*title/i.test(lines[0] || '');
+  const linesToParse = hasCsvHeader ? lines.slice(1) : lines;
 
-  const parsedLines = lines.map((line) => {
-    if (/^time\s*,\s*artist\s*,\s*title/i.test(line)) return null;
-
-    const csvMatch = line.match(/^(?<time>[^,]*),(?<artist>[^,]*),(?<title>.+)$/);
-    if (csvMatch?.groups) {
-      return sanitizeTrack(csvMatch.groups);
+  const parsedLines = linesToParse.map((line) => {
+    if (hasCsvHeader) {
+      const columns = line.split(',');
+      if (columns.length >= 3) {
+        return sanitizeTrack({
+          time: columns[0],
+          artist: columns[1],
+          title: columns.slice(2).join(','),
+        });
+      }
     }
 
     // Support watcher format: "Artist - Title - HH:MM:SS"
     const trailingTimeMatch = line.match(
-      /^(?<artist>.+?)\s*(?:-|–|—|\|)\s*(?<title>.+?)\s*(?:-|–|—|\|)\s*(?<time>\d{1,2}:\d{2}(?::\d{2})?)$/i,
+      /^(?<artist>.+?)\s+(?:-|–|—|\|)\s+(?<title>.+?)\s+(?:-|–|—|\|)\s+(?<time>\d{1,2}:\d{2}(?::\d{2})?)$/i,
     );
     if (trailingTimeMatch?.groups) {
       return sanitizeTrack({
@@ -184,7 +286,9 @@ export const parseTracklistText = (text = '') => {
 
     for (const splitter of TRACK_SPLITTERS) {
       if (rest.includes(splitter)) {
-        const [artist, title] = rest.split(splitter);
+        const parts = rest.split(splitter);
+        const artist = parts.shift();
+        const title = parts.join(splitter);
         return sanitizeTrack({ time, artist, title });
       }
     }

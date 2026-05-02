@@ -1,0 +1,41 @@
+name: Agent Background Monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '10 */6 * * *'
+
+jobs:
+  background-cycle:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run agent background cycle (deep)
+        run: npm run agents:background:deep
+
+      - name: Upload agent reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-background-reports
+          path: |
+            docs/agent-system/job-catalog.json
+            docs/agent-system/latest-audit.json
+            docs/agent-system/latest-audit.md
+            docs/agent-system/latest-job-run.json
+            docs/agent-system/latest-job-run.md
+            docs/agent-system/latest-repository-monitor.json
+            docs/agent-system/latest-repository-monitor.md
+            docs/agent-system/latest-background-cycle.json

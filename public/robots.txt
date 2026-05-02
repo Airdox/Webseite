@@ -33,4 +33,4 @@ Disallow: /
 User-agent: Amazonbot
 Disallow: /
 
-Sitemap: https://airdox.de/sitemap.xml
+Sitemap: https://airdox.info/sitemap.xml

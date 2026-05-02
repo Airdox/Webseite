@@ -1,5 +1,4 @@
 import fs from 'node:fs/promises';
-import { pathToFileURL } from 'node:url';
 import { diffSetEntries, insertOrReplaceSet, serializeSetsModule, toManifestSet } from '../../../src/desktop/lib/setManifest.js';
 import { getWorkspacePaths, isWorkspaceRoot } from './workspace.mjs';
 
@@ -9,7 +8,8 @@ export const readSets = async (workspaceRoot) => {
   }
 
   const { manifestPath } = getWorkspacePaths(workspaceRoot);
-  const moduleUrl = `${pathToFileURL(manifestPath).href}?cacheBust=${Date.now()}`;
+  const source = await fs.readFile(manifestPath, 'utf8');
+  const moduleUrl = `data:text/javascript;base64,${Buffer.from(source).toString('base64')}#cacheBust=${Date.now()}-${Math.random().toString(36).slice(2)}`;
   const imported = await import(moduleUrl);
   return JSON.parse(JSON.stringify(imported.sets || []));
 };

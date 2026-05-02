@@ -22,7 +22,7 @@ The platform is not just a DJ portfolio; it is an interactive exploration of dua
   - Sicherung in Neon PostgreSQL
 
 ## 🌐 Live Demo
-👉 **[https://airdox.de](https://airdox.de)**
+👉 **[https://airdox.info](https://airdox.info)**
 
 *   🎧 **High-End Audio Experience:** "The Blade" glassmorphism player with real-time waveform visualization.
 *   🔐 **Secure VIP Area:** Custom authentication system (SHA-256) with registration, login, and exclusive high-quality MP3 downloads.

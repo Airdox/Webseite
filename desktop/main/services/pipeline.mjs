@@ -43,6 +43,7 @@ const buildTracklistCandidates = (audioPath) => {
   const parsed = path.parse(audioPath);
   const baseNoExt = path.join(dir, parsed.name);
   const candidates = [
+    `${baseNoExt}.cue`,
     `${baseNoExt}.tracks.json`,
     `${baseNoExt}.mixcloud.txt`,
     `${baseNoExt}.txt`,
@@ -93,7 +94,7 @@ const findCueSidecarTracklist = async (audioPath) => {
 
   for (const cuePath of targets) {
     const cueBase = path.join(audioDir, path.parse(cuePath).name);
-    const sidecars = [`${cueBase}.tracks.json`, `${cueBase}.mixcloud.txt`, `${cueBase}.txt`];
+    const sidecars = [cuePath, `${cueBase}.tracks.json`, `${cueBase}.mixcloud.txt`, `${cueBase}.txt`];
     for (const candidate of sidecars) {
       if (await fileExists(candidate)) {
         return candidate;
@@ -347,6 +348,7 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
   const publishDraft = { ...draft };
   const defaultCoverPath = String(mergedSettings.defaultCoverPath || '/assets/airdox-vinyl.jpg').trim();
   const configuredCoverPolicy = Boolean(mergedSettings.extractEmbeddedCover);
+  publishDraft.file = String(publishDraft.file || '').trim();
 
   if (!publishDraft.id || !publishDraft.title || !publishDraft.file) {
     throw new Error('Draft is missing required fields (id, title, file).');
@@ -354,6 +356,11 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
 
   if (mergedSettings.safeMode && mergedSettings.uploadAudioToR2 && !publishDraft.sourceAudioPath) {
     throw new Error('Safe mode blocked publish: the source audio path is missing.');
+  }
+
+  const draftFileWasWav = /\.(wav|wave)$/i.test(publishDraft.file);
+  if (draftFileWasWav && !publishDraft.sourceAudioPath) {
+    throw new Error('WAV files need a source audio path so Flight Deck can convert them to MP3 before publish.');
   }
 
   if (publishDraft.sourceAudioPath) {
@@ -369,10 +376,9 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
       );
     }
     publishDraft.sourceAudioPath = audioConversion.filePath;
-  }
-
-  if (/\.(wav|wave)$/i.test(publishDraft.file)) {
-    publishDraft.file = publishDraft.file.replace(/\.(wav|wave)$/i, '.mp3');
+    if (draftFileWasWav) {
+      publishDraft.file = publishDraft.file.replace(/\.(wav|wave)$/i, '.mp3');
+    }
   }
 
   if (/\.(wav|wave)$/i.test(publishDraft.file)) {
@@ -412,7 +418,7 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
 
   const manifestResult = await upsertSet(workspaceRoot, publishDraft, mergedSettings);
   changedPaths.push(path.join('src', 'data', 'musicSets.js'));
-  pushLog(logs, 'manifest', 'success', `Updated set manifest for ${publishDraft.id}`);
+  pushLog(logs, 'manifest', 'success', `Refreshed current website manifest from disk and updated set ${publishDraft.id}`);
 
   if (mergedSettings.autoSeedStats) {
     await seedTrackStats(workspaceRoot, [publishDraft.id]);

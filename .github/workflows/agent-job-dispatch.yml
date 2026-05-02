@@ -1,0 +1,53 @@
+name: Agent Job Dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      event:
+        description: "Job trigger event (e.g. manual_background, windows_tool_review)"
+        required: true
+        type: string
+        default: "manual_background"
+      status:
+        description: "Job trigger status (e.g. standard, deep, morning_review)"
+        required: true
+        type: string
+        default: "standard"
+      approved:
+        description: "Comma-separated approved major job ids"
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate job catalog
+        run: npm run agent:jobs:validate -- --strict-warnings
+
+      - name: Run selected agent jobs
+        run: npm run agent:jobs:run -- --event=${{ inputs.event }} --status=${{ inputs.status }} --approved=${{ inputs.approved }}
+
+      - name: Upload job run reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-job-run-report
+          path: |
+            docs/agent-system/job-catalog.json
+            docs/agent-system/latest-job-run.json
+            docs/agent-system/latest-job-run.md

@@ -9,7 +9,7 @@ function sanitizeFilename(filename) {
     // Decode URI component first, then only remove dangerous characters
     const decoded = decodeURIComponent(filename);
     // Allow: letters, numbers, underscores, hyphens, dots, spaces, umlauts
-    return decoded.replace(/[\/\\:*?"<>|]/g, '');
+    return decoded.replace(/[/\\:*?"<>|]/g, '');
 }
 
 const router = new Router();
@@ -23,6 +23,67 @@ const corsHeaders = {
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Airdox-Token',
     'Access-Control-Max-Age': '86400',
+};
+
+const OAUTH_STATE_COOKIE = 'airdox_oauth_state';
+
+const parseCookies = (request) => {
+    const raw = request.headers.get('cookie') || '';
+    const pairs = raw.split(';').map((part) => part.trim()).filter(Boolean);
+    const out = {};
+    for (const pair of pairs) {
+        const idx = pair.indexOf('=');
+        if (idx === -1) continue;
+        const key = pair.slice(0, idx).trim();
+        const value = pair.slice(idx + 1).trim();
+        out[key] = decodeURIComponent(value);
+    }
+    return out;
+};
+
+const randomState = () => crypto.randomUUID().replace(/-/g, '');
+
+const buildPopupHtml = ({ ok, payload }) => {
+    const serialized = JSON.stringify({ ok, ...payload });
+    return `<!doctype html><html><head><meta charset="utf-8"><title>AIRDOX Auth</title></head><body><script>
+        (function () {
+            var data = ${serialized};
+            try {
+                if (data.ok && data.token) {
+                    localStorage.setItem('airdox_token', data.token);
+                }
+                if (window.opener && !window.opener.closed) {
+                    window.opener.postMessage({ source: 'airdox-oauth', ...data }, window.location.origin);
+                }
+            } catch (e) {}
+            setTimeout(function () { window.close(); }, 40);
+        })();
+    </script></body></html>`;
+};
+
+const buildOAuthRedirectUri = (request, provider) => {
+    const url = new URL(request.url);
+    return `${url.origin}/api/oauth/callback/${provider}`;
+};
+
+const buildOAuthStartUrl = ({ provider, authEndpoint, clientId, redirectUri, state, scope }) => {
+    const url = new URL(authEndpoint);
+    if (provider === 'google') {
+        url.searchParams.set('client_id', clientId);
+        url.searchParams.set('redirect_uri', redirectUri);
+        url.searchParams.set('response_type', 'code');
+        url.searchParams.set('scope', scope);
+        url.searchParams.set('access_type', 'offline');
+        url.searchParams.set('prompt', 'consent');
+        url.searchParams.set('state', state);
+    } else if (provider === 'facebook') {
+        url.searchParams.set('client_id', clientId);
+        url.searchParams.set('redirect_uri', redirectUri);
+        url.searchParams.set('response_type', 'code');
+        url.searchParams.set('scope', scope);
+        url.searchParams.set('state', state);
+    }
+    return url.toString();
 };
 
 const getClientIp = (request) => {
@@ -62,7 +123,7 @@ const isVipOnlyAudio = (filename) => {
 };
 
 // GET /api/audio/:filename - Secure audio streaming endpoint
-router.get('/api/audio', async (request, env, ctx) => {
+router.get('/api/audio', async (request, env) => {
     const url = new URL(request.url);
     let filename = url.searchParams.get('file');
     
@@ -187,6 +248,7 @@ router.post('/api/stats', async (request, env) => {
     const enrichedBody = {
         ...body,
         cf: request.cf, // Geolocation (Country, City, etc.)
+        clientIp: getClientIp(request),
         referrer: request.headers.get('Referer'),
     };
 
@@ -211,7 +273,7 @@ router.post('/api/booking', async (request, env) => {
             status: result.status,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
-    } catch (error) {
+    } catch {
         return new Response(JSON.stringify({ ok: false, error: 'Invalid Request' }), {
             status: 400,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -233,7 +295,7 @@ router.post('/api/auth', async (request, env) => {
             status: result.status,
             headers
         });
-    } catch (error) {
+    } catch {
         return new Response(JSON.stringify({ ok: false, error: 'Invalid Request' }), {
             status: 400,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -259,6 +321,97 @@ router.post('/api/register', async (request, env) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
 });
+
+router.get('/api/oauth/start', async (request, env) => {
+    const url = new URL(request.url);
+    const provider = String(url.searchParams.get('provider') || '').toLowerCase();
+    const mode = String(url.searchParams.get('mode') || 'login').toLowerCase();
+    if (!['google', 'facebook'].includes(provider)) {
+        return new Response(JSON.stringify({ ok: false, error: 'Unsupported provider' }), {
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    }
+
+    const configResult = await handleAuthRequest({ body: { action: 'oauth_start', provider }, env });
+    if (configResult.status !== 200 || !configResult.body?.ok) {
+        return new Response(JSON.stringify(configResult.body), {
+            status: configResult.status,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    }
+
+    const state = `${randomState()}.${mode}.${provider}`;
+    const redirectUri = buildOAuthRedirectUri(request, provider);
+    const clientId = provider === 'google' ? env.GOOGLE_CLIENT_ID : env.FACEBOOK_APP_ID;
+    const startUrl = buildOAuthStartUrl({
+        provider,
+        authEndpoint: configResult.body.authEndpoint,
+        clientId,
+        redirectUri,
+        state,
+        scope: configResult.body.scope,
+    });
+
+    return new Response(null, {
+        status: 302,
+        headers: {
+            Location: startUrl,
+            'Set-Cookie': `${OAUTH_STATE_COOKIE}=${encodeURIComponent(state)}; Path=/; Max-Age=600; HttpOnly; SameSite=Lax; Secure`,
+        },
+    });
+});
+
+const handleOAuthCallback = async (request, env, provider) => {
+    const url = new URL(request.url);
+    const code = String(url.searchParams.get('code') || '');
+    const state = String(url.searchParams.get('state') || '');
+    const cookies = parseCookies(request);
+    const expectedState = cookies[OAUTH_STATE_COOKIE] || '';
+
+    if (!code || !state || !expectedState || state !== expectedState) {
+        const html = buildPopupHtml({ ok: false, payload: { error: 'OAuth state mismatch or missing code' } });
+        return new Response(html, {
+            status: 400,
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8',
+                'Set-Cookie': `${OAUTH_STATE_COOKIE}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax; Secure`,
+            },
+        });
+    }
+
+    const redirectUri = buildOAuthRedirectUri(request, provider);
+    const oauthResult = await handleAuthRequest({
+        body: {
+            action: 'oauth_exchange',
+            provider,
+            code,
+            redirectUri,
+            clientIp: getClientIp(request),
+            userAgent: request.headers.get('User-Agent') || '',
+            referrer: request.headers.get('Referer') || '',
+        },
+        env,
+    });
+
+    const html = buildPopupHtml({
+        ok: oauthResult.status === 200 && oauthResult.body?.ok,
+        payload: oauthResult.status === 200
+            ? { token: oauthResult.body?.token || '', provider }
+            : { error: oauthResult.body?.error || 'OAuth login failed', provider },
+    });
+
+    return new Response(html, {
+        status: oauthResult.status === 200 ? 200 : 400,
+        headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+            'Set-Cookie': `${OAUTH_STATE_COOKIE}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax; Secure`,
+        },
+    });
+};
+
+router.get('/api/oauth/callback/google', async (request, env) => handleOAuthCallback(request, env, 'google'));
+router.get('/api/oauth/callback/facebook', async (request, env) => handleOAuthCallback(request, env, 'facebook'));
 
 export default {
     async fetch(request, env, ctx) {

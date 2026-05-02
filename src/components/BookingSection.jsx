@@ -57,11 +57,11 @@ const BookingSection = () => {
                 }
             } else {
                 const errData = await response.json();
-                throw new Error(errData.error || 'Fehler beim Senden');
+                throw new Error(errData.error || t('booking.sendError'));
             }
         } catch (err) {
             devError('Form submission error:', err);
-            setError(`Nachricht konnte nicht gesendet werden. (Error: ${err.message})`);
+            setError(`${t('booking.sendErrorPrefix')} (${err.message})`);
         }
 
     };

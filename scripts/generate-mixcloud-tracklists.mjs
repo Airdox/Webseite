@@ -67,7 +67,7 @@ const formatHhMmSs = (totalSeconds) => {
   return `${pad2(hours)}:${pad2(minutes)}:${pad2(seconds)}`;
 };
 
-const timestampToSeconds = (value = '', isCue = false) => {
+const timestampToSeconds = (value = '') => {
   const parts = String(value)
     .trim()
     .split(':')
@@ -75,12 +75,6 @@ const timestampToSeconds = (value = '', isCue = false) => {
   if (parts.some((n) => Number.isNaN(n))) return null;
 
   if (parts.length === 3) {
-    if (isCue) {
-      // CUE format is MM:SS:FF (Minutes:Seconds:Frames)
-      // Frames (FF) are 1/75th of a second, we usually ignore them for tracklists
-      const [minutes, seconds, frames] = parts;
-      return minutes * 60 + seconds;
-    }
     const [hours, minutes, seconds] = parts;
     return hours * 3600 + minutes * 60 + seconds;
   }
@@ -95,7 +89,8 @@ const timestampToSeconds = (value = '', isCue = false) => {
 };
 
 const normalizeTimestamp = (value = '', isCue = false) => {
-  const seconds = timestampToSeconds(value, isCue);
+  void isCue;
+  const seconds = timestampToSeconds(value);
   if (seconds === null) return '';
   return formatHhMmSs(seconds);
 };
@@ -455,12 +450,19 @@ const dedupeTracks = (tracks = [], dedupeWindowSeconds = 45) => {
     const key = `${track.artist}:::${track.title}`.toLowerCase();
     const atSeconds = timestampToSeconds(getTrackTimestamp(track)) ?? 0;
     const previous = lastSeen.get(key);
+    const sourceFile = String(track.sourceFile || '').toLowerCase();
 
-    if (typeof previous === 'number' && atSeconds - previous <= dedupeWindowSeconds) {
+    if (
+      previous
+      && (
+        atSeconds - previous.atSeconds <= dedupeWindowSeconds
+        || (sourceFile && sourceFile === previous.sourceFile)
+      )
+    ) {
       continue;
     }
 
-    lastSeen.set(key, atSeconds);
+    lastSeen.set(key, { atSeconds, sourceFile });
     deduped.push(track);
   }
   return deduped;

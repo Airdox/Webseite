@@ -37,15 +37,15 @@ class ErrorBoundary extends React.Component {
       return (
         <div className="error-boundary-wrapper">
           <div className="error-boundary-content glass-card">
-            <h1 className="error-title text-gradient">SYSTEM ERROR</h1>
+            <h1 className="error-title text-gradient">{t('error.title')}</h1>
             <p className="error-message">
-              Ein unerwarteter Fehler ist aufgetreten. / An unexpected error occurred.
+              {t('error.message')}
             </p>
             <div className="error-details">
               <code>{this.state.error?.message?.toString()}</code>
             </div>
             <button onClick={this.handleReload} className="btn btn-primary interactive mt-6">
-              RELOAD SYSTEM
+              {t('error.reload')}
             </button>
           </div>
         </div>

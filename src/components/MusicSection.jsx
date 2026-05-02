@@ -8,7 +8,7 @@ import { buildAudioApiHref, partitionSetsByAccess } from '../lib/set-access';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { statsSync } from '../utils/stats-sync';
 
-const { publicIdSet, vipIdSet } = partitionSetsByAccess(sets);
+const { publicSets } = partitionSetsByAccess(sets);
 
 const parseTrackTimeToSeconds = (value = '') => {
     const parts = String(value || '')
@@ -76,6 +76,7 @@ const MusicSection = () => {
     useEffect(() => {
         const handleStatsUpdate = (e) => setGlobalStats(e.detail);
         window.addEventListener('airdox_stats_updated', handleStatsUpdate);
+        void statsSync.fetchAllStats();
         return () => window.removeEventListener('airdox_stats_updated', handleStatsUpdate);
     }, []);
 
@@ -94,12 +95,7 @@ const MusicSection = () => {
         if (timeInSeconds === null) return;
 
         if (currentTrack?.id !== set.id) {
-            playTrack(set);
-            // Wait for track to start loading before seeking
-            // Audio element usually needs a moment to update duration/currentTime
-            setTimeout(() => {
-                seek(timeInSeconds);
-            }, 500);
+            playTrack(set, true, timeInSeconds);
         } else {
             seek(timeInSeconds);
         }
@@ -313,11 +309,9 @@ const MusicSection = () => {
                 </div>
 
                 <div className="sets-grid">
-                    {sets.map((set, index) => {
+                    {publicSets.map((set, index) => {
                         const stats = getSetStats(set.id);
                         const userVote = getUserVote(set.id);
-                        const isVIP = vipIdSet.has(set.id);
-                        const canAccessVIP = isLoggedIn;
                         const isSetPlaying = currentTrack?.id === set.id && isPlaying;
                         const isSetCurrent = currentTrack?.id === set.id;
 
@@ -332,7 +326,7 @@ const MusicSection = () => {
                         return (
                             <div
                                 key={set.id}
-                                className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''} ${isVIP ? 'vip-locked' : ''}`}
+                                className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''}`}
                                 data-set-id={set.id}
                             >
                                 <div
@@ -341,7 +335,7 @@ const MusicSection = () => {
                                     onKeyDown={(event) => handleCoverKeyDown(event, set)}
                                     role="button"
                                     tabIndex={0}
-                                    aria-label={`${isSetPlaying ? 'Pause' : 'Play'} ${set.title}`}
+                                    aria-label={`${isSetPlaying ? t('music.pause') : t('music.play')} ${set.title}`}
                                 >
                                     <div
                                         className="cover-vinyl"
@@ -359,7 +353,7 @@ const MusicSection = () => {
                                             {isSetPlaying ? (
                                                 <img
                                                     src={set.isChristmasGift ? "/assets/santa_vinyl.png" : (set.cover || "/assets/airdox-vinyl.jpg")}
-                                                    alt="Vinyl Label"
+                                                    alt={t('music.vinylAlt')}
                                                     loading="lazy"
                                                     decoding="async"
                                                     fetchpriority="low"
@@ -384,9 +378,8 @@ const MusicSection = () => {
                                             )}
                                         </span>
                                     </div>
-                                    {set.isChristmasGift && <span className="xmas-badge">🎄 GIFT</span>}
-                                    {set.isNew && !set.isChristmasGift && <span className="new-badge">NEW</span>}
-                                    {isVIP && <span className="vip-badge">VIP</span>}
+                                    {set.isChristmasGift && <span className="xmas-badge">🎄 {t('music.giftBadge')}</span>}
+                                    {set.isNew && !set.isChristmasGift && <span className="new-badge">{t('music.newBadge')}</span>}
 
                                     {set.isChristmasGift && (
                                         <div className="gift-ribbon">
@@ -422,28 +415,18 @@ const MusicSection = () => {
                                         <span className="set-date">{set.date}</span>
                                         {set.duration && <span className="set-duration">{set.duration}</span>}
                                     </div>
-                                    {isVIP && !canAccessVIP && (
-                                        <div className="vip-restriction-notice">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                                            </svg>
-                                            <span>{t('music.vipOnly')}</span>
-                                        </div>
-                                    )}
-
                                     {isLoggedIn && (
                                         <a 
                                             href={buildAudioApiHref(set.file, localStorage.getItem('airdox_token'))} 
                                             download={set.file}
                                             className="vip-download-link"
                                             onClick={(e) => e.stopPropagation()}
-                                            title="Download VIP Access"
+                                            title={t('music.downloadVipAccess')}
                                         >
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
                                             </svg>
-                                            VIP DOWNLOAD
+                                            {t('music.vipDownload')}
                                         </a>
                                     )}
 
@@ -454,9 +437,9 @@ const MusicSection = () => {
                                                 className="tracklist-toggle"
                                                 onClick={(e) => { e.stopPropagation(); toggleTracklist(set.id); }}
                                                 aria-expanded={!collapsedTracklists[set.id]}
-                                                aria-label={collapsedTracklists[set.id] ? 'Show tracklist' : 'Hide tracklist'}
+                                                aria-label={collapsedTracklists[set.id] ? t('music.showTracklist') : t('music.hideTracklist')}
                                             >
-                                                <h4 className="tracklist-title">Tracklist</h4>
+                                                <h4 className="tracklist-title">{t('music.tracklist')}</h4>
                                                 <svg className={`tracklist-chevron ${collapsedTracklists[set.id] ? 'chevron-collapsed' : ''}`} viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
                                                     <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
                                                 </svg>
@@ -495,7 +478,7 @@ const MusicSection = () => {
                                             type="button"
                                             className={`like-btn ${userVote === 'like' ? 'liked' : ''}`}
                                             onClick={(e) => { e.stopPropagation(); handleVote(set.id, 'like'); }}
-                                            aria-label={`Like ${set.title}`}
+                                            aria-label={`${t('music.likeLabel')} ${set.title}`}
                                             aria-pressed={userVote === 'like'}
                                         >
                                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -507,7 +490,7 @@ const MusicSection = () => {
                                             type="button"
                                             className={`like-btn ${userVote === 'dislike' ? 'disliked' : ''}`}
                                             onClick={(e) => { e.stopPropagation(); handleVote(set.id, 'dislike'); }}
-                                            aria-label={`Dislike ${set.title}`}
+                                            aria-label={`${t('music.dislikeLabel')} ${set.title}`}
                                             aria-pressed={userVote === 'dislike'}
                                         >
                                             <svg viewBox="0 0 24 24" fill="currentColor">

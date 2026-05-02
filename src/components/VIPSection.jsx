@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAudio } from '../contexts/AudioContext';
 import { sets } from '../data/musicSets';
 import { buildAudioApiHref, partitionSetsByAccess } from '../lib/set-access';
+import { t } from '../utils/i18n';
 import './VIPSection.css';
 
 const API_BASE = (import.meta.env.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
@@ -103,24 +104,24 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
                 <div className="container">
                     <div className="auth-container airdox-card reveal vip-gate">
                         <div className="section-header" style={{ marginBottom: 'var(--space-7)' }}>
-                            <span className="section-label">VIP ACCESS</span>
-                            <h2 className="section-title text-gradient" style={{ fontSize: '2rem' }}>ARCHIVE ZUGANG</h2>
+                            <span className="section-label">{t('vip.accessLabel')}</span>
+                            <h2 className="section-title text-gradient" style={{ fontSize: '2rem' }}>{t('vip.archiveTitle')}</h2>
                             <p className="section-subtitle">
-                                Die aelteren Sets liegen im VIP-Bereich fuer alle, die nicht genug bekommen.
+                                {t('vip.gateSubtitle')}
                             </p>
                         </div>
 
                         <div className="vip-gate-actions">
                             <button type="button" className="btn btn-outline" onClick={() => onOpenAuth('login')}>
-                                LOGIN
+                                {t('nav.login')}
                             </button>
                             <button type="button" className="btn btn-primary" onClick={() => onOpenAuth('register')}>
-                                REGISTER
+                                {t('nav.register')}
                             </button>
                         </div>
 
                         <p className="vip-gate-hint">
-                            {validatingSession ? 'Session wird geprueft...' : `${vipSets.length} VIP-Sets warten im Archiv.`}
+                            {validatingSession ? t('vip.sessionChecking') : `${vipSets.length} ${t('vip.setsWaiting')}`}
                         </p>
                     </div>
                 </div>
@@ -134,10 +135,10 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
                 <div className="airdox-card reveal">
                     <div className="vip-content">
                         <div className="section-header" style={{ marginBottom: 'var(--space-8)' }}>
-                            <span className="section-label">MEMBERS ONLY</span>
-                            <h2 className="section-title text-gradient" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>WILLKOMMEN, {user.username}</h2>
+                            <span className="section-label">{t('vip.membersLabel')}</span>
+                            <h2 className="section-title text-gradient" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>{t('vip.welcome')}, {user.username}</h2>
                             <p className="section-subtitle">
-                                Hier sind alle aelteren VIP-Sets fuer alle, die nicht genug bekommen. Die letzten 2 Sets bleiben oeffentlich im Music-Bereich.
+                                {t('vip.memberSubtitle')}
                             </p>
                         </div>
 
@@ -161,14 +162,14 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
                                                     className="vip-play-btn"
                                                     onClick={() => handlePlayClick(set)}
                                                 >
-                                                    {isSetPlaying ? 'Pause' : 'Play'}
+                                                    {isSetPlaying ? t('vip.pause') : t('vip.play')}
                                                 </button>
                                                 <a
                                                     href={buildAudioApiHref(set.file, authToken)}
                                                     download={set.file}
                                                     className="vip-download-link"
                                                 >
-                                                    Download
+                                                    {t('vip.download')}
                                                 </a>
                                             </div>
                                             {Array.isArray(set.tracks) && set.tracks.length > 0 && (
@@ -190,11 +191,11 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
                                 })}
                             </div>
                         ) : (
-                            <p className="section-subtitle">Derzeit keine VIP-Sets verfuegbar.</p>
+                            <p className="section-subtitle">{t('vip.noSets')}</p>
                         )}
 
                         <button className="logout-btn" onClick={handleLogout}>
-                            Abmelden
+                            {t('vip.logout')}
                         </button>
                     </div>
                 </div>

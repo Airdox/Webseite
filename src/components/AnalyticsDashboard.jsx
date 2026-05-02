@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './AnalyticsDashboard.css';
+import { t } from '../utils/i18n';
 
 const AnalyticsDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +54,7 @@ const AnalyticsDashboard = () => {
       <div className="analytics-dashboard glass-card">
         <div className="analytics-header">
           <h2>
-            <span className="text-gradient">SYSTEM</span>_ANALYTICS
+            <span className="text-gradient">{t('analytics.system')}</span>_{t('analytics.title')}
           </h2>
           <button className="close-btn" onClick={() => setIsOpen(false)}>
             &times;
@@ -65,26 +66,26 @@ const AnalyticsDashboard = () => {
             <div className="analytics-grid">
               <div className="stat-card">
                 <div className="stat-value">{stats.total?.pageViews || 0}</div>
-                <div className="stat-label">PAGE VIEWS</div>
+                <div className="stat-label">{t('analytics.pageViews')}</div>
               </div>
               <div className="stat-card">
                 <div className="stat-value">{stats.total?.sessions || 0}</div>
-                <div className="stat-label">SESSIONS</div>
+                <div className="stat-label">{t('analytics.sessions')}</div>
               </div>
               <div className="stat-card">
                 {/* Download stats remain for analytics, but no download links are provided to users */}
                 <div className="stat-value">{stats.total?.downloads || 0}</div>
-                <div className="stat-label">DOWNLOADS</div>
+                <div className="stat-label">{t('analytics.downloads')}</div>
               </div>
               <div className="stat-card">
                 <div className="stat-value">{stats.total?.audioPlays || 0}</div>
-                <div className="stat-label">AUDIO PLAYS</div>
+                <div className="stat-label">{t('analytics.audioPlays')}</div>
               </div>
             </div>
 
             <div className="analytics-row">
               <div className="analytics-section half">
-                <h3>TRAFFIC SOURCES</h3>
+                <h3>{t('analytics.trafficSources')}</h3>
                 {stats.traffic?.referrers?.length > 0 ? (
                   <ul className="analytics-list">
                     {stats.traffic.referrers.map((ref, idx) => (
@@ -95,58 +96,58 @@ const AnalyticsDashboard = () => {
                     ))}
                   </ul>
                 ) : (
-                  <p className="no-data">Kein Direct/Referrer verzeichnet.</p>
+                  <p className="no-data">{t('analytics.noReferrers')}</p>
                 )}
               </div>
 
               <div className="analytics-section half">
-                <h3>OUTBOUND CLICKS</h3>
+                <h3>{t('analytics.outboundClicks')}</h3>
                 {stats.traffic?.socialClicks?.length > 0 ? (
                   <ul className="analytics-list">
                     {stats.traffic.socialClicks.map((click, idx) => (
                       <li key={idx}>
                         <span className="track-name">{click.name}</span>
-                        <span className="track-plays">{click.count} Clicks</span>
+                        <span className="track-plays">{click.count} {t('analytics.clicks')}</span>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="no-data">Keine Social Clicks registriert.</p>
+                  <p className="no-data">{t('analytics.noSocialClicks')}</p>
                 )}
               </div>
             </div>
 
             <div className="analytics-section">
-              <h3>TOP TRACKS</h3>
+              <h3>{t('analytics.topTracks')}</h3>
               {stats.audio?.top?.length > 0 ? (
                 <ul className="analytics-list">
                   {stats.audio.top.map(([track, plays], idx) => (
                     <li key={idx}>
                       <span className="track-name">{track}</span>
-                      <span className="track-plays">{plays} Plays</span>
+                      <span className="track-plays">{plays} {t('analytics.plays')}</span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="no-data">Keine Audio-Daten vorhanden.</p>
+                <p className="no-data">{t('analytics.noAudio')}</p>
               )}
             </div>
 
             <div className="analytics-section">
-              <h3>SYSTEM INFO</h3>
-              <p>Av. Session Duration: <strong>{stats.averages?.sessionDuration || 0}s</strong></p>
-              <p>Av. Scroll Depth: <strong>{stats.averages?.scrollDepth || 0}%</strong></p>
-              <p>Bounce Rate: <strong>{stats.rates?.bounce || 0}%</strong></p>
+              <h3>{t('analytics.systemInfo')}</h3>
+              <p>{t('analytics.avgSessionDuration')}: <strong>{stats.averages?.sessionDuration || 0}s</strong></p>
+              <p>{t('analytics.avgScrollDepth')}: <strong>{stats.averages?.scrollDepth || 0}%</strong></p>
+              <p>{t('analytics.bounceRate')}: <strong>{stats.rates?.bounce || 0}%</strong></p>
             </div>
             
             <div className="analytics-actions">
-              <button className="btn btn-outline" onClick={handleExportJson}>EXPORT JSON</button>
-              <button className="btn btn-outline" onClick={handleExportCsv}>EXPORT CSV</button>
-              <button className="btn btn-outline clear-btn" onClick={handleClearData}>CLEAR DATA</button>
+              <button className="btn btn-outline" onClick={handleExportJson}>{t('analytics.exportJson')}</button>
+              <button className="btn btn-outline" onClick={handleExportCsv}>{t('analytics.exportCsv')}</button>
+              <button className="btn btn-outline clear-btn" onClick={handleClearData}>{t('analytics.clearData')}</button>
             </div>
           </div>
         ) : (
-          <div className="analytics-loading">Loading Analytics Data...</div>
+          <div className="analytics-loading">{t('analytics.loading')}</div>
         )}
       </div>
     </div>

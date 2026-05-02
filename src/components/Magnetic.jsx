@@ -1,13 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 const Magnetic = ({ children }) => {
-  const ref = useRef(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e) => {
-    if (!ref.current) return;
     const { clientX, clientY } = e;
-    const { width, height, left, top } = ref.current.getBoundingClientRect();
+    const { width, height, left, top } = e.currentTarget.getBoundingClientRect();
     
     // Calculate the pull relative to center. 0.3 is the strength multiplier.
     const x = (clientX - (left + width / 2)) * 0.3;
@@ -27,9 +25,14 @@ const Magnetic = ({ children }) => {
 
   // Clone child to inject event handlers and dynamic transform style
   return React.cloneElement(children, {
-    ref,
-    onMouseMove: handleMouseMove,
-    onMouseLeave: handleMouseLeave,
+    onMouseMove: (event) => {
+      children.props.onMouseMove?.(event);
+      handleMouseMove(event);
+    },
+    onMouseLeave: (event) => {
+      children.props.onMouseLeave?.(event);
+      handleMouseLeave();
+    },
     style: {
       ...children.props.style,
       transform: `translate(${position.x}px, ${position.y}px)`,

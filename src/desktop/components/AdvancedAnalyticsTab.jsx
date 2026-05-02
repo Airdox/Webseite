@@ -65,7 +65,10 @@ const AdvancedAnalyticsTab = ({
     country: 'all',
   });
 
-  const rawEvents = Array.isArray(analyticsData.eventLogs) ? analyticsData.eventLogs : [];
+  const rawEvents = useMemo(
+    () => (Array.isArray(analyticsData.eventLogs) ? analyticsData.eventLogs : []),
+    [analyticsData.eventLogs],
+  );
 
   const filteredStats = useMemo(() => {
     const filteredEvents = filterEventLogs(rawEvents, { startDate, endDate, filters });

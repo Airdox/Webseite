@@ -3,90 +3,90 @@ export const sets = [
     id: 'recording_2026_05_01',
     title: 'REC-2026-05-01',
     date: 'MAY 2026',
-    file: '01 REC-2026-05-01.wav',
+    file: '01 REC-2026-05-01.mp3',
     duration: '56:10',
     isNew: true,
     vinylColor: '#9adf6b',
     tracks: [
       {
-        time: '',
+        time: '00:00:00',
         artist: 'Martin Books',
         title: 'Turn (Original Mix)'
       },
       {
-        time: '',
+        time: '00:00:37',
         artist: 'Patrick Arbez',
         title: 'Black Church (Original Mix)'
       },
       {
-        time: '',
+        time: '00:03:29',
         artist: 'Patrick Arbez',
         title: 'Der rote Rabauke (deKai (Berlin) Remix)'
       },
       {
-        time: '',
+        time: '00:07:48',
         artist: 'Alfred Heinrichs',
         title: 'Bitch (Original Mix)'
       },
       {
-        time: 'Kevin McKay',
-        artist: 'Pupa Nas T',
-        title: 'Denise Belfon - Work (CVMPANILE & Draxx Extended Remix) - 00:00:10'
+        time: '00:10:42',
+        artist: 'Kevin McKay, Pupa Nas T, Denise Belfon',
+        title: 'Work (CVMPANILE & Draxx Extended Remix)'
       },
       {
-        time: '',
+        time: '00:14:42',
         artist: 'Barnt',
         title: 'Geffen'
       },
       {
-        time: '',
+        time: '00:19:23',
         artist: '140-Airdox',
-        title: 'MJ Lan'
+        title: 'MJ Lan - Generate Bodies (2000)'
       },
       {
-        time: '',
+        time: '00:21:41',
         artist: 'T78, Angelala',
         title: 'No Guestlist (Extended Mix)'
       },
       {
-        time: '',
+        time: '00:25:50',
         artist: 'Martin Books, Signalfarbe Schwarz',
         title: 'Simone feat. Signalfarbe Schwarz (Original Mix)'
       },
       {
-        time: '',
+        time: '00:31:35',
         artist: '140-Airdox',
-        title: 'Adam Beyer & Alan Fitzpatrick'
+        title: 'Adam Beyer & Alan Fitzpatrick - Human Reason (Original Mix)'
       },
       {
-        time: '',
+        time: '00:34:18',
         artist: 'Alfred Heinrichs, Martin Books',
         title: 'Mothers Slap (Original Mix)'
       },
       {
-        time: '',
+        time: '00:36:52',
         artist: '140-Airdox',
-        title: 'Primal Beat'
+        title: 'Primal Beat - Blowing My Head Up (Diatek Remix)'
       },
       {
-        time: '',
+        time: '00:40:38',
         artist: '140-Airdox',
         title: 'Martin books -Perfection'
       },
       {
-        time: '',
+        time: '00:44:03',
         artist: 'Katy Perry',
         title: 'I Kissed A Girl'
       },
       {
-        time: '',
+        time: '00:45:38',
         artist: 'Drumsauw',
         title: 'Set Back (Original Mix)'
       },
       {
-        time: '',
+        time: '00:48:50',
         artist: '140-Airdox',
-        title: 'Johnny O'
+        title: 'Johnny O - Fantasy Girl (Club Mix)'
       }
     ],
     publishedAt: '2026-05-01'

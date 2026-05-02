@@ -60,7 +60,7 @@ const Footer = () => {
                     <button
                         className="back-to-top interactive reveal stagger-2"
                         onClick={scrollToTop}
-                        aria-label="Back to top"
+                        aria-label={t('footer.backToTopLabel')}
                     >
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M12 19V5M5 12l7-7 7 7" />
@@ -74,7 +74,7 @@ const Footer = () => {
                     <div className="footer-line"></div>
                     <div className="footer-bottom-content">
                         <p className="footer-copyright">
-                            © {currentYear} AIRDOX. All rights reserved.
+                            © {currentYear} AIRDOX. {t('footer.rights')}
                         </p>
                         <p className="footer-credit">
                             {t('footer.madeWith')} <span className="heart">♥</span> {t('footer.inBerlin')} <span className="version-tag">v0.1.2</span>

@@ -1,4 +1,3 @@
-/* global Buffer */
 import { neon } from '@neondatabase/serverless';
 
 const CACHE_CONTROL = 'public, s-maxage=10, stale-while-revalidate=30';
@@ -19,9 +18,15 @@ const VALID_UPDATE_TYPES = new Set([
     'unlike',
     'undislike'
 ]);
+const PLAY_DEBOUNCE_SECONDS = 20;
 const REGISTER_RATE_LIMIT_WINDOW_MINUTES = 60;
 const REGISTER_RATE_LIMIT_MAX_ATTEMPTS = 8;
+const REGISTER_SUCCESS_WINDOW_HOURS = 24;
+const REGISTER_SUCCESS_MAX_PER_IP = 3;
+const REGISTER_IDENTIFIER_WINDOW_MINUTES = 60;
+const REGISTER_IDENTIFIER_MAX_ATTEMPTS = 5;
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+const SOCIAL_PROVIDERS = new Set(['google', 'facebook']);
 
 let sqlClient = null;
 let initPromise = null;
@@ -213,6 +218,27 @@ export const handleStatsRequest = async ({
         const region = cf.region || 'Unknown';
 
         try {
+            // Guard against play bursts from the same browser session.
+            if (type === 'play' && sessionId) {
+                const recentPlay = await sql`
+                    SELECT created_at
+                    FROM analytics_logs
+                    WHERE event_type = 'play'
+                      AND item_id = ${id}
+                      AND session_id = ${sessionId}
+                    ORDER BY created_at DESC
+                    LIMIT 1
+                `;
+                const lastPlay = recentPlay?.[0]?.created_at ? new Date(recentPlay[0].created_at) : null;
+                if (lastPlay && Number.isFinite(lastPlay.getTime())) {
+                    const secondsSinceLast = (Date.now() - lastPlay.getTime()) / 1000;
+                    if (secondsSinceLast < PLAY_DEBOUNCE_SECONDS) {
+                        const [current] = await sql`SELECT * FROM track_stats WHERE id = ${id}`;
+                        return { status: 200, headers, body: current || { id, ...EMPTY_STATS_ROW } };
+                    }
+                }
+            }
+
             await sql`
                 INSERT INTO track_stats (id, plays, likes, dislikes, last_played_at)
                 VALUES (${id}, 0, 0, 0, NULL)
@@ -337,6 +363,176 @@ const isCaptchaRequired = (env) => {
 };
 
 const normalizeIp = (value) => String(value || '').trim().slice(0, 128);
+const normalizeUsername = (value = '') => String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]/g, '_')
+    .replace(/_+/g, '_')
+    .slice(0, 32) || 'user';
+
+const sanitizeEmail = (value = '') => String(value || '').trim().toLowerCase();
+
+const ensureSocialColumns = async (sql) => {
+    await sql`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS provider TEXT NULL;
+    `;
+    await sql`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS provider_user_id TEXT NULL;
+    `;
+    await sql`
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_users_provider_provider_user_id
+        ON users (provider, provider_user_id)
+        WHERE provider IS NOT NULL AND provider_user_id IS NOT NULL;
+    `;
+};
+
+const buildSyntheticEmail = (provider, providerUserId) => `${provider}_${providerUserId}@social.airdox.local`;
+
+const getSocialConfig = (provider, env) => {
+    if (provider === 'google') {
+        return {
+            provider,
+            clientId: env.GOOGLE_CLIENT_ID || '',
+            clientSecret: env.GOOGLE_CLIENT_SECRET || '',
+            authEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
+            tokenEndpoint: 'https://oauth2.googleapis.com/token',
+            userinfoEndpoint: 'https://openidconnect.googleapis.com/v1/userinfo',
+            scope: 'openid email profile',
+        };
+    }
+    if (provider === 'facebook') {
+        return {
+            provider,
+            clientId: env.FACEBOOK_APP_ID || '',
+            clientSecret: env.FACEBOOK_APP_SECRET || '',
+            authEndpoint: 'https://www.facebook.com/v20.0/dialog/oauth',
+            tokenEndpoint: 'https://graph.facebook.com/v20.0/oauth/access_token',
+            userinfoEndpoint: 'https://graph.facebook.com/me?fields=id,name,email',
+            scope: 'email,public_profile',
+        };
+    }
+    return null;
+};
+
+const exchangeGoogleCode = async ({ config, code, redirectUri }) => {
+    const form = new URLSearchParams();
+    form.set('client_id', config.clientId);
+    form.set('client_secret', config.clientSecret);
+    form.set('code', code);
+    form.set('grant_type', 'authorization_code');
+    form.set('redirect_uri', redirectUri);
+
+    const tokenRes = await fetch(config.tokenEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: form.toString(),
+    });
+    const tokenData = await tokenRes.json().catch(() => ({}));
+    if (!tokenRes.ok || !tokenData.access_token) {
+        throw new Error('Google token exchange failed');
+    }
+
+    const profileRes = await fetch(config.userinfoEndpoint, {
+        headers: { Authorization: `Bearer ${tokenData.access_token}` },
+    });
+    const profile = await profileRes.json().catch(() => ({}));
+    if (!profileRes.ok || !profile?.sub) {
+        throw new Error('Google userinfo request failed');
+    }
+
+    return {
+        provider: 'google',
+        providerUserId: String(profile.sub),
+        email: sanitizeEmail(profile.email),
+        username: String(profile.name || profile.email || `google_${profile.sub}`),
+    };
+};
+
+const exchangeFacebookCode = async ({ config, code, redirectUri }) => {
+    const tokenUrl = new URL(config.tokenEndpoint);
+    tokenUrl.searchParams.set('client_id', config.clientId);
+    tokenUrl.searchParams.set('client_secret', config.clientSecret);
+    tokenUrl.searchParams.set('redirect_uri', redirectUri);
+    tokenUrl.searchParams.set('code', code);
+
+    const tokenRes = await fetch(tokenUrl.toString());
+    const tokenData = await tokenRes.json().catch(() => ({}));
+    if (!tokenRes.ok || !tokenData.access_token) {
+        throw new Error('Facebook token exchange failed');
+    }
+
+    const profileRes = await fetch(config.userinfoEndpoint, {
+        headers: { Authorization: `Bearer ${tokenData.access_token}` },
+    });
+    const profile = await profileRes.json().catch(() => ({}));
+    if (!profileRes.ok || !profile?.id) {
+        throw new Error('Facebook userinfo request failed');
+    }
+
+    return {
+        provider: 'facebook',
+        providerUserId: String(profile.id),
+        email: sanitizeEmail(profile.email),
+        username: String(profile.name || `facebook_${profile.id}`),
+    };
+};
+
+const exchangeSocialCode = async ({ provider, code, redirectUri, env }) => {
+    const config = getSocialConfig(provider, env);
+    if (!config || !config.clientId || !config.clientSecret) {
+        throw new Error(`${provider} OAuth is not configured`);
+    }
+    if (provider === 'google') return exchangeGoogleCode({ config, code, redirectUri });
+    if (provider === 'facebook') return exchangeFacebookCode({ config, code, redirectUri });
+    throw new Error('Unsupported social provider');
+};
+
+const resolveOrCreateSocialUser = async (sql, { provider, providerUserId, email, username }) => {
+    await ensureSocialColumns(sql);
+
+    const normalizedProvider = String(provider);
+    const normalizedProviderUserId = String(providerUserId);
+    const normalizedEmail = sanitizeEmail(email) || buildSyntheticEmail(normalizedProvider, normalizedProviderUserId);
+    const normalizedUsername = normalizeUsername(username || normalizedEmail.split('@')[0]);
+
+    const byProvider = await sql`
+        SELECT id, username, email
+        FROM users
+        WHERE provider = ${normalizedProvider} AND provider_user_id = ${normalizedProviderUserId}
+        LIMIT 1
+    `;
+    if (byProvider?.[0]) return byProvider[0];
+
+    const byEmail = await sql`
+        SELECT id, username, email, provider, provider_user_id
+        FROM users
+        WHERE email = ${normalizedEmail}
+        LIMIT 1
+    `;
+
+    if (byEmail?.[0]) {
+        const existing = byEmail[0];
+        if (!existing.provider || !existing.provider_user_id) {
+            const [linked] = await sql`
+                UPDATE users
+                SET provider = ${normalizedProvider}, provider_user_id = ${normalizedProviderUserId}
+                WHERE id = ${existing.id}
+                RETURNING id, username, email
+            `;
+            return linked || existing;
+        }
+        return existing;
+    }
+
+    const [created] = await sql`
+        INSERT INTO users (username, email, password, salt, provider, provider_user_id)
+        VALUES (${normalizedUsername}, ${normalizedEmail}, ${generateRandomHex(16)}, ${generateSalt()}, ${normalizedProvider}, ${normalizedProviderUserId})
+        RETURNING id, username, email
+    `;
+    return created;
+};
 
 const recordAuthAttempt = async (sql, { action, clientIp, identifier, success }) => {
     try {
@@ -359,6 +555,31 @@ const isRegisterRateLimited = async (sql, clientIp) => {
           AND created_at > CURRENT_TIMESTAMP - (${REGISTER_RATE_LIMIT_WINDOW_MINUTES} * INTERVAL '1 minute');
     `;
     return Number(row?.attempts || 0) >= REGISTER_RATE_LIMIT_MAX_ATTEMPTS;
+};
+
+const isRegisterSuccessRateLimited = async (sql, clientIp) => {
+    if (!clientIp) return false;
+    const [row] = await sql`
+        SELECT COUNT(*)::int AS successful_registrations
+        FROM auth_attempts
+        WHERE action = 'register'
+          AND ip_address = ${clientIp}
+          AND success = true
+          AND created_at > CURRENT_TIMESTAMP - (${REGISTER_SUCCESS_WINDOW_HOURS} * INTERVAL '1 hour');
+    `;
+    return Number(row?.successful_registrations || 0) >= REGISTER_SUCCESS_MAX_PER_IP;
+};
+
+const isRegisterIdentifierRateLimited = async (sql, identifier) => {
+    if (!identifier) return false;
+    const [row] = await sql`
+        SELECT COUNT(*)::int AS attempts
+        FROM auth_attempts
+        WHERE action = 'register'
+          AND identifier = ${identifier}
+          AND created_at > CURRENT_TIMESTAMP - (${REGISTER_IDENTIFIER_WINDOW_MINUTES} * INTERVAL '1 minute');
+    `;
+    return Number(row?.attempts || 0) >= REGISTER_IDENTIFIER_MAX_ATTEMPTS;
 };
 
 const verifyTurnstileCaptcha = async ({ token, clientIp, env }) => {
@@ -408,11 +629,26 @@ export const handleAuthRequest = async ({ body, env }) => {
         token,
         captchaToken,
         clientIp: rawClientIp,
+        provider,
+        code,
+        redirectUri,
     } = body || {};
     const clientIp = normalizeIp(rawClientIp);
     const normalizedUsername = String(username || '').trim();
     const normalizedEmail = String(email || '').trim().toLowerCase();
     const loginIdentifier = String(email || username || '').trim();
+
+    if (action === 'oauth_start') {
+        const providerName = String(provider || '').toLowerCase();
+        if (!SOCIAL_PROVIDERS.has(providerName)) {
+            return { status: 400, body: errorBody('Unsupported social provider') };
+        }
+        const config = getSocialConfig(providerName, env);
+        if (!config || !config.clientId || !config.clientSecret) {
+            return { status: 503, body: errorBody(`${providerName} OAuth is not configured`) };
+        }
+        return { status: 200, body: { ok: true, provider: providerName, authEndpoint: config.authEndpoint, scope: config.scope } };
+    }
 
     // Validate Token (Session)
     if (action === 'validate') {
@@ -432,7 +668,10 @@ export const handleAuthRequest = async ({ body, env }) => {
     }
 
     if (!action || !password || (action === 'register' && (!normalizedUsername || !normalizedEmail)) || (action === 'login' && !loginIdentifier)) {
-        return { status: 400, body: errorBody('Missing required fields') };
+        const socialAction = action === 'oauth_exchange';
+        if (!socialAction) {
+            return { status: 400, body: errorBody('Missing required fields') };
+        }
     }
 
     try {
@@ -440,6 +679,14 @@ export const handleAuthRequest = async ({ body, env }) => {
             const isLimited = await isRegisterRateLimited(sql, clientIp);
             if (isLimited) {
                 return { status: 429, body: errorBody('Too many registration attempts. Please try again later.') };
+            }
+            const successLimited = await isRegisterSuccessRateLimited(sql, clientIp);
+            if (successLimited) {
+                return { status: 429, body: errorBody('Registration temporarily limited for this network. Please try again later.') };
+            }
+            const identifierLimited = await isRegisterIdentifierRateLimited(sql, normalizedEmail || normalizedUsername);
+            if (identifierLimited) {
+                return { status: 429, body: errorBody('Too many attempts for this account identifier. Please try again later.') };
             }
 
             if (isCaptchaRequired(env)) {
@@ -510,6 +757,40 @@ export const handleAuthRequest = async ({ body, env }) => {
                     token,
                     user: { id: user.id, username: user.username, email: user.email } 
                 } 
+            };
+        }
+
+        if (action === 'oauth_exchange') {
+            const providerName = String(provider || '').toLowerCase();
+            if (!SOCIAL_PROVIDERS.has(providerName)) {
+                return { status: 400, body: errorBody('Unsupported social provider') };
+            }
+            if (!code || !redirectUri) {
+                return { status: 400, body: errorBody('Missing OAuth code or redirectUri') };
+            }
+
+            const identity = await exchangeSocialCode({
+                provider: providerName,
+                code: String(code),
+                redirectUri: String(redirectUri),
+                env,
+            });
+
+            const user = await resolveOrCreateSocialUser(sql, identity);
+            const oauthToken = generateToken();
+            await sql`
+                INSERT INTO sessions (id, user_id)
+                VALUES (${oauthToken}, ${user.id});
+            `;
+
+            return {
+                status: 200,
+                body: {
+                    ok: true,
+                    token: oauthToken,
+                    user: { id: user.id, username: user.username, email: user.email },
+                    provider: providerName,
+                },
             };
         }
 

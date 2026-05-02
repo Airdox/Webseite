@@ -106,6 +106,13 @@ button {
   flex-wrap: wrap;
 }
 
+.fd-inline-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .fd-status-pill {
   display: inline-flex;
   align-items: center;
@@ -698,6 +705,19 @@ button {
   font-size: 0.82rem;
 }
 
+.fd-batch-select {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+}
+
+.fd-batch-select input {
+  width: 16px;
+  height: 16px;
+  accent-color: #9adf6b;
+}
+
 .fd-batch-info {
   display: flex;
   flex-direction: column;
@@ -1136,6 +1156,11 @@ button {
 
 .fd-icon-link:hover {
   color: #93c5fd;
+}
+
+.fd-icon-link:disabled {
+  opacity: 0.55;
+  cursor: default;
 }
 
 @media (max-width: 900px) {

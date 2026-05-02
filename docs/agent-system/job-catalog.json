@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "controller": "Master Controller",
+  "allowedAgents": [
+    "Master Controller",
+    "Webbie",
+    "Winnie",
+    "Guardian",
+    "Manni",
+    "Mentor",
+    "Refactor",
+    "Repository"
+  ],
+  "jobs": [
+    {
+      "id": "repository-hygiene-monitor",
+      "title": "Repository hygiene monitor",
+      "owner": "Repository",
+      "execution": "script",
+      "script": "repository:monitor:write",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "pr_review"
+        ],
+        "statuses": [
+          "standard",
+          "deep"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-repository-monitor.json",
+        "docs/agent-system/latest-repository-monitor.md"
+      ]
+    },
+    {
+      "id": "agent-audit-cycle",
+      "title": "Cross-agent quality audit",
+      "owner": "Guardian",
+      "execution": "script",
+      "script": "agent:audit:write",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "pr_review"
+        ],
+        "statuses": [
+          "standard",
+          "deep"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-audit.json",
+        "docs/agent-system/latest-audit.md"
+      ]
+    },
+    {
+      "id": "windows-tool-healthcheck",
+      "title": "Windows Tool deep logic check",
+      "owner": "Winnie",
+      "execution": "script",
+      "script": "desktop:test:logic",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "windows_tool_review"
+        ],
+        "statuses": [
+          "deep",
+          "morning_review"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "enabled": true,
+      "outputs": [
+        "terminal:test-output"
+      ]
+    },
+    {
+      "id": "website-quality-battery",
+      "title": "Website quality battery",
+      "owner": "Webbie",
+      "execution": "script",
+      "script": "quality:web",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "pr_review",
+          "release_candidate"
+        ],
+        "statuses": [
+          "ci"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "enabled": true,
+      "outputs": [
+        "terminal:test-output",
+        "dist/*"
+      ]
+    },
+    {
+      "id": "promotion-growth-review",
+      "title": "Promotion and growth review",
+      "owner": "Manni",
+      "execution": "manual",
+      "manualProtocol": "Create a weekly growth note with conversion and campaign deltas in docs/agent-system/DECISION_LOG.md.",
+      "trigger": {
+        "events": [
+          "weekly_growth_review"
+        ],
+        "statuses": [
+          "weekly"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
+      "id": "learning-gap-update",
+      "title": "Learning gap and runbook update",
+      "owner": "Mentor",
+      "execution": "manual",
+      "manualProtocol": "Update wiki learning loops after repeated failures or major incidents.",
+      "trigger": {
+        "events": [
+          "incident_review",
+          "monthly_learning_review"
+        ],
+        "statuses": [
+          "needs_learning",
+          "monthly"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "enabled": true,
+      "outputs": [
+        "airdoX_wiki/wiki/local-11-feedback-loops.md",
+        "airdoX_wiki/wiki/log.md"
+      ]
+    },
+    {
+      "id": "cross-module-refactor-plan",
+      "title": "Cross-module refactor plan",
+      "owner": "Refactor",
+      "execution": "manual",
+      "manualProtocol": "Prepare an impact analysis and phased plan before any broad restructuring.",
+      "trigger": {
+        "events": [
+          "architecture_drift",
+          "performance_degradation"
+        ],
+        "statuses": [
+          "high_complexity",
+          "high_latency"
+        ]
+      },
+      "changeClass": "gravierend",
+      "requiresMasterApproval": true,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
+      "id": "release-branch-strategy-change",
+      "title": "Release branching strategy change",
+      "owner": "Master Controller",
+      "execution": "manual",
+      "manualProtocol": "Approve or reject branch strategy changes after risk and compatibility review.",
+      "trigger": {
+        "events": [
+          "release_policy_change"
+        ],
+        "statuses": [
+          "proposal"
+        ]
+      },
+      "changeClass": "gravierend",
+      "requiresMasterApproval": true,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md",
+        "docs/agent-system/REPOSITORY_GOVERNANCE.md"
+      ]
+    }
+  ]
+}

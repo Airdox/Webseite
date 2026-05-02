@@ -1,0 +1,29 @@
+{
+  "summary": {
+    "generatedAt": "2026-05-02T08:50:29.422Z",
+    "mode": "deep",
+    "totalSteps": 2,
+    "failedSteps": 0,
+    "ok": true
+  },
+  "steps": [
+    {
+      "name": "agent-jobs-validate",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:jobs:validate",
+      "startedAt": "2026-05-02T08:50:29.424Z",
+      "endedAt": "2026-05-02T08:50:30.183Z",
+      "exitCode": 0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "name": "agent-jobs-run",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:jobs:run -- --event=scheduled_background --status=deep",
+      "startedAt": "2026-05-02T08:50:30.183Z",
+      "endedAt": "2026-05-02T08:50:48.786Z",
+      "exitCode": 0,
+      "ok": true,
+      "error": ""
+    }
+  ]
+}
