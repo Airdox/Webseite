@@ -702,12 +702,12 @@
 
 .hero-socials {
     position: absolute;
-    left: 50%;
+    left: var(--space-8);
     right: auto;
-    transform: translateX(-50%);
-    width: max-content;
-    margin: 0 auto;
-    bottom: var(--hero-social-bottom);
+    transform: none;
+    width: auto;
+    margin: 0;
+    bottom: clamp(16px, 2.2vh, 28px);
     z-index: 22;
     display: flex;
     gap: var(--space-4);
@@ -844,7 +844,7 @@
 }
 
 .cookie-banner-visible .hero-socials {
-    bottom: var(--hero-cookie-social-bottom);
+    bottom: calc(var(--cookie-banner-height, 220px) + 16px);
 }
 
 .cookie-banner-visible .scroll-indicator {
