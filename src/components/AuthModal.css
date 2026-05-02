@@ -93,6 +93,9 @@
 .modal-body {
     padding: 40px;
     overflow-y: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding-bottom: 24px;
 }
 
 .modal-title {
@@ -139,6 +142,11 @@
     color: #fff;
     font-family: inherit;
     transition: all 0.3s ease;
+    line-height: 1.2;
+}
+
+.auth-form input::placeholder {
+    color: rgba(255, 255, 255, 0.35);
 }
 
 .auth-form input:focus {
@@ -163,6 +171,7 @@
     background: rgba(0, 0, 0, 0.2);
     text-align: center;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
 }
 
 .modal-footer p {
@@ -259,6 +268,19 @@
     background: rgba(0, 245, 255, 0.15);
 }
 
+.modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(255, 0, 170, 0.8), rgba(0, 245, 255, 0.8));
+    border-radius: 999px;
+}
+
 @media (max-width: 640px) {
     .modal-overlay {
         align-items: flex-start;
@@ -272,6 +294,7 @@
 
     .modal-body {
         padding: 24px 18px;
+        padding-bottom: 20px;
     }
 
     .auth-error-row {

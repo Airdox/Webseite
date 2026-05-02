@@ -85,13 +85,13 @@ a.detail-value:hover {
     margin-bottom: var(--space-8);
 }
 
-.form-group {
+.booking-form .form-group {
     position: relative;
     margin-bottom: var(--space-6);
 }
 
-.form-group input,
-.form-group textarea {
+.booking-form .form-group input,
+.booking-form .form-group textarea {
     width: 100%;
     padding: var(--space-4) 0;
     background: transparent;
@@ -103,13 +103,13 @@ a.detail-value:hover {
     transition: border-color 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
+.booking-form .form-group input:focus,
+.booking-form .form-group textarea:focus {
     outline: none;
     border-color: var(--neon-cyan);
 }
 
-.form-group label {
+.booking-form .form-group label {
     position: absolute;
     top: var(--space-4);
     left: 0;
@@ -119,11 +119,11 @@ a.detail-value:hover {
     transition: all 0.3s ease;
 }
 
-.form-group.focused label,
-.form-group input:focus~label,
-.form-group textarea:focus~label,
-.form-group input:not(:placeholder-shown)~label,
-.form-group textarea:not(:placeholder-shown)~label {
+.booking-form .form-group.focused label,
+.booking-form .form-group input:focus~label,
+.booking-form .form-group textarea:focus~label,
+.booking-form .form-group input:not(:placeholder-shown)~label,
+.booking-form .form-group textarea:not(:placeholder-shown)~label {
     top: -10px;
     font-size: 0.75rem;
     color: var(--neon-cyan);
@@ -139,8 +139,8 @@ a.detail-value:hover {
     transition: width 0.3s ease;
 }
 
-.form-group input:focus~.input-line,
-.form-group textarea:focus~.input-line {
+.booking-form .form-group input:focus~.input-line,
+.booking-form .form-group textarea:focus~.input-line {
     width: 100%;
 }
 
