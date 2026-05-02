@@ -64,11 +64,6 @@ export const sets = [
         title: '4 My Recordz'
       },
       {
-        time: 'Alok',
-        artist: 'FAANGS',
-        title: 'SCRIPT - Substance (Extended Mix) - 00:33:00'
-      },
-      {
         time: '',
         artist: 'Dubfire',
         title: 'RibCage (Dense & Pika Remix)'
@@ -112,11 +107,6 @@ export const sets = [
         time: '',
         artist: 'STTS',
         title: 'Sky Pushing'
-      },
-      {
-        time: 'Skrillex',
-        artist: 'PEEKABOO',
-        title: 'Fireboy DML, Flowdan - 6 Million (feat. Skrillex) (feat. Skrillex) - 01:02:24'
       },
       {
         time: '',
