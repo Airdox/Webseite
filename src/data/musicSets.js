@@ -1,5 +1,132 @@
 export const sets = [
   {
+    id: 'recording_2026_05_02',
+    title: 'REC-2026-05-02',
+    date: 'MAY 2026',
+    file: '01 REC-2026-05-02.mp3',
+    duration: '1:22:21',
+    isNew: true,
+    vinylColor: '#9adf6b',
+    tracks: [
+      {
+        time: '',
+        artist: 'Tanith',
+        title: 'Triage (Shifting Bodies) (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'Rene Bourgeois, Elke Brauweiler',
+        title: 'Je Danse feat. Elke Brauweiler (Dan Caster & Rene Bougeois Club Mix)'
+      },
+      {
+        time: '',
+        artist: 'Charlotte de Witte, Conduit (US)',
+        title: 'A Prayer for the Dancefloor (feat. Conduit) (Avalon & GMS Remix)'
+      },
+      {
+        time: '',
+        artist: 'White Horse',
+        title: 'White Horse (If You Wanna Ride) (Dub)'
+      },
+      {
+        time: '',
+        artist: 'Prok & Fitch',
+        title: 'Motor City (Original Mix)'
+      },
+      {
+        time: '',
+        artist: '140-Airdox-Rauchst du Raus',
+        title: 'Dense & Pika'
+      },
+      {
+        time: '',
+        artist: 'Martin Books',
+        title: 'Game (Original Mix)'
+      },
+      {
+        time: '',
+        artist: 'Patrick Arbez',
+        title: 'Der rote Rabauke (deKai (Berlin) Remix)'
+      },
+      {
+        time: '',
+        artist: '140-Airdox-Rauchst du Raus',
+        title: 'Marcel Dettmann'
+      },
+      {
+        time: '',
+        artist: 'Barnt',
+        title: 'Geffen'
+      },
+      {
+        time: 'Alok',
+        artist: 'FAANGS',
+        title: 'SCRIPT - Substance (Extended Mix) - 00:34:38'
+      },
+      {
+        time: '',
+        artist: 'Taylr Renee, CID',
+        title: 'Fancy $hit (Skepsis Remix)'
+      },
+      {
+        time: '',
+        artist: '140-Airdox-Rauchst du Raus',
+        title: 'neonman'
+      },
+      {
+        time: '',
+        artist: 'Martin Books, Signalfarbe Schwarz',
+        title: 'Simone feat. Signalfarbe Schwarz (Original Mix)'
+      },
+      {
+        time: '',
+        artist: '140-Airdox-Rauchst du Raus',
+        title: 'Martin books -Perfection'
+      },
+      {
+        time: '',
+        artist: 'T78, Angelala',
+        title: 'No Guestlist (Extended Mix)'
+      },
+      {
+        time: 'Ali Love',
+        artist: 'Vintage Culture',
+        title: 'Max Styler - Freaky 1 (Original Mix) - 00:55:16'
+      },
+      {
+        time: '',
+        artist: '140-Airdox-Rauchst du Raus',
+        title: 'Enrico Sangiuliano-Alleanza, C'
+      },
+      {
+        time: '',
+        artist: '140-Airdox-Rauchst du Raus',
+        title: 'D4VID  LD 25'
+      },
+      {
+        time: '',
+        artist: '140-Airdox-Rauchst du Raus',
+        title: 'martin Books'
+      },
+      {
+        time: '',
+        artist: 'Silversurfer',
+        title: 'Silversurfer & Kikki'
+      },
+      {
+        time: '',
+        artist: 'Lokiboi',
+        title: 'Ok'
+      },
+      {
+        time: '',
+        artist: '140-Airdox-Rauchst du Raus',
+        title: 'LxS_-_Showroom_Dummies_(Original_Mix) (1)'
+      }
+    ],
+    publishedAt: '2026-05-02'
+  },
+  {
     id: 'recording_2026_05_01',
     title: 'REC-2026-05-01',
     date: 'MAY 2026',
