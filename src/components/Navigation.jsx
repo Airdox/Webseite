@@ -136,21 +136,21 @@ const Navigation = ({ onOpenAuth = () => {} }) => {
                     <div className="nav-ctas">
                         <button
                             type="button"
-                            className="nav-auth-btn interactive"
+                            className="nav-action-btn nav-action-login interactive"
                             onClick={() => onOpenAuth('login')}
                         >
                             {t('nav.login')}
                         </button>
                         <button
                             type="button"
-                            className="nav-register-btn interactive"
+                            className="nav-action-btn nav-action-register interactive"
                             onClick={() => onOpenAuth('register')}
                         >
                             {t('nav.register')}
                         </button>
                         <a
                             href="mailto:airdox82@gmail.com"
-                            className="nav-cta btn btn-primary interactive"
+                            className="nav-action-btn nav-action-contact interactive"
                             onClick={() => trackNav('contact_email')}
                         >
                             {t('nav.contact')}

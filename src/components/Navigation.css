@@ -149,47 +149,75 @@
 .nav-ctas {
     display: flex;
     align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-3);
 }
 
-.nav-auth-btn {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.nav-auth-btn:hover {
-    color: var(--neon-pink);
-    text-shadow: none;
-}
-
-.nav-register-btn {
+.nav-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    min-width: 126px;
+    padding: 0 16px;
     background: rgba(0, 245, 255, 0.05);
     border: 1px solid rgba(0, 245, 255, 0.22);
     color: var(--neon-cyan);
-    padding: 7px 14px;
     border-radius: 6px;
     font-family: var(--font-mono);
     font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
     letter-spacing: 0.12em;
     cursor: pointer;
-    transition: all 0.3s ease;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.nav-register-btn:hover {
+.nav-action-btn:hover {
     background: rgba(0, 245, 255, 0.1);
+    border-color: rgba(0, 245, 255, 0.38);
+    color: #a7f9ff;
     box-shadow: 0 0 10px rgba(0, 245, 255, 0.16);
-    transform: none;
 }
 
-.nav-cta {
-    padding: var(--space-2) var(--space-6);
-    font-size: var(--text-xs);
+.nav-action-login {
+    color: var(--text-secondary);
+    border-color: rgba(154, 223, 107, 0.32);
+    background: rgba(154, 223, 107, 0.08);
+}
+
+.nav-action-login:hover {
+    color: #d7f5c1;
+    border-color: rgba(154, 223, 107, 0.5);
+    background: rgba(154, 223, 107, 0.14);
+    box-shadow: 0 0 10px rgba(154, 223, 107, 0.18);
+}
+
+.nav-action-register {
+    color: var(--neon-cyan);
+    border-color: rgba(0, 245, 255, 0.32);
+    background: rgba(0, 245, 255, 0.08);
+}
+
+.nav-action-register:hover {
+    color: #a7f9ff;
+    border-color: rgba(0, 245, 255, 0.5);
+    background: rgba(0, 245, 255, 0.14);
+    box-shadow: 0 0 10px rgba(0, 245, 255, 0.2);
+}
+
+.nav-action-contact {
+    color: #f4d9ff;
+    border-color: rgba(255, 0, 170, 0.36);
+    background: rgba(255, 0, 170, 0.12);
+}
+
+.nav-action-contact:hover {
+    color: #ffe9f8;
+    border-color: rgba(255, 0, 170, 0.56);
+    background: rgba(255, 0, 170, 0.18);
+    box-shadow: 0 0 10px rgba(255, 0, 170, 0.24);
 }
 
 /* Mobile Auth Buttons */
