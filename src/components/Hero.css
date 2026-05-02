@@ -12,10 +12,10 @@
     overflow: hidden;
     background: var(--bg-void);
     cursor: none;
-    --hero-social-bottom: clamp(96px, 11vh, 132px);
-    --hero-scroll-bottom: clamp(14px, 2.4vh, 28px);
-    --hero-cookie-social-bottom: calc(var(--cookie-banner-height, 220px) + 96px);
-    --hero-cookie-scroll-bottom: calc(var(--cookie-banner-height, 220px) + 14px);
+    --hero-social-bottom: clamp(44px, 5vh, 72px);
+    --hero-scroll-bottom: clamp(8px, 1.2vh, 16px);
+    --hero-cookie-social-bottom: calc(var(--cookie-banner-height, 220px) + 44px);
+    --hero-cookie-scroll-bottom: calc(var(--cookie-banner-height, 220px) + 8px);
 }
 
 /* =====================================================
