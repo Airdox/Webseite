@@ -12,6 +12,10 @@
     overflow: hidden;
     background: var(--bg-void);
     cursor: none;
+    --hero-social-bottom: clamp(96px, 11vh, 132px);
+    --hero-scroll-bottom: clamp(14px, 2.4vh, 28px);
+    --hero-cookie-social-bottom: calc(var(--cookie-banner-height, 220px) + 96px);
+    --hero-cookie-scroll-bottom: calc(var(--cookie-banner-height, 220px) + 14px);
 }
 
 /* =====================================================
@@ -698,9 +702,13 @@
 
 .hero-socials {
     position: absolute;
-    left: var(--space-8);
-    bottom: var(--space-8);
-    z-index: 20;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: max-content;
+    margin: 0 auto;
+    bottom: var(--hero-social-bottom);
+    z-index: 22;
     display: flex;
     gap: var(--space-4);
     justify-content: center;
@@ -741,12 +749,12 @@
 
 .scroll-indicator {
     position: absolute;
-    bottom: var(--space-8);
+    bottom: var(--hero-scroll-bottom);
     left: 0;
     right: 0;
     width: max-content;
     margin: 0 auto;
-    z-index: 20;
+    z-index: 21;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -836,11 +844,11 @@
 }
 
 .cookie-banner-visible .hero-socials {
-    bottom: calc(var(--cookie-banner-height, 220px) + var(--space-4));
+    bottom: var(--hero-cookie-social-bottom);
 }
 
 .cookie-banner-visible .scroll-indicator {
-    bottom: calc(var(--cookie-banner-height, 220px) + var(--space-4));
+    bottom: var(--hero-cookie-scroll-bottom);
 }
 
 /* =====================================================

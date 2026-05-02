@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{brandName}} EPK</title>
+    <style>
+      :root {
+        --bg: {{palette.bg}};
+        --surface: {{palette.surface}};
+        --accent-cyan: {{palette.accentCyan}};
+        --accent-lime: {{palette.accentLime}};
+        --text-primary: {{palette.textPrimary}};
+        --text-muted: {{palette.textMuted}};
+        --border: {{palette.border}};
+        --font: {{typography.fontFamily}};
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text-primary);
+        font-family: var(--font);
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 16mm;
+        background: linear-gradient(180deg, #050608 0%, #0b0f14 100%);
+      }
+
+      .header {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10mm 8mm;
+        background: rgba(15, 20, 26, 0.85);
+      }
+
+      .brand {
+        font-size: 34px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin: 0;
+      }
+
+      .tagline {
+        margin: 4px 0 0;
+        color: var(--accent-cyan);
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+      .title {
+        margin: 14mm 0 2mm;
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .subtitle {
+        margin: 0 0 10mm;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      h2 {
+        margin: 0 0 4mm;
+        font-size: 18px;
+        color: var(--accent-lime);
+      }
+
+      .section {
+        margin-top: 10mm;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: rgba(15, 20, 26, 0.7);
+        padding: 7mm;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6mm;
+      }
+
+      p,
+      li {
+        font-size: 12.5px;
+        line-height: 1.55;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .links a {
+        color: var(--accent-cyan);
+        text-decoration: none;
+      }
+
+      .footer {
+        margin-top: 12mm;
+        border-top: 1px solid var(--border);
+        padding-top: 4mm;
+        color: var(--text-muted);
+        font-size: 11px;
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="header">
+        <h1 class="brand">{{brandName}}</h1>
+        <p class="tagline">{{identity.tagline}}</p>
+      </header>
+
+      <h2 class="title">{{content.title}}</h2>
+      <p class="subtitle">{{content.subtitle}}</p>
+
+      <section class="section">
+        <h2>Bio</h2>
+        {{content.bioHtml}}
+      </section>
+
+      <section class="section">
+        <h2>Highlights</h2>
+        {{content.highlightsHtml}}
+      </section>
+
+      <section class="section grid">
+        <div>
+          <h2>Booking</h2>
+          {{content.bookingHtml}}
+        </div>
+        <div class="links">
+          <h2>Links</h2>
+          {{content.linksHtml}}
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>{{brandName}} | {{identity.website}}</span>
+        <span>Updated: {{content.updatedAt}}</span>
+      </footer>
+    </main>
+  </body>
+</html>

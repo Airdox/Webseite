@@ -17,18 +17,18 @@ const EPKSection = () => {
                         <div className="epk-icon">📸</div>
                         <h3>{t('epk.pressPhotosTitle')}</h3>
                         <p>{t('epk.pressPhotosText')}</p>
-                        <button className="btn btn-outline btn-block" onClick={() => alert(t('epk.zipPlaceholder'))}>
+                        <a className="btn btn-outline btn-block" href="/epk/airdox-press-assets.txt" download>
                             {t('epk.downloadZip')}
-                        </button>
+                        </a>
                     </div>
 
                     <div className="epk-item airdox-card reveal stagger-2">
                         <div className="epk-icon">⚙️</div>
                         <h3>{t('epk.riderTitle')}</h3>
                         <p>{t('epk.riderText')}</p>
-                        <button className="btn btn-outline btn-block" onClick={() => alert(t('epk.pdfPlaceholder'))}>
+                        <a className="btn btn-outline btn-block" href="/epk/airdox-epk.pdf" download>
                             {t('epk.downloadPdf')}
-                        </button>
+                        </a>
                     </div>
                 </div>
 

@@ -4,7 +4,7 @@
 
 ## Active Agents
 
-<!-- Liste der beteiligten Superagenten: Webbie, Winnie, Guardian, Manni, Mentor, Refactor, Repository -->
+<!-- Liste der beteiligten Superagenten: Webbie, Winnie, Guardian, Manni, Designer, Mentor, Refactor, Repository -->
 
 ## Event / Status Trigger
 

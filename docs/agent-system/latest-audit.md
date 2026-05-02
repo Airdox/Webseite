@@ -1,16 +1,16 @@
 # AIRDOX Agent Audit
 
-Generated: 2026-05-02T08:53:57.949Z
+Generated: 2026-05-02T09:09:42.825Z
 Repository: D:\webseeite-main
 Controller: Master Controller
 
 ## Summary
 
-- Average score: 89/100
+- Average score: 90/100
 - Gate status: pass
 - Test files: 14
 - CSS files: 20
-- Uncommitted paths: 86
+- Uncommitted paths: 11
 
 ## Agent Scores
 
@@ -22,7 +22,7 @@ Controller: Master Controller
 | Manni | 89/100 | Promotion, Branding, EPK, Community, Conversion und Wiedererkennbarkeit. |
 | Mentor | 100/100 | Wissensspeicherung, Lernschleifen, Prozessverbesserung und Agenten-Weiterentwicklung. |
 | Refactor | 86/100 | Systemoptimierung, Verschlankung, Architekturqualitaet und technische Effizienz. |
-| Repository | 87/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
+| Repository | 95/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
 
 ## Webbie
 
@@ -69,7 +69,7 @@ Next actions:
 - PASS: Ausreichende Testdateien - 14 Test-/Spec-Dateien gefunden.
 - WARN: Worker/API-Testsignale - Server-/API-Code ist vorhanden; dedizierte Testsignale werden geprueft.
 - PASS: Web-CI-Gate vorhanden - Warnung, wenn GitHub Actions kein Web-Lint/Test/Build-Gate enthaelt.
-- WARN: Arbeitsbaum sauber - 86 uncommitted Pfade gefunden; vor Releases klaeren.
+- WARN: Arbeitsbaum sauber - 11 uncommitted Pfade gefunden; vor Releases klaeren.
 - PASS: Env-Beispiel vorhanden - .env.example ist fuer sichere Konfiguration vorhanden.
 
 Next actions:
@@ -135,7 +135,7 @@ Next actions:
 - PASS: Branching-Hinweise vorhanden - Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist.
 - PASS: Commit-Konvention dokumentiert - Warnung, wenn Commit-Typen nicht klar festgelegt sind.
 - PASS: Change-Tracking vorhanden - Warnung, wenn Entscheidungen oder Audit-Historie fehlen.
-- WARN: Arbeitsbaum releasebereit - 86 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
+- PASS: Arbeitsbaum releasebereit - 11 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
 - WARN: Parallele Deployment-Konfigs begrenzt - Warnung, wenn zu viele Deployment-Targets parallel gepflegt werden.
 - PASS: Gefaehrdete Artefaktordner ignoriert - Warnung, wenn Build-/Wrangler-/Release-Artefakte nicht sauber ignoriert werden.
 

@@ -1,0 +1,382 @@
+{
+  "generatedAt": "2026-05-02T09:10:01.363Z",
+  "agent": "Manni",
+  "scenario": "A",
+  "scenarioLabel": "Organischer Engine-Aufbau",
+  "sourceSetCount": 4,
+  "itemCount": 12,
+  "queue": [
+    {
+      "id": "reel-recording-2026-05-01-00-00-00-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 1,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_01",
+      "sourceSetTitle": "REC-2026-05-01",
+      "sourceTrack": "Martin Books - Turn (Original Mix)",
+      "sourceTimestamp": "00:00:00",
+      "hook": "Warte auf den Drop bei 00:00",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 00:00. Martin Books - Turn (Original Mix). Follow fuer den naechsten Part."
+    },
+    {
+      "id": "reel-recording-2026-05-01-00-00-37-transition-breakdown",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 2,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_01",
+      "sourceSetTitle": "REC-2026-05-01",
+      "sourceTrack": "Patrick Arbez - Black Church (Original Mix)",
+      "sourceTimestamp": "00:00:37",
+      "hook": "So baue ich den Uebergang bei 00:37",
+      "concept": "Split-Screen: Deck A / Deck B plus kurze On-Screen-Erklaerung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "So baue ich den Uebergang bei 00:37. Patrick Arbez - Black Church (Original Mix). Follow fuer den naechsten Part."
+    },
+    {
+      "id": "reel-recording-2026-05-01-00-03-29-crowd-energy",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 3,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_01",
+      "sourceSetTitle": "REC-2026-05-01",
+      "sourceTrack": "Patrick Arbez - Der rote Rabauke (deKai (Berlin) Remix)",
+      "sourceTimestamp": "00:03:29",
+      "hook": "Dieser Moment killt den Floor bei 03:29",
+      "concept": "POV-Cut mit Crowd-Reaction und schneller Wiederholung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Dieser Moment killt den Floor bei 03:29. Patrick Arbez - Der rote Rabauke (deKai (Berlin) Remix). Follow fuer den naechsten Part."
+    },
+    {
+      "id": "reel-recording-2026-05-01-00-07-48-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 4,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_01",
+      "sourceSetTitle": "REC-2026-05-01",
+      "sourceTrack": "Alfred Heinrichs - Bitch (Original Mix)",
+      "sourceTimestamp": "00:07:48",
+      "hook": "Warte auf den Drop bei 07:48",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 07:48. Alfred Heinrichs - Bitch (Original Mix). Follow fuer den naechsten Part."
+    },
+    {
+      "id": "reel-135-00-00-00-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 1,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "135",
+      "sourceSetTitle": "SET 135",
+      "sourceTrack": "Nicole Moudaber, Space 92 - Eyes On Me (Original Mix)",
+      "sourceTimestamp": "00:00:00",
+      "hook": "Warte auf den Drop bei 00:00",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 00:00. Nicole Moudaber, Space 92 - Eyes On Me (Original Mix). Follow fuer den naechsten Part."
+    },
+    {
+      "id": "reel-135-00-02-26-transition-breakdown",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 2,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "135",
+      "sourceSetTitle": "SET 135",
+      "sourceTrack": "Green Velvet, Harvard Bass - Lazer Beams (Adam Beyer & Massano Remix)",
+      "sourceTimestamp": "00:02:26",
+      "hook": "So baue ich den Uebergang bei 02:26",
+      "concept": "Split-Screen: Deck A / Deck B plus kurze On-Screen-Erklaerung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "So baue ich den Uebergang bei 02:26. Green Velvet, Harvard Bass - Lazer Beams (Adam Beyer & Massano Remix). Follow fuer den naechsten Part."
+    },
+    {
+      "id": "reel-135-00-06-30-crowd-energy",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 3,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "135",
+      "sourceSetTitle": "SET 135",
+      "sourceTrack": "METODI, Marie Vaunt - I Am Free (Oscar L Remix)",
+      "sourceTimestamp": "00:06:30",
+      "hook": "Dieser Moment killt den Floor bei 06:30",
+      "concept": "POV-Cut mit Crowd-Reaction und schneller Wiederholung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Dieser Moment killt den Floor bei 06:30. METODI, Marie Vaunt - I Am Free (Oscar L Remix). Follow fuer den naechsten Part."
+    },
+    {
+      "id": "reel-135-00-11-49-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 4,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "135",
+      "sourceSetTitle": "SET 135",
+      "sourceTrack": "Chuckie, LMFAO - Let The Bass Kick In Miami Bitch (Extended Mix)",
+      "sourceTimestamp": "00:11:49",
+      "hook": "Warte auf den Drop bei 11:49",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 11:49. Chuckie, LMFAO - Let The Bass Kick In Miami Bitch (Extended Mix). Follow fuer den naechsten Part."
+    },
+    {
+      "id": "reel-recording-2026-04-12-00-00-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 1,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_04_12",
+      "sourceSetTitle": "REC 12.04.2026",
+      "sourceTrack": "Nico Moreno - Purple Widow",
+      "sourceTimestamp": "00:00",
+      "hook": "Warte auf den Drop bei 00:00",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 00:00. Nico Moreno - Purple Widow. Follow fuer den naechsten Part."
+    },
+    {
+      "id": "reel-recording-2026-04-12-05-42-transition-breakdown",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 2,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_04_12",
+      "sourceSetTitle": "REC 12.04.2026",
+      "sourceTrack": "Klangkuenstler - Weltschmerz",
+      "sourceTimestamp": "05:42",
+      "hook": "So baue ich den Uebergang bei 05:42",
+      "concept": "Split-Screen: Deck A / Deck B plus kurze On-Screen-Erklaerung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "So baue ich den Uebergang bei 05:42. Klangkuenstler - Weltschmerz. Follow fuer den naechsten Part."
+    },
+    {
+      "id": "reel-recording-2026-04-12-11-15-crowd-energy",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 3,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_04_12",
+      "sourceSetTitle": "REC 12.04.2026",
+      "sourceTrack": "I Hate Models - Daydream",
+      "sourceTimestamp": "11:15",
+      "hook": "Dieser Moment killt den Floor bei 11:15",
+      "concept": "POV-Cut mit Crowd-Reaction und schneller Wiederholung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Dieser Moment killt den Floor bei 11:15. I Hate Models - Daydream. Follow fuer den naechsten Part."
+    },
+    {
+      "id": "reel-recording-2026-04-12-18-30-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-02T09:08:48.901Z",
+      "updatedAt": "2026-05-02T09:10:01.363Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 4,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_04_12",
+      "sourceSetTitle": "REC 12.04.2026",
+      "sourceTrack": "Airdox - Unreleased ID",
+      "sourceTimestamp": "18:30",
+      "hook": "Warte auf den Drop bei 18:30",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 18:30. Airdox - Unreleased ID. Follow fuer den naechsten Part."
+    }
+  ]
+}

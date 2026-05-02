@@ -16,12 +16,20 @@ Durchgaengiger Ablauf von Orchestrierung bis Job-Ausfuehrung mit klarer Gate-Log
    - Execution-Mode
    - Approval-Pflicht fuer gravierende Jobs
 4. Ausfuehrung mit `npm run agent:jobs:run -- --event=<event> --status=<status>`.
+   Fuer Social-Live-Jobs zusaetzlich: `--user-approved=<job-id[,job-id...]>`.
 5. Runner schreibt Ergebnisberichte:
    - `docs/agent-system/latest-job-run.json`
    - `docs/agent-system/latest-job-run.md`
 6. Hintergrundautomation ruft den Ablauf periodisch auf:
    - `npm run agents:background:deep`
    - Workflow: `.github/workflows/agent-background-monitor.yml`
+
+Manni Social Execution:
+
+- Reel-Queue-Generator: `npm run manni:reels:generate`
+- schreibt:
+  - `docs/agent-system/manni-reel-queue.json`
+  - `docs/agent-system/manni-reel-weekly-plan.md`
 
 ## Manueller Job-Dispatch (GitHub)
 
@@ -34,6 +42,7 @@ Inputs:
 - `event`
 - `status`
 - `approved` (kommagetrennte Freigaben fuer gravierende Job-IDs)
+- `user_approved` (kommagetrennte persoenliche Nutzer-Freigaben fuer Social-Live-Job-IDs)
 
 Der Workflow validiert zuerst den Job-Katalog und fuehrt danach genau die Jobs fuer Event/Status aus.
 
@@ -41,6 +50,7 @@ Der Workflow validiert zuerst den Job-Katalog und fuehrt danach genau die Jobs f
 
 - Jobs mit `changeClass: gravierend` werden nur mit Master-Freigabe ausgefuehrt.
 - Ohne Freigabe bleiben sie im Run-Log als `skipped`.
+- Jobs mit `outputVisibility: external_live` werden ohne persoenliches Nutzer-OK ebenfalls als `skipped` protokolliert.
 
 ## CI-Regel
 

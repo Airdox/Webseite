@@ -7,6 +7,7 @@
     "Winnie",
     "Guardian",
     "Manni",
+    "Designer",
     "Mentor",
     "Refactor",
     "Repository"
@@ -118,7 +119,7 @@
       "title": "Promotion and growth review",
       "owner": "Manni",
       "execution": "manual",
-      "manualProtocol": "Create a weekly growth note with conversion and campaign deltas in docs/agent-system/DECISION_LOG.md.",
+      "manualProtocol": "Run the weekly Manni growth cycle from docs/agent-system/MANNI_GROWTH_PLAYBOOK.md and log winners/losers plus next experiments in docs/agent-system/DECISION_LOG.md.",
       "trigger": {
         "events": [
           "weekly_growth_review"
@@ -129,6 +130,207 @@
       },
       "changeClass": "non_gravierend",
       "requiresMasterApproval": false,
+      "domain": "social_media",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
+      "id": "growth-scenario-selection",
+      "title": "Select growth scenario and test matrix",
+      "owner": "Manni",
+      "execution": "manual",
+      "manualProtocol": "Pick scenario A/B/C/D from MANNI_GROWTH_PLAYBOOK.md based on current KPIs and define the weekly test matrix.",
+      "trigger": {
+        "events": [
+          "weekly_growth_review",
+          "release_candidate",
+          "reach_drop"
+        ],
+        "statuses": [
+          "weekly",
+          "planning",
+          "incident"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "social_media",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md",
+        "docs/agent-system/MANNI_GROWTH_PLAYBOOK.md"
+      ]
+    },
+    {
+      "id": "design-creative-pack",
+      "title": "Create weekly social creative pack",
+      "owner": "Designer",
+      "execution": "manual",
+      "manualProtocol": "Create and review hooks, visual style directions, frame scripts and thumbnail concepts for Manni's weekly queue.",
+      "trigger": {
+        "events": [
+          "weekly_growth_review",
+          "release_candidate"
+        ],
+        "statuses": [
+          "weekly",
+          "planning"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "social_media",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
+      "id": "designer-pdf-draft-build",
+      "title": "Build AIRDOX branded PDF draft pack",
+      "owner": "Designer",
+      "execution": "script",
+      "script": "brand:epk",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "weekly_growth_review",
+          "scheduled_background",
+          "release_candidate"
+        ],
+        "statuses": [
+          "weekly",
+          "planning",
+          "deep"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "brand_assets",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "public/epk/airdox-epk.html"
+      ]
+    },
+    {
+      "id": "designer-pdf-live-build",
+      "title": "Build AIRDOX branded live PDF",
+      "owner": "Designer",
+      "execution": "script",
+      "script": "brand:epk:pdf",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "manual_publish_request",
+          "release_candidate"
+        ],
+        "statuses": [
+          "pending_user_ok",
+          "ci"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "brand_assets",
+      "outputVisibility": "external_live",
+      "requiresUserApproval": true,
+      "enabled": true,
+      "outputs": [
+        "public/epk/airdox-epk.pdf"
+      ]
+    },
+    {
+      "id": "manni-reel-factory",
+      "title": "Generate reel queue and weekly social plan",
+      "owner": "Manni",
+      "execution": "script",
+      "script": "manni:reels:generate",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "weekly_growth_review",
+          "manual_background",
+          "release_candidate"
+        ],
+        "statuses": [
+          "weekly",
+          "deep",
+          "standard",
+          "planning"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "social_media",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/manni-reel-queue.json",
+        "docs/agent-system/manni-reel-weekly-plan.md"
+      ]
+    },
+    {
+      "id": "growth-winner-amplification",
+      "title": "Amplify proven winner assets",
+      "owner": "Manni",
+      "execution": "manual",
+      "manualProtocol": "Escalate only top-performing organic assets into paid amplification and document budget/creative rationale.",
+      "trigger": {
+        "events": [
+          "winner_detected",
+          "release_candidate"
+        ],
+        "statuses": [
+          "scale",
+          "ci"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "social_media",
+      "outputVisibility": "external_live",
+      "requiresUserApproval": true,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
+      "id": "social-live-publish-gate",
+      "title": "Personal approval gate before live social posting",
+      "owner": "Manni",
+      "execution": "manual",
+      "manualProtocol": "Before any external posting or paid activation goes live, get explicit personal user OK and log it in DECISION_LOG.",
+      "trigger": {
+        "events": [
+          "winner_detected",
+          "release_candidate",
+          "manual_publish_request"
+        ],
+        "statuses": [
+          "scale",
+          "ci",
+          "pending_user_ok"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "social_media",
+      "outputVisibility": "external_live",
+      "requiresUserApproval": true,
       "enabled": true,
       "outputs": [
         "docs/agent-system/DECISION_LOG.md"

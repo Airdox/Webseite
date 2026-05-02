@@ -11,6 +11,7 @@ const allowedAgents = new Set([
   'Winnie',
   'Guardian',
   'Manni',
+  'Designer',
   'Mentor',
   'Refactor',
   'Repository',

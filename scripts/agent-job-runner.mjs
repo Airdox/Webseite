@@ -20,6 +20,8 @@ const eventName = getArgValue('--event', 'manual_background');
 const statusName = getArgValue('--status', 'standard');
 const approvedList = getArgValue('--approved', '');
 const approvedJobs = new Set(approvedList.split(',').map((item) => item.trim()).filter(Boolean));
+const userApprovedList = getArgValue('--user-approved', '');
+const userApprovedJobs = new Set(userApprovedList.split(',').map((item) => item.trim()).filter(Boolean));
 
 const runNpm = (scriptName, scriptArgs = []) => {
   const npmExecPath = process.env.npm_execpath || '';
@@ -100,6 +102,15 @@ if (!existsSync(catalogPath)) {
         ...base,
         result: 'skipped',
         detail: 'Master Controller approval required.',
+      });
+      continue;
+    }
+
+    if (job.outputVisibility === 'external_live' && job.requiresUserApproval === true && !userApprovedJobs.has(job.id)) {
+      results.push({
+        ...base,
+        result: 'skipped',
+        detail: 'Personal user approval required before live/external output.',
       });
       continue;
     }

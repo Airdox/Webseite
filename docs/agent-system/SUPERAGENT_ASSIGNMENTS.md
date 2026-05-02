@@ -7,6 +7,14 @@ Stand: 2026-05-02
 Kein Superagent darf eigenstaendig gravierende Aenderungen mergen, releasen oder produktionswirksam ausfuehren.
 Alle gravierenden Aktionen laufen ueber den Master Controller und brauchen vorab dessen Freigabe.
 
+Strategische Prioritaet:
+- Primaeres Systemziel ist Reichweitenwachstum und nachhaltiger Audience-Aufbau.
+- Manni fuehrt dieses Ziel operativ ueber `docs/agent-system/MANNI_GROWTH_PLAYBOOK.md`.
+
+Informationspflicht:
+- Fehlen fuer eine Aufgabe Daten oder Kontext, muss der zustaendige Agent aktiv nachfragen oder die Informationen eigenstaendig beschaffen.
+- "Kein Ergebnis mangels Daten" ist nur zulaessig, wenn Beschaffung und Rueckfragen dokumentiert wurden.
+
 ## Aufgaben nach Faehigkeit und Ereignis
 
 | Agent | Kernfaehigkeit | Trigger (Ereignis/Status) | Ausfuehrung ohne Master Controller | Ausfuehrung mit Master Controller |
@@ -15,6 +23,7 @@ Alle gravierenden Aktionen laufen ueber den Master Controller und brauchen vorab
 | Winnie | Windows Tool / Flight Deck | Import/Publish-Probleme, Crash-Hinweise, Pipeline-Fehler, neue Desktop-Funktion | Diagnose, Testlauf, Patch-Vorschlag | Produktive Pipeline-Aenderung, Release-Build, sensitive IPC-Aenderung |
 | Guardian | QA und Risiko | fehlgeschlagene Tests, Lint-Fehler, Security-Risiko, Inkonsistenz | Findings, Gate-Block, Risikoeinschaetzung | Freigabe von Ausnahmen/Reduktion von Pflichtgates |
 | Manni | Promotion und Branding | Conversion-Drop, neue Kampagne, EPK-Luecke, Tracking-Unklarheit | Hypothesen, Content-Plan, Messplan | Produktive Kampagnen-/Tracking-Umschaltung mit Technikfolge |
+| Designer | Visual Design und Creative Assets | schwache Hook-Retention, hohe Creative-Fatigue, inkonsistentes Branding | Creative-Pack, Design-Hypothesen, Varianten | finale Social-Live-Assets mit Nutzer-OK |
 | Mentor | Lernsystem und Wissen | wiederholte Fehler, Wissensluecke, veraltete Doku | Wiki-Update, Lernschleife, Runbook-Entwurf | verbindliche Prozessaenderung fuer alle Agenten |
 | Refactor | Verschlankung/Architektur | hohe Komplexitaet, Dupplikate, Wartungsbremsen, Performance-Schuld | Refactor-Plan, Impact-Analyse, PoC | breite Umstrukturierung, moduluebergreifende Umbauten |
 | Repository | Branching, GitHub, Releases | Branch-Konflikte, chaotische Commits, Release-Druck, Strukturdrift | Monitoring, Bereinigungsvorschlag, Policy-Check | Merge-Freigabe, Branch-Regel-Anpassung, Release-Schaltung |
@@ -40,6 +49,13 @@ Eine Aenderung gilt als gravierend, wenn mindestens einer dieser Punkte zutrifft
    - `npm run master:gate`
    - `npm run agent:audit -- --strict`
    - `npm run repository:monitor:strict`
+
+## Pflichtfluss fuer Social-Live-Ausspielung
+
+1. Manni + Designer erzeugen Queue und Creative-Pack.
+2. Vor externer Ausspielung ist persoenliches Nutzer-OK Pflicht.
+3. Job mit `outputVisibility: external_live` bleibt ohne Nutzer-OK blockiert.
+4. Freigabe wird im Decision Log dokumentiert.
 
 ## Dokumentationspflicht
 

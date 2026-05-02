@@ -1,0 +1,37 @@
+{
+  "title": "Electronic Press Kit",
+  "subtitle": "AIRDOX | Berlin Underground Techno",
+  "updatedAt": "2026-05-02",
+  "bio": [
+    "AIRDOX steht fuer kompromisslosen, druckvollen Techno mit Fokus auf Drive, Spannung und klaren Peak-Momenten.",
+    "Sein Set-Ansatz verbindet club-orientierte Energie mit praeziser Dramaturgie fuer lange Dancefloor-Naechte."
+  ],
+  "highlights": [
+    "Aktuelle Recording-Reihe mit kuratierten Tracklists",
+    "Signature Sound zwischen Dark, Industrial und Peak-Time Techno",
+    "Performance-Fokus auf Build-Up, Pressure und kontrollierte Releases"
+  ],
+  "booking": {
+    "setLength": "60 / 90 / 120 Minuten",
+    "format": "DJ Set (USB/CDJ Standard)",
+    "contact": "airdox82@gmail.com"
+  },
+  "links": [
+    {
+      "label": "Website",
+      "url": "https://airdox.info"
+    },
+    {
+      "label": "Instagram",
+      "url": "https://instagram.com/airdox_bln"
+    },
+    {
+      "label": "Mixcloud",
+      "url": "https://www.mixcloud.com/Airdox/"
+    },
+    {
+      "label": "SoundCloud",
+      "url": "https://soundcloud.com/airdox"
+    }
+  ]
+}

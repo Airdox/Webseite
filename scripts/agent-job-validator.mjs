@@ -12,6 +12,7 @@ const allowedAgents = new Set([
   'Winnie',
   'Guardian',
   'Manni',
+  'Designer',
   'Mentor',
   'Refactor',
   'Repository',
@@ -64,6 +65,9 @@ if (!existsSync(catalogPath)) {
       const execution = String(job?.execution || '');
       const changeClass = String(job?.changeClass || '');
       const requiresMasterApproval = job?.requiresMasterApproval === true;
+      const requiresUserApproval = job?.requiresUserApproval === true;
+      const domain = String(job?.domain || '');
+      const outputVisibility = String(job?.outputVisibility || '');
 
       if (!idPattern.test(id)) {
         problems.push(`${prefix}.id must use kebab-case and contain only [a-z0-9-].`);
@@ -84,6 +88,9 @@ if (!existsSync(catalogPath)) {
       }
       if (changeClass === 'gravierend' && !requiresMasterApproval) {
         problems.push(`${prefix} gravierend jobs must set requiresMasterApproval=true.`);
+      }
+      if (domain === 'social_media' && outputVisibility === 'external_live' && !requiresUserApproval) {
+        problems.push(`${prefix} social_media external_live jobs must set requiresUserApproval=true.`);
       }
 
       if (execution === 'script') {

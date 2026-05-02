@@ -26,6 +26,7 @@ Zugewiesene Kernaufgabe:
 - Pull Requests:
   - Risiko, Testumfang und betroffene Agentenrollen muessen angegeben sein.
   - Master-Controller-Freigabe ist fuer gravierende Aenderungen Pflicht.
+  - Social-Live-Ausspielungen brauchen persoenliches Nutzer-OK, bevor sie extern sichtbar werden.
   - Quality-Gates muessen gruen sein.
 - Merge-Regeln:
   - Kein direkter Push nach `main`.

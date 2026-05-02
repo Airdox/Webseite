@@ -225,6 +225,24 @@ const agents = [
     ],
   ),
   agent(
+    'designer',
+    'Designer',
+    'Visual Design, Creative Direction und Social-Asset-Qualitaet.',
+    [
+      check('Manni Growth Playbook vorhanden', exists('docs/agent-system/MANNI_GROWTH_PLAYBOOK.md'), 'Das Growth-Playbook ist als Creative-Rahmen verfuegbar.'),
+      check('Reel Factory skriptbar', hasScript('manni:reels:generate') && exists('scripts/manni-reel-factory.mjs'), 'Reel-Factory ist als wiederholbarer Creative-Generator vorhanden.', { weight: 1.5 }),
+      optional('Reel Queue und Plan vorhanden', exists('docs/agent-system/manni-reel-queue.json') && exists('docs/agent-system/manni-reel-weekly-plan.md'), 'Warnung, wenn kreative Wochenplanung noch nicht erzeugt wurde.', { weight: 1.5 }),
+      optional('Visual Proof-Assets vorhanden', fileCount((filePath) => filePath.startsWith('docs/proof/') && /\.(png|jpg|jpeg|webp)$/i.test(filePath)) >= 6, 'Warnung, wenn kaum visuelle Proof-Assets fuer Creative-Qualitaet vorhanden sind.'),
+      optional('UI-Brandflaechen gepflegt', exists('src/components/Hero.css') && exists('src/components/Footer.css'), 'Warnung, wenn zentrale Brandflaechen fuer visuelle Konsistenz fehlen.'),
+      optional('Social-Link-Signale gepflegt', /instagram\.com\/airdox_bln/i.test(read('src/components/Hero.jsx') + read('src/components/Footer.jsx')), 'Warnung, wenn Kern-Social-Links nicht konsistent verankert sind.'),
+    ],
+    [
+      'Hook-Varianten je Reel in 3 visuellen Stilen planen und A/B-testen.',
+      'Thumbnail- und First-Frame-Bibliothek fuer wiedererkennbare Social-Branding-Signale aufbauen.',
+      'Creative-Fatigue woechentlich messen und Gewinner-Styles priorisieren.',
+    ],
+  ),
+  agent(
     'mentor',
     'Mentor',
     'Wissensspeicherung, Lernschleifen, Prozessverbesserung und Agenten-Weiterentwicklung.',

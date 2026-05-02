@@ -1,0 +1,31 @@
+{
+  "brandName": "AIRDOX",
+  "palette": {
+    "bg": "#050608",
+    "surface": "#0f141a",
+    "accentCyan": "#00f0ff",
+    "accentLime": "#9adf6b",
+    "textPrimary": "#f5f8ff",
+    "textMuted": "#9aa6b2",
+    "border": "#263241"
+  },
+  "typography": {
+    "fontFamily": "Inter, Arial, sans-serif",
+    "h1Size": "40px",
+    "h2Size": "24px",
+    "bodySize": "13px",
+    "smallSize": "11px"
+  },
+  "layout": {
+    "pageWidth": "210mm",
+    "pageHeight": "297mm",
+    "padding": "16mm",
+    "sectionGap": "10mm"
+  },
+  "identity": {
+    "website": "https://airdox.info",
+    "instagram": "https://instagram.com/airdox_bln",
+    "contactEmail": "airdox82@gmail.com",
+    "tagline": "Berlin Underground Techno"
+  }
+}

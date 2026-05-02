@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AIRDOX EPK</title>
+    <style>
+      :root {
+        --bg: #050608;
+        --surface: #0f141a;
+        --accent-cyan: #00f0ff;
+        --accent-lime: #9adf6b;
+        --text-primary: #f5f8ff;
+        --text-muted: #9aa6b2;
+        --border: #263241;
+        --font: Inter, Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text-primary);
+        font-family: var(--font);
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 16mm;
+        background: linear-gradient(180deg, #050608 0%, #0b0f14 100%);
+      }
+
+      .header {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10mm 8mm;
+        background: rgba(15, 20, 26, 0.85);
+      }
+
+      .brand {
+        font-size: 34px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin: 0;
+      }
+
+      .tagline {
+        margin: 4px 0 0;
+        color: var(--accent-cyan);
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+      .title {
+        margin: 14mm 0 2mm;
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .subtitle {
+        margin: 0 0 10mm;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      h2 {
+        margin: 0 0 4mm;
+        font-size: 18px;
+        color: var(--accent-lime);
+      }
+
+      .section {
+        margin-top: 10mm;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: rgba(15, 20, 26, 0.7);
+        padding: 7mm;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6mm;
+      }
+
+      p,
+      li {
+        font-size: 12.5px;
+        line-height: 1.55;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .links a {
+        color: var(--accent-cyan);
+        text-decoration: none;
+      }
+
+      .footer {
+        margin-top: 12mm;
+        border-top: 1px solid var(--border);
+        padding-top: 4mm;
+        color: var(--text-muted);
+        font-size: 11px;
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="header">
+        <h1 class="brand">AIRDOX</h1>
+        <p class="tagline">Berlin Underground Techno</p>
+      </header>
+
+      <h2 class="title">Electronic Press Kit</h2>
+      <p class="subtitle">AIRDOX | Berlin Underground Techno</p>
+
+      <section class="section">
+        <h2>Bio</h2>
+        <p>AIRDOX steht fuer kompromisslosen, druckvollen Techno mit Fokus auf Drive, Spannung und klaren Peak-Momenten.</p>
+<p>Sein Set-Ansatz verbindet club-orientierte Energie mit praeziser Dramaturgie fuer lange Dancefloor-Naechte.</p>
+      </section>
+
+      <section class="section">
+        <h2>Highlights</h2>
+        <ul><li>Aktuelle Recording-Reihe mit kuratierten Tracklists</li><li>Signature Sound zwischen Dark, Industrial und Peak-Time Techno</li><li>Performance-Fokus auf Build-Up, Pressure und kontrollierte Releases</li></ul>
+      </section>
+
+      <section class="section grid">
+        <div>
+          <h2>Booking</h2>
+          
+<p><strong>Set Length:</strong> 60 / 90 / 120 Minuten</p>
+<p><strong>Format:</strong> DJ Set (USB/CDJ Standard)</p>
+<p><strong>Contact:</strong> airdox82@gmail.com</p>
+
+        </div>
+        <div class="links">
+          <h2>Links</h2>
+          <ul><li><a href="https://airdox.info">Website</a></li><li><a href="https://instagram.com/airdox_bln">Instagram</a></li><li><a href="https://www.mixcloud.com/Airdox/">Mixcloud</a></li><li><a href="https://soundcloud.com/airdox">SoundCloud</a></li></ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>AIRDOX | https://airdox.info</span>
+        <span>Updated: 2026-05-02</span>
+      </footer>
+    </main>
+  </body>
+</html>

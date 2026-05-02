@@ -1,0 +1,18 @@
+AIRDOX PRESS ASSETS
+Updated: 2026-05-02
+
+Corporate Design Sources:
+- docs/brand/AIRDOX_CORPORATE_DESIGN.md
+- docs/brand/airdox-brand-tokens.json
+
+Primary Links:
+- Website: https://airdox.info
+- Instagram: https://instagram.com/airdox_bln
+- Contact: airdox82@gmail.com
+
+Package note:
+This placeholder can be replaced by a zip package containing:
+- approved press photos
+- logo variants
+- stage/tech rider
+- latest AIRDOX EPK PDF

@@ -18,6 +18,11 @@ on:
         required: false
         type: string
         default: ""
+      user_approved:
+        description: "Comma-separated personally user-approved external live social job ids"
+        required: false
+        type: string
+        default: ""
 
 jobs:
   dispatch:
@@ -40,7 +45,7 @@ jobs:
         run: npm run agent:jobs:validate -- --strict-warnings
 
       - name: Run selected agent jobs
-        run: npm run agent:jobs:run -- --event=${{ inputs.event }} --status=${{ inputs.status }} --approved=${{ inputs.approved }}
+        run: npm run agent:jobs:run -- --event=${{ inputs.event }} --status=${{ inputs.status }} --approved=${{ inputs.approved }} --user-approved=${{ inputs.user_approved }}
 
       - name: Upload job run reports
         if: always()

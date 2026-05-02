@@ -11,7 +11,7 @@ Kontext:
 
 Entscheidung:
 - Das System wird als versioniertes Operating Model plus maschineller Audit umgesetzt.
-- `scripts/agent-audit.mjs` bewertet Webbie, Winnie, Guardian, Manni und Mentor.
+- `scripts/agent-audit.mjs` bewertet Webbie, Winnie, Guardian, Manni, Designer und Mentor.
 - `npm run agent:audit` dient als schneller Statuslauf, `npm run agent:audit:write` speichert den letzten Audit.
 - Echte Dauerautonomie wird nicht behauptet; Lernen entsteht durch Logs, Tests, Wiki-Eintraege und wiederholbare Checks.
 
@@ -33,7 +33,7 @@ Kontext:
 - Der Nutzer hat verbindliche Agentennamen und einen sechsten Superagenten `Refactor` definiert.
 
 Entscheidung:
-- Logs, Audit-Ausgaben und Aufgaben verwenden nur die Namen Master Controller, Webbie, Winnie, Guardian, Manni, Mentor und Refactor.
+- Logs, Audit-Ausgaben und Aufgaben verwenden nur die Namen Master Controller, Webbie, Winnie, Guardian, Manni, Designer, Mentor, Refactor und Repository.
 - `Refactor` wird in `scripts/agent-audit.mjs`, Operating Model und Wiki als eigener Audit-Agent aufgenommen.
 
 Risiko:
@@ -133,3 +133,59 @@ Recheck:
 - `npm run agent:jobs:validate -- --strict-warnings`
 - `npm run agent:jobs:run -- --event=scheduled_background --status=standard`
 - `npm run agents:background:deep`
+
+## 2026-05-02 - Manni Reel Factory fuer aktive Social-Ausfuehrung
+
+Kontext:
+- Das Reichweitenziel verlangt nicht nur Strategie, sondern laufende Social-Ausfuehrung.
+- Bisher fehlte ein operativer Generator, der aus vorhandenem Set-Material direkt Reel-Queues erzeugt.
+
+Entscheidung:
+- `scripts/manni-reel-factory.mjs` erzeugt automatisch Reel-Kandidaten aus aktuellen Sets.
+- Neues Kommando: `npm run manni:reels:generate -- --scenario=<A|B|C|D> --count=<n>`.
+- Outputs:
+  - `docs/agent-system/manni-reel-queue.json`
+  - `docs/agent-system/manni-reel-weekly-plan.md`
+- `job-catalog.json` wurde um den Script-Job `manni-reel-factory` erweitert.
+
+Risiko:
+- Ohne API-Credentials bleibt Publishing halbautomatisch (Queue/Plan statt Direkt-Post).
+- Creative-Qualitaet muss weiterhin ueber KPI-Feedback iteriert werden.
+
+Recheck:
+- `npm run manni:reels:generate -- --scenario=A --count=12`
+- `npm run agent:jobs:validate -- --strict-warnings`
+
+## 2026-05-02 - Persoenliches Nutzer-OK fuer Social-Live und neuer Designer-Agent
+
+Kontext:
+- Social-Ausspielungen sollen nur nach expliziter persoenlicher Freigabe live gehen.
+- Manni braucht einen festen Design-Partner fuer Creative-Packs und konsistente visuelle Ausspielung.
+
+Entscheidung:
+- Neuer fester Agent: `Designer`.
+- Job-System erweitert um Social-Metadaten (`domain`, `outputVisibility`, `requiresUserApproval`).
+- Validator erzwingt: `social_media + external_live` muss `requiresUserApproval=true` haben.
+- Runner blockiert externe Social-Live-Jobs ohne `--user-approved=<job-id>`.
+- Manual Dispatch Workflow erhielt den Input `user_approved`.
+
+Risiko:
+- Ohne aktive Freigabe werden Social-Live-Jobs bewusst blockiert.
+- Zusätzliche Prozessschritte erhöhen Disziplin, aber auch Koordinationsaufwand.
+
+Recheck:
+- `npm run agent:jobs:validate -- --strict-warnings`
+- `npm run agent:jobs:run -- --event=winner_detected --status=scale`
+- `npm run agent:jobs:run -- --event=winner_detected --status=scale --user-approved=growth-winner-amplification,social-live-publish-gate`
+
+## 2026-05-02 - Informationspflicht bei fehlendem Kontext
+
+Kontext:
+- Agentenarbeit soll nicht stoppen, nur weil Daten oder Kontext fehlen.
+
+Entscheidung:
+- Fehlende Informationen muessen aktiv beschafft werden (Repository, Metriken, Doku) oder gezielt beim Nutzer erfragt werden.
+- Blocker ohne Beschaffungsversuch gelten als Prozessfehler.
+
+Recheck:
+- `npm run agent:jobs:validate -- --strict-warnings`

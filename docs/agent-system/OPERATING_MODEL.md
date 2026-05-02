@@ -15,6 +15,7 @@ Kernprinzipien:
 - Qualitaet wird vor Releases durch automatisierte Checks erzwungen.
 - Lernen entsteht aus Audit-Ergebnissen, Fehlern, Nutzerfeedback und dokumentierten Entscheidungen.
 - Gravierende Aenderungen sind nur mit ausdruecklicher Master-Controller-Freigabe erlaubt.
+- Wenn Informationen fehlen, beschafft der Agent sie aktiv (Messdaten, Repo-Kontext, Dokumentation) oder fordert sie gezielt beim Nutzer an.
 
 ## Rollen
 
@@ -25,6 +26,7 @@ Kernprinzipien:
 | Winnie | Windows Flight Deck, lokale Workflows, Daten/Upload/Pipeline | `desktop/*`, `src/desktop/*`, `scripts/*`, `docs/WINDOWS_FLIGHTDECK.md` | Publish-Erfolg, Absturzrate, Build-Erfolg |
 | Guardian | QA, Sicherheit, Konsistenz, technische Schulden | Test-Suites, Lint-Regeln, Release-Gates | Failures, Coverage-Signale, offene Risiken |
 | Manni | Promotion, Branding, EPK, Community, Wachstum | SEO-Meta, EPK, Booking, Newsletter, VIP, Kampagnenplan | Booking-, Newsletter-, VIP- und Play-Events |
+| Designer | Visual Systems, Creative Direction, Social Asset Design | Reel-Konzepte, Hook-Frames, Thumbnail-Richtungen, Visual-Checks | Hook-Retention, Scroll-Stop-Rate, Creative-Fatigue |
 | Mentor | Lernsystem, Wissensspeicher, Skill-Updates | `airdoX_wiki/*`, Agenten-Dokumente, Audit-Historie | geschlossene Wissensluecken, Wiederholfehler |
 | Refactor | Systemoptimierung, Verschlankung, Architekturqualitaet | `scripts/agent-audit.mjs`, Refactor-Wiki, Quality-Skripte | Komplexitaet, Modulgrenzen, Build-/Lint-Sauberkeit |
 | Repository | GitHub- und Branch-Organisation, Versionskontrolle, Release-Flow | `docs/agent-system/REPOSITORY_GOVERNANCE.md`, Workflows, Branch-Regeln | Branch-Disziplin, Commit-Qualitaet, Merge-Stabilitaet |
@@ -64,6 +66,7 @@ Agentennamen sind verbindlich. In Logs, Aufgaben und Berichten duerfen nur diese
 - Winnie
 - Guardian
 - Manni
+- Designer
 - Mentor
 - Refactor
 - Repository
@@ -104,6 +107,7 @@ npm run agent:jobs:run -- --event=manual_background --status=standard
 Regel:
 
 - `changeClass: gravierend` darf nur laufen, wenn `requiresMasterApproval: true` gesetzt ist und eine explizite Freigabe vorliegt.
+- Jobs mit `outputVisibility: external_live` duerfen nur mit `requiresUserApproval: true` und explizitem persoenlichem Nutzer-OK ausgefuehrt werden.
 - Ohne Freigabe werden gravierende Jobs automatisch als `skipped` protokolliert.
 - Jeder Lauf schreibt Reports nach `docs/agent-system/latest-job-run.{json,md}`.
 
@@ -144,6 +148,7 @@ Der Audit bewertet:
 - Winnie: Electron/Flightdeck-Struktur, Services, Tests, Installer- und Dokumentationssignale.
 - Guardian: Build/Lint/Test-Skripte, Testdateien, Arbeitsbaumzustand und Konfigurationsgrundlagen.
 - Manni: Marke, EPK, Booking, Newsletter, VIP, Social- und Suchmaschinen-Signale.
+- Designer: visuelle Konsistenz, Creative-Richtung und Design-Readiness fuer Social-Ausspielungen.
 - Mentor: Wiki, Masterplan, Agentendokumentation, Audit-Skript und Assistant-Testsignale.
 - Refactor: grosse Dateien, Deployment-Drift, generierte Artefakte, Abhaengigkeiten, Modulgrenzen.
 - Repository: Branching, Workflows, Commit-/PR-Standards, Change-Tracking und Release-Disziplin.

@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-05-02T08:53:57.949Z",
+  "generatedAt": "2026-05-02T09:09:42.825Z",
   "repository": "D:\\webseeite-main",
   "controller": {
     "name": "Master Controller",
     "mission": "Priorisierung, Koordination, Release-Entscheidungen und Audit-Auswertung."
   },
   "summary": {
-    "averageScore": 89,
-    "dirtyPathCount": 86,
+    "averageScore": 90,
+    "dirtyPathCount": 11,
     "testFileCount": 14,
     "cssFileCount": 20
   },
@@ -214,7 +214,7 @@
           "label": "Arbeitsbaum sauber",
           "status": "warn",
           "weight": 1.5,
-          "detail": "86 uncommitted Pfade gefunden; vor Releases klaeren."
+          "detail": "11 uncommitted Pfade gefunden; vor Releases klaeren."
         },
         {
           "label": "Env-Beispiel vorhanden",
@@ -428,7 +428,7 @@
       "id": "repository",
       "name": "Repository",
       "mission": "Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet.",
-      "score": 87,
+      "score": 95,
       "checks": [
         {
           "label": "Repository-Governance dokumentiert",
@@ -468,9 +468,9 @@
         },
         {
           "label": "Arbeitsbaum releasebereit",
-          "status": "warn",
+          "status": "pass",
           "weight": 1.5,
-          "detail": "86 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+          "detail": "11 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
         },
         {
           "label": "Parallele Deployment-Konfigs begrenzt",
