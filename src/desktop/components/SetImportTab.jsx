@@ -1,5 +1,5 @@
 import React from 'react';
-import { FolderOpen, PackageCheck, Upload } from 'lucide-react';
+import { FolderOpen, LoaderCircle, PackageCheck, Upload } from 'lucide-react';
 
 const emptyTrack = { time: '', artist: '', title: '' };
 
@@ -20,6 +20,7 @@ const SetImportTab = ({
   onTrackRemove,
   publishLogs,
   lastPublish,
+  publishStatus = null,
 }) => {
   const handleDrop = (event) => {
     event.preventDefault();
@@ -33,6 +34,10 @@ const SetImportTab = ({
     }
   };
   const goLiveEnabled = canGoLive ?? Boolean(draft.id && draft.file);
+  const publishBusy = publishStatus?.state === 'running';
+  const publishModeLabel = publishStatus?.mode === 'live' ? 'Go Live' : 'Publish';
+  const publishStepLabel = publishStatus?.label || 'Bereit';
+  const publishDetail = publishStatus?.detail || 'Noch kein Publish gestartet.';
 
   return (
     <div className="fd-panel-stack">
@@ -90,10 +95,23 @@ const SetImportTab = ({
             <label>Cover Source<input value={draft.sourceImagePath || ''} readOnly /></label>
             <label>Tracklist Source<input value={draft.sourceTracklistPath || ''} readOnly /></label>
           </div>
+          <div
+            className={`fd-publish-status ${publishBusy ? 'running' : publishStatus?.state || 'idle'}`}
+            role="status"
+            aria-live="polite"
+          >
+            <div>
+              <strong>{publishBusy ? `${publishModeLabel} laeuft` : publishStepLabel}</strong>
+              <span>{publishDetail}</span>
+            </div>
+            {publishBusy && <LoaderCircle className="fd-spin" size={18} aria-hidden="true" />}
+          </div>
           <div className="fd-toolbar-actions">
             <button type="button" className="fd-button primary" onClick={onPublish} disabled={busy || !draft.id || !draft.file}>
-              <Upload size={16} />
-              Publish Set
+              {publishBusy && publishStatus?.mode === 'publish'
+                ? <LoaderCircle className="fd-spin" size={16} />
+                : <Upload size={16} />}
+              {publishBusy && publishStatus?.mode === 'publish' ? 'Publish laeuft...' : 'Publish Set'}
             </button>
             <button
               type="button"
@@ -102,8 +120,10 @@ const SetImportTab = ({
               disabled={busy || !goLiveEnabled}
               title={goLiveEnabled ? 'Speichert Settings und startet die komplette Live-Pipeline gemaess deiner Flight-Deck-Konfiguration.' : goLiveDisabledReason}
             >
-              <Upload size={16} />
-              Alles ausfuehren & Live
+              {publishBusy && publishStatus?.mode === 'live'
+                ? <LoaderCircle className="fd-spin" size={16} />
+                : <Upload size={16} />}
+              {publishBusy && publishStatus?.mode === 'live' ? 'Live-Pipeline laeuft...' : 'Alles ausfuehren & Live'}
             </button>
           </div>
         </section>

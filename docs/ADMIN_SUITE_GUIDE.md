@@ -54,7 +54,9 @@ Mehrere Audio-, Cover- und Tracklist-Dateien gleichzeitig importieren.
 
 - Audio: MP3, WAV, FLAC, AIFF, OGG
 - Cover: JPG, PNG, GIF, WebP (bis 10MB)
-- Tracklist: TXT, CSV, JSON
+- Tracklist: `.tracks.json`, `.mixcloud.txt`, CUE, TXT, MD, CSV, JSON
+
+Produktiver Standard ist `.tracks.json`. CUE und Mixcloud-Text sind Import-/Exportformate, die vor dem Live-Publish in seekbare Track-Zeilen mit `time`, `artist` und `title` normalisiert werden.
 
 #### Workflow
 

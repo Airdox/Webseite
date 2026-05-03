@@ -117,6 +117,25 @@ const buildPublishOnlySettings = (settings = {}) => ({
   autoPush: false,
 });
 
+const createPublishLogEntry = (step, status, detail) => ({
+  timestamp: new Date().toISOString(),
+  step,
+  status,
+  detail,
+});
+
+const buildReservedSetValues = (sets = [], batchQueue = []) => {
+  const queueDrafts = batchQueue
+    .map((item) => item.draft)
+    .filter(Boolean);
+  const entries = [...(sets || []), ...queueDrafts];
+  return {
+    reservedSetIds: entries.map((entry) => entry.id).filter(Boolean),
+    reservedSetTitles: entries.map((entry) => entry.title).filter(Boolean),
+    reservedSetFiles: entries.map((entry) => entry.file).filter(Boolean),
+  };
+};
+
 const DesktopApp = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [appState, setAppState] = useState({
@@ -150,6 +169,12 @@ const DesktopApp = () => {
   const [warnings, setWarnings] = useState([]);
   const [publishLogs, setPublishLogs] = useState([]);
   const [lastPublish, setLastPublish] = useState(null);
+  const [publishStatus, setPublishStatus] = useState({
+    state: 'idle',
+    mode: '',
+    label: 'Bereit',
+    detail: 'Noch kein Publish gestartet.',
+  });
   const [analyticsData, setAnalyticsData] = useState({});
   const [batchQueue, setBatchQueue] = useState([]);
   const [isBatchRunning, setIsBatchRunning] = useState(false);
@@ -317,6 +342,14 @@ const DesktopApp = () => {
     if (!result) return;
     setDraft(result.draft);
     setWarnings(result.warnings || []);
+    setPublishLogs([]);
+    setLastPublish(null);
+    setPublishStatus({
+      state: 'idle',
+      mode: '',
+      label: 'Draft bereit',
+      detail: `Import vorbereitet: ${result.draft?.id || 'new-set'}. Pruefe Titel, Tracklist und Quellen vor dem Publish.`,
+    });
     setActiveTab('import');
   };
 
@@ -344,23 +377,77 @@ const DesktopApp = () => {
     }
   };
 
+  const startPublishRun = ({ mode, label, detail }) => {
+    setBusy(true);
+    setLastPublish(null);
+    setPublishStatus({ state: 'running', mode, label, detail });
+    setPublishLogs([createPublishLogEntry(label, 'running', detail)]);
+    setNotice({ tone: 'info', message: detail });
+  };
+
+  const updatePublishRun = ({ mode, label, detail, appendLog = true }) => {
+    setPublishStatus({ state: 'running', mode, label, detail });
+    if (appendLog) {
+      setPublishLogs((currentLogs) => [
+        ...currentLogs,
+        createPublishLogEntry(label, 'running', detail),
+      ]);
+    }
+  };
+
+  const finishPublishRun = ({ mode, label, detail, tone = 'success' }) => {
+    setPublishStatus({ state: tone === 'error' ? 'error' : 'success', mode, label, detail });
+    setNotice({ tone, message: detail });
+  };
+
   const publishCurrentDraft = async () => {
-    const result = await runAsyncAction(
-      async () => {
-        const latestSettings = await refreshWorkspaceStateForPublish();
-        return flightDeckApi.publishSet({
-          workspaceRoot: latestSettings?.workspaceRoot,
-          draft,
-          settings: buildPublishOnlySettings(latestSettings),
-        });
-      },
-      `Set ${draft.id} publiziert.`,
-    );
-    if (!result) return;
-    setPublishLogs(result.logs || []);
-    setLastPublish(result);
-    await refreshState();
-    await refreshTable();
+    startPublishRun({
+      mode: 'publish',
+      label: 'Preflight',
+      detail: `Publish gestartet: ${draft.id || 'new-set'}. Workspace und Manifest werden geprueft.`,
+    });
+
+    try {
+      const latestSettings = await refreshWorkspaceStateForPublish();
+      updatePublishRun({
+        mode: 'publish',
+        label: 'Manifest',
+        detail: 'Workspace ist gueltig. Manifest wird aktualisiert, Audio-Key und Set-ID werden kollisionssicher gesetzt.',
+      });
+      const result = await flightDeckApi.publishSet({
+        workspaceRoot: latestSettings?.workspaceRoot,
+        draft,
+        settings: buildPublishOnlySettings(latestSettings),
+      });
+      if (result.publishedSet) {
+        setDraft((currentDraft) => ({ ...currentDraft, ...result.publishedSet }));
+      }
+      setPublishLogs((currentLogs) => [
+        ...currentLogs,
+        ...(result.logs || []),
+      ]);
+      setLastPublish(result);
+      finishPublishRun({
+        mode: 'publish',
+        label: 'Publish abgeschlossen',
+        detail: `Set ${result?.publishedSet?.id || draft.id} wurde publiziert.`,
+      });
+      await refreshState();
+      await refreshTable();
+    } catch (error) {
+      setPublishLogs((currentLogs) => [
+        ...currentLogs,
+        createPublishLogEntry('Publish fehlgeschlagen', 'error', error.message),
+      ]);
+      finishPublishRun({
+        mode: 'publish',
+        label: 'Publish fehlgeschlagen',
+        detail: error.message,
+        tone: 'error',
+      });
+    } finally {
+      setBusy(false);
+    }
   };
 
   const publishLiveDraft = (targetDraft, savedSettings) => flightDeckApi.publishSet({
@@ -381,22 +468,55 @@ const DesktopApp = () => {
       return;
     }
 
-    setBusy(true);
+    startPublishRun({
+      mode: 'live',
+      label: 'Live-Preflight',
+      detail: `Live-Pipeline gestartet: ${draft.id}. Settings, Upload, Build und Deploy werden vorbereitet.`,
+    });
     try {
       const latestSettings = await refreshWorkspaceStateForPublish();
+      updatePublishRun({
+        mode: 'live',
+        label: 'Settings',
+        detail: 'Workspace ist gueltig. Settings werden gespeichert.',
+      });
       const savedSettings = await flightDeckApi.saveSettings(latestSettings);
       setSettingsDraft(savedSettings);
 
+      updatePublishRun({
+        mode: 'live',
+        label: 'Live-Pipeline',
+        detail: 'Upload, Manifest, Build, Deploy und Live-Verify laufen.',
+      });
       const result = await publishLiveDraft(draft, savedSettings);
 
-      setPublishLogs(result?.logs || []);
+      setPublishLogs((currentLogs) => [
+        ...currentLogs,
+        ...(result?.logs || []),
+      ]);
       setLastPublish(result);
-      setNotice({ tone: 'success', message: `Go Live ausgefuehrt: ${draft.id}` });
+      if (result?.publishedSet) {
+        setDraft((currentDraft) => ({ ...currentDraft, ...result.publishedSet }));
+      }
+      finishPublishRun({
+        mode: 'live',
+        label: 'Live abgeschlossen',
+        detail: `Go Live ausgefuehrt: ${result?.publishedSet?.id || draft.id}`,
+      });
       await refreshState();
       await refreshTable();
       setActiveTab('import');
     } catch (error) {
-      setNotice({ tone: 'error', message: error.message });
+      setPublishLogs((currentLogs) => [
+        ...currentLogs,
+        createPublishLogEntry('Live fehlgeschlagen', 'error', error.message),
+      ]);
+      finishPublishRun({
+        mode: 'live',
+        label: 'Live fehlgeschlagen',
+        detail: error.message,
+        tone: 'error',
+      });
       setActiveTab('import');
     } finally {
       setBusy(false);
@@ -444,6 +564,7 @@ const DesktopApp = () => {
     setIsBatchRunning(true);
     setBatchProgress({ current: 0, total: targets.length });
     let current = 0;
+    const reserved = buildReservedSetValues(appState.sets, batchQueue);
 
     for (const item of targets) {
       try {
@@ -457,7 +578,11 @@ const DesktopApp = () => {
         const result = await flightDeckApi.prepareImport({
           filePaths: item.filePaths || [],
           settings: settingsDraft,
+          ...reserved,
         });
+        if (result.draft?.id) reserved.reservedSetIds.push(result.draft.id);
+        if (result.draft?.title) reserved.reservedSetTitles.push(result.draft.title);
+        if (result.draft?.file) reserved.reservedSetFiles.push(result.draft.file);
 
         updateBatchItem(item.id, {
           draft: result.draft,
@@ -506,6 +631,7 @@ const DesktopApp = () => {
       const latestSettings = await refreshWorkspaceStateForPublish();
       const savedSettings = await flightDeckApi.saveSettings(latestSettings);
       setSettingsDraft(savedSettings);
+      const reserved = buildReservedSetValues(appState.sets, batchQueue);
 
       for (const item of targets) {
         try {
@@ -521,8 +647,12 @@ const DesktopApp = () => {
             const prepared = await flightDeckApi.prepareImport({
               filePaths: item.filePaths || [],
               settings: savedSettings,
+              ...reserved,
             });
             itemDraft = prepared.draft;
+            if (itemDraft?.id) reserved.reservedSetIds.push(itemDraft.id);
+            if (itemDraft?.title) reserved.reservedSetTitles.push(itemDraft.title);
+            if (itemDraft?.file) reserved.reservedSetFiles.push(itemDraft.file);
             updateBatchItem(item.id, {
               draft: itemDraft,
               warnings: prepared.warnings || [],
@@ -534,18 +664,24 @@ const DesktopApp = () => {
           }
 
           const result = await publishLiveDraft(itemDraft, savedSettings);
+          const publishedSet = result?.publishedSet || itemDraft;
           lastResult = result;
           successCount += 1;
           logs.push(...(result?.logs || []).map((entry) => ({
             ...entry,
-            step: `${itemDraft.id} / ${entry.step}`,
+            step: `${publishedSet.id} / ${entry.step}`,
           })));
+          if (publishedSet?.id) reserved.reservedSetIds.push(publishedSet.id);
+          if (publishedSet?.title) reserved.reservedSetTitles.push(publishedSet.title);
+          if (publishedSet?.file) reserved.reservedSetFiles.push(publishedSet.file);
 
           updateBatchItem(item.id, {
-            draft: itemDraft,
+            draft: { ...itemDraft, ...publishedSet },
+            title: publishedSet?.title || itemDraft.title,
+            setId: publishedSet?.id || itemDraft.id,
             status: 'success',
             progress: 100,
-            message: `Live: ${itemDraft.id}`,
+            message: `Live: ${publishedSet.id}`,
           });
         } catch (error) {
           errorCount += 1;
@@ -774,6 +910,7 @@ const DesktopApp = () => {
           onTrackRemove={removeTrack}
           publishLogs={publishLogs}
           lastPublish={lastPublish}
+          publishStatus={publishStatus}
         />
       );
     }

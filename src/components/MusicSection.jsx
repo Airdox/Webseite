@@ -12,24 +12,32 @@ import { statsSync } from '../utils/stats-sync';
 
 const { publicSets } = partitionSetsByAccess(sets);
 
+const TRACK_TIME_PATTERN = /^\d{1,2}:\d{2}(?::\d{2})?$/;
+
 const parseTrackTimeToSeconds = (value = '') => {
-    const parts = String(value || '')
-        .trim()
+    const raw = String(value || '').trim();
+    if (!TRACK_TIME_PATTERN.test(raw)) return null;
+
+    const parts = raw
         .split(':')
         .map((chunk) => Number.parseInt(chunk, 10));
     if (!parts.length || parts.some((part) => Number.isNaN(part))) return null;
+    const minutes = parts[parts.length - 2];
+    const seconds = parts[parts.length - 1];
+    if (minutes > 59 || seconds > 59) return null;
     if (parts.length === 3) {
-        const [hours, minutes, seconds] = parts;
+        const [hours] = parts;
         return (hours * 3600) + (minutes * 60) + seconds;
     }
     if (parts.length === 2) {
-        const [minutes, seconds] = parts;
         return (minutes * 60) + seconds;
     }
-    if (parts.length === 1) {
-        return parts[0];
-    }
     return null;
+};
+
+const getSeekableTracks = (tracks = []) => {
+    if (!Array.isArray(tracks)) return [];
+    return tracks.filter((track) => parseTrackTimeToSeconds(track.time) !== null);
 };
 
 const MusicSection = () => {
@@ -412,9 +420,10 @@ const MusicSection = () => {
                         const userVote = getUserVote(set.id);
                         const isSetPlaying = currentTrack?.id === set.id && isPlaying;
                         const isSetCurrent = currentTrack?.id === set.id;
+                        const seekableTracks = getSeekableTracks(set.tracks);
 
-                        const activeTrackIndex = isSetCurrent && set.tracks 
-                            ? set.tracks.reduce((acc, t, i) => {
+                        const activeTrackIndex = isSetCurrent && seekableTracks.length
+                            ? seekableTracks.reduce((acc, t, i) => {
                                 const startTime = parseTrackTimeToSeconds(t.time);
                                 if (startTime !== null && currentTime >= startTime) return i;
                                 return acc;
@@ -546,7 +555,7 @@ const MusicSection = () => {
                                         )}
                                     </div>
 
-                                    {set.tracks && set.tracks.length > 0 && (
+                                    {seekableTracks.length > 0 && (
                                         <div className={`vip-tracklist ${collapsedTracklists[set.id] ? 'collapsed' : ''}`}>
                                             <button
                                                 type="button"
@@ -561,7 +570,7 @@ const MusicSection = () => {
                                                 </svg>
                                             </button>
                                             <ul className="tracklist-items">
-                                                {set.tracks.map((track, idx) => (
+                                                {seekableTracks.map((track, idx) => (
                                                     <li
                                                         key={idx}
                                                         className={`tracklist-item ${idx === activeTrackIndex ? 'current-track' : ''}`}

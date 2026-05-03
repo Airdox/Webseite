@@ -1,3 +1,16 @@
+import {
+  parseTracklistToCanonical,
+  sanitizeTrack,
+  toManifestTracks,
+} from './tracklistCore.js';
+
+export {
+  parseTracklistText,
+  parseTracklistToCanonical,
+  sanitizeTrack,
+  validateTracks,
+} from './tracklistCore.js';
+
 const MONTH_LABELS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
 export const AUDIO_EXTENSIONS = ['.mp3', '.wav', '.wave', '.m4a', '.aac', '.flac'];
@@ -14,6 +27,9 @@ export const DEFAULT_FLIGHT_DECK_SETTINGS = {
   autoDeploy: false,
   autoCommit: false,
   autoPush: false,
+  requireTracklistForLive: true,
+  verifyLiveAfterDeploy: true,
+  liveSiteUrl: 'https://airdox.info',
   extractEmbeddedCover: false,
   defaultVinylColor: '#9adf6b',
   defaultCoverPath: '/assets/airdox-vinyl.jpg',
@@ -24,26 +40,9 @@ export const DEFAULT_FLIGHT_DECK_SETTINGS = {
   gitCommitTemplate: 'feat(flightdeck): publish {{id}}',
 };
 
-const TRACK_SPLITTERS = [' - ', ' – ', ' — ', ' | '];
-
 export const extractFilename = (input = '') => input.split(/[\\/]/).pop() || input;
 
 export const stripExtension = (filename = '') => filename.replace(/\.[^.]+$/, '');
-
-const parseArtistTitleFromFilename = (filePath = '') => {
-  const stem = stripExtension(extractFilename(filePath))
-    .replace(/^\d+\.\s*/, '')
-    .trim();
-  for (const splitter of TRACK_SPLITTERS) {
-    if (!stem.includes(splitter)) continue;
-    const parts = stem.split(splitter);
-    return {
-      artist: parts.shift()?.trim() || '',
-      title: parts.join(splitter).trim() || stem,
-    };
-  }
-  return { artist: '', title: stem };
-};
 
 export const slugifyValue = (value = '') => value
   .normalize('NFKD')
@@ -53,10 +52,222 @@ export const slugifyValue = (value = '') => value
   .replace(/^_+|_+$/g, '')
   .replace(/_{2,}/g, '_');
 
+export const normalizeSetId = (value = '') => String(value || '')
+  .normalize('NFKD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase()
+  .replace(/[^a-z0-9_-]+/g, '_')
+  .replace(/_{2,}/g, '_')
+  .replace(/-{2,}/g, '-')
+  .replace(/^[-_]+|[-_]+$/g, '');
+
+const escapeRegExp = (value = '') => String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const getSetIdValue = (entry) => {
+  if (typeof entry === 'string') return normalizeSetId(entry);
+  return normalizeSetId(entry?.id || '');
+};
+
+const getSetTitleValue = (entry) => {
+  if (typeof entry === 'string') return String(entry || '').trim();
+  return String(entry?.title || '').trim();
+};
+
+const getSetFileValue = (entry) => {
+  if (typeof entry === 'string') return '';
+  return extractFilename(entry?.file || '').trim();
+};
+
+const getReservedValues = (existingSets = [], extraValues = [], picker = (entry) => String(entry || '')) => new Set([
+  ...existingSets.map(picker),
+  ...extraValues.map((entry) => (typeof entry === 'string' ? entry : picker(entry))),
+].map((value) => String(value || '').trim()).filter(Boolean));
+
+const isIdInFamily = (setId = '', baseId = '') => {
+  if (!setId || !baseId) return false;
+  return new RegExp(`^${escapeRegExp(baseId)}(?:-\\d+)?$`).test(setId);
+};
+
+const getUniqueIdFromFamily = (baseId = '', reservedIds = new Set()) => {
+  const normalizedBaseId = normalizeSetId(baseId) || `set_${Date.now()}`;
+  const familyPattern = new RegExp(`^${escapeRegExp(normalizedBaseId)}(?:-(\\d+))?$`);
+  let highestFamilyNumber = 0;
+
+  for (const reservedId of reservedIds) {
+    const match = String(reservedId || '').match(familyPattern);
+    if (!match) continue;
+    const number = match[1] ? Number.parseInt(match[1], 10) : 1;
+    if (Number.isFinite(number)) {
+      highestFamilyNumber = Math.max(highestFamilyNumber, number);
+    }
+  }
+
+  if (highestFamilyNumber === 0 && !reservedIds.has(normalizedBaseId)) {
+    return normalizedBaseId;
+  }
+
+  let nextNumber = Math.max(highestFamilyNumber + 1, 2);
+  let candidate = `${normalizedBaseId}-${nextNumber}`;
+  while (reservedIds.has(candidate)) {
+    nextNumber += 1;
+    candidate = `${normalizedBaseId}-${nextNumber}`;
+  }
+  return candidate;
+};
+
+export const buildUniqueSetId = (baseId = '', {
+  existingSets = [],
+  reservedSetIds = [],
+} = {}) => {
+  const reservedIds = getReservedValues(existingSets, reservedSetIds, getSetIdValue);
+  return getUniqueIdFromFamily(baseId, reservedIds);
+};
+
+const getIdFamilySuffixNumber = (setId = '', baseId = '') => {
+  const match = String(setId || '').match(new RegExp(`^${escapeRegExp(baseId)}-(\\d+)$`));
+  if (!match?.[1]) return null;
+  const number = Number.parseInt(match[1], 10);
+  return Number.isFinite(number) ? number : null;
+};
+
+const buildNumberedTitle = (title = '', number = null) => {
+  const cleanTitle = String(title || '').trim();
+  if (!cleanTitle || !number) return cleanTitle;
+  return `${cleanTitle} #${number}`;
+};
+
+export const buildUniqueSetTitle = (baseTitle = '', {
+  setId = '',
+  baseId = '',
+  existingSets = [],
+  reservedSetTitles = [],
+} = {}) => {
+  const cleanTitle = String(baseTitle || '').trim();
+  if (!cleanTitle) return cleanTitle;
+
+  const reservedTitles = getReservedValues(existingSets, reservedSetTitles, getSetTitleValue);
+  const suffixNumber = getIdFamilySuffixNumber(setId, baseId);
+  let candidate = buildNumberedTitle(cleanTitle, suffixNumber);
+  if (!reservedTitles.has(candidate)) return candidate;
+
+  let nextNumber = suffixNumber || 2;
+  do {
+    candidate = buildNumberedTitle(cleanTitle, nextNumber);
+    nextNumber += 1;
+  } while (reservedTitles.has(candidate));
+
+  return candidate;
+};
+
+export const buildUniqueSetFile = (filename = '', {
+  setId = '',
+  existingSets = [],
+  reservedSetFiles = [],
+} = {}) => {
+  const cleanFilename = extractFilename(filename || '').trim();
+  if (!cleanFilename) return cleanFilename;
+
+  const reservedFiles = getReservedValues(existingSets, reservedSetFiles, getSetFileValue);
+  const lowerReservedFiles = new Set([...reservedFiles].map((value) => value.toLowerCase()));
+  if (!lowerReservedFiles.has(cleanFilename.toLowerCase())) return cleanFilename;
+
+  const ext = cleanFilename.match(/\.[^.]+$/)?.[0] || '.mp3';
+  const safeBase = normalizeSetId(setId) || slugifyValue(stripExtension(cleanFilename)) || `set_${Date.now()}`;
+  let candidate = `${safeBase}${ext}`;
+  let index = 2;
+  while (lowerReservedFiles.has(candidate.toLowerCase())) {
+    candidate = `${safeBase}-${index}${ext}`;
+    index += 1;
+  }
+  return candidate;
+};
+
+const stripNumberedTitleSuffix = (value = '') => String(value || '').trim().replace(/\s+#\d+$/, '');
+
+export const resolveUniqueSetDraftIdentity = (draft = {}, {
+  existingSets = [],
+  reservedSetIds = [],
+  reservedSetTitles = [],
+  reservedSetFiles = [],
+} = {}) => {
+  const normalizedDraftId = normalizeSetId(draft.id || '');
+  const generatedBaseId = normalizeSetId(draft.generatedBaseId || '');
+  const baseId = generatedBaseId && isIdInFamily(normalizedDraftId, generatedBaseId)
+    ? generatedBaseId
+    : normalizedDraftId;
+  const id = buildUniqueSetId(baseId, { existingSets, reservedSetIds });
+  const baseTitle = String(
+    draft.generatedBaseTitle
+      || (generatedBaseId && isIdInFamily(id, generatedBaseId)
+        ? stripNumberedTitleSuffix(draft.title)
+        : draft.title)
+      || '',
+  ).trim();
+  const title = buildUniqueSetTitle(baseTitle, {
+    setId: id,
+    baseId,
+    existingSets,
+    reservedSetTitles,
+  });
+  const file = buildUniqueSetFile(draft.file || '', {
+    setId: id,
+    existingSets,
+    reservedSetFiles,
+  });
+
+  return {
+    ...draft,
+    id,
+    generatedBaseId: generatedBaseId || baseId,
+    generatedBaseTitle: baseTitle,
+    title,
+    file,
+  };
+};
+
 export const humanizeStem = (stem = '') => stripExtension(extractFilename(stem))
   .replace(/[_-]+/g, ' ')
   .replace(/\s+/g, ' ')
   .trim();
+
+const GENERIC_SET_TITLE = 'AIRDOX SET';
+
+const splitPathSegments = (filePath = '') => String(filePath || '')
+  .split(/[\\/]+/)
+  .map((segment) => segment.trim())
+  .filter(Boolean);
+
+const stripDateFragments = (value = '') => String(value || '')
+  .replace(/\b20\d{2}[._\-\s]?\d{2}[._\-\s]?\d{2}\b/g, ' ')
+  .replace(/\b\d{2}[._\-\s]?\d{2}[._\-\s]?20\d{2}\b/g, ' ');
+
+const cleanSetTitleCandidate = (value = '') => stripDateFragments(humanizeStem(value))
+  .replace(/^\d+\.\s*/, ' ')
+  .replace(/\b\d{2,3}\b/g, ' ')
+  .replace(/\bairdox\b/gi, ' ')
+  .replace(/\b(rec|recording|recordings|aufnahme|aufnahmen|set|sets|mix|full|master|export|exports|wav|mp3|ost|unknown|album|untitled|liveset|livesets|live)\b/gi, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const isUsefulTitleCandidate = (value = '') => {
+  const normalized = String(value || '').trim().toLowerCase();
+  if (normalized.length < 3) return false;
+  if (/^(music|musik|downloads?|desktop|neuer ordner|new folder|tracklists?)\b/.test(normalized)) return false;
+  if (/^(rec|recording|set|mix|ost|export|full|unknown|album|untitled|livesets?)$/i.test(normalized)) return false;
+  return /[a-zA-Z]/.test(normalized);
+};
+
+const formatSetTitle = (value = '') => String(value || '').trim().toUpperCase();
+
+const deriveTitleFromPath = (sourcePath = '') => {
+  const segments = splitPathSegments(sourcePath);
+  const folderSegments = segments.slice(0, -1).reverse();
+  for (const segment of folderSegments) {
+    const candidate = cleanSetTitleCandidate(segment);
+    if (isUsefulTitleCandidate(candidate)) return formatSetTitle(candidate);
+  }
+  return '';
+};
 
 export const formatDuration = (seconds = 0) => {
   if (!Number.isFinite(seconds) || seconds <= 0) return '';
@@ -130,199 +341,25 @@ export const deriveSetId = (stem, parsedDate) => {
   if (parsedDate?.isoDate && /rec|recording|set|mix/.test(normalized)) {
     return `recording_${parsedDate.isoDate.replace(/-/g, '_')}`;
   }
-  return normalized || `set_${Date.now()}`;
+  return normalizeSetId(normalized) || `set_${Date.now()}`;
 };
 
-export const deriveSetTitle = ({ stem, metadataTitle, parsedDate }) => {
-  if (metadataTitle?.trim()) return metadataTitle.trim();
-  const normalized = slugifyValue(stem);
-  if (parsedDate?.titleDate && /rec|recording/.test(normalized)) {
-    return `REC ${parsedDate.titleDate}`;
-  }
-  return humanizeStem(stem).toUpperCase();
-};
+export const deriveSetTitle = ({ stem, metadataTitle, sourcePath }) => {
+  const metadataCandidate = cleanSetTitleCandidate(metadataTitle || '');
+  if (isUsefulTitleCandidate(metadataCandidate)) return formatSetTitle(metadataCandidate);
 
-const normalizeTrackTime = (value = '') => {
-  const raw = String(value || '').trim();
-  if (!raw) return '';
+  const stemCandidate = cleanSetTitleCandidate(stem || '');
+  if (isUsefulTitleCandidate(stemCandidate)) return formatSetTitle(stemCandidate);
 
-  const match = raw.match(/^(?<a>\d{1,2}):(?<b>\d{2})(?::(?<c>\d{2}))?$/);
-  if (!match?.groups) return raw;
+  const pathCandidate = deriveTitleFromPath(sourcePath || '');
+  if (pathCandidate) return pathCandidate;
 
-  const partA = match.groups.a.padStart(2, '0');
-  const partB = match.groups.b;
-  const partC = match.groups.c;
-  return partC !== undefined ? `${partA}:${partB}:${partC}` : `${partA}:${partB}`;
-};
-
-const pickTrackTime = (track = {}) => {
-  const candidates = [track.time, track.timestamp];
-  const value = candidates
-    .map((candidate) => String(candidate ?? '').trim())
-    .find(Boolean) || '';
-  return normalizeTrackTime(value);
-};
-
-export const sanitizeTrack = (track = {}) => {
-  const cleaned = {
-    time: pickTrackTime(track),
-    artist: String(track.artist || '').trim(),
-    title: String(track.title || '').trim(),
-  };
-  if (!cleaned.artist && !cleaned.title) return null;
-  return cleaned;
-};
-
-const stripCueQuotes = (value = '') => {
-  const trimmed = String(value || '').trim();
-  if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
-    return trimmed.slice(1, -1);
-  }
-  return trimmed;
-};
-
-const dedupeTracksByIdentity = (tracks = []) => {
-  const seen = new Set();
-  return tracks.filter((track) => {
-    const key = `${track.artist}:::${track.title}`.toLowerCase();
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-};
-
-const parseCueTracklistText = (text = '') => {
-  const lines = String(text || '').split(/\r?\n/);
-  const tracks = [];
-  let albumPerformer = '';
-  let current = null;
-
-  const flushCurrent = () => {
-    if (!current) return;
-    const derived = parseArtistTitleFromFilename(current.sourceFile);
-    const parsed = sanitizeTrack({
-      time: current.time,
-      artist: current.artist || albumPerformer || derived.artist,
-      title: current.title || derived.title,
-    });
-    if (parsed) tracks.push(parsed);
-    current = null;
-  };
-
-  for (const rawLine of lines) {
-    const line = rawLine.trim();
-    if (!line) continue;
-
-    const trackStart = line.match(/^TRACK\s+\d+\s+AUDIO$/i);
-    if (trackStart) {
-      flushCurrent();
-      current = { time: '', artist: '', title: '', sourceFile: '' };
-      continue;
-    }
-
-    const performerMatch = line.match(/^PERFORMER\s+(.+)$/i);
-    if (performerMatch) {
-      const performer = stripCueQuotes(performerMatch[1]);
-      if (current) current.artist = performer;
-      else albumPerformer = performer;
-      continue;
-    }
-
-    const titleMatch = line.match(/^TITLE\s+(.+)$/i);
-    if (titleMatch && current) {
-      current.title = stripCueQuotes(titleMatch[1]);
-      continue;
-    }
-
-    const fileMatch = line.match(/^FILE\s+(.+?)\s+\w+$/i);
-    if (fileMatch && current) {
-      current.sourceFile = stripCueQuotes(fileMatch[1]);
-      continue;
-    }
-
-    const indexMatch = line.match(/^INDEX\s+01\s+(.+)$/i);
-    if (indexMatch && current) {
-      current.time = normalizeTrackTime(indexMatch[1]);
-    }
-  }
-
-  flushCurrent();
-  return dedupeTracksByIdentity(tracks);
-};
-
-export const parseTracklistText = (text = '') => {
-  const raw = String(text || '').trim();
-  if (!raw) return [];
-
-  if (raw.startsWith('[') || raw.startsWith('{')) {
-    try {
-      const parsed = JSON.parse(raw);
-      const tracks = Array.isArray(parsed) ? parsed : parsed.tracks;
-      if (Array.isArray(tracks)) {
-        return tracks.map(sanitizeTrack).filter(Boolean);
-      }
-    } catch {
-      // fall through
-    }
-  }
-
-  if (/\bTRACK\s+\d+\s+AUDIO\b/i.test(raw) && /\bINDEX\s+01\b/i.test(raw)) {
-    return parseCueTracklistText(raw);
-  }
-
-  const lines = raw
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
-  const hasCsvHeader = /^time\s*,\s*artist\s*,\s*title/i.test(lines[0] || '');
-  const linesToParse = hasCsvHeader ? lines.slice(1) : lines;
-
-  const parsedLines = linesToParse.map((line) => {
-    if (hasCsvHeader) {
-      const columns = line.split(',');
-      if (columns.length >= 3) {
-        return sanitizeTrack({
-          time: columns[0],
-          artist: columns[1],
-          title: columns.slice(2).join(','),
-        });
-      }
-    }
-
-    // Support watcher format: "Artist - Title - HH:MM:SS"
-    const trailingTimeMatch = line.match(
-      /^(?<artist>.+?)\s+(?:-|–|—|\|)\s+(?<title>.+?)\s+(?:-|–|—|\|)\s+(?<time>\d{1,2}:\d{2}(?::\d{2})?)$/i,
-    );
-    if (trailingTimeMatch?.groups) {
-      return sanitizeTrack({
-        time: trailingTimeMatch.groups.time,
-        artist: trailingTimeMatch.groups.artist,
-        title: trailingTimeMatch.groups.title,
-      });
-    }
-
-    const timeMatch = line.match(/^(?<time>\d{1,2}:\d{2}(?::\d{2})?)\s*(?:[-|–—]\s*)?(?<rest>.+)$/);
-    const rest = timeMatch?.groups?.rest || line.replace(/^\d+\.\s*/, '');
-    const time = timeMatch?.groups?.time || '';
-
-    for (const splitter of TRACK_SPLITTERS) {
-      if (rest.includes(splitter)) {
-        const parts = rest.split(splitter);
-        const artist = parts.shift();
-        const title = parts.join(splitter);
-        return sanitizeTrack({ time, artist, title });
-      }
-    }
-
-    return sanitizeTrack({ time, artist: '', title: rest });
-  });
-
-  return parsedLines.filter(Boolean);
+  return GENERIC_SET_TITLE;
 };
 
 export const toManifestSet = (draft = {}) => {
   const manifestSet = {
-    id: String(draft.id || '').trim(),
+    id: normalizeSetId(draft.id || ''),
     title: String(draft.title || '').trim(),
     date: String(draft.date || '').trim(),
     file: String(draft.file || '').trim(),
@@ -413,26 +450,53 @@ export const buildDraftFromImportedFiles = ({
   tracklistText,
   imagePath,
   embeddedCoverDataUrl,
+  existingSets = [],
+  reservedSetIds = [],
+  reservedSetTitles = [],
+  reservedSetFiles = [],
   defaultVinylColor = DEFAULT_FLIGHT_DECK_SETTINGS.defaultVinylColor,
   defaultCoverPath = DEFAULT_FLIGHT_DECK_SETTINGS.defaultCoverPath,
 }) => {
   const filename = extractFilename(audioPath || '');
   const stem = stripExtension(filename);
-  const tracks = parseTracklistText(tracklistText);
-  const title = deriveSetTitle({ stem, metadataTitle, parsedDate });
+  const parsedTracklist = parseTracklistToCanonical(tracklistText, {
+    sourceFile: audioPath || '',
+    audioFile: audioPath || '',
+    audioDurationSeconds: Number.isFinite(durationSeconds) && durationSeconds > 0 ? durationSeconds : null,
+  });
+  const tracks = toManifestTracks(parsedTracklist.tracks);
+  const generatedBaseId = deriveSetId(stem, parsedDate);
+  const id = buildUniqueSetId(generatedBaseId, { existingSets, reservedSetIds });
+  const baseTitle = deriveSetTitle({ stem, metadataTitle, sourcePath: audioPath });
+  const title = buildUniqueSetTitle(baseTitle, {
+    setId: id,
+    baseId: generatedBaseId,
+    existingSets,
+    reservedSetTitles,
+  });
+  const file = buildUniqueSetFile(filename, {
+    setId: id,
+    existingSets,
+    reservedSetFiles,
+  });
   const cover = imagePath
     ? `/assets/${extractFilename(imagePath)}`
     : String(defaultCoverPath || DEFAULT_FLIGHT_DECK_SETTINGS.defaultCoverPath);
   return {
-    id: deriveSetId(stem, parsedDate),
+    id,
+    generatedBaseId,
+    generatedBaseTitle: baseTitle,
+    titleNeedsReview: baseTitle === GENERIC_SET_TITLE,
     title,
     date: parsedDate?.label || '',
-    file: filename,
+    file,
     cover,
     duration: formatDuration(durationSeconds),
     isNew: true,
     vinylColor: defaultVinylColor,
     tracks,
+    tracklistSchema: parsedTracklist.schema,
+    tracklistValidation: parsedTracklist.validation,
     sourceAudioPath: audioPath || '',
     sourceImagePath: imagePath || '',
     coverPreviewUrl: imagePath ? '' : embeddedCoverDataUrl || '',

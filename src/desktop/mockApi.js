@@ -196,7 +196,9 @@ export const mockFlightDeckApi = {
     return {
       draft: {
         id: 'recording_2026_05_01',
-        title: 'REC 01.05.2026',
+        title: 'MAYDAY SIGNAL',
+        generatedBaseId: 'recording_2026_05_01',
+        generatedBaseTitle: 'MAYDAY SIGNAL',
         date: 'MAY 2026',
         file: 'Airdox_REC_2026_05_01.mp3',
         duration: '1:42:08',

@@ -1,409 +1,351 @@
 export const sets = [
   {
-    id: 'recording_2026_05_02-1',
-    title: 'REC-2026-05-02-1',
+    id: 'recording_2026_05_02',
+    title: 'SISSYGUT ALLES GUT',
     date: 'MAY 2026',
-    file: '01 REC-2026-05-02.mp3',
-    duration: '4:08',
+    file: 'recording_2026_05_02_sissygut_alles_gut.mp3',
+    cover: '/assets/airdox-vinyl.jpg',
+    duration: '1:51:45',
     isNew: true,
     vinylColor: '#9adf6b',
     tracks: [
       {
-        time: '',
+        time: '00:00:00',
         artist: 'Martin Books, Signalfarbe Schwarz',
         title: 'Simone feat. Signalfarbe Schwarz (Original Mix)'
       },
       {
-        time: '',
+        time: '00:00:03',
         artist: 'MJ Lan',
         title: 'Generate Bodies (2000)'
       },
       {
-        time: '',
+        time: '00:05:31',
         artist: 'Primal Beat',
         title: 'Blowing My Head Up (Diatek Remix)'
       },
       {
-        time: '',
+        time: '00:07:23',
         artist: 'Alfred Heinrichs, Martin Books',
         title: 'Mothers Slap (Original Mix)'
       },
       {
-        time: '',
+        time: '00:09:12',
         artist: 'Patrick Arbez',
         title: 'Der rote Rabauke (deKai (Berlin) Remix)'
       },
       {
-        time: '',
+        time: '00:11:30',
+        artist: 'Kevin McKay, Pupa Nas T, Denise Belfon',
+        title: 'Work (CVMPANILE & Draxx Extended Remix)'
+      },
+      {
+        time: '00:16:07',
         artist: 'T78, Angelala',
         title: 'No Guestlist (Extended Mix)'
       },
       {
-        time: '',
-        artist: 'Martin books',
+        time: '00:18:43',
+        artist: 'Martin Books',
         title: 'Perfection'
       },
       {
-        time: '',
-        artist: 'puttin\' on the ritz',
+        time: '00:21:36',
+        artist: 'Puttin\' On The Ritz',
         title: 'taco'
       },
       {
-        time: '',
+        time: '00:24:13',
         artist: 'Dense & Pika',
         title: 'Colt (Original Mix)'
       },
       {
-        time: '',
+        time: '00:28:53',
         artist: 'Rene Bourgeois',
         title: '4 My Recordz'
       },
       {
-        time: '',
+        time: '00:33:00',
+        artist: 'Alok, FAANGS, SCRIPT',
+        title: 'Substance (Extended Mix)'
+      },
+      {
+        time: '00:36:14',
         artist: 'Dubfire',
         title: 'RibCage (Dense & Pika Remix)'
       },
       {
-        time: '',
+        time: '00:41:50',
         artist: 'Pusha T, Tiga',
         title: 'Bugatti (Benny Benassi & Laherte Extended Remix)'
       },
       {
-        time: '',
+        time: '00:44:04',
         artist: 'Christian Löffler',
         title: 'Veiled Grey (Original Mix)'
       },
       {
-        time: '',
+        time: '00:46:51',
         artist: 'DJ Hell',
         title: 'Je Regrette'
       },
       {
-        time: '',
-        artist: '140-Airdox-sissygut alles gut',
-        title: 'Greg Notill  Primitive Sparkle Freak Unique Remix'
+        time: '00:49:55',
+        artist: 'Greg Notill',
+        title: 'Primitive Sparkle Freak Unique Remix'
       },
       {
-        time: '',
+        time: '00:52:49',
         artist: 'HVOB',
         title: 'The Last Song Ever Written (Original Mix)'
       },
       {
-        time: '',
+        time: '00:57:11',
         artist: 'Dense & Pika',
         title: 'Crispy Duck'
       },
       {
-        time: '',
-        artist: 'Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fi',
+        time: '00:58:22',
+        artist: 'Prok & Fitch',
         title: 'Tiger Blood (Original Mix)'
       },
       {
-        time: '',
+        time: '01:01:05',
         artist: 'STTS',
         title: 'Sky Pushing'
       },
       {
-        time: '',
+        time: '01:02:24',
+        artist: 'Skrillex, PEEKABOO, Fireboy DML, Flowdan',
+        title: '6 Million (feat. Skrillex) (feat. Skrillex)'
+      },
+      {
+        time: '01:03:23',
         artist: 'Mike Dehnert',
         title: 'Chardon'
       },
       {
-        time: '',
+        time: '01:05:31',
         artist: 'Jad & The Ladyboy',
         title: 'Hey Sisters (Original Mix)'
       },
       {
-        time: '',
+        time: '01:08:21',
+        artist: 'DJ Disciple, Prok & Fitch, Dru Hepkins',
+        title: 'Redlight (Nothing But Funk Instrumental Mix)'
+      },
+      {
+        time: '01:10:02',
         artist: 'Dot N Life',
         title: 'Bad (Extended Mix)'
       },
       {
-        time: '',
+        time: '01:11:45',
         artist: 'Martin Books',
         title: 'Clubbing (Dub Mix)'
       },
       {
-        time: '',
+        time: '01:14:00',
         artist: 'Cloonee',
         title: 'Gospel (Prok & Fitch)'
       },
       {
-        time: '',
+        time: '01:15:03',
         artist: 'DJ Hell',
         title: 'Suicide Commando (Original Mix)'
       },
       {
-        time: '',
+        time: '01:17:07',
         artist: 'Jody 6',
         title: 'I Go Psycho (Extended Mix)'
       },
       {
-        time: '',
+        time: '01:20:35',
         artist: 'Prok & Fitch, SOSA (UK)',
         title: 'Dance Lapse (Original Mix)'
       },
       {
-        time: '',
+        time: '01:21:45',
         artist: 'Rich Vom Dorf',
-        title: 'Rich Vom Dorf'
+        title: 'Rich Vom Dorf - DER GAENSETANZ'
       },
       {
-        time: '',
+        time: '01:27:38',
         artist: 'Wir Sind Helden',
         title: 'Denkmal'
       },
       {
-        time: '',
-        artist: 'Patrick_Arbez',
-        title: '[UNRELEASED] Patrick Arbez'
+        time: '01:29:52',
+        artist: 'Patrick Arbez',
+        title: '[UNRELEASED] Patrick Arbez - Kickstart (original)'
       },
       {
-        time: '',
+        time: '01:33:45',
         artist: 'Randomer',
         title: 'randomer'
       },
       {
-        time: '',
+        time: '01:37:13',
+        artist: 'Crookers, Champion, Interplanetary Criminal',
+        title: 'Lose My Mind (Original Mix)'
+      },
+      {
+        time: '01:39:32',
         artist: 'Dot N Life',
         title: 'Trick Me (Extended Mix)'
       },
       {
-        time: '',
+        time: '01:41:24',
         artist: 'Rello, Justin Rabin',
         title: 'ICY (Original Mix)'
       },
       {
-        time: '',
+        time: '01:43:40',
         artist: 'Skylin3, Nicole Del Prete',
         title: 'Naughty Girl (Kevin McKay Extended ViP)'
       },
       {
-        time: '',
+        time: '01:45:14',
         artist: 'Chris Lake',
         title: 'Psycho (Extended Mix)'
       },
       {
-        time: '',
+        time: '01:47:06',
         artist: 'jbambacht',
-        title: 'Motor'
+        title: 'Motor - The Knife (Brian Sanhaji Remix)'
       },
       {
-        time: '',
+        time: '01:48:27',
         artist: 'Argy',
-        title: 'Closer Than Most'
+        title: 'Closer Than Most - DESOLAT 030'
       }
     ],
     publishedAt: '2026-05-02'
   },
   {
-    id: 'recording_2026_05_02',
-    title: 'REC-2026-05-02',
+    id: 'recording_2026_05_02_rauchst_du_raus',
+    title: 'RAUCHST DU RAUS',
     date: 'MAY 2026',
-    file: '01 REC-2026-05-02.mp3',
-    duration: '4:08',
+    file: 'recording_2026_05_02_rauchst_du_raus.mp3',
+    cover: '/assets/airdox-vinyl.jpg',
+    duration: '1:22:21',
     isNew: true,
     vinylColor: '#9adf6b',
     tracks: [
       {
-        time: '',
-        artist: 'Martin Books, Signalfarbe Schwarz',
-        title: 'Simone feat. Signalfarbe Schwarz (Original Mix)'
+        time: '00:00:00',
+        artist: 'Tanith',
+        title: 'Triage (Shifting Bodies) (Original Mix)'
       },
       {
-        time: '',
-        artist: 'MJ Lan',
-        title: 'Generate Bodies (2000)'
+        time: '00:00:15',
+        artist: 'Rene Bourgeois, Elke Brauweiler',
+        title: 'Je Danse feat. Elke Brauweiler (Dan Caster & Rene Bougeois Club Mix)'
       },
       {
-        time: '',
-        artist: 'Primal Beat',
-        title: 'Blowing My Head Up (Diatek Remix)'
+        time: '00:03:59',
+        artist: 'Charlotte de Witte, Conduit (US)',
+        title: 'A Prayer for the Dancefloor (feat. Conduit) (Avalon & GMS Remix)'
       },
       {
-        time: '',
-        artist: 'Alfred Heinrichs, Martin Books',
-        title: 'Mothers Slap (Original Mix)'
+        time: '00:07:22',
+        artist: 'White Horse',
+        title: 'White Horse (If You Wanna Ride) (Dub)'
       },
       {
-        time: '',
-        artist: 'Patrick Arbez',
-        title: 'Der rote Rabauke (deKai (Berlin) Remix)'
+        time: '00:09:59',
+        artist: 'Prok & Fitch',
+        title: 'Motor City (Original Mix)'
       },
       {
-        time: 'Kevin McKay',
-        artist: 'Pupa Nas T',
-        title: 'Denise Belfon - Work (CVMPANILE & Draxx Extended Remix) - 00:11:30'
-      },
-      {
-        time: '',
-        artist: 'T78, Angelala',
-        title: 'No Guestlist (Extended Mix)'
-      },
-      {
-        time: '',
-        artist: 'Martin books',
-        title: 'Perfection'
-      },
-      {
-        time: '',
-        artist: 'puttin\' on the ritz',
-        title: 'taco'
-      },
-      {
-        time: '',
-        artist: 'Dense & Pika',
-        title: 'Colt (Original Mix)'
-      },
-      {
-        time: '',
-        artist: 'Rene Bourgeois',
-        title: '4 My Recordz'
-      },
-      {
-        time: '',
-        artist: 'Dubfire',
-        title: 'RibCage (Dense & Pika Remix)'
-      },
-      {
-        time: '',
-        artist: 'Pusha T, Tiga',
-        title: 'Bugatti (Benny Benassi & Laherte Extended Remix)'
-      },
-      {
-        time: '',
-        artist: 'Christian Löffler',
-        title: 'Veiled Grey (Original Mix)'
-      },
-      {
-        time: '',
-        artist: 'DJ Hell',
-        title: 'Je Regrette'
-      },
-      {
-        time: '',
-        artist: '140-Airdox-sissygut alles gut',
-        title: 'Greg Notill  Primitive Sparkle Freak Unique Remix'
-      },
-      {
-        time: '',
-        artist: 'HVOB',
-        title: 'The Last Song Ever Written (Original Mix)'
-      },
-      {
-        time: '',
+        time: '00:16:42',
         artist: 'Dense & Pika',
         title: 'Crispy Duck'
       },
       {
-        time: '',
-        artist: 'Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fitch Prok & Fi',
-        title: 'Tiger Blood (Original Mix)'
-      },
-      {
-        time: '',
-        artist: 'STTS',
-        title: 'Sky Pushing'
-      },
-      {
-        time: '',
-        artist: 'Mike Dehnert',
-        title: 'Chardon'
-      },
-      {
-        time: '',
-        artist: 'Jad & The Ladyboy',
-        title: 'Hey Sisters (Original Mix)'
-      },
-      {
-        time: 'DJ Disciple',
-        artist: 'Prok & Fitch',
-        title: 'Dru Hepkins - Redlight (Nothing But Funk Instrumental Mix) - 01:08:21'
-      },
-      {
-        time: '',
-        artist: 'Dot N Life',
-        title: 'Bad (Extended Mix)'
-      },
-      {
-        time: '',
+        time: '00:19:34',
         artist: 'Martin Books',
-        title: 'Clubbing (Dub Mix)'
+        title: 'Game (Original Mix)'
       },
       {
-        time: '',
-        artist: 'Cloonee',
-        title: 'Gospel (Prok & Fitch)'
+        time: '00:22:30',
+        artist: 'Patrick Arbez',
+        title: 'Der rote Rabauke (deKai (Berlin) Remix)'
       },
       {
-        time: '',
-        artist: 'DJ Hell',
-        title: 'Suicide Commando (Original Mix)'
+        time: '00:25:08',
+        artist: 'Marcel Dettmann',
+        title: 'Push'
       },
       {
-        time: '',
-        artist: 'Jody 6',
-        title: 'I Go Psycho (Extended Mix)'
+        time: '00:30:18',
+        artist: 'Barnt',
+        title: 'Geffen'
       },
       {
-        time: '',
-        artist: 'Prok & Fitch, SOSA (UK)',
-        title: 'Dance Lapse (Original Mix)'
+        time: '00:34:38',
+        artist: 'Alok, FAANGS, SCRIPT',
+        title: 'Substance (Extended Mix)'
       },
       {
-        time: '',
-        artist: 'Rich Vom Dorf',
-        title: 'Rich Vom Dorf'
+        time: '00:36:44',
+        artist: 'Taylr Renee, CID',
+        title: 'Fancy $hit (Skepsis Remix)'
       },
       {
-        time: '',
-        artist: 'Wir Sind Helden',
-        title: 'Denkmal'
+        time: '00:39:04',
+        artist: 'neonman',
+        title: 'future is pussy (northern lite mix)'
       },
       {
-        time: '',
-        artist: 'Patrick_Arbez',
-        title: '[UNRELEASED] Patrick Arbez'
+        time: '00:43:06',
+        artist: 'Martin Books, Signalfarbe Schwarz',
+        title: 'Simone feat. Signalfarbe Schwarz (Original Mix)'
       },
       {
-        time: '',
-        artist: 'Randomer',
-        title: 'randomer'
+        time: '00:47:46',
+        artist: 'Martin Books',
+        title: 'Perfection'
       },
       {
-        time: 'Crookers',
-        artist: 'Champion',
-        title: 'Interplanetary Criminal - Lose My Mind (Original Mix) - 01:37:13'
+        time: '00:52:49',
+        artist: 'T78, Angelala',
+        title: 'No Guestlist (Extended Mix)'
       },
       {
-        time: '',
-        artist: 'Dot N Life',
-        title: 'Trick Me (Extended Mix)'
+        time: '00:55:16',
+        artist: 'Ali Love, Vintage Culture, Max Styler',
+        title: 'Freaky 1 (Original Mix)'
       },
       {
-        time: '',
-        artist: 'Rello, Justin Rabin',
-        title: 'ICY (Original Mix)'
+        time: '00:57:03',
+        artist: 'Enrico Sangiuliano',
+        title: 'Alleanza, Capernoited (Jewel Kid Rework) [myfreemp3.eu]'
       },
       {
-        time: '',
-        artist: 'Skylin3, Nicole Del Prete',
-        title: 'Naughty Girl (Kevin McKay Extended ViP)'
+        time: '01:01:21',
+        artist: 'D4VID',
+        title: 'LD 25'
       },
       {
-        time: '',
-        artist: 'Chris Lake',
-        title: 'Psycho (Extended Mix)'
+        time: '01:04:21',
+        artist: 'Martin Books',
+        title: 'Age'
       },
       {
-        time: '',
-        artist: 'jbambacht',
-        title: 'Motor'
+        time: '01:08:05',
+        artist: 'Silversurfer',
+        title: 'Silversurfer & Kikki - welcome to Berlin - drum'
       },
       {
-        time: '',
-        artist: 'Argy',
-        title: 'Closer Than Most'
+        time: '01:12:58',
+        artist: 'Lokiboi',
+        title: 'Ok'
+      },
+      {
+        time: '01:14:17',
+        artist: 'LxS',
+        title: 'Showroom_Dummies_(Original_Mix) (1)'
       }
     ],
     publishedAt: '2026-05-02'

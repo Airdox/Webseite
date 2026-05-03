@@ -20,6 +20,7 @@
     "desktop:test:all": "npm run desktop:test:logic && npm run desktop:test:e2e",
     "tracklist:auto": "node scripts/generate-mixcloud-tracklists.mjs",
     "tracklist:watch": "node scripts/generate-mixcloud-tracklists.mjs --watch --mode cue",
+    "tracklist:normalize": "node scripts/normalize-tracklist.mjs",
     "brand:epk": "node scripts/build-airdox-epk.mjs",
     "brand:epk:pdf": "node scripts/build-airdox-epk.mjs --pdf",
     "manni:reels:generate": "node scripts/manni-reel-factory.mjs",

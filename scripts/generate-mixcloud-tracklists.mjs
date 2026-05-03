@@ -2,6 +2,14 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
+import {
+  buildCanonicalTracklist,
+  dedupeTracks,
+  normalizeTimestamp,
+  normalizeTrackExport,
+  parseCueDocument,
+  toMixcloudLines,
+} from '../src/desktop/lib/tracklistCore.js';
 
 const AUDIO_EXTENSIONS = new Set(['.wav', '.mp3', '.flac', '.aiff', '.aif', '.m4a', '.aac']);
 const DEFAULT_OUTPUT_SUBDIR = '_mixcloud_tracklists';
@@ -56,172 +64,6 @@ const toInt = (value, fallback) => {
 
 const isCueFile = (filePath) => path.extname(filePath).toLowerCase() === '.cue';
 const isAudioFile = (filePath) => AUDIO_EXTENSIONS.has(path.extname(filePath).toLowerCase());
-
-const pad2 = (value) => String(value).padStart(2, '0');
-
-const formatHhMmSs = (totalSeconds) => {
-  const safe = Math.max(0, Math.floor(Number(totalSeconds) || 0));
-  const hours = Math.floor(safe / 3600);
-  const minutes = Math.floor((safe % 3600) / 60);
-  const seconds = safe % 60;
-  return `${pad2(hours)}:${pad2(minutes)}:${pad2(seconds)}`;
-};
-
-const timestampToSeconds = (value = '') => {
-  const parts = String(value)
-    .trim()
-    .split(':')
-    .map((chunk) => Number.parseInt(chunk, 10));
-  if (parts.some((n) => Number.isNaN(n))) return null;
-
-  if (parts.length === 3) {
-    const [hours, minutes, seconds] = parts;
-    return hours * 3600 + minutes * 60 + seconds;
-  }
-  if (parts.length === 2) {
-    const [minutes, seconds] = parts;
-    return minutes * 60 + seconds;
-  }
-  if (parts.length === 1) {
-    return parts[0];
-  }
-  return null;
-};
-
-const normalizeTimestamp = (value = '', isCue = false) => {
-  void isCue;
-  const seconds = timestampToSeconds(value);
-  if (seconds === null) return '';
-  return formatHhMmSs(seconds);
-};
-
-const getTrackTimestamp = (track = {}, isCue = false) => {
-  const candidate = [track.time, track.timestamp]
-    .map((value) => String(value ?? '').trim())
-    .find(Boolean) || '';
-  return normalizeTimestamp(candidate, isCue) || '00:00:00';
-};
-
-const normalizeTrackExport = (track = {}) => {
-  const timestamp = getTrackTimestamp(track);
-  return {
-    ...track,
-    artist: String(track.artist || '').trim(),
-    title: String(track.title || '').trim(),
-    time: timestamp,
-    timestamp,
-  };
-};
-
-const stripQuotes = (value = '') => {
-  const trimmed = String(value).trim();
-  if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
-    return trimmed.slice(1, -1);
-  }
-  return trimmed;
-};
-
-const parseArtistTitleFromFilename = (filePath = '') => {
-  const stem = path.basename(filePath, path.extname(filePath)).replace(/^\d+\.\s*/, '').trim();
-  const splitters = [' - ', ' – ', ' — ', ' | ', '_'];
-  for (const splitter of splitters) {
-    if (!stem.includes(splitter)) continue;
-    const parts = stem.split(splitter);
-    if (parts.length >= 2) {
-      return {
-        artist: parts[0]?.trim() || '',
-        title: parts.slice(1).join(splitter).trim() || '',
-      };
-    }
-  }
-  return { artist: '', title: stem };
-};
-
-const parseCueContent = (content) => {
-  const lines = String(content).split(/\r?\n/);
-  const tracks = [];
-  let albumPerformer = '';
-  let recordingFile = '';
-  let current = null;
-
-  const flushCurrent = () => {
-    if (!current) return;
-    tracks.push(current);
-    current = null;
-  };
-
-  for (const rawLine of lines) {
-    const line = rawLine.trim();
-    if (!line) continue;
-
-    const trackStart = line.match(/^TRACK\s+(\d+)\s+AUDIO$/i);
-    if (trackStart) {
-      flushCurrent();
-      current = {
-        index: Number.parseInt(trackStart[1], 10),
-        artist: '',
-        title: '',
-        timestamp: '',
-        sourceFile: '',
-      };
-      continue;
-    }
-
-    const performerMatch = line.match(/^PERFORMER\s+(.+)$/i);
-    if (performerMatch) {
-      const performer = stripQuotes(performerMatch[1]);
-      if (current) current.artist = performer;
-      else albumPerformer = performer;
-      continue;
-    }
-
-    const titleMatch = line.match(/^TITLE\s+(.+)$/i);
-    if (titleMatch && current) {
-      current.title = stripQuotes(titleMatch[1]);
-      continue;
-    }
-
-    const fileMatch = line.match(/^FILE\s+(.+?)\s+\w+$/i);
-    if (fileMatch) {
-      const parsedFile = stripQuotes(fileMatch[1]);
-      if (current) {
-        current.sourceFile = parsedFile;
-      } else if (!recordingFile) {
-        recordingFile = parsedFile;
-      }
-      continue;
-    }
-
-    const indexMatch = line.match(/^INDEX\s+01\s+(.+)$/i);
-    if (indexMatch && current) {
-      current.timestamp = normalizeTimestamp(indexMatch[1], true);
-      continue;
-    }
-  }
-
-  flushCurrent();
-
-  const parsedTracks = tracks
-    .map((track) => {
-      const derived = parseArtistTitleFromFilename(track.sourceFile);
-      const artist = track.artist || albumPerformer || derived.artist || 'Unknown Artist';
-      const title = track.title || derived.title || `Track ${track.index || '?'}`;
-      return {
-        ...track,
-        artist: artist.trim(),
-        title: title.trim(),
-        timestamp: track.timestamp || '00:00:00',
-      };
-    })
-    .filter((track) => track.title);
-
-  return {
-    tracks: parsedTracks,
-    recordingFile,
-  };
-};
-
-const toMixcloudLines = (tracks = []) => tracks.map((track) => `${track.artist} - ${track.title} - ${getTrackTimestamp(track)}`);
 
 const walkFiles = async (rootPath) => {
   const result = [];
@@ -314,6 +156,13 @@ const getAudioDurationSeconds = async (audioPath) => {
   return parsed;
 };
 
+const audioDurationsAreCompatible = (sourceDurationSeconds, targetDurationSeconds) => {
+  if (!Number.isFinite(sourceDurationSeconds) || sourceDurationSeconds <= 0) return true;
+  if (!Number.isFinite(targetDurationSeconds) || targetDurationSeconds <= 0) return false;
+  const toleranceSeconds = Math.max(3, sourceDurationSeconds * 0.01);
+  return Math.abs(sourceDurationSeconds - targetDurationSeconds) <= toleranceSeconds;
+};
+
 const resolveCueRecordingWavPath = async (cuePath, recordingFileFromCue) => {
   const cueDir = path.dirname(cuePath);
   if (recordingFileFromCue) {
@@ -355,7 +204,11 @@ const convertWavToMp3 = async ({
     return { status: 'skipped-no-duration', wavPath };
   }
 
-  const minSeconds = Math.max(0, Number.parseFloat(String(minConvertMinutes)) || DEFAULT_MIN_CONVERT_MINUTES) * 60;
+  const parsedMinConvertMinutes = Number.parseFloat(String(minConvertMinutes));
+  const normalizedMinConvertMinutes = Number.isFinite(parsedMinConvertMinutes)
+    ? Math.max(0, parsedMinConvertMinutes)
+    : DEFAULT_MIN_CONVERT_MINUTES;
+  const minSeconds = normalizedMinConvertMinutes * 60;
   if (durationSeconds < minSeconds) {
     return {
       status: 'skipped-short',
@@ -375,7 +228,10 @@ const convertWavToMp3 = async ({
   if (await fileExists(mp3Path)) {
     const mp3Stat = await fs.stat(mp3Path);
     if (mp3Stat.mtimeMs >= wavStat.mtimeMs) {
-      return { status: 'up-to-date', wavPath, mp3Path, durationSeconds };
+      const mp3DurationSeconds = await getAudioDurationSeconds(mp3Path);
+      if (audioDurationsAreCompatible(durationSeconds, mp3DurationSeconds)) {
+        return { status: 'up-to-date', wavPath, mp3Path, durationSeconds };
+      }
     }
   }
 
@@ -442,54 +298,45 @@ const makeOutputBase = (inputRoot, outputRoot, sourceFile) => {
   return path.join(outputRoot, relNoExt);
 };
 
-const dedupeTracks = (tracks = [], dedupeWindowSeconds = 45) => {
-  const deduped = [];
-  const lastSeen = new Map();
-
-  for (const track of tracks) {
-    const key = `${track.artist}:::${track.title}`.toLowerCase();
-    const atSeconds = timestampToSeconds(getTrackTimestamp(track)) ?? 0;
-    const previous = lastSeen.get(key);
-    const sourceFile = String(track.sourceFile || '').toLowerCase();
-
-    if (
-      previous
-      && (
-        atSeconds - previous.atSeconds <= dedupeWindowSeconds
-        || (sourceFile && sourceFile === previous.sourceFile)
-      )
-    ) {
-      continue;
-    }
-
-    lastSeen.set(key, { atSeconds, sourceFile });
-    deduped.push(track);
-  }
-  return deduped;
-};
-
-const writeTracklistFiles = async ({ tracks, inputRoot, outputRoot, sourceFile, suffix = '' }) => {
+const writeTracklistFiles = async ({ tracks, inputRoot, outputRoot, sourceFile, audioFile = '', suffix = '' }) => {
   const outputBase = makeOutputBase(inputRoot, outputRoot, sourceFile);
   await ensureDir(path.dirname(outputBase));
 
   const jsonPath = `${outputBase}${suffix}.tracks.json`;
   const textPath = `${outputBase}${suffix}.mixcloud.txt`;
   const normalizedTracks = tracks.map(normalizeTrackExport);
+  const canonicalTracklist = buildCanonicalTracklist({
+    sourceFile,
+    audioFile,
+    tracks: normalizedTracks,
+  });
   const lines = toMixcloudLines(normalizedTracks);
 
-  await fs.writeFile(jsonPath, JSON.stringify({ sourceFile, tracks: normalizedTracks }, null, 2), 'utf8');
+  await fs.writeFile(jsonPath, JSON.stringify(canonicalTracklist, null, 2), 'utf8');
   await fs.writeFile(textPath, `${lines.join('\n')}\n`, 'utf8');
 
-  return { jsonPath, textPath, trackCount: normalizedTracks.length };
+  return {
+    jsonPath,
+    textPath,
+    trackCount: normalizedTracks.length,
+    validationStatus: canonicalTracklist.validation.status,
+    validationWarnings: canonicalTracklist.validation.warnings,
+    validationErrors: canonicalTracklist.validation.errors,
+  };
 };
 
-const writeTracklistNextToCue = async ({ tracks, cuePath }) => {
+const writeTracklistNextToCue = async ({ tracks, cuePath, audioFile = '' }) => {
   const base = cuePath.replace(/\.[^.]+$/, '');
   const jsonPath = `${base}.tracks.json`;
   const textPath = `${base}.mixcloud.txt`;
   const normalizedTracks = tracks.map(normalizeTrackExport);
+  const canonicalTracklist = buildCanonicalTracklist({
+    sourceFile: cuePath,
+    audioFile,
+    tracks: normalizedTracks,
+  });
   const lines = toMixcloudLines(normalizedTracks);
-  await fs.writeFile(jsonPath, JSON.stringify({ sourceFile: cuePath, tracks: normalizedTracks }, null, 2), 'utf8');
+  await fs.writeFile(jsonPath, JSON.stringify(canonicalTracklist, null, 2), 'utf8');
   await fs.writeFile(textPath, `${lines.join('\n')}\n`, 'utf8');
   return {
     localJsonPath: jsonPath,
@@ -575,23 +422,27 @@ const processCueFile = async ({
   minConvertMinutes,
 }) => {
   const content = await fs.readFile(sourceFile, 'utf8');
-  const parsedCue = parseCueContent(content);
+  const parsedCue = parseCueDocument(content, { sourceFile });
+  if (parsedCue.validation.errors.length > 0) {
+    throw new Error(`Tracklist validation failed for ${path.basename(sourceFile)}: ${parsedCue.validation.errors.join(' ')}`);
+  }
   const deduped = dedupeTracks(parsedCue.tracks, dedupeWindowSeconds);
   const outputs = await writeTracklistFiles({
     tracks: deduped,
     inputRoot: scanRoot,
     outputRoot,
     sourceFile,
+    audioFile: parsedCue.audioFile || '',
   });
 
   const localOutputs = writeNextToCue
-    ? await writeTracklistNextToCue({ tracks: deduped, cuePath: sourceFile })
+    ? await writeTracklistNextToCue({ tracks: deduped, cuePath: sourceFile, audioFile: parsedCue.audioFile || '' })
     : { localJsonPath: '', localTextPath: '' };
 
   const mp3Info = convertRecordingToMp3
     ? await convertWavToMp3({
       cuePath: sourceFile,
-      recordingFileFromCue: parsedCue.recordingFile,
+      recordingFileFromCue: parsedCue.audioFile,
       mp3BitrateKbps,
       targetLufs,
       minConvertMinutes,
@@ -603,7 +454,10 @@ const processCueFile = async ({
     source: sourceFile,
     ...outputs,
     ...localOutputs,
-    recordingFile: parsedCue.recordingFile || '',
+    recordingFile: parsedCue.audioFile || '',
+    sourceValidationStatus: parsedCue.validation.status,
+    sourceValidationWarnings: parsedCue.validation.warnings,
+    sourceValidationErrors: parsedCue.validation.errors,
     mp3Status: mp3Info.status,
     durationSeconds: mp3Info.durationSeconds || null,
     wavPath: mp3Info.wavPath || '',
@@ -634,6 +488,7 @@ const processAuddFile = async ({
     inputRoot: scanRoot,
     outputRoot,
     sourceFile,
+    audioFile: sourceFile,
     suffix: '.audd',
   });
   return {
@@ -740,6 +595,9 @@ const main = async () => {
       console.log(`- ${item.source}`);
       console.log(`  -> ${item.textPath}`);
       console.log(`  tracks: ${item.trackCount}`);
+      if (item.validationStatus) {
+        console.log(`  validation: ${item.validationStatus}`);
+      }
       if (item.localTextPath) {
         console.log(`  local: ${item.localTextPath}`);
       }
@@ -816,6 +674,9 @@ const main = async () => {
         });
         console.log(`[watch] updated: ${sourceFile}`);
         console.log(`        -> ${item.textPath} (${item.trackCount} tracks)`);
+        if (item.validationStatus) {
+          console.log(`        -> validation ${item.validationStatus}`);
+        }
         if (item.localTextPath) {
           console.log(`        -> local ${item.localTextPath}`);
         }

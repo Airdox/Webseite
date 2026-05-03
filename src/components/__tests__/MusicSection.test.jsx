@@ -19,7 +19,16 @@ vi.mock('../../utils/i18n', () => ({
 // Mock Music Sets
 vi.mock('../../data/musicSets', () => ({
     sets: [
-        { id: 'test-set-1', title: 'Test Set 1', date: 'JAN 2026', vinylColor: '#ff0000' }
+        {
+            id: 'test-set-1',
+            title: 'Test Set 1',
+            date: 'JAN 2026',
+            vinylColor: '#ff0000',
+            tracks: [
+                { time: '', artist: 'Tanith', title: 'Triage' },
+                { time: 'Alok', artist: 'FAANGS', title: 'SCRIPT - Substance' }
+            ]
+        }
     ]
 }));
 
@@ -67,6 +76,21 @@ describe('MusicSection Synchronisation', () => {
         await waitFor(() => {
             expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/api/stats'));
         });
+    });
+
+    it('blendet Tracklists ohne seekbare Zeitstempel aus', async () => {
+        const { container } = render(
+            <AudioProvider>
+                <MusicSection />
+            </AudioProvider>
+        );
+
+        await waitFor(() => {
+            expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/api/stats'));
+        });
+
+        expect(container.querySelector('.vip-tracklist')).toBeNull();
+        expect(screen.queryByText('SCRIPT - Substance')).toBeNull();
     });
 
     it('erkennt mobile Umgebungen und nutzt absolute Produktions-URLs', async () => {

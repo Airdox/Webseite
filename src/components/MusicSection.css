@@ -324,15 +324,20 @@
 /* Collapse/expand animation */
 .vip-tracklist .tracklist-items {
     list-style: none;
-    max-height: 600px;
-    overflow: hidden;
+    max-height: min(72vh, 980px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px;
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
                 opacity 0.3s ease;
     opacity: 1;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 245, 255, 0.35) rgba(255, 255, 255, 0.04);
 }
 
 .vip-tracklist.collapsed .tracklist-items {
     max-height: 0;
+    overflow: hidden;
     opacity: 0;
 }
 
@@ -348,9 +353,11 @@
     cursor: pointer;
     user-select: none;
     transition: background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, transform 0.15s ease;
-    display: flex;
-    align-items: baseline;
-    gap: 4px;
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    align-items: start;
+    column-gap: 8px;
+    min-height: 34px;
 }
 
 .tracklist-item:hover {
@@ -381,17 +388,37 @@
 
 .track-time {
     color: var(--neon-cyan);
-    margin-right: 8px;
     white-space: nowrap;
     font-weight: 600;
+    line-height: 1.45;
 }
 
 .track-details {
-    flex: 1;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow: visible;
+    white-space: normal;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.track-artist {
+    color: rgba(255, 255, 255, 0.74);
+    font-weight: 700;
+}
+
+.track-title {
+    color: rgba(255, 255, 255, 0.58);
+}
+
+@media (max-width: 420px) {
+    .tracklist-item {
+        grid-template-columns: 1fr;
+        row-gap: 3px;
+    }
+
+    .track-time {
+        font-size: 0.7rem;
+    }
 }
 
 /* VIP Access Styles */

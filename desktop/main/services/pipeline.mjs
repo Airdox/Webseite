@@ -9,13 +9,32 @@ import {
   buildDraftFromImportedFiles,
   extractFilename,
   parseDateHint,
+  resolveUniqueSetDraftIdentity,
 } from '../../../src/desktop/lib/setManifest.js';
 import { seedTrackStats } from './database.mjs';
-import { upsertSet } from './manifest.mjs';
+import { readSets, upsertSet } from './manifest.mjs';
 import { uploadAudioFile } from './r2.mjs';
 import { ensureDirectory, getWorkspacePaths, getGitStatus, isWorkspaceRoot, runCommand } from './workspace.mjs';
 
 const matchesExtension = (filePath, extensions) => extensions.includes(path.extname(filePath).toLowerCase());
+
+const getTracklistPriority = (filePath = '') => {
+  const filename = path.basename(filePath).toLowerCase();
+  const ext = path.extname(filename);
+  if (filename.endsWith('.tracks.json')) return 0;
+  if (filename.endsWith('.mixcloud.txt')) return 1;
+  if (ext === '.cue') return 2;
+  if (ext === '.txt' || ext === '.md') return 3;
+  if (ext === '.json') return 4;
+  if (ext === '.csv') return 5;
+  return 99;
+};
+
+const findPreferredTracklistPath = (filePaths = []) => {
+  const tracklistPaths = filePaths.filter((candidate) => matchesExtension(candidate, TRACKLIST_EXTENSIONS));
+  return tracklistPaths
+    .sort((left, right) => getTracklistPriority(left) - getTracklistPriority(right))[0] || '';
+};
 
 const fileExists = async (filePath) => {
   try {
@@ -25,6 +44,57 @@ const fileExists = async (filePath) => {
     return false;
   }
 };
+
+const stripTextBom = (value = '') => String(value || '').replace(/^\uFEFF/, '');
+
+const swapUtf16Bytes = (buffer) => {
+  const swapped = Buffer.alloc(buffer.length);
+  for (let index = 0; index < buffer.length - 1; index += 2) {
+    swapped[index] = buffer[index + 1];
+    swapped[index + 1] = buffer[index];
+  }
+  if (buffer.length % 2 === 1) {
+    swapped[buffer.length - 1] = buffer[buffer.length - 1];
+  }
+  return swapped;
+};
+
+export const decodeTracklistBuffer = (buffer = Buffer.alloc(0)) => {
+  if (!buffer?.length) return '';
+
+  if (buffer.length >= 3 && buffer[0] === 0xEF && buffer[1] === 0xBB && buffer[2] === 0xBF) {
+    return stripTextBom(buffer.toString('utf8', 3));
+  }
+
+  if (buffer.length >= 2 && buffer[0] === 0xFF && buffer[1] === 0xFE) {
+    return stripTextBom(buffer.toString('utf16le', 2));
+  }
+
+  if (buffer.length >= 2 && buffer[0] === 0xFE && buffer[1] === 0xFF) {
+    return stripTextBom(swapUtf16Bytes(buffer.subarray(2)).toString('utf16le'));
+  }
+
+  const sampleLength = Math.min(buffer.length, 2048);
+  let oddNulls = 0;
+  let evenNulls = 0;
+  for (let index = 0; index < sampleLength; index += 1) {
+    if (buffer[index] !== 0) continue;
+    if (index % 2 === 0) evenNulls += 1;
+    else oddNulls += 1;
+  }
+
+  if (oddNulls > sampleLength * 0.2) {
+    return stripTextBom(buffer.toString('utf16le'));
+  }
+
+  if (evenNulls > sampleLength * 0.2) {
+    return stripTextBom(swapUtf16Bytes(buffer).toString('utf16le'));
+  }
+
+  return stripTextBom(buffer.toString('utf8'));
+};
+
+const readTextFile = async (filePath) => decodeTracklistBuffer(await fs.readFile(filePath));
 
 const getAncestorDirs = (startDir, maxDepth = 8) => {
   const result = [];
@@ -43,9 +113,9 @@ const buildTracklistCandidates = (audioPath) => {
   const parsed = path.parse(audioPath);
   const baseNoExt = path.join(dir, parsed.name);
   const candidates = [
-    `${baseNoExt}.cue`,
     `${baseNoExt}.tracks.json`,
     `${baseNoExt}.mixcloud.txt`,
+    `${baseNoExt}.cue`,
     `${baseNoExt}.txt`,
     path.join(dir, '_mixcloud_tracklists', `${parsed.name}.tracks.json`),
     path.join(dir, '_mixcloud_tracklists', `${parsed.name}.mixcloud.txt`),
@@ -79,7 +149,7 @@ const findCueSidecarTracklist = async (audioPath) => {
   for (const cuePath of cuePaths) {
     let content = '';
     try {
-      content = await fs.readFile(cuePath, 'utf8');
+      content = await readTextFile(cuePath);
     } catch {
       content = '';
     }
@@ -94,7 +164,7 @@ const findCueSidecarTracklist = async (audioPath) => {
 
   for (const cuePath of targets) {
     const cueBase = path.join(audioDir, path.parse(cuePath).name);
-    const sidecars = [cuePath, `${cueBase}.tracks.json`, `${cueBase}.mixcloud.txt`, `${cueBase}.txt`];
+    const sidecars = [`${cueBase}.tracks.json`, `${cueBase}.mixcloud.txt`, cuePath, `${cueBase}.txt`];
     for (const candidate of sidecars) {
       if (await fileExists(candidate)) {
         return candidate;
@@ -137,6 +207,23 @@ const resolveTracklistPath = async ({ audioPath, explicitTracklistPath = '' }) =
   };
 };
 
+const getAudioDurationSeconds = async (audioPath) => {
+  try {
+    const metadata = await parseFile(audioPath, { duration: true });
+    const durationSeconds = metadata.format.duration;
+    return Number.isFinite(durationSeconds) && durationSeconds > 0 ? durationSeconds : null;
+  } catch {
+    return null;
+  }
+};
+
+const audioDurationsAreCompatible = (sourceDurationSeconds, targetDurationSeconds) => {
+  if (!Number.isFinite(sourceDurationSeconds) || sourceDurationSeconds <= 0) return true;
+  if (!Number.isFinite(targetDurationSeconds) || targetDurationSeconds <= 0) return false;
+  const toleranceSeconds = Math.max(3, sourceDurationSeconds * 0.01);
+  return Math.abs(sourceDurationSeconds - targetDurationSeconds) <= toleranceSeconds;
+};
+
 const convertWavToMp3 = async (wavPath, workspaceRoot) => {
   const dir = path.dirname(wavPath);
   const basename = path.parse(wavPath).name;
@@ -151,10 +238,16 @@ const convertWavToMp3 = async (wavPath, workspaceRoot) => {
   try {
     const mp3Stat = await fs.stat(mp3Path);
     if (mp3Stat.mtimeMs >= wavStat.mtimeMs) {
-      return {
-        mp3Path,
-        converted: false,
-      };
+      const [wavDurationSeconds, mp3DurationSeconds] = await Promise.all([
+        getAudioDurationSeconds(wavPath),
+        getAudioDurationSeconds(mp3Path),
+      ]);
+      if (audioDurationsAreCompatible(wavDurationSeconds, mp3DurationSeconds)) {
+        return {
+          mp3Path,
+          converted: false,
+        };
+      }
     }
   } catch {
     // MP3 does not exist yet, continue with conversion.
@@ -239,7 +332,7 @@ const copyCoverFile = async (workspaceRoot, sourcePath) => {
 
 const getTracklistText = async (tracklistPath) => {
   if (!tracklistPath) return '';
-  return fs.readFile(tracklistPath, 'utf8');
+  return readTextFile(tracklistPath);
 };
 
 const pushLog = (logs, step, status, detail) => {
@@ -251,9 +344,102 @@ const pushLog = (logs, step, status, detail) => {
   });
 };
 
+const TRACK_TIME_PATTERN = /^\d{1,2}:\d{2}(?::\d{2})?$/;
+
+const hasSeekableTrackTime = (value = '') => {
+  const raw = String(value || '').trim();
+  if (!TRACK_TIME_PATTERN.test(raw)) return false;
+  const parts = raw.split(':').map((part) => Number.parseInt(part, 10));
+  const minutes = parts[parts.length - 2];
+  const seconds = parts[parts.length - 1];
+  return Number.isFinite(minutes)
+    && Number.isFinite(seconds)
+    && minutes <= 59
+    && seconds <= 59;
+};
+
+const getSeekableTrackCount = (tracks = []) => {
+  if (!Array.isArray(tracks)) return 0;
+  return tracks.filter((track) => (
+    hasSeekableTrackTime(track?.time || track?.timestamp)
+    && (String(track?.artist || '').trim() || String(track?.title || '').trim())
+  )).length;
+};
+
+const getSeekableTracks = (tracks = []) => {
+  if (!Array.isArray(tracks)) return [];
+  return tracks.filter((track) => (
+    hasSeekableTrackTime(track?.time || track?.timestamp)
+    && (String(track?.artist || '').trim() || String(track?.title || '').trim())
+  ));
+};
+
+const fetchTextOrThrow = async (url) => {
+  const response = await fetch(url, {
+    headers: { 'cache-control': 'no-cache' },
+  });
+  if (!response.ok) {
+    throw new Error(`Fetch failed (${response.status}) for ${url}`);
+  }
+  return response.text();
+};
+
+const getScriptAssetUrls = (html = '', siteUrl = '') => {
+  const matches = [...String(html).matchAll(/<script\b[^>]*\bsrc=["']([^"']+\.js[^"']*)["'][^>]*>/gi)];
+  return matches.map((match) => new URL(match[1], siteUrl).href);
+};
+
+const verifyLiveBundle = async ({ siteUrl, publishDraft }) => {
+  const baseUrl = String(siteUrl || DEFAULT_FLIGHT_DECK_SETTINGS.liveSiteUrl).trim();
+  const verifyUrl = new URL(baseUrl);
+  verifyUrl.searchParams.set('flightdeckVerify', String(Date.now()));
+
+  const html = await fetchTextOrThrow(verifyUrl.href);
+  const scriptUrls = getScriptAssetUrls(html, verifyUrl.href);
+  if (!scriptUrls.length) {
+    throw new Error(`Live verify failed: no JavaScript bundle found at ${baseUrl}`);
+  }
+
+  const bundleText = (await Promise.all(scriptUrls.map(fetchTextOrThrow))).join('\n');
+  const seekableTracks = getSeekableTracks(publishDraft.tracks);
+  const firstTrack = seekableTracks[0];
+  const lastTrack = seekableTracks[seekableTracks.length - 1];
+  const requiredTokens = [
+    publishDraft.id,
+    publishDraft.title,
+    firstTrack?.time,
+    firstTrack?.title,
+    lastTrack?.time,
+    lastTrack?.title,
+  ].map((token) => String(token || '').trim()).filter(Boolean);
+
+  const missingTokens = requiredTokens.filter((token) => !bundleText.includes(token));
+  if (missingTokens.length > 0) {
+    throw new Error(`Live verify failed: deployed bundle is missing ${missingTokens.join(', ')}`);
+  }
+
+  return {
+    siteUrl: baseUrl,
+    scriptCount: scriptUrls.length,
+    checkedTokens: requiredTokens.length,
+  };
+};
+
 const quotePath = (relativePath) => `"${relativePath.replace(/\\/g, '\\\\')}"`;
 
-export const prepareImportBundle = async ({ filePaths = [], settings = DEFAULT_FLIGHT_DECK_SETTINGS }) => {
+const readExistingSetsForSettings = async (settings = {}) => {
+  const workspaceRoot = String(settings.workspaceRoot || '').trim();
+  if (!workspaceRoot || !(await isWorkspaceRoot(workspaceRoot))) return [];
+  return readSets(workspaceRoot);
+};
+
+export const prepareImportBundle = async ({
+  filePaths = [],
+  settings = DEFAULT_FLIGHT_DECK_SETTINGS,
+  reservedSetIds = [],
+  reservedSetTitles = [],
+  reservedSetFiles = [],
+}) => {
   const mergedSettings = { ...DEFAULT_FLIGHT_DECK_SETTINGS, ...settings };
   const audioPath = filePaths.find((candidate) => matchesExtension(candidate, AUDIO_EXTENSIONS));
   if (!audioPath) {
@@ -265,7 +451,7 @@ export const prepareImportBundle = async ({ filePaths = [], settings = DEFAULT_F
   const isWavFile = audioExt === '.wav' || audioExt === '.wave';
 
   const imagePath = filePaths.find((candidate) => matchesExtension(candidate, IMAGE_EXTENSIONS)) || '';
-  const selectedTracklistPath = filePaths.find((candidate) => matchesExtension(candidate, TRACKLIST_EXTENSIONS)) || '';
+  const selectedTracklistPath = findPreferredTracklistPath(filePaths);
   const resolvedTracklist = await resolveTracklistPath({
     audioPath,
     explicitTracklistPath: selectedTracklistPath,
@@ -285,6 +471,7 @@ export const prepareImportBundle = async ({ filePaths = [], settings = DEFAULT_F
   const embeddedCoverDataUrl = (embeddedPictureDetected && mergedSettings.extractEmbeddedCover)
     ? `data:${embeddedPicture.format};base64,${embeddedPicture.data.toString('base64')}`
     : '';
+  const existingSets = await readExistingSetsForSettings(mergedSettings);
 
   const draft = buildDraftFromImportedFiles({
     audioPath,
@@ -294,9 +481,20 @@ export const prepareImportBundle = async ({ filePaths = [], settings = DEFAULT_F
     tracklistText,
     imagePath,
     embeddedCoverDataUrl,
+    existingSets,
+    reservedSetIds,
+    reservedSetTitles,
+    reservedSetFiles,
     defaultVinylColor: mergedSettings.defaultVinylColor,
     defaultCoverPath: mergedSettings.defaultCoverPath,
   });
+
+  if (tracklistPath && tracklistText.trim() && getSeekableTrackCount(draft.tracks) === 0) {
+    throw new Error(`Tracklist detected but no seekable timestamps were parsed: ${tracklistPath}. Use .tracks.json, Rekordbox .cue, pipe format "time | artist | title", or "Artist - Title - HH:MM:SS" before publishing.`);
+  }
+  if (tracklistPath && draft.tracklistValidation?.errors?.length) {
+    throw new Error(`Tracklist validation failed: ${draft.tracklistValidation.errors.join(' ')}`);
+  }
 
   if (isWavFile) {
     draft.file = draft.file.replace(/\.(wav|wave)$/i, '.mp3');
@@ -317,6 +515,18 @@ export const prepareImportBundle = async ({ filePaths = [], settings = DEFAULT_F
         : []),
       ...(resolvedTracklist.source === 'auto'
         ? [`Tracklist auto-detected: ${tracklistPath}`]
+        : []),
+      ...(tracklistPath && draft.tracks?.length
+        ? [`Tracklist validated: ${draft.tracks.length} seekable tracks.`]
+        : []),
+      ...(tracklistPath && draft.tracklistValidation?.status
+        ? [`Tracklist quality: ${draft.tracklistValidation.status}${draft.tracklistValidation.warnings?.length ? ` (${draft.tracklistValidation.warnings.length} warning${draft.tracklistValidation.warnings.length === 1 ? '' : 's'})` : ''}.`]
+        : []),
+      ...(tracklistPath && draft.tracklistValidation?.warnings?.length
+        ? draft.tracklistValidation.warnings.map((warning) => `Tracklist warning: ${warning}`)
+        : []),
+      ...(draft.titleNeedsReview
+        ? ['Set title needs review: only a generic recorder name/date was detected. Please enter a real set name before publishing.']
         : []),
       ...(!tracklistPath ? ['No tracklist file detected. You can add tracks manually before publishing.'] : []),
       ...(embeddedPictureDetected && !mergedSettings.extractEmbeddedCover
@@ -352,6 +562,38 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
 
   if (!publishDraft.id || !publishDraft.title || !publishDraft.file) {
     throw new Error('Draft is missing required fields (id, title, file).');
+  }
+
+  if (publishDraft.sourceAudioPath || publishDraft.generatedBaseId || publishDraft.isNew) {
+    const currentSets = await readSets(workspaceRoot);
+    const resolvedIdentity = resolveUniqueSetDraftIdentity(publishDraft, {
+      existingSets: currentSets,
+    });
+    if (
+      resolvedIdentity.id !== publishDraft.id
+      || resolvedIdentity.title !== publishDraft.title
+      || resolvedIdentity.file !== publishDraft.file
+    ) {
+      pushLog(
+        logs,
+        'identity',
+        'info',
+        `Resolved publish identity: ${publishDraft.id} -> ${resolvedIdentity.id}, file ${publishDraft.file} -> ${resolvedIdentity.file}`,
+      );
+    }
+    Object.assign(publishDraft, resolvedIdentity);
+  }
+
+  if (/^airdox set(?: #\d+)?$/i.test(String(publishDraft.title || '').trim())) {
+    throw new Error('Bitte vergib einen echten Set-Namen. Das erkannte Datum bleibt intern erhalten, wird aber nicht mehr als Set-Titel verwendet.');
+  }
+
+  const seekableTrackCount = getSeekableTrackCount(publishDraft.tracks);
+  if (mergedSettings.autoDeploy && mergedSettings.requireTracklistForLive !== false && seekableTrackCount === 0) {
+    throw new Error('Live publish blocked: the set has no seekable tracklist. Import the matching .tracks.json, .mixcloud.txt or .cue file before going live.');
+  }
+  if (seekableTrackCount > 0) {
+    pushLog(logs, 'tracklist', 'success', `Validated ${seekableTrackCount} seekable track rows before publish.`);
   }
 
   if (mergedSettings.safeMode && mergedSettings.uploadAudioToR2 && !publishDraft.sourceAudioPath) {
@@ -433,6 +675,18 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
   if (mergedSettings.autoDeploy) {
     const deployResult = await runWorkspaceCommand({ workspaceRoot, command: mergedSettings.deployCommand });
     pushLog(logs, 'deploy', 'success', deployResult.stdout || 'Deploy completed.');
+    if (mergedSettings.verifyLiveAfterDeploy !== false) {
+      const verifyResult = await verifyLiveBundle({
+        siteUrl: mergedSettings.liveSiteUrl,
+        publishDraft,
+      });
+      pushLog(
+        logs,
+        'verify',
+        'success',
+        `Verified live bundle on ${verifyResult.siteUrl}: ${verifyResult.checkedTokens} set/track tokens across ${verifyResult.scriptCount} script asset(s).`,
+      );
+    }
   }
 
   if (mergedSettings.autoCommit) {

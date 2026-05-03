@@ -109,7 +109,7 @@ Vorhandene neue Scripts:
 - Drag-and-drop fuer Audio, Cover und Tracklist
 - Audio-Metadaten-Auswertung
 - automatische Erkennung von Dauer und Dateihinweisen
-- Tracklist-Parser fuer Text, CSV und JSON
+- Tracklist-Parser fuer `.tracks.json`, `.mixcloud.txt`, Rekordbox-CUE, Pipe/TSV/Semikolon, CSV und Freitext
 - Draft-Editor fuer ID, Titel, Datum, Dauer, Farbe, Cover, Tracklist
 - Publish-Log nach jedem Lauf
 

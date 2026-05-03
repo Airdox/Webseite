@@ -269,6 +269,9 @@ ipcMain.handle('flightdeck:prepare-import', async (_event, payload) => {
   return prepareImportBundle({
     filePaths: payload?.filePaths || [],
     settings,
+    reservedSetIds: payload?.reservedSetIds || [],
+    reservedSetTitles: payload?.reservedSetTitles || [],
+    reservedSetFiles: payload?.reservedSetFiles || [],
   });
 });
 

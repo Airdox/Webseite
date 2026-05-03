@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import DesktopApp from '../DesktopApp.jsx';
 import { flightDeckApi } from '../api.js';
@@ -138,6 +138,80 @@ describe('DesktopApp', () => {
 
     expect(getStateMock).toHaveBeenCalledTimes(3);
     expect(listTableMock).toHaveBeenCalled();
+  });
+
+  it('shows immediate publish progress while the Windows pipeline is running', async () => {
+    const state = {
+      settings: {
+        workspaceRoot: 'D:\\LATEST_WORKSPACE',
+        publishPosition: 'top',
+        autoBuild: false,
+      },
+      sets: [],
+      snapshot: null,
+      dbError: null,
+      gitStatus: { branch: 'main', dirty: false, summary: '' },
+      workspaceValid: true,
+    };
+
+    let resolvePublish;
+    const publishPromise = new Promise((resolve) => {
+      resolvePublish = resolve;
+    });
+    const publishSetMock = vi.fn().mockReturnValue(publishPromise);
+
+    Object.assign(flightDeckApi, {
+      isElectron: false,
+      getState: vi.fn().mockResolvedValue(state),
+      listTable: vi.fn().mockResolvedValue([]),
+      prepareImport: vi.fn().mockResolvedValue({
+        draft: {
+          id: 'recording_2026_05_01',
+          title: 'MAYDAY SIGNAL',
+          date: 'MAY 2026',
+          file: 'Airdox_REC_2026_05_01.mp3',
+          duration: '1:42:08',
+          isNew: true,
+          vinylColor: '#9adf6b',
+          cover: '/assets/recording_2026_05_01.jpg',
+          tracks: [],
+          sourceAudioPath: 'D:\\Music\\Airdox_REC_2026_05_01.mp3',
+        },
+        warnings: [],
+      }),
+      pickImportFiles: vi.fn().mockResolvedValue([]),
+      publishSet: publishSetMock,
+    });
+
+    render(<DesktopApp />);
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+
+    fireEvent.click(screen.getByRole('button', { name: /Set Import/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Demo Import/i }));
+    await screen.findByDisplayValue('recording_2026_05_01');
+
+    fireEvent.click(screen.getByRole('button', { name: /Publish Set/i }));
+
+    await waitFor(() => {
+      expect(screen.getAllByText(/Publish gestartet: recording_2026_05_01/i).length).toBeGreaterThanOrEqual(1);
+    });
+    expect(screen.getByRole('button', { name: /Publish laeuft/i })).toBeDisabled();
+    expect(screen.getAllByText(/Workspace und Manifest werden geprueft/i).length).toBeGreaterThanOrEqual(1);
+
+    await waitFor(() => expect(publishSetMock).toHaveBeenCalledTimes(1));
+
+    await act(async () => {
+      resolvePublish({
+        ok: true,
+        logs: [{ step: 'manifest', status: 'success', detail: 'Manifest updated.', timestamp: new Date().toISOString() }],
+        gitStatus: { branch: 'main', dirty: true, summary: 'published' },
+        publishedSet: { id: 'recording_2026_05_01', title: 'MAYDAY SIGNAL', file: 'Airdox_REC_2026_05_01.mp3' },
+      });
+      await publishPromise;
+    });
+
+    await screen.findByText(/Set recording_2026_05_01 wurde publiziert/i);
+    expect(screen.getByText('manifest')).toBeInTheDocument();
   });
 
   it('refreshes workspace state before "Alles ausfuehren & Live" and publishes with live settings', async () => {

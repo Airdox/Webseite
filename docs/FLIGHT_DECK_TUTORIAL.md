@@ -233,6 +233,7 @@ Set Import ist der produktive Einzelpfad fuer neue oder aktualisierte Releases.
 ### Wichtige Bereiche
 
 - Dropzone fuer Audio, Cover, Tracklist
+- Tracklist-Standard: `.tracks.json`; CUE und `.mixcloud.txt` werden vor dem Publish normalisiert und validiert
 - `Dateien waehlen`
 - optional `Demo Import`
 - Warnungsblock
@@ -249,7 +250,7 @@ Set Import ist der produktive Einzelpfad fuer neue oder aktualisierte Releases.
 2. Lies die Warnungen zuerst.
 3. Pruefe `ID`, `Titel`, `Datei`, `Dauer`, `Cover Path`, `Published At`.
 4. Pruefe `New Badge aktiv` bewusst.
-5. Bereinige die Tracklist zeilenweise.
+5. Bereinige die Tracklist zeilenweise und pruefe Warnungen zu Zeitstempeln oder Reihenfolge.
 6. Kontrolliere `Audio Source` und `Cover Source`.
 7. Starte `Publish Set`.
 8. Lies das `Publish Log` bis zum Ende.
