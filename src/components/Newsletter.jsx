@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Newsletter.css';
 import { t } from '../utils/i18n';
+import { readApiError, readApiJson } from '../utils/apiResponse';
 
 const Newsletter = () => {
     const [email, setEmail] = useState('');
@@ -19,14 +20,14 @@ const Newsletter = () => {
                 body: JSON.stringify({ email })
             });
 
-            const data = await response.json();
             if (response.ok) {
+                await readApiJson(response);
                 setStatus('success');
                 setMessage(t('newsletter.success'));
                 setEmail('');
                 window.airdoxAnalyticsV2?.trackEvent('newsletter_subscribe', { status: 'success' });
             } else {
-                throw new Error(data.error || t('newsletter.subscriptionFailed'));
+                throw new Error(await readApiError(response, t('newsletter.subscriptionFailed')));
             }
         } catch (err) {
             setStatus('error');

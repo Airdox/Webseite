@@ -1,44 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Check, Share2 } from 'lucide-react';
 import { useAudio } from '../contexts/AudioContext';
 import './MusicSection.css';
 import { t } from '../utils/i18n';
 
 import { sets } from '../data/musicSets';
-import { buildAudioApiHref, partitionSetsByAccess } from '../lib/set-access';
-import { buildSetAnchorId, buildSetShareUrl, scrollToSetHash } from '../lib/set-links';
+import { partitionSetsByAccess } from '../lib/set-access';
+import { scrollToSetHash } from '../lib/set-links';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { statsSync } from '../utils/stats-sync';
+import useVinylAnimation from '../hooks/useVinylAnimation';
+import SetCard from './SetCard';
+import { parseTrackTimeToSeconds } from '../utils/timeUtils';
 
 const { publicSets } = partitionSetsByAccess(sets);
-
-const TRACK_TIME_PATTERN = /^\d{1,2}:\d{2}(?::\d{2})?$/;
-
-const parseTrackTimeToSeconds = (value = '') => {
-    const raw = String(value || '').trim();
-    if (!TRACK_TIME_PATTERN.test(raw)) return null;
-
-    const parts = raw
-        .split(':')
-        .map((chunk) => Number.parseInt(chunk, 10));
-    if (!parts.length || parts.some((part) => Number.isNaN(part))) return null;
-    const minutes = parts[parts.length - 2];
-    const seconds = parts[parts.length - 1];
-    if (minutes > 59 || seconds > 59) return null;
-    if (parts.length === 3) {
-        const [hours] = parts;
-        return (hours * 3600) + (minutes * 60) + seconds;
-    }
-    if (parts.length === 2) {
-        return (minutes * 60) + seconds;
-    }
-    return null;
-};
-
-const getSeekableTracks = (tracks = []) => {
-    if (!Array.isArray(tracks)) return [];
-    return tracks.filter((track) => parseTrackTimeToSeconds(track.time) !== null);
-};
 
 const MusicSection = () => {
     const {
@@ -65,25 +39,10 @@ const MusicSection = () => {
         catch { return {}; }
     });
 
-    const [collapsedTracklists, setCollapsedTracklists] = useState({});
-    const [copiedSetId, setCopiedSetId] = useState(null);
-
     const sectionRef = useRef(null);
-    const shareResetTimerRef = useRef(null);
-    const billiardStateRef = useRef({
-        x: 0,
-        y: 0,
-        vx: 140,
-        vy: 118,
-        maxX: 0,
-        maxY: 0,
-        trackKey: '',
-        lastTs: 0
-    });
-    const billiardRafRef = useRef(null);
-    const animatedVinylRef = useRef(null);
-    const frequencyBufferRef = useRef(null);
     useRevealOnScroll(sectionRef, '.reveal, .reveal-scale');
+
+    useVinylAnimation(analyserRef, currentTrack, isPlaying);
 
     // Sync bei Änderungen der globalen Stats (durch StatsSync oder andere Komponenten)
     useEffect(() => {
@@ -96,12 +55,6 @@ const MusicSection = () => {
     useEffect(() => {
         setPlaylist(publicSets);
     }, [setPlaylist]);
-
-    useEffect(() => () => {
-        if (shareResetTimerRef.current) {
-            window.clearTimeout(shareResetTimerRef.current);
-        }
-    }, []);
 
     useEffect(() => {
         const scrollToHashSet = (behavior = 'smooth') => {
@@ -121,73 +74,6 @@ const MusicSection = () => {
         };
     }, []);
 
-    const markShareCopied = (setId) => {
-        setCopiedSetId(setId);
-        if (shareResetTimerRef.current) {
-            window.clearTimeout(shareResetTimerRef.current);
-        }
-        shareResetTimerRef.current = window.setTimeout(() => setCopiedSetId(null), 2200);
-    };
-
-    const copyToClipboard = async (value) => {
-        if (navigator.clipboard?.writeText) {
-            await navigator.clipboard.writeText(value);
-            return;
-        }
-
-        const textArea = document.createElement('textarea');
-        textArea.value = value;
-        textArea.setAttribute('readonly', '');
-        textArea.style.position = 'fixed';
-        textArea.style.opacity = '0';
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-    };
-
-    const trackShare = (set, method) => {
-        const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
-        analytics?.trackEvent?.('set_share', {
-            setId: set.id,
-            setTitle: set.title,
-            method
-        });
-    };
-
-    const handleShareSet = async (event, set) => {
-        event.stopPropagation();
-
-        const url = buildSetShareUrl(set.id);
-        const payload = {
-            title: `${set.title} | AIRDOX`,
-            text: t('music.shareText'),
-            url
-        };
-
-        try {
-            if (navigator.share && (!navigator.canShare || navigator.canShare(payload))) {
-                await navigator.share(payload);
-                trackShare(set, 'native');
-                return;
-            }
-
-            await copyToClipboard(url);
-            markShareCopied(set.id);
-            trackShare(set, 'clipboard');
-        } catch (err) {
-            if (err?.name === 'AbortError') return;
-            try {
-                await copyToClipboard(url);
-                markShareCopied(set.id);
-                trackShare(set, 'clipboard_fallback');
-            } catch {
-                trackShare(set, 'share_failed');
-            }
-        }
-    };
-
-
     const handlePlayClick = (set) => {
         if (currentTrack?.id === set.id) {
             togglePlay();
@@ -204,17 +90,6 @@ const MusicSection = () => {
             playTrack(set, true, timeInSeconds);
         } else {
             seek(timeInSeconds);
-        }
-    };
-
-    const toggleTracklist = (setId) => {
-        setCollapsedTracklists(prev => ({ ...prev, [setId]: !prev[setId] }));
-    };
-
-    const handleCoverKeyDown = (event, set) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            handlePlayClick(set);
         }
     };
 
@@ -261,141 +136,6 @@ const MusicSection = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('airdox_token'));
 
     useEffect(() => {
-        const clearAnimatedVinyl = () => {
-            if (!animatedVinylRef.current) return;
-            animatedVinylRef.current.style.removeProperty('--vinyl-bounce-x');
-            animatedVinylRef.current.style.removeProperty('--vinyl-bounce-y');
-            animatedVinylRef.current = null;
-        };
-
-        if (!isPlaying || !currentTrack?.id) {
-            clearAnimatedVinyl();
-            return undefined;
-        }
-
-        const prefersReducedMotion = window.matchMedia
-            && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) {
-            clearAnimatedVinyl();
-            return undefined;
-        }
-
-        let disposed = false;
-        const physics = billiardStateRef.current;
-        const randomDirection = () => (Math.random() >= 0.5 ? 1 : -1);
-
-        const findCurrentVinyl = () => {
-            const cards = document.querySelectorAll('.set-card[data-set-id]');
-            for (const card of cards) {
-                if (card.dataset.setId !== String(currentTrack?.id)) continue;
-                const cover = card.querySelector('.set-cover');
-                const vinyl = card.querySelector('.cover-vinyl');
-                if (!cover || !vinyl) return null;
-                return { cover, vinyl };
-            }
-            return null;
-        };
-
-        const readAudioEnergy = () => {
-            const analyser = analyserRef?.current;
-            if (!analyser) return 0.35;
-            if (!frequencyBufferRef.current || frequencyBufferRef.current.length !== analyser.frequencyBinCount) {
-                frequencyBufferRef.current = new Uint8Array(analyser.frequencyBinCount);
-            }
-            const frequencyBuffer = frequencyBufferRef.current;
-            analyser.getByteFrequencyData(frequencyBuffer);
-            const binsToRead = Math.min(frequencyBuffer.length, 48);
-            if (!binsToRead) return 0.35;
-            let sum = 0;
-            for (let i = 0; i < binsToRead; i += 1) {
-                sum += frequencyBuffer[i];
-            }
-            return sum / (binsToRead * 255);
-        };
-
-        const animate = (timestamp) => {
-            if (disposed) return;
-
-            const activeElements = findCurrentVinyl();
-            if (!activeElements) {
-                billiardRafRef.current = requestAnimationFrame(animate);
-                return;
-            }
-
-            const { cover, vinyl } = activeElements;
-            if (animatedVinylRef.current && animatedVinylRef.current !== vinyl) {
-                animatedVinylRef.current.style.removeProperty('--vinyl-bounce-x');
-                animatedVinylRef.current.style.removeProperty('--vinyl-bounce-y');
-            }
-            animatedVinylRef.current = vinyl;
-
-            const coverRect = cover.getBoundingClientRect();
-            const vinylRect = vinyl.getBoundingClientRect();
-            const maxX = Math.max(0, coverRect.width - vinylRect.width);
-            const maxY = Math.max(0, coverRect.height - vinylRect.height);
-            const trackKey = String(currentTrack?.id);
-
-            const hasViewportChange = Math.abs(physics.maxX - maxX) > 0.5 || Math.abs(physics.maxY - maxY) > 0.5;
-            if (physics.trackKey !== trackKey || hasViewportChange) {
-                physics.trackKey = trackKey;
-                physics.maxX = maxX;
-                physics.maxY = maxY;
-                physics.x = maxX / 2;
-                physics.y = maxY / 2;
-                physics.vx = 140 * randomDirection();
-                physics.vy = 118 * randomDirection();
-                physics.lastTs = timestamp;
-            }
-
-            if (!physics.lastTs) {
-                physics.lastTs = timestamp;
-            }
-            const deltaSec = Math.min(0.05, Math.max(0.008, (timestamp - physics.lastTs) / 1000));
-            physics.lastTs = timestamp;
-
-            const energy = readAudioEnergy();
-            const speedFactor = 0.85 + (energy * 1.7);
-            physics.x += physics.vx * speedFactor * deltaSec;
-            physics.y += physics.vy * speedFactor * deltaSec;
-
-            if (physics.x <= 0) {
-                physics.x = 0;
-                physics.vx = Math.abs(physics.vx);
-            } else if (physics.x >= maxX) {
-                physics.x = maxX;
-                physics.vx = -Math.abs(physics.vx);
-            }
-
-            if (physics.y <= 0) {
-                physics.y = 0;
-                physics.vy = Math.abs(physics.vy);
-            } else if (physics.y >= maxY) {
-                physics.y = maxY;
-                physics.vy = -Math.abs(physics.vy);
-            }
-
-            const offsetX = physics.x - (maxX / 2);
-            const offsetY = physics.y - (maxY / 2);
-            vinyl.style.setProperty('--vinyl-bounce-x', `${offsetX.toFixed(2)}px`);
-            vinyl.style.setProperty('--vinyl-bounce-y', `${offsetY.toFixed(2)}px`);
-
-            billiardRafRef.current = requestAnimationFrame(animate);
-        };
-
-        billiardRafRef.current = requestAnimationFrame(animate);
-
-        return () => {
-            disposed = true;
-            if (billiardRafRef.current) {
-                cancelAnimationFrame(billiardRafRef.current);
-                billiardRafRef.current = null;
-            }
-            physics.lastTs = 0;
-            clearAnimatedVinyl();
-        };
-    }, [analyserRef, currentTrack?.id, isPlaying]);
-
-    useEffect(() => {
         const checkLogin = () => setIsLoggedIn(!!localStorage.getItem('airdox_token'));
         window.addEventListener('airdox_login_success', checkLogin);
         window.addEventListener('airdox_logout', checkLogin);
@@ -420,212 +160,22 @@ const MusicSection = () => {
                         const userVote = getUserVote(set.id);
                         const isSetPlaying = currentTrack?.id === set.id && isPlaying;
                         const isSetCurrent = currentTrack?.id === set.id;
-                        const seekableTracks = getSeekableTracks(set.tracks);
-
-                        const activeTrackIndex = isSetCurrent && seekableTracks.length
-                            ? seekableTracks.reduce((acc, t, i) => {
-                                const startTime = parseTrackTimeToSeconds(t.time);
-                                if (startTime !== null && currentTime >= startTime) return i;
-                                return acc;
-                            }, -1) 
-                            : -1;
 
                         return (
-                            <div
-                                id={buildSetAnchorId(set.id)}
+                            <SetCard
                                 key={set.id}
-                                className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''}`}
-                                data-set-id={set.id}
-                            >
-                                <div
-                                    className="set-cover"
-                                    onClick={() => handlePlayClick(set)}
-                                    onKeyDown={(event) => handleCoverKeyDown(event, set)}
-                                    role="button"
-                                    tabIndex={0}
-                                    aria-label={`${isSetPlaying ? t('music.pause') : t('music.play')} ${set.title}`}
-                                >
-                                    <div
-                                        className="cover-vinyl"
-                                        style={{
-                                            '--vinyl-color': set.vinylColor || 'var(--neon-cyan)',
-                                            '--vinyl-index': index,
-                                            '--vinyl-bounce-x': '0px',
-                                            '--vinyl-bounce-y': '0px',
-                                            transform: 'translate(calc(-50% + var(--vinyl-bounce-x)), calc(-50% + var(--vinyl-bounce-y)))'
-                                        }}
-                                    >
-                                        <div
-                                            className={`mini-vinyl ${isSetPlaying ? 'active-disc spinning-disc' : ''}`}
-                                        >
-                                            {isSetPlaying ? (
-                                                <img
-                                                    src={set.isChristmasGift ? "/assets/santa_vinyl.png" : (set.cover || "/assets/airdox-vinyl.jpg")}
-                                                    alt={t('music.vinylAlt')}
-                                                    loading="lazy"
-                                                    decoding="async"
-                                                    fetchpriority="low"
-                                                    className={`vinyl-image ${set.isChristmasGift ? 'santa-style' : ''}`}
-                                                />
-                                            ) : (
-                                                <div className="mini-vinyl-label"></div>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="cover-overlay">
-                                        <span className="play-btn interactive" aria-hidden="true">
-                                            {isSetPlaying ? (
-                                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                                    <rect x="6" y="5" width="4" height="14" />
-                                                    <rect x="14" y="5" width="4" height="14" />
-                                                </svg>
-                                            ) : (
-                                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                                    <path d="M8 5v14l11-7z" />
-                                                </svg>
-                                            )}
-                                        </span>
-                                    </div>
-                                    {set.isChristmasGift && <span className="xmas-badge">🎄 {t('music.giftBadge')}</span>}
-                                    {set.isNew && !set.isChristmasGift && <span className="new-badge">{t('music.newBadge')}</span>}
-
-                                    {set.isChristmasGift && (
-                                        <div className="gift-ribbon">
-                                            <div className="ribbon-vertical"></div>
-                                            <div className="ribbon-horizontal"></div>
-                                            <div className="ribbon-bow">
-                                                <div className="bow-left"></div>
-                                                <div className="bow-center"></div>
-                                                <div className="bow-right"></div>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {isSetPlaying && (
-                                        <div className="visualizer-container active">
-                                            {[...Array(12)].map((_, i) => (
-                                                <div
-                                                    key={i}
-                                                    className="visualizer-bar-animated"
-                                                    style={{
-                                                        '--delay': `${i * 0.15}s`,
-                                                        '--height': `${20 + (i * 7) % 30}px`
-                                                    }}
-                                                />
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-
-                                <div className="set-info">
-                                    <h3 className="set-title">{set.title}</h3>
-                                    <div className="set-meta">
-                                        <span className="set-date">{set.date}</span>
-                                        {set.duration && <span className="set-duration">{set.duration}</span>}
-                                    </div>
-
-                                    <div className="set-actions">
-                                        <button
-                                            type="button"
-                                            className={`set-share-btn ${copiedSetId === set.id ? 'copied' : ''}`}
-                                            onClick={(event) => handleShareSet(event, set)}
-                                            aria-label={`${t('music.shareLabel')} ${set.title}`}
-                                        >
-                                            {copiedSetId === set.id ? (
-                                                <Check size={16} aria-hidden="true" />
-                                            ) : (
-                                                <Share2 size={16} aria-hidden="true" />
-                                            )}
-                                            <span>{copiedSetId === set.id ? t('music.shareCopied') : t('music.share')}</span>
-                                        </button>
-
-                                        {isLoggedIn && (
-                                            <a
-                                                href={buildAudioApiHref(set.file, localStorage.getItem('airdox_token'))}
-                                                download={set.file}
-                                                className="vip-download-link"
-                                                onClick={(e) => e.stopPropagation()}
-                                                title={t('music.downloadVipAccess')}
-                                            >
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                                                </svg>
-                                                {t('music.vipDownload')}
-                                            </a>
-                                        )}
-                                    </div>
-
-                                    {seekableTracks.length > 0 && (
-                                        <div className={`vip-tracklist ${collapsedTracklists[set.id] ? 'collapsed' : ''}`}>
-                                            <button
-                                                type="button"
-                                                className="tracklist-toggle"
-                                                onClick={(e) => { e.stopPropagation(); toggleTracklist(set.id); }}
-                                                aria-expanded={!collapsedTracklists[set.id]}
-                                                aria-label={collapsedTracklists[set.id] ? t('music.showTracklist') : t('music.hideTracklist')}
-                                            >
-                                                <h4 className="tracklist-title">{t('music.tracklist')}</h4>
-                                                <svg className={`tracklist-chevron ${collapsedTracklists[set.id] ? 'chevron-collapsed' : ''}`} viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
-                                                </svg>
-                                            </button>
-                                            <ul className="tracklist-items">
-                                                {seekableTracks.map((track, idx) => (
-                                                    <li
-                                                        key={idx}
-                                                        className={`tracklist-item ${idx === activeTrackIndex ? 'current-track' : ''}`}
-                                                        aria-current={idx === activeTrackIndex ? 'true' : undefined}
-                                                        onClick={(e) => { e.stopPropagation(); handleTrackClick(set, track); }}
-                                                        role="button"
-                                                        tabIndex={0}
-                                                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTrackClick(set, track); } }}
-                                                    >
-                                                        <span className="track-time">{track.time}</span>
-                                                        <span className="track-details">
-                                                            <span className="track-artist">{track.artist}</span> - <span className="track-title">{track.title}</span>
-                                                        </span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-                                </div>
-
-                                <div className="set-stats">
-                                    <div className="play-count">
-                                        <svg viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M8 5v14l11-7z" />
-                                        </svg>
-                                        <span>{t('music.plays')}: {stats.plays || 0}</span>
-                                    </div>
-                                    <div className="like-buttons">
-                                        <button
-                                            type="button"
-                                            className={`like-btn ${userVote === 'like' ? 'liked' : ''}`}
-                                            onClick={(e) => { e.stopPropagation(); handleVote(set.id, 'like'); }}
-                                            aria-label={`${t('music.likeLabel')} ${set.title}`}
-                                            aria-pressed={userVote === 'like'}
-                                        >
-                                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M2 20h2c.55 0 1-.45 1-1v-9c0-.55-.45-1-1-1H2v11zm19.83-7.12c.11-.25.17-.52.17-.8V11c0-1.1-.9-2-2-2h-5.5l.92-4.65c.05-.22.02-.46-.08-.66-.23-.45-.52-.86-.88-1.22L14 2 7.59 8.41C7.21 8.79 7 9.3 7 9.83v7.84C7 18.95 8.05 20 9.34 20h8.11c.7 0 1.36-.37 1.72-.97l2.66-6.15z" />
-                                            </svg>
-                                            <span>{t('music.likes')}: {stats.likes || 0}</span>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className={`like-btn ${userVote === 'dislike' ? 'disliked' : ''}`}
-                                            onClick={(e) => { e.stopPropagation(); handleVote(set.id, 'dislike'); }}
-                                            aria-label={`${t('music.dislikeLabel')} ${set.title}`}
-                                            aria-pressed={userVote === 'dislike'}
-                                        >
-                                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M22 4h-2c-.55 0-1 .45-1 1v9c0 .55.45 1 1 1h2V4zM2.17 11.12c-.11.25-.17.52-.17.8V13c0 1.1.9 2 2 2h5.5l-.92 4.65c-.05.22-.02.46.08.66.23.45.52.86.88 1.22L10 22l6.41-6.41c.38-.38.59-.89.59-1.42V6.34C17 5.05 15.95 4 14.66 4H6.55c-.7 0-1.36.37-1.72.97l-2.66 6.15z" />
-                                            </svg>
-                                            <span>{t('music.dislikes')}: {stats.dislikes || 0}</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                                set={set}
+                                index={index}
+                                isSetPlaying={isSetPlaying}
+                                isSetCurrent={isSetCurrent}
+                                currentTime={currentTime}
+                                stats={stats}
+                                userVote={userVote}
+                                isLoggedIn={isLoggedIn}
+                                onPlayClick={handlePlayClick}
+                                onTrackClick={handleTrackClick}
+                                onVote={handleVote}
+                            />
                         );
                     })}
                 </div>

@@ -9,6 +9,7 @@ import SmoothScroll from './components/SmoothScroll';
 const MusicSection = lazy(() => import('./components/MusicSection'));
 const VIPSection = lazy(() => import('./components/VIPSection'));
 const BioSection = lazy(() => import('./components/BioSection'));
+const AgentSystemSection = lazy(() => import('./components/AgentSystemSection'));
 const EPKSection = lazy(() => import('./components/EPKSection')); // [NEW]
 const Newsletter = lazy(() => import('./components/Newsletter')); // [NEW]
 const BookingSection = lazy(() => import('./components/BookingSection'));
@@ -122,6 +123,9 @@ function App() {
           <Hero />
           <Suspense fallback={<SectionLoading />}>
             <BioSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoading />}>
+            <AgentSystemSection />
           </Suspense>
           <Suspense fallback={<SectionLoading />}>
             <MusicSection />

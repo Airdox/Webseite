@@ -1,12 +1,8 @@
 import React, { useRef, useState } from 'react';
 import './BookingSection.css';
 import { t } from '../utils/i18n';
+import { readApiError } from '../utils/apiResponse';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
-
-const isDev = import.meta.env?.DEV;
-const devError = (...args) => {
-    if (isDev) console.error(...args);
-};
 
 const BookingSection = () => {
     const sectionRef = useRef(null);
@@ -56,12 +52,10 @@ const BookingSection = () => {
                     analytics.trackEvent('booking_submit', { source: 'booking_form_cloudflare' });
                 }
             } else {
-                const errData = await response.json();
-                throw new Error(errData.error || t('booking.sendError'));
+                throw new Error(await readApiError(response, t('booking.sendError')));
             }
-        } catch (err) {
-            devError('Form submission error:', err);
-            setError(`${t('booking.sendErrorPrefix')} (${err.message})`);
+        } catch {
+            setError(t('booking.sendErrorPrefix'));
         }
 
     };

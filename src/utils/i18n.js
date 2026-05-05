@@ -2,6 +2,7 @@ const LOCALES = {
     de: {
         'nav.home': 'Start',
         'nav.about': 'Über mich',
+        'nav.agents': 'Agenten',
         'nav.music': 'Musik',
         'nav.booking': 'Buchung',
         'nav.contact': 'Kontakt',
@@ -220,6 +221,7 @@ const LOCALES = {
     en: {
         'nav.home': 'Home',
         'nav.about': 'About',
+        'nav.agents': 'Agents',
         'nav.music': 'Music',
         'nav.booking': 'Booking',
         'nav.contact': 'Contact',

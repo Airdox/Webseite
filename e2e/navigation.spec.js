@@ -27,7 +27,7 @@ test.describe('AIRDOX Website E2E', () => {
     await expect(aboutLink).toBeVisible();
 
     // Because it relies on smooth scrolling and lazy loading, we wait explicitly
-    await page.getByRole('button', { name: 'Go to home section' }).click();
+    await page.getByRole('button', { name: /Go to home section|Zur Startsektion/ }).click();
     await expect(page.locator('.hero')).toBeVisible();
     
     // We scroll down programmatically to test section visibility
@@ -39,7 +39,7 @@ test.describe('AIRDOX Website E2E', () => {
     await page.goto('/');
     
     // Ensure the audio controller renders
-    const playButton = page.locator('.gp-play-btn');
+    const playButton = page.locator('.gp-btn.play-pause');
     // Initially mostly hidden/bottom in some responsive states but attached
     await expect(playButton).toBeAttached();
   });

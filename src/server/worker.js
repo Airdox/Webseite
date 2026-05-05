@@ -20,7 +20,7 @@ const PUBLIC_AUDIO_BASES = new Set(publicSets.map((set) => normalizeAudioBaseFil
 // CORS Headers Utility
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Airdox-Token',
     'Access-Control-Max-Age': '86400',
 };
@@ -433,15 +433,25 @@ export default {
                     newUrl.pathname = '/api/audio';
                     const newHeaders = new Headers(request.headers);
                     newHeaders.set('x-original-pathname', originalPathname);
-                    modifiedRequest = new Request(newUrl.toString(), {
-                        method: request.method,
+                    const requestInit = {
+                        method: request.method === 'HEAD' ? 'GET' : request.method,
                         headers: newHeaders,
-                        body: request.body,
                         redirect: request.redirect
-                    });
+                    };
+                    if (!['GET', 'HEAD'].includes(request.method)) {
+                        requestInit.body = request.body;
+                    }
+                    modifiedRequest = new Request(newUrl.toString(), requestInit);
                 }
 
-                return await router.handle(modifiedRequest, env, ctx);
+                const response = await router.handle(modifiedRequest, env, ctx);
+                if (request.method === 'HEAD') {
+                    return new Response(null, {
+                        status: response.status,
+                        headers: response.headers,
+                    });
+                }
+                return response;
             } catch (error) {
                 console.error('API Error:', error);
                 return new Response(JSON.stringify({ 

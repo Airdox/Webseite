@@ -189,3 +189,27 @@ Entscheidung:
 
 Recheck:
 - `npm run agent:jobs:validate -- --strict-warnings`
+
+## 2026-05-03 - Aktive Superagent-Arbeitsauftraege verteilt
+
+Kontext:
+- Der Nutzer wollte die Superagenten aktiv mit Arbeitsauftraegen versorgen.
+- Drei parallele Reviews haben Release-Risiken, Conversion-Luecken, Governance-Luecken und Social-Draft-Chancen identifiziert.
+- Lokale Aktivierung zeigte: Job-Katalog valide, Lint gruen, Unit-Gesamtlauf durch DesktopApp-Timeouts blockiert.
+
+Entscheidung:
+- Die naechsten operativen Auftraege stehen in `docs/agent-system/ACTIVE_WORK_ORDERS_2026-05-03.md`.
+- P0 liegt auf Winnie/Guardian fuer Desktop-Testblocker und Webbie/Manni/Refactor/Guardian fuer Newsletter-End-to-End.
+- P1 liegt auf Localhost/Production-Trennung, Navigation, Music-Voting, AgentSystem-Proof und Social-Drafts.
+- Social-Live und Deploys bleiben ohne persoenliches Nutzer-OK bzw. Master-Controller-Freigabe blockiert.
+
+Risiko:
+- Der Arbeitsbaum ist weiterhin dirty; Repository muss vor Release/Merge eine saubere Einordnung erzwingen.
+- Einige Auftraege betreffen bestehende uncommitted Dateien und muessen ohne Ruecksetzen fremder Aenderungen umgesetzt werden.
+
+Recheck:
+- `npm run lint`
+- `npm run test -- --run`
+- `npm run agent:jobs:validate -- --strict-warnings`
+- `npm run agent:audit -- --strict`
+- `npm run repository:monitor:strict`

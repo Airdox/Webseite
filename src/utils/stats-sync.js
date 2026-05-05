@@ -15,7 +15,13 @@ const isMobileRuntime = () => {
     if (typeof window === 'undefined') return false;
     return window.location.protocol === 'file:' || (window.location.hostname === 'localhost' && !!window.Capacitor);
 };
-const getPrimaryStatsUrl = () => buildStatsUrl(STATS_API_BASE || (isMobileRuntime() ? PRODUCTION_URL : ''));
+const isLocalHttpRuntime = () => {
+    if (typeof window === 'undefined') return false;
+    if (import.meta.env?.MODE === 'test') return false;
+    return window.location.protocol.startsWith('http')
+        && ['localhost', '127.0.0.1'].includes(window.location.hostname);
+};
+const getPrimaryStatsUrl = () => buildStatsUrl(STATS_API_BASE || ((isMobileRuntime() || isLocalHttpRuntime()) ? PRODUCTION_URL : ''));
 const getFallbackStatsUrl = () => (STATS_API_FALLBACK ? buildStatsUrl(STATS_API_FALLBACK) : null);
 
 // Helper to get device/browser/os info

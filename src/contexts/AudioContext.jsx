@@ -12,6 +12,8 @@ const devWarn = (...args) => {
 // Use API endpoint for audio streaming
 const AUDIO_BASE = '/api/audio';
 const AUDIO_MAX_PARTS = 25;
+const AUDIO_API_BASE = (import.meta.env?.VITE_AUDIO_API_BASE || '').replace(/\/+$/, '');
+const PRODUCTION_API_BASE = (import.meta.env?.VITE_PUBLIC_SITE_URL || 'https://airdox-webseite.beuth62.workers.dev').replace(/\/+$/, '');
 
 const getAuthToken = () => {
     try {
@@ -26,9 +28,17 @@ const resolveAudioSrc = (src) => {
     // Always use API endpoint for audio
     // Only keep filename (strip path)
     const filename = src.split('/').pop();
-    return `${AUDIO_BASE}/${filename}`;
+    const encodedFilename = encodeURIComponent(filename);
+    const base = getAudioApiBase();
+    return `${base}${AUDIO_BASE}/${encodedFilename}`;
 };
 const isAbsoluteUrl = (url) => /^https?:\/\//i.test(url);
+const isLocalHttpRuntime = () => {
+    if (typeof window === 'undefined') return false;
+    return window.location.protocol.startsWith('http')
+        && ['localhost', '127.0.0.1'].includes(window.location.hostname);
+};
+const getAudioApiBase = () => AUDIO_API_BASE || (isLocalHttpRuntime() ? PRODUCTION_API_BASE : '');
 const encodeAudioSrc = (src) => {
     if (!src) return src;
     try {
@@ -43,7 +53,7 @@ const appendTokenParam = (src) => {
     const token = getAuthToken();
     if (!src || !token) return src;
     try {
-        const url = new URL(src);
+        const url = isAbsoluteUrl(src) ? new URL(src) : new URL(src, window.location.origin);
         if (!url.searchParams.has('token')) {
             url.searchParams.set('token', token);
         }
