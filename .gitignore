@@ -30,6 +30,13 @@ dist-ssr
 # Cloudflare
 .wrangler
 
+# Local agent and skill artifacts
+.agents/
+skills-lock.json
+
+# Netlify local state and generated functions
+.netlify/
+
 # Large music sets and audio files (tracked via Git LFS or external hosting)
 BACKUP_AUDIO/
 public/sets/
