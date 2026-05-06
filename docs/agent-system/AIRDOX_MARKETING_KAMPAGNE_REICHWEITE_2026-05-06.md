@@ -89,8 +89,8 @@ Facebook:
 4. Berlin Underground Signal  
    Szene, Sound, Haltung. Hook: `Kein Warm-up. Kein Füllmaterial.`
 
-5. Duality Format  
-   Angel/Devil, melodisch vs. hart, Kontrolle vs. Druck. CTA: Kommentar-Abstimmung.
+5. Sound-Kontrast Format
+   Melodisch vs. hart, Kontrolle vs. Druck. CTA: Kommentar-Abstimmung.
 
 6. Booking Proof  
    15-25 Sekunden für Veranstalter: Sound, Setlängen, EPK, Kontakt.
@@ -115,7 +115,7 @@ Technische Leitplanken:
 | 3 | Berlin Techno, kein Intro, nur Drive | Kick, Booth, Neon-Text, Gesicht | Folgen für neue Sets |
 | 4 | Dieser Track hat den Vibe gedreht | Tracklist-Zeile, Playhead, Drop-Reaktion | Drop direkt anspringen |
 | 5 | AIRDOX in 15 Sekunden | Berlin, Booth, EPK, Booking | Booking über Website |
-| 6 | Angel oder Devil Modus? | cyan melodisch vs. hart/lime Split | Kommentiere Angel oder Devil |
+| 6 | Melodisch oder hart? | cyan melodisch vs. lime Peak-Time Split | Kommentiere deinen Favoriten |
 | 7 | Warum der erste Track entscheidet | Trackstart, Voiceover, erste 8 Takte | Full Recording streamen |
 | 8 | POV 02:00 Uhr, der Floor braucht Druck | dunkler Raum, Fader, Kick, Licht | Teilen mit deinem Techno-Kreis |
 | 9 | 3 Sekunden, die ein Set retten | falscher Mix kurz, richtiger Übergang | Mehr Breakdowns? |
@@ -134,7 +134,7 @@ Produktionswoche:
 | Tag | Instagram | TikTok | YouTube Shorts | LinkedIn | Facebook |
 | --- | --- | --- | --- | --- | --- |
 | 1 | Drop 00:37 | roher Hook-Test | Drop Short | AIRDOX Soundprofil | Reel |
-| 2 | Angel/Devil Story | Transition Clip | - | - | Gruppen-Kommentar |
+| 2 | Sound-Kontrast Story | Transition Clip | - | - | Gruppen-Kommentar |
 | 3 | 5 Track-IDs Carousel | Tracklist Hook | Track-ID Short | - | Tracklist-Post |
 | 4 | Übergang Breakdown | schneller Breakdown | - | Set-Dramaturgie | Reel |
 | 5 | Website CTA Story | Drop Variante B | Variante B | - | Reel |
@@ -143,13 +143,13 @@ Produktionswoche:
 | 8 | SISSYGUT ALLES GUT | Hook-Test 1 | Short | EPK Video | Reel |
 | 9 | Q&A Track-IDs | Hook-Test 2 | - | - | Booking-Post |
 | 10 | Set-Aufbau Carousel | Breakdown | Short | - | Carousel |
-| 11 | Devil Mode | Devil Hook | - | Tech-Rider light | Reel |
+| 11 | Peak-Time Mode | Druck-Hook | - | Tech-Rider light | Reel |
 | 12 | Poll hart/melodisch | Poll CTA | Short | - | Reel |
 | 13 | Industrial Acid Clip | Raw Clip | - | - | Community-Frage |
 | 14 | Wochenreport | Gewinner-Remix | Short | - | Recap |
 | 15 | RA/Booking Signal | Booker Hook | Short | Warum AIRDOX buchen | Reel |
 | 16 | Behind the Set | BTS Clip | - | - | BTS |
-| 17 | Angel vs Devil Carousel | Duality Clip | Short | - | Duality Post |
+| 17 | Melodisch vs. Peak-Time Carousel | Sound-Kontrast Clip | Short | - | Kontrast-Post |
 | 18 | Transition 2 | Transition Hook | - | Setlängen/Format | Reel |
 | 19 | Link Story | Drop Clip | Short | - | Reel |
 | 20 | Crowd Energy | Club-energy Edit | - | - | Gruppenpost |

@@ -1,18 +1,10 @@
-# ☯️ AIRDOX - Project Duality
+# AIRDOX Website
 
 [![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)]()
 [![Tech Stack](https://img.shields.io/badge/Stack-React_19_%7C_Vite_%7C_Neon_%7C_Cloudflare-blue.svg)]()
 [![PWA](https://img.shields.io/badge/PWA-Ready-orange.svg)]()
 
-**Airdox** is a cutting-edge, high-performance web application and platform for the Berlin-based Techno DJ **AIRDOX**. Built with a focus on "Project Duality," the platform explores the tension between Light (Angel) and Shadow (Devil) through an immersive interface and professional audio experience.
-
----
-
-## 🏛️ Vision & Philosophy: Project Duality
-The platform is not just a DJ portfolio; it is an interactive exploration of dualism.
-- **The Angel Modus:** Melodic Techno, Trance vibes, Gold/Cyan aesthetics.
-- **The Devil Modus:** Hard Techno, Industrial Acid, Black/Red aesthetics.
-- **The Red Thread:** A philosophical journey asking the user: *"Who wins in the end?"*
+**Airdox** is a high-performance web application and platform for the Berlin-based Techno DJ **AIRDOX**. The project combines a public artist website, audio experience, booking flow, VIP area, analytics, and the Windows Flight Deck tooling used to manage releases.
 
 ---
 
@@ -132,7 +124,6 @@ npx wrangler pages deploy dist
 
 ## 📖 Internal Documentation
 For deeper technical dives, refer to our specialized guides:
-- [Masterplan (Vision)](PROJECT_MASTERPLAN.md)
 - [Windows Flight Deck](docs/WINDOWS_FLIGHTDECK.md)
 - [Analytics Documentation](ANALYTICS_V2_DOKUMENTATION.md)
 - [Deployment Guide](DEPLOYMENT.md)

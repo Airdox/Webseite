@@ -94,7 +94,7 @@ Location: dunkler Raum, Studio, Club, Proberaum oder Backstage-Look. Licht: cyan
 | 00:20-00:45 | AIRDOX Portraits | frontal, Profil, Rueckenlicht |
 | 00:45-01:15 | Mixing Close-ups | EQ, Fader, Cue, Play, Jogwheel |
 | 01:15-01:35 | Tracklist/EPK Inserts | Laptop, Handy, Website, PDFs |
-| 01:35-02:00 | Performance Inserts | Kopfbewegung, Handgesten, Licht, Schatten |
+| 01:35-02:00 | Performance Inserts | Kopfbewegung, Handgesten, Lichtwechsel, Crowd-Energie |
 | 02:00-02:20 | Endcard-Material | ruhige dunkle Frames fuer Text |
 
 Pflicht-Shots:
@@ -220,4 +220,3 @@ Bei fremden Tracks bevorzugt:
 - Mix-/Uebergangsmomente statt kompletter Hook
 - eigene Edits, unreleased IDs oder freigegebene Tracks
 - fuer Paid Ads eigene Musik oder vollstaendig freigegebene Snippets
-

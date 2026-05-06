@@ -32,7 +32,7 @@ Jede externe Veröffentlichung bleibt pro Asset/Kanal freigabepflichtig.
 | ID | Kampagne | Status | Startbedingung |
 | --- | --- | --- | --- |
 | AIRDOX-C06 | Transition Breakdown | queued_after_initial_assets | nach ersten Pressure-/Track-ID-Drafts |
-| AIRDOX-C07 | Angel / Devil Mode | queued_after_performance_data | nach 7-14 Tagen organischer Daten |
+| AIRDOX-C07 | Sound-Kontrast Mode | queued_after_performance_data | nach 7-14 Tagen organischer Daten |
 | AIRDOX-C08 | AIRDOX Transmission Newsletter/VIP | queued_after_traffic_foundation | nach stabilen Set-/Landingpage-CTAs |
 
 ## Später / Blockiert
@@ -65,4 +65,3 @@ Vor jeder externen Aktion muss ein Freigabepaket vorliegen:
 - Rechte-/Content-ID-Hinweis
 - gewünschter Zeitpunkt
 - explizites Nutzer-OK
-

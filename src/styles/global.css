@@ -98,34 +98,6 @@
     --border-radius-lg: 24px;
     --border-radius-full: 9999px;
 
-    /* === Duality Colors (Base) === */
-    --angel-gold: #ffd700;
-    --angel-cyan: #00f5ff;
-    --angel-white: #ffffff;
-    
-    --devil-red: #ff3e3e;
-    --devil-pink: #ff00aa;
-    --devil-black: #050505;
-}
-
-/* === Angel Mode Overrides === */
-:root.angel-mode {
-    --neon-cyan: var(--angel-cyan);
-    --neon-pink: var(--angel-gold);
-    --gradient-primary: linear-gradient(135deg, var(--angel-gold) 0%, var(--angel-cyan) 100%);
-    --glow-cyan: 0 0 30px rgba(0, 245, 255, 0.4), 0 0 60px rgba(0, 245, 255, 0.2);
-    --bg-void: #020202;
-    --border-glow: rgba(0, 245, 255, 0.3);
-}
-
-/* === Devil Mode Overrides === */
-:root.devil-mode {
-    --neon-cyan: var(--devil-red);
-    --neon-pink: var(--devil-pink);
-    --gradient-primary: linear-gradient(135deg, var(--devil-red) 0%, var(--devil-pink) 100%);
-    --glow-cyan: 0 0 30px rgba(255, 62, 62, 0.4), 0 0 60px rgba(255, 62, 62, 0.2);
-    --bg-void: #000000;
-    --border-glow: rgba(255, 62, 62, 0.3);
 }
 
 /* === Base Styles === */

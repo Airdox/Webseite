@@ -203,7 +203,7 @@ const agents = [
     'Manni',
     'Promotion, Branding, EPK, Community, Conversion und Wiedererkennbarkeit.',
     [
-      check('Brand Story dokumentiert', /Project Duality|AIRDOX|Underground/i.test(read('README.md')) && exists('PROJECT_MASTERPLAN.md'), 'README und Masterplan enthalten Marken-/Duality-Rahmen.'),
+      check('Brand Story dokumentiert', /AIRDOX|Techno|Flight Deck/i.test(read('README.md')), 'README dokumentiert AIRDOX, Website und Flight-Deck-Rahmen.'),
       check('Conversion-Sektionen vorhanden', [
         'src/components/EPKSection.jsx',
         'src/components/BookingSection.jsx',
@@ -249,7 +249,6 @@ const agents = [
     [
       check('Wiki-Kernel vorhanden', exists('airdoX_wiki/SYSTEM.md') && exists('airdoX_wiki/wiki/index.md'), 'AIRDOX Wiki besitzt Systemdatei und Index.', { weight: 1.5 }),
       check('Wissenslog vorhanden', exists('airdoX_wiki/wiki/log.md'), 'Wiki-Log ist fuer Erfahrungslernen vorhanden.'),
-      check('Projekt-Masterplan vorhanden', exists('PROJECT_MASTERPLAN.md'), 'Strategischer Masterplan existiert.'),
       check('Agenten-Operating-Model vorhanden', exists('docs/agent-system/OPERATING_MODEL.md'), 'Das Multi-Agenten-System ist als Operating Model dokumentiert.', { weight: 1.5 }),
       check('Agenten-Decision-Log vorhanden', exists('docs/agent-system/DECISION_LOG.md'), 'Strategische Agentenentscheidungen werden im Decision Log gespeichert.'),
       check('Mentor-Wiki-Schleifen vorhanden', [

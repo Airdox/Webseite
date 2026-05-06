@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-05-02T09:09:42.825Z",
+  "generatedAt": "2026-05-06T03:42:47.426Z",
   "repository": "D:\\webseeite-main",
   "controller": {
     "name": "Master Controller",
     "mission": "Priorisierung, Koordination, Release-Entscheidungen und Audit-Auswertung."
   },
   "summary": {
-    "averageScore": 90,
-    "dirtyPathCount": 11,
-    "testFileCount": 14,
-    "cssFileCount": 20
+    "averageScore": 93,
+    "dirtyPathCount": 6,
+    "testFileCount": 20,
+    "cssFileCount": 21
   },
   "gate": {
     "status": "pass",
@@ -172,7 +172,7 @@
       "id": "guardian",
       "name": "Guardian",
       "mission": "Qualitaet, Sicherheit, Stabilitaet, Regressionen und technische Schulden.",
-      "score": 87,
+      "score": 92,
       "checks": [
         {
           "label": "Standard Quality Scripts",
@@ -196,11 +196,11 @@
           "label": "Ausreichende Testdateien",
           "status": "pass",
           "weight": 1.5,
-          "detail": "14 Test-/Spec-Dateien gefunden."
+          "detail": "20 Test-/Spec-Dateien gefunden."
         },
         {
           "label": "Worker/API-Testsignale",
-          "status": "warn",
+          "status": "pass",
           "weight": 1,
           "detail": "Server-/API-Code ist vorhanden; dedizierte Testsignale werden geprueft."
         },
@@ -214,7 +214,7 @@
           "label": "Arbeitsbaum sauber",
           "status": "warn",
           "weight": 1.5,
-          "detail": "11 uncommitted Pfade gefunden; vor Releases klaeren."
+          "detail": "6 uncommitted Pfade gefunden; vor Releases klaeren."
         },
         {
           "label": "Env-Beispiel vorhanden",
@@ -233,13 +233,13 @@
       "id": "manni",
       "name": "Manni",
       "mission": "Promotion, Branding, EPK, Community, Conversion und Wiedererkennbarkeit.",
-      "score": 89,
+      "score": 95,
       "checks": [
         {
           "label": "Brand Story dokumentiert",
           "status": "pass",
           "weight": 1,
-          "detail": "README und Masterplan enthalten Marken-/Duality-Rahmen."
+          "detail": "README dokumentiert AIRDOX, Website und Flight-Deck-Rahmen."
         },
         {
           "label": "Conversion-Sektionen vorhanden",
@@ -261,7 +261,7 @@
         },
         {
           "label": "EPK ohne Platzhalter-Aktionen",
-          "status": "warn",
+          "status": "pass",
           "weight": 1,
           "detail": "Warnung, wenn EPK-Downloads nur per alert/Placeholder reagieren."
         },
@@ -297,6 +297,55 @@
       ]
     },
     {
+      "id": "designer",
+      "name": "Designer",
+      "mission": "Visual Design, Creative Direction und Social-Asset-Qualitaet.",
+      "score": 100,
+      "checks": [
+        {
+          "label": "Manni Growth Playbook vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Das Growth-Playbook ist als Creative-Rahmen verfuegbar."
+        },
+        {
+          "label": "Reel Factory skriptbar",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Reel-Factory ist als wiederholbarer Creative-Generator vorhanden."
+        },
+        {
+          "label": "Reel Queue und Plan vorhanden",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Warnung, wenn kreative Wochenplanung noch nicht erzeugt wurde."
+        },
+        {
+          "label": "Visual Proof-Assets vorhanden",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Warnung, wenn kaum visuelle Proof-Assets fuer Creative-Qualitaet vorhanden sind."
+        },
+        {
+          "label": "UI-Brandflaechen gepflegt",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Warnung, wenn zentrale Brandflaechen fuer visuelle Konsistenz fehlen."
+        },
+        {
+          "label": "Social-Link-Signale gepflegt",
+          "status": "pass",
+          "weight": 1,
+          "detail": "Warnung, wenn Kern-Social-Links nicht konsistent verankert sind."
+        }
+      ],
+      "nextActions": [
+        "Hook-Varianten je Reel in 3 visuellen Stilen planen und A/B-testen.",
+        "Thumbnail- und First-Frame-Bibliothek fuer wiedererkennbare Social-Branding-Signale aufbauen.",
+        "Creative-Fatigue woechentlich messen und Gewinner-Styles priorisieren."
+      ]
+    },
+    {
       "id": "mentor",
       "name": "Mentor",
       "mission": "Wissensspeicherung, Lernschleifen, Prozessverbesserung und Agenten-Weiterentwicklung.",
@@ -313,12 +362,6 @@
           "status": "pass",
           "weight": 1,
           "detail": "Wiki-Log ist fuer Erfahrungslernen vorhanden."
-        },
-        {
-          "label": "Projekt-Masterplan vorhanden",
-          "status": "pass",
-          "weight": 1,
-          "detail": "Strategischer Masterplan existiert."
         },
         {
           "label": "Agenten-Operating-Model vorhanden",
@@ -397,7 +440,7 @@
           "label": "Grosse JSX-Dateien begrenzt",
           "status": "warn",
           "weight": 1.5,
-          "detail": "src/desktop/DesktopApp.jsx hat 1008 Zeilen."
+          "detail": "src/desktop/DesktopApp.jsx hat 1390 Zeilen."
         },
         {
           "label": "Desktop Services modularisiert",
@@ -470,7 +513,7 @@
           "label": "Arbeitsbaum releasebereit",
           "status": "pass",
           "weight": 1.5,
-          "detail": "11 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+          "detail": "6 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
         },
         {
           "label": "Parallele Deployment-Konfigs begrenzt",
