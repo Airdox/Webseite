@@ -1,1 +1,15 @@
-# Empty .gitattributes to prevent LFS issues on Cloudflare
+# Keep source files normalized across Windows and deployment environments.
+* text=auto eol=lf
+
+# Binary assets should never be line-ending normalized.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.mp3 binary
+*.wav binary
+*.flac binary
+*.m4a binary
+*.aac binary

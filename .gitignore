@@ -33,6 +33,7 @@ dist-ssr
 # Local agent and skill artifacts
 .agents/
 skills-lock.json
+notebooklm-skill-candidates.md
 
 # Netlify local state and generated functions
 .netlify/
@@ -42,6 +43,11 @@ BACKUP_AUDIO/
 public/sets/
 audio_backup/
 audio_processing/
+*.mp3
+*.wav
+*.flac
+*.m4a
+*.aac
 *.exe
 *.zip
 *.tar.gz
@@ -63,6 +69,3 @@ tmp-*
 .devserver.pid
 state.json
 .netlify/state.json
-rew
-safcvnm,
-\[build.environment\]
