@@ -28,8 +28,8 @@ describe('assistant coverage', () => {
   it('answers all common questions with non-empty actionable text', () => {
     const answers = QUESTIONS.map((q) => answerToolQuestion(q));
     for (const answer of answers) {
-      expect(answer).toBeTruthy();
-      expect(answer.length).toBeGreaterThan(40);
+      expect(answer.text).toBeTruthy();
+      expect(answer.text.length).toBeGreaterThan(40);
     }
   });
 
@@ -40,4 +40,3 @@ describe('assistant coverage', () => {
     expect(matched.length).toBeGreaterThanOrEqual(14);
   });
 });
-

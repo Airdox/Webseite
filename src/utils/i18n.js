@@ -2,7 +2,6 @@ const LOCALES = {
     de: {
         'nav.home': 'Start',
         'nav.about': 'Über mich',
-        'nav.agents': 'Agenten',
         'nav.music': 'Musik',
         'nav.booking': 'Buchung',
         'nav.contact': 'Kontakt',
@@ -44,7 +43,7 @@ const LOCALES = {
         'bio.showMore': 'MEHR LESEN',
         'bio.showLess': 'WENIGER',
         'bio.stats.liveSets': 'LIVE-SETS',
-        'bio.stats.listeners': 'HÖRER',
+        'bio.stats.listeners': 'WIEDERGABEN',
         'bio.stats.based': 'AUS BERLIN',
         'bio.raText': 'OFFIZIELLE RESIDENT-ADVISOR-KÜNSTLERSEITE',
         'bio.raLink': 'PROFIL ANSEHEN',
@@ -221,7 +220,6 @@ const LOCALES = {
     en: {
         'nav.home': 'Home',
         'nav.about': 'About',
-        'nav.agents': 'Agents',
         'nav.music': 'Music',
         'nav.booking': 'Booking',
         'nav.contact': 'Contact',
@@ -263,7 +261,7 @@ const LOCALES = {
         'bio.showMore': 'READ MORE',
         'bio.showLess': 'SHOW LESS',
         'bio.stats.liveSets': 'LIVE SETS',
-        'bio.stats.listeners': 'LISTENERS',
+        'bio.stats.listeners': 'PLAYS',
         'bio.stats.based': 'BASED',
         'bio.raText': 'OFFICIAL RESIDENT ADVISOR ARTIST PAGE',
         'bio.raLink': 'VIEW PROFILE',

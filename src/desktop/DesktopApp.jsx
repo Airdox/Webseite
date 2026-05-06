@@ -1,7 +1,8 @@
-import React, { startTransition, useCallback, useDeferredValue, useEffect, useState } from 'react';
+import React, { startTransition, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import {
   CircleAlert, Database, LayoutDashboard, RadioTower, UploadCloud,
-  BarChart3, Settings2, Package, Activity, BookOpen, Rocket, Bot
+  BarChart3, Settings2, Package, Activity, BookOpen, Rocket, Bot,
+  RefreshCw, Gauge, ListChecks,
 } from 'lucide-react';
 import { flightDeckApi } from './api.js';
 import OverviewTab from './components/OverviewTab.jsx';
@@ -124,6 +125,15 @@ const createPublishLogEntry = (step, status, detail) => ({
   detail,
 });
 
+const getBatchProgressPercent = ({ current = 0, total = 0 } = {}) => (
+  total > 0 ? Math.min(100, Math.round((current / total) * 100)) : 0
+);
+
+const confirmRiskyAction = (message) => {
+  if (typeof window.confirm !== 'function') return true;
+  return window.confirm(message);
+};
+
 const buildReservedSetValues = (sets = [], batchQueue = []) => {
   const queueDrafts = batchQueue
     .map((item) => item.draft)
@@ -174,11 +184,13 @@ const DesktopApp = () => {
     mode: '',
     label: 'Bereit',
     detail: 'Noch kein Publish gestartet.',
+    progress: 0,
   });
   const [analyticsData, setAnalyticsData] = useState({});
   const [batchQueue, setBatchQueue] = useState([]);
   const [isBatchRunning, setIsBatchRunning] = useState(false);
   const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
+  const batchCancelRef = useRef(false);
   const [systemStats, setSystemStats] = useState({});
   const [saveStatus, setSaveStatus] = useState(null);
   const [tutorialOpen, setTutorialOpen] = useState(false);
@@ -197,6 +209,62 @@ const DesktopApp = () => {
     settingsDraft?.workspaceRoot
     && (activeTab === 'batch' ? selectedBatchCount > 0 : (canDraftGoLive || selectedBatchCount > 0)),
   );
+  const workspaceLabel = appState.workspaceValid ? 'Verbunden' : 'Fehlt';
+  const gitLabel = appState.gitStatus.dirty ? 'Git offen' : 'Git sauber';
+  const databaseLabel = appState.dbError ? 'DB Fehler' : 'DB bereit';
+  const liveLabel = canGoLive ? 'Live bereit' : 'Live blockiert';
+  const headerStats = [
+    { label: 'Workspace', value: workspaceLabel, tone: appState.workspaceValid ? 'ok' : 'warn' },
+    { label: 'Repository', value: gitLabel, tone: appState.gitStatus.dirty ? 'warn' : 'ok' },
+    { label: 'Datenbank', value: databaseLabel, tone: appState.dbError ? 'danger' : 'ok' },
+    { label: 'Queue', value: `${selectedBatchCount} aktiv`, tone: selectedBatchCount > 0 ? 'info' : 'neutral' },
+  ];
+  const readinessItems = useMemo(() => {
+    const draftReady = Boolean(draft?.id && draft?.file);
+    const sourceReady = !liveRequiresSourceAudio || Boolean(draft?.sourceAudioPath);
+    return [
+      {
+        label: 'Workspace',
+        detail: appState.workspaceValid ? 'verbunden' : 'fehlt',
+        tone: appState.workspaceValid ? 'ok' : 'warn',
+      },
+      {
+        label: 'Draft',
+        detail: draftReady ? draft.id : selectedBatchCount > 0 ? `${selectedBatchCount} Batch` : 'nicht bereit',
+        tone: draftReady || selectedBatchCount > 0 ? 'ok' : 'neutral',
+      },
+      {
+        label: 'Audio',
+        detail: sourceReady ? 'Quelle klar' : 'Quelle fehlt',
+        tone: sourceReady ? 'ok' : 'warn',
+      },
+      {
+        label: 'Pipeline',
+        detail: busy || isBatchRunning ? 'laeuft' : canGoLive ? 'bereit' : 'blockiert',
+        tone: busy || isBatchRunning ? 'info' : canGoLive ? 'ok' : 'warn',
+      },
+    ];
+  }, [
+    appState.workspaceValid,
+    busy,
+    canGoLive,
+    draft?.file,
+    draft?.id,
+    draft?.sourceAudioPath,
+    isBatchRunning,
+    liveRequiresSourceAudio,
+    selectedBatchCount,
+  ]);
+  const activeProgress = publishStatus.state === 'running'
+    ? publishStatus.progress
+    : isBatchRunning
+      ? getBatchProgressPercent(batchProgress)
+      : 0;
+  const activeProgressLabel = publishStatus.state === 'running'
+    ? publishStatus.label
+    : isBatchRunning
+      ? `Batch ${batchProgress.current} / ${batchProgress.total}`
+      : canGoLive ? 'Pipeline bereit' : 'Pipeline wartet';
 
   const deferredSearch = useDeferredValue(search);
   const filteredRows = rows.filter((row) => matchesSearch(row, deferredSearch));
@@ -226,10 +294,8 @@ const DesktopApp = () => {
       if (!state?.settings) {
         throw new Error('Flight Deck state is unavailable.');
       }
-      startTransition(() => {
-        setAppState(state);
-        setSettingsDraft(state.settings);
-      });
+      setAppState(state);
+      setSettingsDraft(state.settings);
       if (state?.dbError) {
         setNotice({ tone: 'error', message: `Database unavailable: ${state.dbError}` });
       } else {
@@ -257,6 +323,7 @@ const DesktopApp = () => {
       setBusy(false);
     }
   }, [appState.workspaceValid, settingsDraft?.workspaceRoot, tableName]);
+
 
   useEffect(() => {
     refreshState();
@@ -294,6 +361,40 @@ const DesktopApp = () => {
       markTutorialVisited(currentStep.checklistId);
     }
   }, [activeTab, markTutorialVisited, tutorialOpen, tutorialStepIndex, tutorialSteps]);
+
+  // Auto-load analytics data when switching to analytics tab
+  useEffect(() => {
+    if (activeTab === 'analytics' && (!analyticsData || !analyticsData.eventLogs)) {
+      (async () => {
+        setBusy(true);
+        try {
+          const data = await flightDeckApi.getAnalyticsData({ workspaceRoot: settingsDraft?.workspaceRoot });
+          if (data) setAnalyticsData(data);
+        } catch (error) {
+          setNotice({ tone: 'error', message: `Analytics laden fehlgeschlagen: ${error.message}` });
+        } finally {
+          setBusy(false);
+        }
+      })();
+    }
+  }, [activeTab, analyticsData, settingsDraft?.workspaceRoot]);
+
+  // Auto-load system stats when switching to monitor tab
+  useEffect(() => {
+    if (activeTab === 'monitor' && (!systemStats || !systemStats.memory)) {
+      (async () => {
+        setBusy(true);
+        try {
+          const stats = await flightDeckApi.getSystemStats({ workspaceRoot: settingsDraft?.workspaceRoot });
+          if (stats) setSystemStats(stats);
+        } catch {
+          // Ignore — mock returns {}
+        } finally {
+          setBusy(false);
+        }
+      })();
+    }
+  }, [activeTab, settingsDraft?.workspaceRoot, systemStats]);
 
   const runAsyncAction = async (work, successMessage) => {
     setBusy(true);
@@ -349,6 +450,7 @@ const DesktopApp = () => {
       mode: '',
       label: 'Draft bereit',
       detail: `Import vorbereitet: ${result.draft?.id || 'new-set'}. Pruefe Titel, Tracklist und Quellen vor dem Publish.`,
+      progress: 0,
     });
     setActiveTab('import');
   };
@@ -377,16 +479,22 @@ const DesktopApp = () => {
     }
   };
 
-  const startPublishRun = ({ mode, label, detail }) => {
+  const startPublishRun = ({ mode, label, detail, progress = 8 }) => {
     setBusy(true);
     setLastPublish(null);
-    setPublishStatus({ state: 'running', mode, label, detail });
+    setPublishStatus({ state: 'running', mode, label, detail, progress });
     setPublishLogs([createPublishLogEntry(label, 'running', detail)]);
     setNotice({ tone: 'info', message: detail });
   };
 
-  const updatePublishRun = ({ mode, label, detail, appendLog = true }) => {
-    setPublishStatus({ state: 'running', mode, label, detail });
+  const updatePublishRun = ({ mode, label, detail, progress, appendLog = true }) => {
+    setPublishStatus((currentStatus) => ({
+      state: 'running',
+      mode,
+      label,
+      detail,
+      progress: progress ?? currentStatus.progress ?? 25,
+    }));
     if (appendLog) {
       setPublishLogs((currentLogs) => [
         ...currentLogs,
@@ -396,7 +504,13 @@ const DesktopApp = () => {
   };
 
   const finishPublishRun = ({ mode, label, detail, tone = 'success' }) => {
-    setPublishStatus({ state: tone === 'error' ? 'error' : 'success', mode, label, detail });
+    setPublishStatus({
+      state: tone === 'error' ? 'error' : 'success',
+      mode,
+      label,
+      detail,
+      progress: tone === 'error' ? 100 : 100,
+    });
     setNotice({ tone, message: detail });
   };
 
@@ -405,6 +519,7 @@ const DesktopApp = () => {
       mode: 'publish',
       label: 'Preflight',
       detail: `Publish gestartet: ${draft.id || 'new-set'}. Workspace und Manifest werden geprueft.`,
+      progress: 12,
     });
 
     try {
@@ -413,11 +528,18 @@ const DesktopApp = () => {
         mode: 'publish',
         label: 'Manifest',
         detail: 'Workspace ist gueltig. Manifest wird aktualisiert, Audio-Key und Set-ID werden kollisionssicher gesetzt.',
+        progress: 38,
       });
       const result = await flightDeckApi.publishSet({
         workspaceRoot: latestSettings?.workspaceRoot,
         draft,
         settings: buildPublishOnlySettings(latestSettings),
+      });
+      updatePublishRun({
+        mode: 'publish',
+        label: 'Finalize',
+        detail: 'Manifest und Logs werden uebernommen, UI wird aktualisiert.',
+        progress: 88,
       });
       if (result.publishedSet) {
         setDraft((currentDraft) => ({ ...currentDraft, ...result.publishedSet }));
@@ -468,10 +590,11 @@ const DesktopApp = () => {
       return;
     }
 
-    startPublishRun({
+      startPublishRun({
       mode: 'live',
       label: 'Live-Preflight',
       detail: `Live-Pipeline gestartet: ${draft.id}. Settings, Upload, Build und Deploy werden vorbereitet.`,
+      progress: 10,
     });
     try {
       const latestSettings = await refreshWorkspaceStateForPublish();
@@ -479,6 +602,7 @@ const DesktopApp = () => {
         mode: 'live',
         label: 'Settings',
         detail: 'Workspace ist gueltig. Settings werden gespeichert.',
+        progress: 25,
       });
       const savedSettings = await flightDeckApi.saveSettings(latestSettings);
       setSettingsDraft(savedSettings);
@@ -487,8 +611,15 @@ const DesktopApp = () => {
         mode: 'live',
         label: 'Live-Pipeline',
         detail: 'Upload, Manifest, Build, Deploy und Live-Verify laufen.',
+        progress: 55,
       });
       const result = await publishLiveDraft(draft, savedSettings);
+      updatePublishRun({
+        mode: 'live',
+        label: 'Live-Verify',
+        detail: 'Live-Ergebnis wird uebernommen, Workspace und Tabellen werden aktualisiert.',
+        progress: 88,
+      });
 
       setPublishLogs((currentLogs) => [
         ...currentLogs,
@@ -561,12 +692,14 @@ const DesktopApp = () => {
       return;
     }
 
+    batchCancelRef.current = false;
     setIsBatchRunning(true);
     setBatchProgress({ current: 0, total: targets.length });
     let current = 0;
     const reserved = buildReservedSetValues(appState.sets, batchQueue);
 
     for (const item of targets) {
+      if (batchCancelRef.current) break;
       try {
         updateBatchItem(item.id, {
           status: 'processing',
@@ -606,6 +739,9 @@ const DesktopApp = () => {
       }
     }
 
+    if (batchCancelRef.current) {
+      setNotice({ tone: 'info', message: `Batch pausiert nach ${current} von ${targets.length} Set${targets.length === 1 ? '' : 's'}.` });
+    }
     setIsBatchRunning(false);
   };
 
@@ -618,6 +754,7 @@ const DesktopApp = () => {
     }
 
     setBusy(true);
+    batchCancelRef.current = false;
     setIsBatchRunning(true);
     setBatchProgress({ current: 0, total: targets.length });
 
@@ -634,6 +771,7 @@ const DesktopApp = () => {
       const reserved = buildReservedSetValues(appState.sets, batchQueue);
 
       for (const item of targets) {
+        if (batchCancelRef.current) break;
         try {
           updateBatchItem(item.id, {
             status: 'processing',
@@ -703,9 +841,18 @@ const DesktopApp = () => {
         }
       }
 
+      if (batchCancelRef.current) {
+        logs.push({
+          timestamp: new Date().toISOString(),
+          step: 'Batch pausiert',
+          status: 'warning',
+          detail: `Ausfuehrung nach ${current} von ${targets.length} Sets angehalten.`,
+        });
+      }
+
       setPublishLogs(logs);
       setLastPublish({
-        ok: errorCount === 0,
+        ok: errorCount === 0 && !batchCancelRef.current,
         logs,
         gitStatus: lastResult?.gitStatus,
         publishedSet: lastResult?.publishedSet || null,
@@ -718,8 +865,10 @@ const DesktopApp = () => {
       }
 
       setNotice({
-        tone: errorCount > 0 ? 'error' : 'success',
-        message: errorCount > 0
+        tone: batchCancelRef.current ? 'info' : errorCount > 0 ? 'error' : 'success',
+        message: batchCancelRef.current
+          ? `${successCount} Set${successCount === 1 ? '' : 's'} live, Batch pausiert.`
+          : errorCount > 0
           ? `${successCount} Set${successCount === 1 ? '' : 's'} live, ${errorCount} Fehler im Batch.`
           : `${successCount} Set${successCount === 1 ? '' : 's'} hochgeladen und live gesetzt.`,
       });
@@ -832,6 +981,8 @@ const DesktopApp = () => {
           gitStatus={appState.gitStatus}
           busy={busy}
           onRefresh={refreshState}
+          onJumpToTab={jumpToTab}
+          onLoadImport={() => loadImport([])}
           onSyncStats={async () => {
             await runAsyncAction(() => flightDeckApi.syncTrackStats({ workspaceRoot: settingsDraft?.workspaceRoot }), 'Manifest-IDs mit track_stats synchronisiert.');
             await refreshState();
@@ -865,6 +1016,7 @@ const DesktopApp = () => {
             await refreshTable(tableName);
           }}
           onDeleteRow={async (id) => {
+            if (!confirmRiskyAction(`${tableName} Eintrag ${id} wirklich loeschen?`)) return;
             await runAsyncAction(() => flightDeckApi.deleteRecords({ workspaceRoot: settingsDraft?.workspaceRoot, table: tableName, ids: [id] }), `${tableName} Eintrag geloescht.`);
             await refreshTable(tableName);
           }}
@@ -873,9 +1025,11 @@ const DesktopApp = () => {
             await refreshTable(tableName);
           }}
           onResetVipPassword={async (payload) => {
+            if (!confirmRiskyAction(`Passwort fuer ${payload.username || payload.email || 'VIP User'} wirklich zuruecksetzen?`)) return;
             await runAsyncAction(() => flightDeckApi.resetVipPassword({ workspaceRoot: settingsDraft?.workspaceRoot, ...payload }), 'VIP Passwort ersetzt.');
           }}
           onRevokeSession={async (sessionId) => {
+            if (!confirmRiskyAction(`Session ${sessionId} wirklich widerrufen?`)) return;
             await runAsyncAction(() => flightDeckApi.revokeSession({ workspaceRoot: settingsDraft?.workspaceRoot, sessionId }), `Session ${sessionId} widerrufen.`);
             await refreshTable(tableName);
           }}
@@ -958,8 +1112,20 @@ const DesktopApp = () => {
           onClearCompleted={() => {
             setBatchQueue(batchQueue.filter((item) => item.status !== 'success'));
           }}
+          onRetryItem={(index) => {
+            const target = batchQueue[index];
+            if (!target) return;
+            updateBatchItem(target.id, {
+              status: 'pending',
+              progress: 0,
+              errorMessage: '',
+              message: 'Bereit fuer erneuten Versuch',
+            });
+          }}
           onPauseBatch={() => {
+            batchCancelRef.current = true;
             setIsBatchRunning(false);
+            setNotice({ tone: 'info', message: 'Batch pausiert nach dem aktuell laufenden Set.' });
           }}
           isBatchRunning={isBatchRunning}
           batchProgress={batchProgress}
@@ -1044,7 +1210,19 @@ const DesktopApp = () => {
     }
 
     if (activeTab === 'assistant') {
-      return <AssistantTab />;
+      return (
+        <AssistantTab
+          appState={appState}
+          onJumpToTab={jumpToTab}
+          onRefresh={refreshState}
+          onLoadImport={() => loadImport([])}
+          onSyncStats={async () => {
+            await runAsyncAction(() => flightDeckApi.syncTrackStats({ workspaceRoot: settingsDraft?.workspaceRoot }), 'Manifest-IDs mit track_stats synchronisiert.');
+            await refreshState();
+            await refreshTable();
+          }}
+        />
+      );
     }
 
     return (
@@ -1069,12 +1247,62 @@ const DesktopApp = () => {
   return (
     <div className="fd-app-shell">
       <header className="fd-app-header">
-        <div>
+        <div className="fd-header-copy">
           <span className="fd-eyebrow">AIRDOX</span>
           <h1>Flight Deck</h1>
           <p>{settingsDraft?.workspaceRoot || 'Kein Workspace gewaehlt'}</p>
+          <div className="fd-command-strip" aria-label="Schnellaktionen">
+            <button type="button" className="fd-command-button" onClick={refreshState} disabled={busy}>
+              <RefreshCw size={15} />
+              Refresh
+            </button>
+            <button type="button" className="fd-command-button" onClick={() => jumpToTab('import')}>
+              <UploadCloud size={15} />
+              Import
+            </button>
+            <button type="button" className="fd-command-button" onClick={() => jumpToTab('batch')}>
+              <ListChecks size={15} />
+              Batch
+            </button>
+            <button type="button" className="fd-command-button" onClick={() => jumpToTab('assistant')}>
+              <Bot size={15} />
+              Assistant
+            </button>
+          </div>
         </div>
         <div className="fd-runtime-meta">
+          <div className="fd-health-grid" aria-label="Operations Status">
+            {headerStats.map((stat) => (
+              <span key={stat.label} className={`fd-health-tile ${stat.tone}`}>
+                <small>{stat.label}</small>
+                <strong>{stat.value}</strong>
+              </span>
+            ))}
+          </div>
+          <div className="fd-readiness-rail" aria-label="Pipeline readiness">
+            {readinessItems.map((item) => (
+              <span key={item.label} className={`fd-readiness-item ${item.tone}`}>
+                <small>{item.label}</small>
+                <strong>{item.detail}</strong>
+              </span>
+            ))}
+          </div>
+          <div
+            className={`fd-operation-progress ${busy || isBatchRunning ? 'active' : ''}`}
+            role="progressbar"
+            aria-label="Aktueller Prozessfortschritt"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow={activeProgress}
+          >
+            <div className="fd-operation-progress-head">
+              <span>{activeProgressLabel}</span>
+              <strong>{activeProgress}%</strong>
+            </div>
+            <div className="fd-operation-progress-track">
+              <span style={{ width: `${activeProgress}%` }} />
+            </div>
+          </div>
           <button
             type="button"
             className="fd-button"
@@ -1085,6 +1313,10 @@ const DesktopApp = () => {
             <Rocket size={16} />
             Alles ausfuehren & Live
           </button>
+          <span className={`fd-status-pill ${canGoLive ? 'ok' : 'warn'}`}>
+            <Gauge size={14} />
+            {liveLabel}
+          </span>
           <button
             type="button"
             className="fd-button secondary"
@@ -1129,25 +1361,27 @@ const DesktopApp = () => {
         {settingsDraft && renderTab()}
       </main>
 
-      <GuidedTutorialOverlay
-        isOpen={tutorialOpen}
-        tour={activeTutorialTour}
-        step={tutorialSteps[tutorialStepIndex]}
-        stepIndex={tutorialStepIndex}
-        totalSteps={tutorialSteps.length}
-        checklistState={tutorialChecklist}
-        onClose={closeTutorial}
-        onPrevious={() => goToTutorialStep(-1)}
-        onNext={() => {
-          if (tutorialStepIndex >= tutorialSteps.length - 1) {
-            closeTutorial();
-            jumpToTab('tutorial');
-            return;
-          }
-          goToTutorialStep(1);
-        }}
-        onJumpToTab={jumpToTab}
-      />
+      {tutorialOpen && (
+        <GuidedTutorialOverlay
+          isOpen
+          tour={activeTutorialTour}
+          step={tutorialSteps[tutorialStepIndex]}
+          stepIndex={tutorialStepIndex}
+          totalSteps={tutorialSteps.length}
+          checklistState={tutorialChecklist}
+          onClose={closeTutorial}
+          onPrevious={() => goToTutorialStep(-1)}
+          onNext={() => {
+            if (tutorialStepIndex >= tutorialSteps.length - 1) {
+              closeTutorial();
+              jumpToTab('tutorial');
+              return;
+            }
+            goToTutorialStep(1);
+          }}
+          onJumpToTab={jumpToTab}
+        />
+      )}
     </div>
   );
 };

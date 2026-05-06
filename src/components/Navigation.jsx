@@ -9,7 +9,7 @@ const Navigation = ({ onOpenAuth = () => {} }) => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
-        const sectionIds = ['home', 'bio', 'agents', 'press', 'music', 'vip', 'booking'];
+        const sectionIds = ['home', 'bio', 'press', 'music', 'vip', 'booking'];
         let rafId = null;
 
         const handleScroll = () => {
@@ -66,7 +66,6 @@ const Navigation = ({ onOpenAuth = () => {} }) => {
     const navItems = [
         { id: 'home', label: t('nav.home') },
         { id: 'bio', label: t('nav.about') },
-        { id: 'agents', label: t('nav.agents') },
         { id: 'press', label: t('nav.epk') },
         { id: 'music', label: t('nav.music') },
         { id: 'vip', label: t('nav.vip') },

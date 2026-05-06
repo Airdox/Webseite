@@ -38,6 +38,7 @@ const SetImportTab = ({
   const publishModeLabel = publishStatus?.mode === 'live' ? 'Go Live' : 'Publish';
   const publishStepLabel = publishStatus?.label || 'Bereit';
   const publishDetail = publishStatus?.detail || 'Noch kein Publish gestartet.';
+  const publishProgress = Math.min(100, Math.max(0, Number(publishStatus?.progress) || 0));
 
   return (
     <div className="fd-panel-stack">
@@ -103,7 +104,18 @@ const SetImportTab = ({
             <div>
               <strong>{publishBusy ? `${publishModeLabel} laeuft` : publishStepLabel}</strong>
               <span>{publishDetail}</span>
+              <div
+                className="fd-inline-progress"
+                role="progressbar"
+                aria-label={`${publishModeLabel} Fortschritt`}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow={publishProgress}
+              >
+                <span style={{ width: `${publishProgress}%` }} />
+              </div>
             </div>
+            <strong className="fd-publish-percent">{publishProgress}%</strong>
             {publishBusy && <LoaderCircle className="fd-spin" size={18} aria-hidden="true" />}
           </div>
           <div className="fd-toolbar-actions">

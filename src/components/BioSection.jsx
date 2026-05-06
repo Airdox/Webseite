@@ -1,19 +1,61 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './BioSection.css';
 import { t } from '../utils/i18n';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
+import { sets } from '../data/musicSets';
+import { statsSync } from '../utils/stats-sync';
+
+const GLOBAL_STATS_KEY = 'airdox_global_stats';
+
+const sumPlays = (stats = {}) => Object.values(stats || {}).reduce(
+    (total, row) => total + (Number(row?.plays) || 0),
+    0
+);
+
+const formatStatNumber = (value) => new Intl.NumberFormat('de-DE').format(Number(value) || 0);
+
+const readCachedPlayCount = () => {
+    if (typeof window === 'undefined') return 0;
+    try {
+        return sumPlays(JSON.parse(window.localStorage.getItem(GLOBAL_STATS_KEY) || '{}'));
+    } catch {
+        return 0;
+    }
+};
 
 const BioSection = () => {
     const sectionRef = useRef(null);
     useRevealOnScroll(sectionRef);
 
     const [isExpanded, setIsExpanded] = useState(false);
+    const [totalPlays, setTotalPlays] = useState(readCachedPlayCount);
 
-    const stats = [
-        { number: '50+', label: t('bio.stats.liveSets') },
-        { number: '10K+', label: t('bio.stats.listeners') },
+    useEffect(() => {
+        let cancelled = false;
+
+        const updateTotalPlays = (stats) => {
+            const nextTotal = sumPlays(stats);
+            if (!cancelled && nextTotal > 0) {
+                setTotalPlays(nextTotal);
+            }
+        };
+
+        const handleStatsUpdated = (event) => updateTotalPlays(event.detail);
+        window.addEventListener('airdox_stats_updated', handleStatsUpdated);
+
+        void statsSync.fetchAllStats().then(updateTotalPlays);
+
+        return () => {
+            cancelled = true;
+            window.removeEventListener('airdox_stats_updated', handleStatsUpdated);
+        };
+    }, []);
+
+    const stats = useMemo(() => [
+        { number: formatStatNumber(sets.length), label: t('bio.stats.liveSets') },
+        { number: formatStatNumber(totalPlays), label: t('bio.stats.listeners') },
         { number: 'BERLIN', label: t('bio.stats.based') },
-    ];
+    ], [totalPlays]);
 
     return (
         <section className="bio-section section" id="bio" ref={sectionRef}>

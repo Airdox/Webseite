@@ -14,7 +14,7 @@ const ChartBar = ({ label, value, maxValue, color = '#9adf6b' }) => {
       <span className="fd-chart-label">{label}</span>
       <div className="fd-bar-container">
         <div
-          className="fd-bar-fill"
+          className="fd-bar-fill fd-bar-animated"
           style={{
             width: `${percentage}%`,
             backgroundColor: color,
@@ -26,26 +26,55 @@ const ChartBar = ({ label, value, maxValue, color = '#9adf6b' }) => {
   );
 };
 
-const DateRangeSelector = ({ startDate, endDate, onStartChange, onEndChange }) => (
-  <div className="fd-date-range">
-    <label>
-      Von:
-      <input
-        type="date"
-        value={startDate}
-        onChange={(e) => onStartChange(e.target.value)}
-      />
-    </label>
-    <label>
-      Bis:
-      <input
-        type="date"
-        value={endDate}
-        onChange={(e) => onEndChange(e.target.value)}
-      />
-    </label>
-  </div>
-);
+const PRESETS = [
+  { label: '7 Tage', days: 7 },
+  { label: '30 Tage', days: 30 },
+  { label: '90 Tage', days: 90 },
+  { label: 'Alles', days: 365 },
+];
+
+const DateRangeSelector = ({ startDate, endDate, onStartChange, onEndChange }) => {
+  const applyPreset = (days) => {
+    const end = new Date();
+    const start = new Date();
+    start.setDate(start.getDate() - days);
+    onStartChange(start.toISOString().split('T')[0]);
+    onEndChange(end.toISOString().split('T')[0]);
+  };
+
+  return (
+    <div className="fd-date-range">
+      <div className="fd-date-presets">
+        {PRESETS.map((preset) => (
+          <button
+            key={preset.label}
+            type="button"
+            className="fd-command-button"
+            onClick={() => applyPreset(preset.days)}
+          >
+            {preset.label}
+          </button>
+        ))}
+      </div>
+      <label>
+        Von:
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => onStartChange(e.target.value)}
+        />
+      </label>
+      <label>
+        Bis:
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => onEndChange(e.target.value)}
+        />
+      </label>
+    </div>
+  );
+};
 
 const AdvancedAnalyticsTab = ({
   analyticsData = {},
@@ -121,7 +150,7 @@ const AdvancedAnalyticsTab = ({
             onClick={onRefresh}
             disabled={busy}
           >
-            <RotateCcw size={16} />
+            <RotateCcw size={16} className={busy ? 'fd-spin' : ''} />
             Aktualisieren
           </button>
           <button

@@ -10,13 +10,13 @@ describe('assistantEngine', () => {
 
   it('returns fallback for unknown question', () => {
     const response = answerToolQuestion('asdf qwerty zxcv');
-    expect(response.toLowerCase()).toContain('sofortplan');
-    expect(response.toLowerCase()).toContain('struktur');
+    expect(response.text.toLowerCase()).toContain('sofortplan');
+    expect(response.text.toLowerCase()).toContain('struktur');
   });
 
   it('returns guided answer for analytics question', () => {
     const response = answerToolQuestion('Wie nutze ich den Analytics Filter nach Land und Gerät?');
-    expect(response.toLowerCase()).toContain('analytics');
-    expect(response.toLowerCase()).toContain('filter');
+    expect(response.text.toLowerCase()).toContain('analytics');
+    expect(response.text.toLowerCase()).toContain('filter');
   });
 });

@@ -86,6 +86,7 @@ const BatchImportTab = ({
   onStartBatch = () => {},
   onGoLiveBatch = () => {},
   onClearCompleted = () => {},
+  onRetryItem = () => {},
   onPauseBatch = () => {},
   isBatchRunning = false,
   batchProgress = { current: 0, total: 0 },
@@ -264,9 +265,7 @@ const BatchImportTab = ({
                   busy={busy}
                   onRemove={(i) => onRemoveItem(i)}
                   onToggleSelected={onToggleItem}
-                  onStatusChange={() => {
-                    // Optional: implement retry logic
-                  }}
+                  onStatusChange={(i) => onRetryItem(i)}
                 />
               ))}
             </div>

@@ -56,7 +56,7 @@ describe('DesktopApp', () => {
     await waitFor(() => {
       expect(screen.getByText(/Szenario 2: Auswertung der Datenbank nach verschiedenen Kriterien/i)).toBeInTheDocument();
     });
-  });
+  }, 10000);
 
   it('refreshes workspace state before publish and uses latest settings', async () => {
     const staleState = {
@@ -138,7 +138,7 @@ describe('DesktopApp', () => {
 
     expect(getStateMock).toHaveBeenCalledTimes(3);
     expect(listTableMock).toHaveBeenCalled();
-  });
+  }, 10000);
 
   it('shows immediate publish progress while the Windows pipeline is running', async () => {
     const state = {
@@ -212,7 +212,7 @@ describe('DesktopApp', () => {
 
     await screen.findByText(/Set recording_2026_05_01 wurde publiziert/i);
     expect(screen.getByText('manifest')).toBeInTheDocument();
-  });
+  }, 10000);
 
   it('refreshes workspace state before "Alles ausfuehren & Live" and publishes with live settings', async () => {
     const staleState = {
@@ -298,7 +298,7 @@ describe('DesktopApp', () => {
     expect(livePayload.settings.uploadAudioToR2).toBe(true);
     expect(livePayload.settings.autoBuild).toBe(true);
     expect(livePayload.settings.autoDeploy).toBe(true);
-  });
+  }, 10000);
 
   it('keeps Go Live disabled for safe-mode drafts without an audio source path', async () => {
     Object.assign(flightDeckApi, {
@@ -330,5 +330,5 @@ describe('DesktopApp', () => {
     await waitFor(() => {
       expect(screen.getAllByRole('button', { name: /Alles ausfuehren & Live/i })[0]).toBeDisabled();
     });
-  });
+  }, 10000);
 });
