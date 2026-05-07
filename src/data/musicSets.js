@@ -1,5 +1,551 @@
 export const sets = [
   {
+    id: 'recording_2026_05_07-2',
+    title: 'VHG #2',
+    date: 'MAY 2026',
+    file: 'recording_2026_05_07-2.mp3',
+    cover: '/assets/airdox-vinyl.jpg',
+    duration: '3:16:06',
+    isNew: true,
+    vinylColor: '#9adf6b',
+    tracks: [
+      {
+        time: '00:00:00',
+        artist: 'Thomas Schumacher, A.D.H.S.',
+        title: 'Cold Burn (Original Mix)'
+      },
+      {
+        time: '00:03:06',
+        artist: 'Shermanology',
+        title: 'Girl On The Beat (Extended Mix)'
+      },
+      {
+        time: '00:06:13',
+        artist: 'Wade',
+        title: 'Right Move (Extended Mix)'
+      },
+      {
+        time: '00:09:01',
+        artist: 'RSquared, Iglesias',
+        title: 'Let\'s Freak (Original Mix)'
+      },
+      {
+        time: '00:12:49',
+        artist: 'Rene Bourgeois',
+        title: 'Face2Face With My Demon (Original Mix)'
+      },
+      {
+        time: '00:19:11',
+        artist: 'Prok & Fitch',
+        title: 'Tiger Blood (Extended Mix)'
+      },
+      {
+        time: '00:24:02',
+        artist: 'Sigue Sigue Sputnik',
+        title: 'Love Missile F1-11 (Westbam Remix Short Version)'
+      },
+      {
+        time: '00:27:42',
+        artist: 'DJ Disciple, Dru Hepkins',
+        title: 'When I Die (Prok & Fitch Remix)'
+      },
+      {
+        time: '00:30:37',
+        artist: 'Oliver Dollar, Nils Ohrmann',
+        title: 'John\'s Church feat. Nils Ohrmann (Mousse T.\'s Extended Disco Shizzle Remix)'
+      },
+      {
+        time: '00:34:02',
+        artist: 'NOTO (IT), àmou',
+        title: 'Get Personal (Original Mix)'
+      },
+      {
+        time: '00:39:59',
+        artist: 'Oliver Ho, Danny Passarella',
+        title: 'Male (Original Mix)'
+      },
+      {
+        time: '00:40:27',
+        artist: 'Patrick Arbez',
+        title: 'Der rote Rabauke (deKai (Berlin) Remix)'
+      },
+      {
+        time: '00:44:53',
+        artist: 'PLUS2',
+        title: 'GRA$2 (Original Mix)'
+      },
+      {
+        time: '00:47:39',
+        artist: 'POLOVICH',
+        title: 'Fake DJ (Original Mix)'
+      },
+      {
+        time: '00:51:28',
+        artist: 'POLOVICH',
+        title: 'Sweet Dreams (Instrumental)'
+      },
+      {
+        time: '00:53:58',
+        artist: 'Primarie',
+        title: 'A New Dream (Surrender Discipline Remix)'
+      },
+      {
+        time: '00:56:08',
+        artist: 'Rafael, Max Cardona',
+        title: '4 The Girls (Extended Mix)'
+      },
+      {
+        time: '01:01:33',
+        artist: 'Ravok, Santino Gigante',
+        title: 'Out of Time (Extended Mix)'
+      },
+      {
+        time: '01:03:23',
+        artist: 'Recall, SzumH',
+        title: 'Zukunft Allein (Alfred Heinrichs Remix)'
+      },
+      {
+        time: '01:10:41',
+        artist: 'REYSHA RAMI, Dansyn',
+        title: 'Bass Go Boom (Extended Mix)'
+      },
+      {
+        time: '01:12:46',
+        artist: 'Rihanne',
+        title: 'Shy (Original Mix)'
+      },
+      {
+        time: '01:16:01',
+        artist: 'Roddy Lima',
+        title: 'STEP LIKE (Original Mix)'
+      },
+      {
+        time: '01:20:25',
+        artist: 'Sielo',
+        title: 'Run It (Extended Mix)'
+      },
+      {
+        time: '01:24:51',
+        artist: 'SIY',
+        title: 'Just Easy (Extended Mix)'
+      },
+      {
+        time: '01:28:20',
+        artist: 'SLAMM, Dan Molinari',
+        title: 'K.E.T. (Amine Mix)'
+      },
+      {
+        time: '01:31:55',
+        artist: 'Solee',
+        title: 'Perfektion (Extended Mix)'
+      },
+      {
+        time: '01:36:40',
+        artist: 'Speedy J, Chris Liebing, Collabs 3000',
+        title: 'Strum (Original Mix)'
+      },
+      {
+        time: '01:42:21',
+        artist: 'Chicks On Speed',
+        title: 'wordy rappinghood'
+      },
+      {
+        time: '01:45:33',
+        artist: 'Zion, De La Ghetto, El Cherry Scom, El Alfa, La Greña, DJ Chulo NYC, Ezzy R, Ronny GTA',
+        title: 'PANTI Y COLALE 2.0 (Original Mix)'
+      },
+      {
+        time: '01:47:22',
+        artist: 'TSVI',
+        title: 'Music Is Moving (Original Mix)'
+      },
+      {
+        time: '01:52:06',
+        artist: 'TOYZZ',
+        title: 'This Beat (Original Mix)'
+      },
+      {
+        time: '01:53:53',
+        artist: 'Tomy Wahl, Cloz',
+        title: 'I Call It Energy feat. That Kid Is You (RIKO & GUGGA Remix)'
+      },
+      {
+        time: '01:59:44',
+        artist: 'The Schmidt',
+        title: 'Further (Original Mix)'
+      },
+      {
+        time: '02:01:26',
+        artist: 'Reebs',
+        title: 'In The Ghetto (Extended Mix)'
+      },
+      {
+        time: '02:03:40',
+        artist: 'Red Effects',
+        title: 'Roller (Original Mix)'
+      },
+      {
+        time: '02:07:35',
+        artist: 'Pitbull, Lenier',
+        title: 'Pa\' Los Envidiosos (Original Mix)'
+      },
+      {
+        time: '02:09:15',
+        artist: 'Patrick Arbez',
+        title: 'Hater Content (Original Mix)'
+      },
+      {
+        time: '02:14:56',
+        artist: 'Oliver Klein',
+        title: 'Suspenders (AKA AKA & Thalstroem Remix)'
+      },
+      {
+        time: '02:20:46',
+        artist: 'Morten Granau',
+        title: 'Belladonna (Original Mix)'
+      },
+      {
+        time: '02:22:07',
+        artist: 'Michele Conte, VICTORIA WHYNOT',
+        title: 'Turn Around (Original Mix)'
+      },
+      {
+        time: '02:25:50',
+        artist: 'Martin Books',
+        title: 'Turn (Original Mix)'
+      },
+      {
+        time: '02:30:13',
+        artist: 'Luke Alessi',
+        title: 'Yes Empress (Original Mix)'
+      },
+      {
+        time: '02:31:56',
+        artist: 'Luigi Rocca',
+        title: 'Ghost (Extended Mix)'
+      },
+      {
+        time: '02:35:54',
+        artist: 'Laidback Luke, Bolier, AMRV',
+        title: 'Late Night Talk (BLR Extended Edit)'
+      },
+      {
+        time: '02:37:54',
+        artist: 'KICA',
+        title: 'Lisbon Cluster (Original Mix)'
+      },
+      {
+        time: '02:42:43',
+        artist: 'Jody 6',
+        title: 'Cognitive Shift (Original Mix)'
+      },
+      {
+        time: '02:47:18',
+        artist: 'Javi Mula',
+        title: 'Come On (Neelix Remix)'
+      },
+      {
+        time: '02:51:43',
+        artist: 'Four Tet, Tony Romera',
+        title: 'Baby (Tony Romera Remix)'
+      },
+      {
+        time: '02:54:11',
+        artist: 'Eddy M',
+        title: 'Rocket (Original Mix)'
+      },
+      {
+        time: '02:56:26',
+        artist: 'DJ Face Off, Guti Legatto',
+        title: 'Love Paris (Original Mix)'
+      },
+      {
+        time: '02:58:13',
+        artist: 'Darius Syrossian, Melon Bomb',
+        title: 'Party People (Basement Mix)'
+      },
+      {
+        time: '03:00:00',
+        artist: 'Teil 2',
+        title: 'keine CUE-Trackmarker vorhanden'
+      }
+    ],
+    publishedAt: '2026-05-07'
+  },
+  {
+    id: 'recording_2026_05_07',
+    title: 'VHG',
+    date: 'MAY 2026',
+    file: '01 REC-2026-05-07_FULL.mp3',
+    cover: '/assets/airdox-vinyl.jpg',
+    duration: '3:16:06',
+    isNew: true,
+    vinylColor: '#9adf6b',
+    tracks: [
+      {
+        time: '00:00:00',
+        artist: 'Thomas Schumacher, A.D.H.S.',
+        title: 'Cold Burn (Original Mix)'
+      },
+      {
+        time: '00:03:06',
+        artist: 'Shermanology',
+        title: 'Girl On The Beat (Extended Mix)'
+      },
+      {
+        time: '00:06:13',
+        artist: 'Wade',
+        title: 'Right Move (Extended Mix)'
+      },
+      {
+        time: '00:09:01',
+        artist: 'RSquared, Iglesias',
+        title: 'Let\'s Freak (Original Mix)'
+      },
+      {
+        time: '00:12:49',
+        artist: 'Rene Bourgeois',
+        title: 'Face2Face With My Demon (Original Mix)'
+      },
+      {
+        time: '00:19:11',
+        artist: 'Prok & Fitch',
+        title: 'Tiger Blood (Extended Mix)'
+      },
+      {
+        time: '00:24:02',
+        artist: 'Sigue Sigue Sputnik',
+        title: 'Love Missile F1-11 (Westbam Remix Short Version)'
+      },
+      {
+        time: '00:27:42',
+        artist: 'DJ Disciple, Dru Hepkins',
+        title: 'When I Die (Prok & Fitch Remix)'
+      },
+      {
+        time: '00:30:37',
+        artist: 'Oliver Dollar, Nils Ohrmann',
+        title: 'John\'s Church feat. Nils Ohrmann (Mousse T.\'s Extended Disco Shizzle Remix)'
+      },
+      {
+        time: '00:34:02',
+        artist: 'NOTO (IT), àmou',
+        title: 'Get Personal (Original Mix)'
+      },
+      {
+        time: '00:39:59',
+        artist: 'Oliver Ho, Danny Passarella',
+        title: 'Male (Original Mix)'
+      },
+      {
+        time: '00:40:27',
+        artist: 'Patrick Arbez',
+        title: 'Der rote Rabauke (deKai (Berlin) Remix)'
+      },
+      {
+        time: '00:44:53',
+        artist: 'PLUS2',
+        title: 'GRA$2 (Original Mix)'
+      },
+      {
+        time: '00:47:39',
+        artist: 'POLOVICH',
+        title: 'Fake DJ (Original Mix)'
+      },
+      {
+        time: '00:51:28',
+        artist: 'POLOVICH',
+        title: 'Sweet Dreams (Instrumental)'
+      },
+      {
+        time: '00:53:58',
+        artist: 'Primarie',
+        title: 'A New Dream (Surrender Discipline Remix)'
+      },
+      {
+        time: '00:56:08',
+        artist: 'Rafael, Max Cardona',
+        title: '4 The Girls (Extended Mix)'
+      },
+      {
+        time: '01:01:33',
+        artist: 'Ravok, Santino Gigante',
+        title: 'Out of Time (Extended Mix)'
+      },
+      {
+        time: '01:03:23',
+        artist: 'Recall, SzumH',
+        title: 'Zukunft Allein (Alfred Heinrichs Remix)'
+      },
+      {
+        time: '01:10:41',
+        artist: 'REYSHA RAMI, Dansyn',
+        title: 'Bass Go Boom (Extended Mix)'
+      },
+      {
+        time: '01:12:46',
+        artist: 'Rihanne',
+        title: 'Shy (Original Mix)'
+      },
+      {
+        time: '01:16:01',
+        artist: 'Roddy Lima',
+        title: 'STEP LIKE (Original Mix)'
+      },
+      {
+        time: '01:20:25',
+        artist: 'Sielo',
+        title: 'Run It (Extended Mix)'
+      },
+      {
+        time: '01:24:51',
+        artist: 'SIY',
+        title: 'Just Easy (Extended Mix)'
+      },
+      {
+        time: '01:28:20',
+        artist: 'SLAMM, Dan Molinari',
+        title: 'K.E.T. (Amine Mix)'
+      },
+      {
+        time: '01:31:55',
+        artist: 'Solee',
+        title: 'Perfektion (Extended Mix)'
+      },
+      {
+        time: '01:36:40',
+        artist: 'Speedy J, Chris Liebing, Collabs 3000',
+        title: 'Strum (Original Mix)'
+      },
+      {
+        time: '01:42:21',
+        artist: 'Chicks On Speed',
+        title: 'wordy rappinghood'
+      },
+      {
+        time: '01:45:33',
+        artist: 'Zion, De La Ghetto, El Cherry Scom, El Alfa, La Greña, DJ Chulo NYC, Ezzy R, Ronny GTA',
+        title: 'PANTI Y COLALE 2.0 (Original Mix)'
+      },
+      {
+        time: '01:47:22',
+        artist: 'TSVI',
+        title: 'Music Is Moving (Original Mix)'
+      },
+      {
+        time: '01:52:06',
+        artist: 'TOYZZ',
+        title: 'This Beat (Original Mix)'
+      },
+      {
+        time: '01:53:53',
+        artist: 'Tomy Wahl, Cloz',
+        title: 'I Call It Energy feat. That Kid Is You (RIKO & GUGGA Remix)'
+      },
+      {
+        time: '01:59:44',
+        artist: 'The Schmidt',
+        title: 'Further (Original Mix)'
+      },
+      {
+        time: '02:01:26',
+        artist: 'Reebs',
+        title: 'In The Ghetto (Extended Mix)'
+      },
+      {
+        time: '02:03:40',
+        artist: 'Red Effects',
+        title: 'Roller (Original Mix)'
+      },
+      {
+        time: '02:07:35',
+        artist: 'Pitbull, Lenier',
+        title: 'Pa\' Los Envidiosos (Original Mix)'
+      },
+      {
+        time: '02:09:15',
+        artist: 'Patrick Arbez',
+        title: 'Hater Content (Original Mix)'
+      },
+      {
+        time: '02:14:56',
+        artist: 'Oliver Klein',
+        title: 'Suspenders (AKA AKA & Thalstroem Remix)'
+      },
+      {
+        time: '02:20:46',
+        artist: 'Morten Granau',
+        title: 'Belladonna (Original Mix)'
+      },
+      {
+        time: '02:22:07',
+        artist: 'Michele Conte, VICTORIA WHYNOT',
+        title: 'Turn Around (Original Mix)'
+      },
+      {
+        time: '02:25:50',
+        artist: 'Martin Books',
+        title: 'Turn (Original Mix)'
+      },
+      {
+        time: '02:30:13',
+        artist: 'Luke Alessi',
+        title: 'Yes Empress (Original Mix)'
+      },
+      {
+        time: '02:31:56',
+        artist: 'Luigi Rocca',
+        title: 'Ghost (Extended Mix)'
+      },
+      {
+        time: '02:35:54',
+        artist: 'Laidback Luke, Bolier, AMRV',
+        title: 'Late Night Talk (BLR Extended Edit)'
+      },
+      {
+        time: '02:37:54',
+        artist: 'KICA',
+        title: 'Lisbon Cluster (Original Mix)'
+      },
+      {
+        time: '02:42:43',
+        artist: 'Jody 6',
+        title: 'Cognitive Shift (Original Mix)'
+      },
+      {
+        time: '02:47:18',
+        artist: 'Javi Mula',
+        title: 'Come On (Neelix Remix)'
+      },
+      {
+        time: '02:51:43',
+        artist: 'Four Tet, Tony Romera',
+        title: 'Baby (Tony Romera Remix)'
+      },
+      {
+        time: '02:54:11',
+        artist: 'Eddy M',
+        title: 'Rocket (Original Mix)'
+      },
+      {
+        time: '02:56:26',
+        artist: 'DJ Face Off, Guti Legatto',
+        title: 'Love Paris (Original Mix)'
+      },
+      {
+        time: '02:58:13',
+        artist: 'Darius Syrossian, Melon Bomb',
+        title: 'Party People (Basement Mix)'
+      },
+      {
+        time: '03:00:00',
+        artist: 'Teil 2',
+        title: 'keine CUE-Trackmarker vorhanden'
+      }
+    ],
+    publishedAt: '2026-05-07'
+  },
+  {
     id: 'recording_2026_05_02',
     title: 'SISSYGUT ALLES GUT',
     date: 'MAY 2026',
@@ -38,11 +584,6 @@ export const sets = [
         time: '00:11:30',
         artist: 'Kevin McKay, Pupa Nas T, Denise Belfon',
         title: 'Work (CVMPANILE & Draxx Extended Remix)'
-      },
-      {
-        time: '00:16:07',
-        artist: 'T78, Angelala',
-        title: 'No Guestlist (Extended Mix)'
       },
       {
         time: '00:18:43',
@@ -308,11 +849,6 @@ export const sets = [
         title: 'Perfection'
       },
       {
-        time: '00:52:49',
-        artist: 'T78, Angelala',
-        title: 'No Guestlist (Extended Mix)'
-      },
-      {
         time: '00:55:16',
         artist: 'Ali Love, Vintage Culture, Max Styler',
         title: 'Freaky 1 (Original Mix)'
@@ -393,11 +929,6 @@ export const sets = [
         time: '00:19:23',
         artist: '140-Airdox',
         title: 'MJ Lan - Generate Bodies (2000)'
-      },
-      {
-        time: '00:21:41',
-        artist: 'T78, Angelala',
-        title: 'No Guestlist (Extended Mix)'
       },
       {
         time: '00:25:50',
