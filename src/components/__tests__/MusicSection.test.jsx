@@ -24,6 +24,7 @@ vi.mock('../../data/musicSets', () => ({
             id: 'test-set-1',
             title: 'Test Set 1',
             date: 'JAN 2026',
+            file: 'test-set-1.mp3',
             vinylColor: '#ff0000',
             tracks: [
                 { time: '', artist: 'Tanith', title: 'Triage' },
@@ -42,6 +43,25 @@ describe('MusicSection Synchronisation', () => {
         vi.clearAllMocks();
         localStorage.clear();
         vi.spyOn(console, 'warn').mockImplementation(() => {});
+        window.airdoxAnalyticsV2 = {
+            trackAudioEvent: vi.fn(),
+            trackEvent: vi.fn(),
+        };
+        window.AudioContext = vi.fn().mockImplementation(() => ({
+            state: 'running',
+            createAnalyser: vi.fn(() => ({
+                connect: vi.fn(),
+                getByteFrequencyData: vi.fn(),
+                fftSize: 0,
+                frequencyBinCount: 32,
+                smoothingTimeConstant: 0,
+            })),
+            createMediaElementSource: vi.fn(() => ({
+                connect: vi.fn(),
+            })),
+            resume: vi.fn(),
+            destination: {},
+        }));
         Object.defineProperty(window.HTMLMediaElement.prototype, 'pause', {
             configurable: true,
             value: vi.fn()
@@ -176,6 +196,61 @@ describe('MusicSection Synchronisation', () => {
             // Queue sollte geleert sein
             const queue = JSON.parse(localStorage.getItem('airdox_offline_queue') || '[]');
             expect(queue.length).toBe(0);
+        });
+    });
+
+    it('tracks the canonical audio_play event when playback starts', async () => {
+        Object.defineProperty(window.HTMLMediaElement.prototype, 'play', {
+            configurable: true,
+            value: vi.fn().mockImplementation(function playAndDispatch() {
+                window.setTimeout(() => this.dispatchEvent(new Event('play')), 0);
+                return Promise.resolve();
+            })
+        });
+
+        render(
+            <AudioProvider>
+                <MusicSection />
+            </AudioProvider>
+        );
+
+        const playButton = await screen.findByRole('button', { name: /music.play Test Set 1/i });
+        fireEvent.click(playButton);
+
+        await waitFor(() => {
+            expect(window.airdoxAnalyticsV2.trackEvent).toHaveBeenCalledWith('audio_play', {
+                setId: 'test-set-1',
+                setTitle: 'Test Set 1',
+                source: 'audio_player',
+            });
+        });
+    });
+
+    it('tracks the canonical share event when a set link is copied', async () => {
+        Object.defineProperty(navigator, 'clipboard', {
+            configurable: true,
+            value: { writeText: vi.fn().mockResolvedValue(undefined) },
+        });
+        Object.defineProperty(navigator, 'share', {
+            configurable: true,
+            value: undefined,
+        });
+
+        render(
+            <AudioProvider>
+                <MusicSection />
+            </AudioProvider>
+        );
+
+        fireEvent.click(await screen.findByRole('button', { name: /music.shareLabel Test Set 1/i }));
+
+        await waitFor(() => {
+            expect(window.airdoxAnalyticsV2.trackEvent).toHaveBeenCalledWith('share', {
+                setId: 'test-set-1',
+                setTitle: 'Test Set 1',
+                method: 'clipboard',
+                source: 'set_card',
+            });
         });
     });
 });

@@ -303,6 +303,13 @@ export const AudioProvider = ({ children }) => {
                     audio.duration || 0
                 );
             }
+            if (action === 'play' && analytics?.trackEvent && track) {
+                analytics.trackEvent('audio_play', {
+                    setId: track.id,
+                    setTitle: track.title || track.id || 'unknown',
+                    source: 'audio_player'
+                });
+            }
         };
 
         const updateTime = () => setCurrentTime(audio.currentTime);

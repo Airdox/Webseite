@@ -26,6 +26,10 @@ const Newsletter = () => {
                 setMessage(t('newsletter.success'));
                 setEmail('');
                 window.airdoxAnalyticsV2?.trackEvent('newsletter_subscribe', { status: 'success' });
+                window.airdoxAnalyticsV2?.trackEvent('sign_up', {
+                    method: 'newsletter',
+                    status: 'success'
+                });
             } else {
                 throw new Error(await readApiError(response, t('newsletter.subscriptionFailed')));
             }

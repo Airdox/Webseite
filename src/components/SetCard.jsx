@@ -78,10 +78,15 @@ const SetCard = ({
 
     const trackShare = (method) => {
         const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
-        analytics?.trackEvent?.('set_share', {
+        const eventData = {
             setId: set.id,
             setTitle: set.title,
             method
+        };
+        analytics?.trackEvent?.('set_share', eventData);
+        analytics?.trackEvent?.('share', {
+            ...eventData,
+            source: 'set_card'
         });
     };
 

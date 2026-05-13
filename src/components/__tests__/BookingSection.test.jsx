@@ -32,6 +32,7 @@ vi.mock('../../utils/i18n', () => ({
 describe('BookingSection', () => {
     beforeEach(() => {
         vi.restoreAllMocks();
+        window.airdoxAnalyticsV2 = { trackEvent: vi.fn() };
     });
 
     it('shows a user-facing error when the API returns an empty error body', async () => {
@@ -54,5 +55,29 @@ describe('BookingSection', () => {
             expect(screen.getByText('Nachricht konnte nicht gesendet werden.')).toBeInTheDocument();
         });
         expect(screen.queryByText(/Unexpected end of JSON input/i)).not.toBeInTheDocument();
+    });
+
+    it('tracks the canonical generate_lead event after successful booking submit', async () => {
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{}', { status: 200 })));
+
+        render(<BookingSection />);
+
+        fireEvent.change(screen.getByLabelText('Dein Name'), {
+            target: { value: 'Lead Test' },
+        });
+        fireEvent.change(screen.getByLabelText('E-Mail-Adresse'), {
+            target: { value: 'lead-test@example.com' },
+        });
+        fireEvent.change(screen.getByLabelText('Deine Nachricht'), {
+            target: { value: 'Booking intent tracking test.' },
+        });
+        fireEvent.click(screen.getByRole('button', { name: /Anfrage senden/i }));
+
+        await waitFor(() => {
+            expect(window.airdoxAnalyticsV2.trackEvent).toHaveBeenCalledWith('generate_lead', {
+                source: 'booking_form_cloudflare',
+                status: 'success',
+            });
+        });
     });
 });

@@ -128,8 +128,8 @@ export const agents = [
         score: 95,
         icon: Sparkles,
         mission: {
-            de: 'Promotion, Branding, EPK, Community, Conversion und Wiedererkennbarkeit.',
-            en: 'Promotion, branding, EPK, community, conversion, and memorability.',
+            de: 'Promotion, Branding, EPK, Community, PR-Kampagnen, Conversion und Wiedererkennbarkeit.',
+            en: 'Promotion, branding, EPK, community, PR campaigns, conversion, and memorability.',
         },
         proof: {
             de: 'EPK, Booking, Newsletter, VIP, Social-Meta und Mehrsprachigkeit werden als Reichweitenhebel bewertet.',
@@ -258,8 +258,8 @@ export const approvalRules = [
         icon: ShieldCheck,
         title: { de: 'Social live', en: 'Social live' },
         text: {
-            de: 'Externe Live-Ausspielung braucht persoenliches Nutzer-OK; Drafts bleiben intern.',
-            en: 'External live publishing needs personal user approval; drafts stay internal.',
+            de: 'Manni darf PR-Kampagnen vorbereiten und zeigen; externe Live-Ausspielung braucht persoenliches Nutzer-OK.',
+            en: 'Manni may prepare and preview PR campaigns; external live publishing needs personal user approval.',
         },
     },
     {

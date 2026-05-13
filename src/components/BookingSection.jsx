@@ -50,6 +50,10 @@ const BookingSection = () => {
                 const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
                 if (analytics?.trackEvent) {
                     analytics.trackEvent('booking_submit', { source: 'booking_form_cloudflare' });
+                    analytics.trackEvent('generate_lead', {
+                        source: 'booking_form_cloudflare',
+                        status: 'success'
+                    });
                 }
             } else {
                 throw new Error(await readApiError(response, t('booking.sendError')));
