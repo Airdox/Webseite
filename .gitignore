@@ -76,6 +76,10 @@ scratch/proof-*
 scratch/verify-*
 scratch/create-test-user.mjs
 docs/agent-system/proof/
+docs/agent-system/manni-reel-output/
+public/campaign/**/*.mp4
+public/campaign/**/*.png
+exports/
 .devserver.pid
 state.json
 .netlify/state.json

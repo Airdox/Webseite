@@ -1,21 +1,27 @@
 {
-  "generatedAt": "2026-05-13T04:47:48.354Z",
+  "generatedAt": "2026-05-13T05:13:05.728Z",
   "controller": "Master Controller",
-  "event": "pr_campaign_request",
-  "status": "external_live",
+  "event": "manual_publish_request",
+  "status": "approved",
   "summary": {
-    "selectedJobCount": 1,
+    "selectedJobCount": 2,
     "executedJobCount": 0,
     "manualJobCount": 1,
-    "skippedJobCount": 0,
+    "skippedJobCount": 1,
     "failedJobCount": 0
   },
   "jobs": [
     {
       "id": "pr-campaign-live-publish",
       "owner": "Manni",
+      "result": "skipped",
+      "detail": "Personal user approval required before live/external output."
+    },
+    {
+      "id": "pr-social-reach-ops-execute",
+      "owner": "Manni",
       "result": "manual",
-      "detail": "After explicit personal user confirmation is logged, execute the approved PR campaign exactly as previewed: publish/send only approved copy and assets, record platform/channel, timestamp, URL or campaign ID, and first KPI checkpoint in DECISION_LOG."
+      "detail": "After explicit personal user confirmation is logged, execute or commission only the approved operations exactly as previewed. Allowed operations include posting approved Instagram/Facebook Reels or Stories, publishing approved Shorts/TikTok variants, replying/commenting with approved copy, sending approved collab/tag/repost requests, placing approved community posts, starting approved small boost tests, or activating approved newsletter/website bridges. Record platform, action type, timestamp, URL or campaign ID, asset IDs, spend, first KPI checkpoint, and any platform response in DECISION_LOG."
     }
   ]
 }

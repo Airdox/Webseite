@@ -372,6 +372,40 @@
       ]
     },
     {
+      "id": "designer-reel-cd-review",
+      "title": "Review and revise Manni reel output for AIRDOX corporate design",
+      "owner": "Designer",
+      "execution": "manual",
+      "manualProtocol": "Inspect every Manni reel/story/social output before external use and revise it against AIRDOX corporate design. Match the website visual language: dark base, neon cyan, pink accent, clear grid/edge system, high-contrast typography, uppercase AIRDOX signal, platform safe areas, and no internal approval/draft text in the visible asset. Produce or reference final MP4/PNG assets and mark only Designer-approved versions as usable for Meta Business Suite upload. When a pattern repeats, create a reusable template specification for other agents with purpose, editable fields, safe-area rules, brand-token mapping, export target, and handoff rules.",
+      "trigger": {
+        "events": [
+          "weekly_growth_review",
+          "manual_background",
+          "pr_campaign_request",
+          "reel_asset_ready",
+          "manual_publish_request"
+        ],
+        "statuses": [
+          "planning",
+          "drafting",
+          "pending_user_ok",
+          "approved"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "social_media_corporate_design",
+      "outputVisibility": "external_draft",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/manni-reel-output/*",
+        "docs/brand/templates/*",
+        "docs/agent-system/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md",
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
       "id": "growth-report-digest",
       "title": "Weekly growth report digest",
       "owner": "Manni",
@@ -502,6 +536,68 @@
       "changeClass": "non_gravierend",
       "requiresMasterApproval": false,
       "domain": "pr_campaign",
+      "outputVisibility": "external_live",
+      "requiresUserApproval": true,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
+      "id": "pr-social-reach-ops-plan",
+      "title": "Plan executable PR and social reach operations",
+      "owner": "Manni",
+      "execution": "manual",
+      "manualProtocol": "Create a concrete, approval-ready platform operations plan for reach growth. Include Instagram and Facebook first, then TikTok, YouTube Shorts, Spotify, newsletter, website, niche communities, or partners where useful. For each operation define platform, action type (Reel/Short, Story, comment/reply, collab/tag request, repost request, group/community post, small boost test, newsletter or website bridge), exact copy, asset IDs, landing URL, timing, expected reach lever, KPI target, budget if any, risk notes, and approval line. Keep every operation unpublished and unsent until personal user confirmation is logged.",
+      "trigger": {
+        "events": [
+          "weekly_growth_review",
+          "manual_background",
+          "pr_campaign_request",
+          "reach_drop",
+          "winner_detected"
+        ],
+        "statuses": [
+          "planning",
+          "weekly",
+          "drafting",
+          "scale",
+          "pending_user_ok"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "pr_social_reach_ops",
+      "outputVisibility": "external_draft",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md",
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "docs/agent-system/manni-reel-draft-pack.md"
+      ]
+    },
+    {
+      "id": "pr-social-reach-ops-execute",
+      "title": "Execute approved PR and social reach operations",
+      "owner": "Manni",
+      "execution": "manual",
+      "manualProtocol": "After explicit personal user confirmation is logged, execute or commission only the approved operations exactly as previewed. Allowed operations include posting approved Instagram/Facebook Reels or Stories, publishing approved Shorts/TikTok variants, replying/commenting with approved copy, sending approved collab/tag/repost requests, placing approved community posts, starting approved small boost tests, or activating approved newsletter/website bridges. Record platform, action type, timestamp, URL or campaign ID, asset IDs, spend, first KPI checkpoint, and any platform response in DECISION_LOG.",
+      "trigger": {
+        "events": [
+          "manual_publish_request",
+          "pr_campaign_request",
+          "winner_detected"
+        ],
+        "statuses": [
+          "approved",
+          "scale",
+          "external_live"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "pr_social_reach_ops",
       "outputVisibility": "external_live",
       "requiresUserApproval": true,
       "enabled": true,

@@ -55,6 +55,21 @@ export const getWorkspacePaths = (workspaceRoot) => ({
   wranglerPath: path.join(workspaceRoot, 'wrangler.jsonc'),
 });
 
+export const getAgentSystemPaths = (
+  workspaceRoot,
+  {
+    proposalFile = '',
+    approvalStateFile = '',
+  } = {},
+) => {
+  const agentSystemDir = path.join(workspaceRoot, 'docs', 'agent-system');
+  return {
+    agentSystemDir,
+    proposalPath: proposalFile ? path.join(agentSystemDir, proposalFile) : '',
+    approvalStatePath: approvalStateFile ? path.join(agentSystemDir, approvalStateFile) : '',
+  };
+};
+
 export const readWorkspaceEnv = async (workspaceRoot) => {
   const { envExamplePath, envPath } = getWorkspacePaths(workspaceRoot);
   const merged = {};

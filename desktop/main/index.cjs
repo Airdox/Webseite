@@ -28,7 +28,8 @@ const getServices = async () => {
       import('./services/pipeline.mjs'),
       import('./services/state.mjs'),
       import('./services/workspace.mjs'),
-    ]).then(([database, manifest, pipeline, state, workspace]) => ({
+      import('./services/manniApproval.mjs'),
+    ]).then(([database, manifest, pipeline, state, workspace, manniApproval]) => ({
       ...database,
       readSets: manifest.readSets,
       prepareImportBundle: pipeline.prepareImportBundle,
@@ -37,6 +38,9 @@ const getServices = async () => {
       saveSettings: state.saveSettings,
       getGitStatus: workspace.getGitStatus,
       isWorkspaceRoot: workspace.isWorkspaceRoot,
+      getManniCampaignState: manniApproval.getManniCampaignState,
+      updateManniOperationApproval: manniApproval.updateManniOperationApproval,
+      createMarketingDraftRequest: manniApproval.createMarketingDraftRequest,
     }));
   }
 
@@ -242,6 +246,24 @@ ipcMain.handle('flightdeck:get-settings', async () => {
 ipcMain.handle('flightdeck:save-settings', async (_event, patch) => {
   const { saveSettings } = await getServices();
   return saveSettings(getUserDataPath(), patch);
+});
+
+ipcMain.handle('flightdeck:get-manni-campaign-state', async (_event, payload) => {
+  const { getManniCampaignState } = await getServices();
+  const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
+  return getManniCampaignState(workspaceRoot);
+});
+
+ipcMain.handle('flightdeck:update-manni-operation-approval', async (_event, payload) => {
+  const { updateManniOperationApproval } = await getServices();
+  const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
+  return updateManniOperationApproval(workspaceRoot, payload);
+});
+
+ipcMain.handle('flightdeck:create-marketing-draft-request', async (_event, payload) => {
+  const { createMarketingDraftRequest } = await getServices();
+  const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
+  return createMarketingDraftRequest(workspaceRoot, payload);
 });
 
 ipcMain.handle('flightdeck:select-workspace', async () => {

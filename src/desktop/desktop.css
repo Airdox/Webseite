@@ -594,6 +594,12 @@ input[type="range"] {
   flex: 1 1 0;
 }
 
+.fd-three-column {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
 .fd-section-head {
   justify-content: space-between;
   align-items: center;
@@ -879,11 +885,248 @@ input[type="range"] {
   text-align: left;
 }
 
+.fd-manni-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+  gap: 16px;
+}
+
+.fd-manni-detail-stack {
+  min-width: 0;
+}
+
+.fd-manni-queue-list {
+  display: grid;
+  gap: 12px;
+}
+
+.fd-manni-opcard {
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(38, 50, 65, 0.9);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(245, 248, 255, 0.03);
+  color: inherit;
+  display: grid;
+  gap: 7px;
+}
+
+.fd-manni-opcard:hover,
+.fd-manni-opcard:focus-visible,
+.fd-manni-opcard.active {
+  border-color: rgba(0, 240, 255, 0.42);
+  background: rgba(0, 240, 255, 0.08);
+}
+
+.fd-manni-opcard-topline,
+.fd-manni-preview-header,
+.fd-manni-preview-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.fd-manni-opcard-platform {
+  color: var(--airdox-cyan);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.fd-manni-opcard p,
+.fd-manni-copy-box p,
+.fd-manni-bullet-item span,
+.fd-manni-markdown-box pre {
+  margin: 0;
+}
+
+.fd-manni-opcard small,
+.fd-manni-kv small,
+.fd-manni-copy-box small,
+.fd-manni-note-box span {
+  color: var(--airdox-muted);
+}
+
+.fd-manni-status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(38, 50, 65, 0.94);
+  background: rgba(245, 248, 255, 0.05);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.fd-manni-status-chip.pending,
+.fd-manni-approval-btn.secondary {
+  border-color: rgba(255, 214, 152, 0.28);
+  background: rgba(255, 214, 152, 0.08);
+}
+
+.fd-manni-status-chip.approved,
+.fd-manni-approval-btn.approve {
+  border-color: rgba(154, 223, 107, 0.28);
+  background: rgba(154, 223, 107, 0.1);
+}
+
+.fd-manni-status-chip.rejected,
+.fd-manni-approval-btn.reject {
+  border-color: rgba(255, 122, 138, 0.35);
+  background: rgba(255, 122, 138, 0.12);
+}
+
+.fd-manni-status-chip.executed {
+  border-color: rgba(0, 240, 255, 0.28);
+  background: rgba(0, 240, 255, 0.1);
+}
+
+.fd-manni-status-chip.failed {
+  border-color: rgba(255, 122, 138, 0.35);
+  background: rgba(255, 122, 138, 0.12);
+}
+
+.fd-manni-preview-window {
+  display: grid;
+  gap: 12px;
+}
+
+.fd-manni-preview-surface {
+  min-height: 310px;
+  border-radius: 8px;
+  padding: 18px;
+  border: 1px solid rgba(0, 240, 255, 0.16);
+  background:
+    linear-gradient(180deg, rgba(5, 6, 8, 0.96), rgba(15, 20, 26, 0.94)),
+    linear-gradient(135deg, rgba(0, 240, 255, 0.12), transparent 36%);
+  display: grid;
+  align-content: space-between;
+  gap: 14px;
+}
+
+.fd-manni-preview-brand {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 800;
+  color: var(--airdox-text);
+}
+
+.fd-manni-preview-platform {
+  color: var(--airdox-cyan);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.fd-manni-preview-hook {
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.fd-manni-preview-asset {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--airdox-muted);
+}
+
+.fd-manni-preview-cta {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 12px;
+  color: var(--airdox-lime);
+  font-weight: 700;
+}
+
+.fd-manni-detail-grid,
+.fd-manni-proposal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.fd-manni-kv,
+.fd-manni-copy-box,
+.fd-manni-note-box {
+  border: 1px solid rgba(38, 50, 65, 0.86);
+  border-radius: 8px;
+  background: rgba(245, 248, 255, 0.03);
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.fd-manni-kv strong {
+  color: var(--airdox-text);
+}
+
+.fd-manni-copy-box,
+.fd-manni-note-box {
+  grid-column: 1 / -1;
+}
+
+.fd-manni-note-box textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 100px;
+  border-radius: 8px;
+  border: 1px solid rgba(38, 50, 65, 0.86);
+  background: rgba(5, 6, 8, 0.64);
+  color: var(--airdox-text);
+  padding: 10px 12px;
+}
+
+.fd-manni-approval-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.fd-manni-approval-btn {
+  min-width: 172px;
+}
+
+.fd-manni-bullet-list {
+  display: grid;
+  gap: 10px;
+}
+
+.fd-manni-bullet-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: var(--airdox-text);
+}
+
+.fd-manni-markdown-box {
+  margin-top: 16px;
+  border: 1px solid rgba(38, 50, 65, 0.86);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(5, 6, 8, 0.4);
+}
+
+.fd-manni-markdown-box pre {
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--airdox-muted);
+}
+
 @media (max-width: 1180px) {
   .fd-metric-grid,
   .fd-two-column {
     grid-template-columns: 1fr;
     flex-direction: column;
+  }
+
+  .fd-three-column,
+  .fd-manni-layout,
+  .fd-manni-detail-grid,
+  .fd-manni-proposal-grid {
+    grid-template-columns: 1fr;
   }
 
   .fd-track-row {

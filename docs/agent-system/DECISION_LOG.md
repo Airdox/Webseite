@@ -2,6 +2,66 @@
 
 Dieses Log speichert strategische Entscheidungen des Multi-Agenten-Systems. Kurze Eintraege sind beabsichtigt: Datum, Kontext, Entscheidung, Risiko, Recheck.
 
+## 2026-05-13 - Designer wird CD-Reviewer und Template-Owner fuer Social Assets
+
+Kontext:
+- Nutzerwunsch: Der Corporate-Design-Agent soll Manni-Reel-Ausgaben pruefen, website-konform ueberarbeiten und Vorlagen fuer andere Agenten erstellen.
+- Der erste Manni-Reel-Output war funktional, aber nicht ausreichend an Website-Farben und AIRDOX-CD ausgerichtet.
+
+Entscheidung:
+- Designer erhaelt den Job `designer-reel-cd-review`.
+- Designer prueft Manni-Reels vor externer Nutzung und erstellt CD-konforme Finalassets.
+- Designer muss wiederkehrende Layouts als Vorlagen dokumentieren, damit andere Agenten keine eigenen Brand-Layouts erfinden.
+- Erste Vorlage: `docs/brand/templates/airdox-social-reel-template.md`.
+- Erste CD-Version: `docs/agent-system/manni-reel-output/airdox-pressure-check-reel-cd-2026-05-13.mp4`.
+
+Risiko:
+- Ohne Template-Pflicht driften Social Assets optisch von der Website weg.
+- Ohne Designer-Review koennen interne Hinweise oder unpassende Farben in externe Assets geraten.
+
+Recheck:
+- `npm run agent:jobs:validate`
+- Vor jedem Upload in Meta Business Suite nur Designer-gepruefte CD-Version verwenden.
+
+## 2026-05-13 - Manni PR-Auftrag zur Ausfuehrung losgeschickt
+
+Kontext:
+- Nutzerauftrag: "Schicke Manni los Seinen PR Auftrag auszufuehren".
+- Bestehender Gate-Standard erlaubt externe Aktionen nur mit persoenlichem Nutzer-OK.
+- Im Repo sind keine Social-Publishing-Credentials oder Plattform-Connectoren fuer Instagram/Facebook vorhanden.
+
+Entscheidung:
+- Der Nutzerauftrag gilt als Freigabe fuer den lokalen Dispatch von `pr-social-reach-ops-execute`.
+- Manni erhaelt den ausfuehrbaren Operationsauftrag `docs/agent-system/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md`.
+- Der Auftrag umfasst Instagram/Facebook-Reels, Stories, Community-/Page-Post, Collab-/Tagging-Anfrage und einen kleinen Boost-Test nur auf Gewinnerasset.
+
+Risiko:
+- Die reale Plattformveroeffentlichung kann lokal nicht direkt abgeschlossen werden, solange keine Plattformzugaenge/API-Connectoren bereitstehen.
+- Keine Copy-, Asset- oder Budgetabweichung ohne neue Freigabe.
+
+Recheck:
+- `npm run agent:jobs:run -- --event=manual_publish_request --status=approved --user-approved=pr-social-reach-ops-execute`
+- KPI-Check nach 2h, 24h und 7d ab realer Plattformveroeffentlichung.
+
+## 2026-05-13 - Manni fuehrt PR- und Social-Reach-Operationen
+
+Kontext:
+- Nutzerwunsch: Der fuer PR-Aktionen verantwortliche Agent soll echte Reichweitenaktionen planen und nach Freigabe auch durchfuehren koennen.
+- Zielplattformen sind ausdruecklich Instagram, Facebook und weitere geeignete Social-Media-Kanaele.
+
+Entscheidung:
+- Manni bleibt Owner fuer PR und wird auf konkrete Social-Reach-Operations erweitert.
+- Neue Jobs: `pr-social-reach-ops-plan` und `pr-social-reach-ops-execute`.
+- Erlaubte Operationen nach Freigabe: Reels/Shorts, Stories, sichtbare Kommentare/Antworten, Collab-/Tagging-Anfragen, Repost-/Community-Posts, kleine Boost-Tests sowie Newsletter-/Website-Bridges.
+- Planung ist `external_draft`; Ausfuehrung ist `external_live` und braucht `--user-approved=pr-social-reach-ops-execute`.
+
+Risiko:
+- Ohne persoenliches Nutzer-OK keine sichtbare Plattformaktion, kein Outreach und kein Budgeteinsatz.
+
+Recheck:
+- `npm run agent:jobs:validate`
+- `npm run agent:jobs:run -- --event=manual_publish_request --status=approved --user-approved=pr-social-reach-ops-execute`
+
 ## 2026-05-13 - Manni darf PR-Kampagnen bis zur Freigabe fuehren
 
 Kontext:

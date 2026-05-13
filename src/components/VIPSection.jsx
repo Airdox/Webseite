@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAudio } from '../contexts/AudioContext';
 import { sets } from '../data/musicSets';
-import { buildAudioApiHref, partitionSetsByAccess } from '../lib/set-access';
+import { partitionSetsByAccess } from '../lib/set-access';
 import { t } from '../utils/i18n';
 import './VIPSection.css';
 
@@ -47,7 +47,6 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
     const { currentTrack, isPlaying, currentTime, playTrack, togglePlay } = useAudio();
     const [user, setUser] = useState(null);
     const [validatingSession, setValidatingSession] = useState(false);
-    const [authToken, setAuthToken] = useState(() => localStorage.getItem('airdox_token') || '');
 
     useEffect(() => {
         const savedToken = localStorage.getItem('airdox_token');
@@ -68,16 +67,13 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
 
             if (response.ok && result.ok) {
                 setUser(result.user);
-                setAuthToken(token);
                 window.dispatchEvent(new CustomEvent('airdox_login_success'));
             } else {
                 localStorage.removeItem('airdox_token');
                 setUser(null);
-                setAuthToken('');
             }
         } catch {
             setUser(null);
-            setAuthToken('');
         } finally {
             setValidatingSession(false);
         }
@@ -86,7 +82,6 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
     const handleLogout = () => {
         localStorage.removeItem('airdox_token');
         setUser(null);
-        setAuthToken('');
         window.dispatchEvent(new CustomEvent('airdox_logout'));
     };
 
@@ -164,13 +159,6 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
                                                 >
                                                     {isSetPlaying ? t('vip.pause') : t('vip.play')}
                                                 </button>
-                                                <a
-                                                    href={buildAudioApiHref(set.file, authToken)}
-                                                    download={set.file}
-                                                    className="vip-download-link"
-                                                >
-                                                    {t('vip.download')}
-                                                </a>
                                             </div>
                                             {Array.isArray(set.tracks) && set.tracks.length > 0 && (
                                                 <ul className="vip-tracklist-items">

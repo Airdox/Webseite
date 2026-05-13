@@ -1,6 +1,6 @@
 
 import { Router } from './router.js';
-import { handleStatsRequest, handleBookingRequest, handleAuthRequest } from '../lib/stats-logic.js';
+import { handleStatsRequest, handleBookingRequest, handleAuthRequest, handleSubscribeRequest } from '../lib/stats-logic.js';
 import { sets } from '../data/musicSets.js';
 import { normalizeAudioBaseFilename, partitionSetsByAccess } from '../lib/set-access.js';
 
@@ -192,11 +192,36 @@ const getAuthTokenFromRequest = (request, url) => {
     return '';
 };
 
+const getRequestHeader = (request, name) => {
+    const headers = request.headers;
+    if (!headers) return '';
+    const direct = headers.get?.(name) || headers.get?.(name.toLowerCase());
+    if (direct) return direct;
+    const target = name.toLowerCase();
+    for (const [key, value] of headers.entries?.() || []) {
+        if (String(key).toLowerCase() === target) return value;
+    }
+    return '';
+};
+
 const isVipOnlyAudio = (filename) => {
     const base = normalizeAudioBaseFilename(filename);
     if (!base || !KNOWN_AUDIO_BASES.has(base)) return false;
     return !PUBLIC_AUDIO_BASES.has(base);
 };
+
+const isKnownSetAudio = (filename) => {
+    const base = normalizeAudioBaseFilename(filename);
+    return Boolean(base && KNOWN_AUDIO_BASES.has(base));
+};
+
+const audioError = (status, message, extra = {}) => new Response(JSON.stringify({
+    error: message,
+    ...extra,
+}), {
+    status,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+});
 
 // GET /api/audio/:filename - Secure audio streaming endpoint
 router.get('/api/audio', async (request, env) => {
@@ -221,13 +246,14 @@ router.get('/api/audio', async (request, env) => {
     const safeFilename = sanitizeFilename(filename);
     console.log(`[Audio] Requesting: "${safeFilename}" (original: "${filename}")`);
 
+    if (!isKnownSetAudio(safeFilename)) {
+        return audioError(404, 'Audio file not found', { requested: safeFilename });
+    }
+
     if (isVipOnlyAudio(safeFilename)) {
         const token = getAuthTokenFromRequest(request, url);
         if (!token) {
-            return new Response(JSON.stringify({ error: 'VIP access requires login token' }), {
-                status: 401,
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-            });
+            return audioError(401, 'VIP access requires login token');
         }
 
         const sessionResult = await handleAuthRequest({
@@ -235,11 +261,13 @@ router.get('/api/audio', async (request, env) => {
             env
         });
         if (sessionResult.status !== 200 || !sessionResult.body?.ok) {
-            return new Response(JSON.stringify({ error: 'Invalid or expired VIP session' }), {
-                status: 401,
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-            });
+            return audioError(401, 'Invalid or expired VIP session');
         }
+    }
+
+    const range = getRequestHeader(request, 'Range');
+    if (!range) {
+        return audioError(403, 'Full audio downloads are disabled. Use the site player for streaming.');
     }
     
     let object = null;
@@ -255,13 +283,9 @@ router.get('/api/audio', async (request, env) => {
     if (!object) {
         // Try listing available keys for debugging
         console.log(`[Audio] File not found in R2: "${safeFilename}"`);
-        return new Response(JSON.stringify({ 
-            error: 'Audio file not found', 
+        return audioError(404, 'Audio file not found', {
             requested: safeFilename,
             tried: [`public/${safeFilename}`, safeFilename]
-        }), { 
-            status: 404, 
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         });
     }
 
@@ -269,12 +293,13 @@ router.get('/api/audio', async (request, env) => {
     const headers = {
         'Content-Type': 'audio/mpeg',
         'Accept-Ranges': 'bytes',
-        'Cache-Control': 'public, max-age=86400',
+        'Cache-Control': 'private, no-store',
+        'Content-Disposition': 'inline',
+        'X-Content-Type-Options': 'nosniff',
         ...corsHeaders
     };
 
     // Support range requests for seeking
-    const range = request.headers.get('Range');
     if (range) {
         const size = object.size;
         const match = /bytes=(\d+)-(\d*)/.exec(range);
@@ -302,9 +327,9 @@ router.get('/api/audio', async (request, env) => {
         }
     }
 
-    // Full file
-    headers['Content-Length'] = object.size.toString();
-    return new Response(object.body, { status: 200, headers });
+    return audioError(416, 'Requested range not satisfiable', {
+        expected: 'bytes=start-end'
+    });
 });
 
 // GET /api/stats
@@ -345,6 +370,23 @@ router.post('/api/booking', async (request, env) => {
     try {
         const body = await request.json();
         const result = await handleBookingRequest({ body, env });
+        return new Response(JSON.stringify(result.body), {
+            status: result.status,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    } catch {
+        return new Response(JSON.stringify({ ok: false, error: 'Invalid Request' }), {
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    }
+});
+
+// POST /api/subscribe
+router.post('/api/subscribe', async (request, env) => {
+    try {
+        const body = await request.json();
+        const result = await handleSubscribeRequest({ body, env });
         return new Response(JSON.stringify(result.body), {
             status: result.status,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }

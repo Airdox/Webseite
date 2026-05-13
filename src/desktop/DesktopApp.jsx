@@ -2,7 +2,7 @@ import React, { startTransition, useCallback, useDeferredValue, useEffect, useMe
 import {
   CircleAlert, Database, LayoutDashboard, RadioTower, UploadCloud,
   BarChart3, Settings2, Package, Activity, BookOpen, Rocket, Bot,
-  RefreshCw, Gauge, ListChecks,
+  RefreshCw, Gauge, ListChecks, Sparkles,
 } from 'lucide-react';
 import { flightDeckApi } from './api.js';
 import OverviewTab from './components/OverviewTab.jsx';
@@ -15,6 +15,7 @@ import AdvancedSettingsTab from './components/AdvancedSettingsTab.jsx';
 import SystemMonitorTab from './components/SystemMonitorTab.jsx';
 import TutorialTab from './components/TutorialTab.jsx';
 import AssistantTab from './components/AssistantTab.jsx';
+import ManniApprovalTab from './components/ManniApprovalTab.jsx';
 import GuidedTutorialOverlay from './components/GuidedTutorialOverlay.jsx';
 import { TUTORIAL_TOURS } from './lib/tutorialContent.js';
 import {
@@ -33,6 +34,7 @@ const TABS = [
   { id: 'flightdeck', label: 'Flight Deck', icon: RadioTower },
   { id: 'settings', label: 'Advanced Settings', icon: Settings2 },
   { id: 'monitor', label: 'System Monitor', icon: Activity },
+  { id: 'marketing', label: 'Marketing Manager', icon: Sparkles },
   { id: 'tutorial', label: 'Tutorial', icon: BookOpen },
   { id: 'assistant', label: 'AI Assistant', icon: Bot },
 ];
@@ -184,6 +186,7 @@ const DesktopApp = () => {
   const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
   const batchCancelRef = useRef(false);
   const [systemStats, setSystemStats] = useState({});
+  const [manniCampaignState, setManniCampaignState] = useState(null);
   const [saveStatus, setSaveStatus] = useState(null);
   const [tutorialOpen, setTutorialOpen] = useState(false);
   const [tutorialTourId, setTutorialTourId] = useState(DEFAULT_TOUR_ID);
@@ -344,6 +347,10 @@ const DesktopApp = () => {
   }, [tableName, appState.workspaceValid, refreshTable, settingsDraft]);
 
   useEffect(() => {
+    setManniCampaignState(null);
+  }, [settingsDraft?.workspaceRoot]);
+
+  useEffect(() => {
     if (!tutorialOpen) return;
     const currentStep = tutorialSteps[tutorialStepIndex];
     if (currentStep?.tabId && currentStep.tabId !== activeTab) {
@@ -387,6 +394,22 @@ const DesktopApp = () => {
       })();
     }
   }, [activeTab, settingsDraft?.workspaceRoot, systemStats]);
+
+  useEffect(() => {
+    if (activeTab === 'marketing' && !manniCampaignState) {
+      (async () => {
+        setBusy(true);
+        try {
+          const campaignState = await flightDeckApi.getManniCampaignState({ workspaceRoot: settingsDraft?.workspaceRoot });
+          if (campaignState) setManniCampaignState(campaignState);
+        } catch (error) {
+          setNotice({ tone: 'error', message: `Manni-Daten laden fehlgeschlagen: ${error.message}` });
+        } finally {
+          setBusy(false);
+        }
+      })();
+    }
+  }, [activeTab, manniCampaignState, settingsDraft?.workspaceRoot]);
 
   const runAsyncAction = async (work, successMessage) => {
     setBusy(true);
@@ -1209,6 +1232,40 @@ const DesktopApp = () => {
           checklistState={tutorialChecklist}
           onJumpToTab={jumpToTab}
           onStartTour={openTutorial}
+        />
+      );
+    }
+
+    if (activeTab === 'marketing') {
+      return (
+        <ManniApprovalTab
+          state={manniCampaignState}
+          busy={busy}
+          onRefresh={async () => {
+            const campaignState = await runAsyncAction(
+              () => flightDeckApi.getManniCampaignState({ workspaceRoot: settingsDraft?.workspaceRoot }),
+              'Manni-Vorschlaege aktualisiert.',
+            );
+            if (campaignState) setManniCampaignState(campaignState);
+          }}
+          onUpdateApproval={async (payload) => {
+            const campaignState = await runAsyncAction(
+              () => flightDeckApi.updateManniOperationApproval({ workspaceRoot: settingsDraft?.workspaceRoot, ...payload }),
+              `Aktion ${payload.operationId} auf ${payload.status} gesetzt.`,
+            );
+            if (campaignState) {
+              setManniCampaignState(campaignState);
+              return { ok: true };
+            }
+            return { ok: false };
+          }}
+          onCreateDraftRequest={async (payload) => {
+            const campaignState = await runAsyncAction(
+              () => flightDeckApi.createMarketingDraftRequest({ workspaceRoot: settingsDraft?.workspaceRoot, ...payload }),
+              `Entwurfsauftrag "${payload.title}" angelegt.`,
+            );
+            if (campaignState) setManniCampaignState(campaignState);
+          }}
         />
       );
     }

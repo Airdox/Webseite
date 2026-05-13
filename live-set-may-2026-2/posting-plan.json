@@ -1,0 +1,52 @@
+{
+  "day_1_launch": {
+    "window": "same day, 18:00-21:00 local platform time",
+    "primary_asset": "airdox-live-set-may-2026-2-master-59s.mp4",
+    "instagram": [
+      "Post 59s Master Reel",
+      "Post Story 1-3 with Link Sticker"
+    ],
+    "tiktok": [
+      "Post 59s Master Reel with hook: Start at 17:58"
+    ],
+    "facebook": [
+      "Post Reel with direct website CTA"
+    ],
+    "youtube_shorts": [
+      "Post 59s Short"
+    ]
+  },
+  "day_2_reminder": {
+    "window": "24h after launch",
+    "primary_asset": "airdox-live-set-may-2026-2-hook-15s.mp4",
+    "instagram_story": [
+      "Poll: Schon gehört? / Noch nicht",
+      "Website screenshot with set card"
+    ],
+    "tiktok": [
+      "Post 15s Hook Version"
+    ]
+  },
+  "day_4_extended_push": {
+    "window": "day 4, evening repost slot",
+    "primary_asset": "airdox-live-set-may-2026-2-drop-30s.mp4",
+    "instagram": [
+      "Post 30s or 3min Extended Version"
+    ],
+    "facebook": [
+      "Post Extended Version"
+    ],
+    "caption": "This section keeps building. Full set on Airdox.info."
+  },
+  "day_7_booking_push": {
+    "window": "day 7, afternoon story and evening feed",
+    "primary_asset": "story-04-booking-push.png",
+    "instagram_story": [
+      "Booking transfer with CTA Jetzt buchen"
+    ],
+    "facebook": [
+      "Booking post with campaign visual"
+    ],
+    "caption": "Bring AIRDOX energy to your event."
+  }
+}

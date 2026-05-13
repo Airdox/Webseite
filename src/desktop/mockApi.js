@@ -4,6 +4,8 @@ import { answerToolQuestion } from './lib/assistantEngine.js';
 const SETTINGS_KEY = 'flightdeck_mock_settings';
 const TABLES_KEY = 'flightdeck_mock_tables';
 const SETS_KEY = 'flightdeck_mock_sets';
+const MANNI_APPROVALS_KEY = 'flightdeck_mock_manni_approvals';
+const MARKETING_DRAFT_REQUESTS_KEY = 'flightdeck_mock_marketing_draft_requests';
 
 const defaultSettings = {
   ...DEFAULT_FLIGHT_DECK_SETTINGS,
@@ -74,6 +76,143 @@ const saveJson = (key, value) => {
 const loadSettings = () => loadJson(SETTINGS_KEY, defaultSettings);
 const loadTables = () => loadJson(TABLES_KEY, defaultTables);
 const loadSets = () => loadJson(SETS_KEY, defaultSets);
+
+const defaultManniCampaignState = {
+  proposal: {
+    metadata: {
+      title: 'Manni PR-/Social-Reichweiten-Operationen - 2026-05-13',
+      status: 'approved_for_execution_dispatch',
+      owner: 'Manni',
+      goal: 'Reichweite fuer AIRDOX ueber konkrete Social- und PR-Aktionen erweitern.',
+      approval: 'Nutzerauftrag im Chat vom 2026-05-13: "Schicke Manni los Seinen PR Auftrag auszufuehren"',
+    },
+    executionBoundary: {
+      summary: 'Manni darf die untenstehenden Aktionen ausfuehren oder beauftragen, sobald Plattformzugang vorhanden ist.',
+      rules: [
+        'keine andere Copy',
+        'kein anderes Asset',
+        'kein anderes Budget',
+        'keine DM-/Kommentar-Antwort ausser den freigegebenen Varianten',
+        'kein Paid-Spend ueber die unten genannten Limits',
+      ],
+    },
+    producedAssets: [
+      {
+        title: 'Aktuell bevorzugtes CD-konformes Webstyle-Reel mit Nutzer-gewaehltem Ausschnitt',
+        summary: '',
+        items: [
+          { key: 'video', label: 'Video', value: 'docs/agent-system/manni-reel-output/airdox-cd-webstyle-online-set-1758-reel.mp4' },
+          { key: 'preview', label: 'Preview', value: 'docs/agent-system/manni-reel-output/airdox-cd-webstyle-online-set-1758-reel-preview.png' },
+          { key: 'format', label: 'Format', value: '1080x1920, 30 fps, 16.0s, H.264/AAC, ca. 2.0 MB.' },
+          { key: 'status', label: 'Status', value: 'aktueller bevorzugter Upload-Entwurf fuer Instagram Reel und Facebook Reel.' },
+        ],
+      },
+    ],
+    executionChecklist: [
+      'Reel/Story-Asset gegen Rechte, Tonalitaet und Hook pruefen.',
+      'OPS-IG-01 und OPS-FB-01 organisch veroeffentlichen.',
+      'OPS-IG-02 Story-Sequenz veroeffentlichen.',
+      'OPS-FB-02 als Page-/Community-kompatiblen Post veroeffentlichen.',
+    ],
+    measurementWindows: [
+      { label: '2h: Hook-/Initial-Reach-Check', window: '2h', detail: 'Hook-/Initial-Reach-Check' },
+      { label: '24h: Winner/Loser-Entscheidung', window: '24h', detail: 'Winner/Loser-Entscheidung' },
+      { label: '7d: nachhaltige Reichweite, Follower, Link-Klicks, Booking-/Newsletter-Effekt', window: '7d', detail: 'nachhaltige Reichweite, Follower, Link-Klicks, Booking-/Newsletter-Effekt' },
+    ],
+    dispatchResult: {
+      dispatchedAt: '2026-05-13T05:13:05.728Z',
+      command: 'npm run agent:jobs:run -- --event=manual_publish_request --status=approved --user-approved=pr-social-reach-ops-execute',
+      runnerNotes: [
+        'pr-social-reach-ops-execute: manual execution Auftrag aktiviert.',
+        'pr-campaign-live-publish: korrekt blockiert, weil nur der Social-Reach-Ops-Execute-Job freigegeben wurde.',
+      ],
+    },
+    sourceMarkdown: '',
+  },
+  operations: [
+    {
+      id: 'OPS-IG-01',
+      platform: 'Instagram',
+      action: 'Reel posten',
+      copyHook: 'AIRDOX pressure check. Berlin underground techno, no warm-up. CTA: Full set in bio.',
+      asset: 'manni-reel-queue Slot 1 oder naechster freigegebener Drop-/Peak-Clip',
+      targetUrl: 'Website/Music Deep Link',
+      timing: 'naechster Peak-Slot 18:00-21:00',
+      kpiGoal: 'Nicht-Follower-Reach, Profilbesuche, Link-Klicks',
+      budget: '0 EUR',
+    },
+    {
+      id: 'OPS-FB-01',
+      platform: 'Facebook',
+      action: 'Reel posten',
+      copyHook: 'Berlin underground pressure from AIRDOX. Full set and booking link on the site.',
+      asset: 'gleicher Clip wie OPS-IG-01, Facebook-safe Caption',
+      targetUrl: 'Website/Music Deep Link',
+      timing: 'direkt nach OPS-IG-01',
+      kpiGoal: 'Reel Views, Shares, Link-Klicks',
+      budget: '0 EUR',
+    },
+    {
+      id: 'OPS-IG-02',
+      platform: 'Instagram',
+      action: 'Story-Sequenz',
+      copyHook: 'PRESSURE TEST / FULL SET ONLINE / BOOKING / EPK',
+      asset: 'Reel-First-Frame + EPK-/Website-Screenshot',
+      targetUrl: 'Website/Music oder EPK Link',
+      timing: '30-60 Min nach Reel',
+      kpiGoal: 'Story Taps, Link-Klicks',
+      budget: '0 EUR',
+    },
+  ],
+  approvals: {
+    version: 1,
+    proposalSource: 'docs/agent-system/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md',
+    createdAt: '2026-05-13T05:13:05.728Z',
+    updatedAt: '2026-05-13T05:13:05.728Z',
+    operations: {
+      'OPS-IG-01': { status: 'pending', notes: '', decidedBy: '', decisionAt: '', updatedAt: '2026-05-13T05:13:05.728Z' },
+      'OPS-FB-01': { status: 'pending', notes: '', decidedBy: '', decisionAt: '', updatedAt: '2026-05-13T05:13:05.728Z' },
+      'OPS-IG-02': { status: 'pending', notes: '', decidedBy: '', decisionAt: '', updatedAt: '2026-05-13T05:13:05.728Z' },
+    },
+  },
+  summary: {
+    title: 'Manni PR-/Social-Reichweiten-Operationen - 2026-05-13',
+    status: 'approved_for_execution_dispatch',
+    owner: 'Manni',
+    goal: 'Reichweite fuer AIRDOX ueber konkrete Social- und PR-Aktionen erweitern.',
+    approval: 'Nutzerauftrag im Chat vom 2026-05-13: "Schicke Manni los Seinen PR Auftrag auszufuehren"',
+    operationCount: 3,
+    approvedCount: 0,
+    rejectedCount: 0,
+    pendingCount: 3,
+  },
+  draftRequests: [],
+  visualAssets: [],
+  rawMarkdownPath: 'docs/agent-system/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md',
+  approvalsPath: 'docs/agent-system/manni-approval-state.json',
+};
+
+const loadManniCampaignState = () => {
+  const stored = loadJson(MANNI_APPROVALS_KEY, null);
+  const base = JSON.parse(JSON.stringify(defaultManniCampaignState));
+  const approvals = stored?.operations ? stored : base.approvals;
+
+  base.approvals = approvals;
+  base.visualAssets = base.proposal.producedAssets;
+  base.operations = base.operations.map((operation) => ({
+    ...operation,
+    decision: approvals.operations[operation.id] || { status: 'pending', notes: '', decidedBy: '', decisionAt: '', updatedAt: '' },
+  }));
+  base.summary.approvedCount = base.operations.filter((entry) => entry.decision?.status === 'approved').length;
+  base.summary.rejectedCount = base.operations.filter((entry) => entry.decision?.status === 'rejected').length;
+  base.summary.pendingCount = base.operations.filter((entry) => !entry.decision?.status || entry.decision?.status === 'pending').length;
+  base.visualAssets = base.proposal.producedAssets;
+  return base;
+};
+
+const saveManniApprovals = (approvals) => saveJson(MANNI_APPROVALS_KEY, approvals);
+const loadMarketingDraftRequests = () => loadJson(MARKETING_DRAFT_REQUESTS_KEY, []);
+const saveMarketingDraftRequests = (requests) => saveJson(MARKETING_DRAFT_REQUESTS_KEY, requests);
 
 const buildSnapshot = () => {
   const tables = loadTables();
@@ -185,6 +324,48 @@ export const mockFlightDeckApi = {
   },
   async saveSettings(patch) {
     return saveJson(SETTINGS_KEY, { ...loadSettings(), ...patch });
+  },
+  async getManniCampaignState() {
+    const state = loadManniCampaignState();
+    return { ...state, draftRequests: loadMarketingDraftRequests() };
+  },
+  async updateManniOperationApproval(payload) {
+    const state = loadManniCampaignState();
+    const timestamp = new Date().toISOString();
+    const nextApprovals = {
+      ...state.approvals,
+      updatedAt: timestamp,
+      operations: {
+        ...state.approvals.operations,
+        [payload.operationId]: {
+          ...(state.approvals.operations[payload.operationId] || {}),
+          status: String(payload.status || 'pending').toLowerCase(),
+          notes: String(payload.note || '').trim(),
+          decisionAt: timestamp,
+          updatedAt: timestamp,
+        },
+      },
+    };
+    saveManniApprovals(nextApprovals);
+    const nextState = loadManniCampaignState();
+    return { ...nextState, draftRequests: loadMarketingDraftRequests() };
+  },
+  async createMarketingDraftRequest(payload) {
+    const requests = loadMarketingDraftRequests();
+    const next = {
+      id: `MRQ-${Date.now()}`,
+      title: String(payload?.title || 'Ohne Titel'),
+      channels: Array.isArray(payload?.channels) ? payload.channels : [],
+      objective: String(payload?.objective || ''),
+      constraints: String(payload?.constraints || ''),
+      ownerAgent: String(payload?.ownerAgent || 'Manni'),
+      status: 'angefragt',
+      createdAt: new Date().toISOString(),
+    };
+    requests.unshift(next);
+    saveMarketingDraftRequests(requests);
+    const state = loadManniCampaignState();
+    return { ...state, draftRequests: requests };
   },
   async selectWorkspace() {
     return saveJson(SETTINGS_KEY, { ...loadSettings(), workspaceRoot: 'D:\\Airdox\\Webseite' });

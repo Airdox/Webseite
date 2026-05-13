@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Check, Share2 } from 'lucide-react';
 import { getCurrentLocale, t } from '../utils/i18n';
-import { buildAudioApiHref } from '../lib/set-access';
 import { buildSetAnchorId, buildSetShareUrl } from '../lib/set-links';
 import { getSeekableTracks, parseTrackTimeToSeconds } from '../utils/timeUtils';
 
@@ -34,7 +33,6 @@ const SetCard = ({
     currentTime,
     stats,
     userVote,
-    isLoggedIn,
     onPlayClick,
     onTrackClick,
     onVote
@@ -225,20 +223,6 @@ const SetCard = ({
                         <span>{isCopied ? t('music.shareCopied') : t('music.share')}</span>
                     </button>
 
-                    {isLoggedIn && (
-                        <a
-                            href={buildAudioApiHref(set.file, localStorage.getItem('airdox_token'))}
-                            download={set.file}
-                            className="vip-download-link"
-                            onClick={(e) => e.stopPropagation()}
-                            title={t('music.downloadVipAccess')}
-                        >
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                            </svg>
-                            {t('music.vipDownload')}
-                        </a>
-                    )}
                 </div>
 
                 {seekableTracks.length > 0 && (

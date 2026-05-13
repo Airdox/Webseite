@@ -128,16 +128,16 @@ export const agents = [
         score: 95,
         icon: Sparkles,
         mission: {
-            de: 'Promotion, Branding, EPK, Community, PR-Kampagnen, Conversion und Wiedererkennbarkeit.',
-            en: 'Promotion, branding, EPK, community, PR campaigns, conversion, and memorability.',
+            de: 'Promotion, Branding, EPK, Community, PR-Kampagnen, Social-Reach-Operationen, Conversion und Wiedererkennbarkeit.',
+            en: 'Promotion, branding, EPK, community, PR campaigns, social reach operations, conversion, and memorability.',
         },
         proof: {
-            de: 'EPK, Booking, Newsletter, VIP, Social-Meta und Mehrsprachigkeit werden als Reichweitenhebel bewertet.',
-            en: 'EPK, booking, newsletter, VIP, social meta, and multilingual reach are scored.',
+            de: 'EPK, Booking, Newsletter, VIP, Social-Meta, Reels, Stories, Community-Reaktionen und Mehrsprachigkeit werden als Reichweitenhebel bewertet.',
+            en: 'EPK, booking, newsletter, VIP, social meta, Reels, Stories, community replies, and multilingual reach are scored.',
         },
         next: {
-            de: 'Conversion-Events fuer Booking, Newsletter, VIP und Set-Play sichtbar auswerten.',
-            en: 'Make conversion events for booking, newsletter, VIP, and set plays visible.',
+            de: 'Instagram-/Facebook-Reels, Stories, Kommentare, Collab-Anfragen und kleine Boost-Tests als freigabepflichtige Reach-Ops planen.',
+            en: 'Plan Instagram/Facebook Reels, Stories, comments, collab requests, and small boost tests as approval-gated reach ops.',
         },
     },
     {
@@ -258,8 +258,8 @@ export const approvalRules = [
         icon: ShieldCheck,
         title: { de: 'Social live', en: 'Social live' },
         text: {
-            de: 'Manni darf PR-Kampagnen vorbereiten und zeigen; externe Live-Ausspielung braucht persoenliches Nutzer-OK.',
-            en: 'Manni may prepare and preview PR campaigns; external live publishing needs personal user approval.',
+            de: 'Manni darf PR-/Social-Reach-Ops fuer Instagram, Facebook und passende Kanaele planen; jede externe Aktion braucht persoenliches Nutzer-OK.',
+            en: 'Manni may plan PR/social reach ops for Instagram, Facebook, and suitable channels; every external action needs personal user approval.',
         },
     },
     {

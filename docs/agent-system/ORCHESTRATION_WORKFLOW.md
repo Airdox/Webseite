@@ -31,6 +31,9 @@ Manni Social Execution:
 - schreibt:
   - `docs/agent-system/manni-reel-queue.json`
   - `docs/agent-system/manni-reel-weekly-plan.md`
+- PR-/Social-Reach-Operations laufen als manuelle Jobs:
+  - `pr-social-reach-ops-plan` plant konkrete Plattformaktionen fuer Instagram, Facebook und passende weitere Kanaele.
+  - `pr-social-reach-ops-execute` fuehrt oder beauftragt nur persoenlich freigegebene Aktionen.
 
 ## Manueller Job-Dispatch (GitHub)
 
@@ -54,6 +57,7 @@ Der Workflow validiert zuerst den Job-Katalog und fuehrt danach genau die Jobs f
 - Jobs mit `outputVisibility: external_draft` duerfen ohne Nutzer-OK erstellt werden, bleiben aber unveroeffentlicht.
 - Jobs mit `outputVisibility: external_live` werden ohne persoenliches Nutzer-OK als `skipped` protokolliert.
 - Manni-PR-Kampagnen laufen dreistufig: `pr-campaign-draft-pack` bereitet vor, `pr-campaign-user-preview` zeigt die Kampagne, `pr-campaign-live-publish` bringt sie erst mit `--user-approved=pr-campaign-live-publish` online.
+- Manni-PR-Reach-Operations laufen zweistufig: `pr-social-reach-ops-plan` erstellt den ausfuehrbaren Plattformauftrag; `pr-social-reach-ops-execute` bleibt bis `--user-approved=pr-social-reach-ops-execute` blockiert und protokolliert danach Link/Kampagnen-ID, Budget, Plattform, Zeitpunkt und KPI-Recheck.
 
 ## Migration latest-*
 

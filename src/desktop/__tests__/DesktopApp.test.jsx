@@ -424,4 +424,223 @@ describe('DesktopApp', () => {
       expect(screen.getAllByRole('button', { name: /Alles ausfuehren & Live/i })[0]).toBeDisabled();
     });
   }, 10000);
+
+  it('proof: Manni approval actions call the approval API and refresh the visible operation state', async () => {
+    const initialCampaignState = {
+      proposal: {
+        metadata: {
+          title: 'Manni PR Push KW 20',
+          status: 'draft',
+          goal: 'Organische Reach fuer AIRDOX erhoehen.',
+          approval: 'Nur nach explizitem Go.',
+        },
+        executionBoundary: {
+          summary: 'Kein Paid Spend.',
+        },
+        executionChecklist: ['Caption pruefen', 'Asset pruefen'],
+        measurementWindows: [{ window: '2h', detail: 'Reach check' }],
+        sourceMarkdown: '# Proposal',
+      },
+      summary: {
+        title: 'Manni PR Push KW 20',
+        status: 'draft',
+        goal: 'Organische Reach fuer AIRDOX erhoehen.',
+        approval: 'Nur nach explizitem Go.',
+      },
+      operations: [
+        {
+          id: 'OPS-IG-01',
+          platform: 'Instagram',
+          action: 'Reel posten',
+          copyHook: 'Peak-slot pressure check.',
+          asset: 'reel-slot-1.mp4',
+          targetUrl: 'https://airdox.info/music',
+          timing: '18:30',
+          kpiGoal: 'Profilbesuche',
+          budget: '0 EUR',
+          decision: { status: 'pending', notes: '' },
+        },
+        {
+          id: 'OPS-FB-02',
+          platform: 'Facebook',
+          action: 'Community Post',
+          copyHook: 'Full set jetzt online.',
+          asset: 'community-card.png',
+          targetUrl: 'https://airdox.info/epk',
+          timing: '19:00',
+          kpiGoal: 'Link-Klicks',
+          budget: '0 EUR',
+          decision: { status: 'pending', notes: '' },
+        },
+      ],
+      visualAssets: [{ title: 'Assets', items: [{ label: 'Video', value: 'reel-slot-1.mp4' }] }],
+      rawMarkdownPath: 'docs/agent-system/MANNI_PR_PUSH.md',
+      approvalsPath: 'docs/agent-system/approvals.json',
+    };
+
+    const approvedCampaignState = {
+      ...initialCampaignState,
+      operations: initialCampaignState.operations.map((operation) => (
+        operation.id === 'OPS-FB-02'
+          ? {
+            ...operation,
+            decision: { status: 'approved', notes: 'Freigegeben fuer den 19:00 Slot.' },
+          }
+          : operation
+      )),
+    };
+
+    const rejectedCampaignState = {
+      ...approvedCampaignState,
+      operations: approvedCampaignState.operations.map((operation) => (
+        operation.id === 'OPS-FB-02'
+          ? {
+            ...operation,
+            decision: { status: 'rejected', notes: 'Heute doch nicht posten.' },
+          }
+          : operation
+      )),
+    };
+
+    const getManniCampaignStateMock = vi
+      .fn()
+      .mockResolvedValueOnce(initialCampaignState)
+      .mockResolvedValueOnce(approvedCampaignState)
+      .mockResolvedValueOnce(rejectedCampaignState);
+    const updateManniOperationApprovalMock = vi
+      .fn()
+      .mockResolvedValueOnce(approvedCampaignState)
+      .mockResolvedValueOnce(rejectedCampaignState);
+
+    Object.assign(flightDeckApi, {
+      isElectron: false,
+      getState: vi.fn().mockResolvedValue({
+        settings: { workspaceRoot: 'D:\\LATEST_WORKSPACE' },
+        sets: [],
+        snapshot: null,
+        dbError: null,
+        gitStatus: { branch: 'main', dirty: false, summary: '' },
+        workspaceValid: true,
+      }),
+      listTable: vi.fn().mockResolvedValue([]),
+      getManniCampaignState: getManniCampaignStateMock,
+      updateManniOperationApproval: updateManniOperationApprovalMock,
+    });
+
+    render(<DesktopApp />);
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+
+    fireEvent.click(screen.getByRole('button', { name: /Marketing Manager/i }));
+    await screen.findByRole('heading', { name: 'Marketing Manager' });
+    fireEvent.click(screen.getByRole('button', { name: /Freigaben & Ausspielung/i }));
+    await screen.findByRole('button', { name: /OPS-IG-01/i });
+
+    fireEvent.click(screen.getByRole('button', { name: /OPS-FB-02/i }));
+    await waitFor(() => {
+      expect(screen.getAllByText('Full set jetzt online.').length).toBeGreaterThan(0);
+    });
+
+    fireEvent.change(screen.getByPlaceholderText(/Optional: warum freigegeben/i), {
+      target: { value: 'Freigegeben fuer den 19:00 Slot.' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Freigeben' }));
+
+    await waitFor(() => expect(updateManniOperationApprovalMock).toHaveBeenCalledWith({
+      workspaceRoot: 'D:\\LATEST_WORKSPACE',
+      operationId: 'OPS-FB-02',
+      status: 'approved',
+      note: 'Freigegeben fuer den 19:00 Slot.',
+    }));
+    await waitFor(() => {
+      expect(screen.getAllByText('Freigegeben').length).toBeGreaterThan(0);
+    });
+    expect(screen.getByDisplayValue('Freigegeben fuer den 19:00 Slot.')).toBeInTheDocument();
+
+    fireEvent.change(screen.getByPlaceholderText(/Optional: warum freigegeben/i), {
+      target: { value: 'Heute doch nicht posten.' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Ablehnen' }));
+
+    await waitFor(() => expect(updateManniOperationApprovalMock).toHaveBeenLastCalledWith({
+      workspaceRoot: 'D:\\LATEST_WORKSPACE',
+      operationId: 'OPS-FB-02',
+      status: 'rejected',
+      note: 'Heute doch nicht posten.',
+    }));
+    await waitFor(() => {
+      expect(screen.getAllByText('Abgelehnt').length).toBeGreaterThan(0);
+    });
+    expect(screen.getByDisplayValue('Heute doch nicht posten.')).toBeInTheDocument();
+    expect(getManniCampaignStateMock).toHaveBeenCalledTimes(1);
+  }, 30000);
+
+  it('legt einen Entwurfsauftrag im Marketing Manager an und aktualisiert die Liste', async () => {
+    const baseState = {
+      proposal: {
+        metadata: { title: 'Marketing Paket', status: 'draft', goal: 'Mehr Reichweite', approval: 'OK erforderlich' },
+        executionBoundary: { summary: 'Nur organisch' },
+        executionChecklist: [],
+        measurementWindows: [],
+        sourceMarkdown: '# Proposal',
+      },
+      summary: { title: 'Marketing Paket', status: 'draft', goal: 'Mehr Reichweite', approval: 'OK erforderlich' },
+      operations: [],
+      draftRequests: [],
+      visualAssets: [],
+      rawMarkdownPath: 'docs/agent-system/MARKETING.md',
+      approvalsPath: 'docs/agent-system/manni-approval-state.json',
+    };
+    const withRequest = {
+      ...baseState,
+      draftRequests: [{
+        id: 'MRQ-1',
+        title: 'Booking Push Berlin',
+        channels: ['Instagram', 'Facebook'],
+        objective: 'Mehr Booking-Anfragen',
+        constraints: 'Nur organisch',
+        ownerAgent: 'Manni',
+        status: 'angefragt',
+        createdAt: '2026-05-13T10:00:00.000Z',
+      }],
+    };
+
+    const getManniCampaignStateMock = vi.fn().mockResolvedValue(baseState);
+    const createMarketingDraftRequestMock = vi.fn().mockResolvedValue(withRequest);
+
+    Object.assign(flightDeckApi, {
+      isElectron: false,
+      getState: vi.fn().mockResolvedValue({
+        settings: { workspaceRoot: 'D:\\LATEST_WORKSPACE' },
+        sets: [],
+        snapshot: null,
+        dbError: null,
+        gitStatus: { branch: 'main', dirty: false, summary: '' },
+        workspaceValid: true,
+      }),
+      listTable: vi.fn().mockResolvedValue([]),
+      getManniCampaignState: getManniCampaignStateMock,
+      createMarketingDraftRequest: createMarketingDraftRequestMock,
+      updateManniOperationApproval: vi.fn(),
+    });
+
+    render(<DesktopApp />);
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+    fireEvent.click(screen.getByRole('button', { name: /Marketing Manager/i }));
+    await screen.findByRole('heading', { name: 'Marketing Manager' });
+
+    fireEvent.change(screen.getByPlaceholderText(/Kampagne Booking Push/i), { target: { value: 'Booking Push Berlin' } });
+    fireEvent.change(screen.getByPlaceholderText(/Welche Wirkung soll der Entwurf erzielen/i), { target: { value: 'Mehr Booking-Anfragen' } });
+    fireEvent.change(screen.getByPlaceholderText(/Budget, Tonalitaet, No-Gos/i), { target: { value: 'Nur organisch' } });
+    fireEvent.click(screen.getByRole('button', { name: /Unteragentenauftrag speichern/i }));
+
+    await waitFor(() => expect(createMarketingDraftRequestMock).toHaveBeenCalledWith({
+      workspaceRoot: 'D:\\LATEST_WORKSPACE',
+      title: 'Booking Push Berlin',
+      objective: 'Mehr Booking-Anfragen',
+      constraints: 'Nur organisch',
+      ownerAgent: 'Manni',
+      channels: ['Instagram', 'Facebook'],
+    }));
+    await screen.findByText('Booking Push Berlin');
+  }, 30000);
 });

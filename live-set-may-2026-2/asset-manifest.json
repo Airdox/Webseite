@@ -1,0 +1,36 @@
+{
+  "source_audio": {
+    "filename": "recording_2026_05_07-2.mp3",
+    "expected_endpoint": "https://airdox.info/api/audio/recording_2026_05_07-2.mp3",
+    "start_time": "00:17:58",
+    "track": "Rene Bourgeois - Face2Face With My Demon (Original Mix)",
+    "source_of_truth": "website_player_time"
+  },
+  "exports": {
+    "reels": [
+      "airdox-live-set-may-2026-2-master-59s.mp4",
+      "airdox-live-set-may-2026-2-hook-15s.mp4",
+      "airdox-live-set-may-2026-2-drop-30s.mp4",
+      "airdox-live-set-may-2026-2-extended-3min.mp4"
+    ],
+    "covers": [
+      "cover-main.png",
+      "cover-start-1758.png"
+    ],
+    "stories": [
+      "story-01-new-transmission.png",
+      "story-02-start-1758.mp4",
+      "story-03-stream-full-set.png",
+      "story-04-booking-push.png"
+    ]
+  },
+  "preferred_existing_repo_assets": {
+    "video": "docs/agent-system/manni-reel-output/airdox-cd-webstyle-online-set-1758-reel.mp4",
+    "preview": "docs/agent-system/manni-reel-output/airdox-cd-webstyle-online-set-1758-reel-preview.png",
+    "extended_reference": "docs/agent-system/manni-reel-output/airdox-cd-webstyle-online-set-1758-90s-reel.mp4"
+  },
+  "suggested_repo_paths": {
+    "campaign_docs": "chatgpt-campaign/live-set-may-2026-2/",
+    "final_assets": "public/campaign/live-set-may-2026-2/"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "core": [
+    "#Airdox",
+    "#AirdoxBLN",
+    "#BerlinDJ",
+    "#UndergroundTechno",
+    "#TechnoSet",
+    "#ElectronicMusic",
+    "#DJSet",
+    "#NeonWave",
+    "#DarkNeon",
+    "#ClubSound"
+  ],
+  "tiktok": [
+    "#Airdox",
+    "#Techno",
+    "#BerlinTechno",
+    "#DJSet",
+    "#UndergroundTechno",
+    "#ElectronicMusic",
+    "#NeonWave",
+    "#RaveSound",
+    "#ClubEnergy",
+    "#NewSet"
+  ],
+  "instagram": [
+    "#Airdox",
+    "#AirdoxBLN",
+    "#BerlinDJ",
+    "#ElectronicArtist",
+    "#MusicPromo",
+    "#DJLife",
+    "#ClubCulture",
+    "#DarkClub",
+    "#NeonMusic",
+    "#TechnoReel"
+  ],
+  "booking": [
+    "#DJBooking",
+    "#EventDJ",
+    "#ClubDJ",
+    "#BerlinEvents",
+    "#PrivateEventDJ",
+    "#BookADJ",
+    "#EventMusic"
+  ]
+}

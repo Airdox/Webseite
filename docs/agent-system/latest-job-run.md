@@ -1,20 +1,21 @@
 # AIRDOX Agent Job Run
 
-Generated: 2026-05-13T04:47:48.354Z
-Event: pr_campaign_request
-Status: external_live
+Generated: 2026-05-13T05:13:05.728Z
+Event: manual_publish_request
+Status: approved
 
 ## Summary
 
-- Selected jobs: 1
+- Selected jobs: 2
 - Executed jobs: 0
 - Manual jobs: 1
-- Skipped jobs: 0
+- Skipped jobs: 1
 - Failed jobs: 0
 
 ## Jobs
 
 | Job | Agent | Result | Detail |
 | --- | --- | --- | --- |
-| pr-campaign-live-publish | Manni | MANUAL | After explicit personal user confirmation is logged, execute the approved PR campaign exactly as previewed: publish/send only approved copy and assets, record platform/channel, timestamp, URL or campaign ID, and first KPI checkpoint in DECISION_LOG. |
+| pr-campaign-live-publish | Manni | SKIPPED | Personal user approval required before live/external output. |
+| pr-social-reach-ops-execute | Manni | MANUAL | After explicit personal user confirmation is logged, execute or commission only the approved operations exactly as previewed. Allowed operations include posting approved Instagram/Facebook Reels or Stories, publishing approved Shorts/TikTok variants, replying/commenting with approved copy, sending approved collab/tag/repost requests, placing approved community posts, starting approved small boost tests, or activating approved newsletter/website bridges. Record platform, action type, timestamp, URL or campaign ID, asset IDs, spend, first KPI checkpoint, and any platform response in DECISION_LOG. |
 

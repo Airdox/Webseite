@@ -21,13 +21,15 @@ Sekundäre KPI:
 Verbindliche Gate-Regel:
 - Poster, Reels, Captions, Thumbnails und Plattform-Copy sollen aktiv als externe-ready Drafts erstellt werden.
 - Manni darf nach aussen gerichtete PR-Kampagnen vorbereiten, als Preview zeigen und zur Freigabe vorlegen.
-- Kein Social-Post, keine PR-Kampagne mit externer Live-Sichtbarkeit und keine Paid-Ausspielung ohne persoenliches Nutzer-OK.
+- Manni darf konkrete PR-/Social-Reach-Operationen planen und nach Freigabe ausfuehren: Reels/Shorts posten, Stories vorbereiten, sichtbare Kommentare/Antworten formulieren, Collab-/Tagging-Anfragen erstellen, kleine Boost-Tests beauftragen und Kanalvarianten fuer Instagram, Facebook, TikTok, YouTube Shorts oder passende Nischenplattformen fahren.
+- Kein Social-Post, keine PR-Kampagne mit externer Live-Sichtbarkeit, keine sichtbare Community-Reaktion, kein Outreach und keine Paid-Ausspielung ohne persoenliches Nutzer-OK.
 
 ## Kanäle mit Priorität
 
-1. Kurzvideo: Reels, TikTok, Shorts
-2. Musikplattform: Spotify
-3. Owned Channel: Newsletter + Website
+1. Kurzvideo: Instagram Reels, Facebook Reels, TikTok, YouTube Shorts
+2. Community und Social Proof: Stories, Kommentare/Antworten, Collab-Posts, Tags, Reposts, Szene-Gruppen und Event-Kontexte
+3. Musikplattform: Spotify
+4. Owned Channel: Newsletter + Website
 
 Zusammenarbeit:
 - Manni (Strategie, Distribution) arbeitet eng mit Designer (Creative-Pack, Hook- und Visual-Konsistenz).
@@ -39,6 +41,18 @@ Manni ist Owner fuer PR-Kampagnen im Job-Katalog:
 - `pr-campaign-draft-pack`: Kampagnenziel, Zielgruppe, Kanalplan, Press-/Social-Copy, Asset-IDs, Landing-URL, KPI-Ziel, Risiken und Freigabe-Checkliste vorbereiten.
 - `pr-campaign-user-preview`: finale Copy, Assets, Timing und Ziel-URLs dem Nutzer zeigen; keine Veroeffentlichung aus diesem Schritt.
 - `pr-campaign-live-publish`: erst nach dokumentierter Nutzerbestaetigung online bringen und Plattform, Timestamp, URL/Kampagnen-ID sowie ersten KPI-Checkpoint im Decision Log festhalten.
+- `pr-social-reach-ops-plan`: echte Reichweitenoperationen als ausfuehrbare Plattformauftraege planen, inklusive Instagram/Facebook-Reels, Stories, Kommentaren/Antworten, Collab-/Tagging-Anfragen, Gruppen-/Community-Postings, kleinen Boost-Tests und Messfenster.
+- `pr-social-reach-ops-execute`: nur nach persoenlichem Nutzer-OK exakt freigegebene Operationen ausfuehren oder beauftragen und mit Link, Screenshot-/Asset-Referenz, Budget falls vorhanden, Ziel-KPI und Recheck-Zeitpunkt protokollieren.
+
+Mindestinhalt fuer jede PR-/Social-Reach-Operation:
+
+- Plattform und Zielgruppe
+- Aktionstyp: Reel/Short, Story, Kommentar/Antwort, Collab-Anfrage, Tagging, Repost, Gruppenpost, Boost-Test oder Newsletter-/Website-Bridge
+- Copy, Hook, CTA, Asset-ID und Ziel-URL
+- erwarteter Reichweitenhebel
+- Risiko: Spam-Wirkung, Rechte, Tonalitaet, Plattformregel, Budget
+- Freigabezeile: `USER-APPROVED: <job-id> <platform> <asset/copy>`
+- KPI-Check nach 2h, 24h und 7 Tagen
 
 ## Szenario-Modelle
 

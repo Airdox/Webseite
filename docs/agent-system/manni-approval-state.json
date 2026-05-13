@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "proposalSource": "D:\\webseeite-main\\docs\\agent-system\\MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md",
+  "createdAt": "2026-05-13T10:48:45.630Z",
+  "updatedAt": "2026-05-13T15:18:04.981Z",
+  "operations": {
+    "OPS-IG-01": {
+      "status": "approved",
+      "notes": "",
+      "updatedAt": "2026-05-13T15:18:04.980Z",
+      "decisionAt": "2026-05-13T15:18:04.980Z",
+      "decidedBy": ""
+    },
+    "OPS-FB-01": {
+      "status": "pending",
+      "notes": "",
+      "updatedAt": "2026-05-13T10:49:33.037Z",
+      "decisionAt": "",
+      "decidedBy": ""
+    },
+    "OPS-IG-02": {
+      "status": "pending",
+      "notes": "",
+      "updatedAt": "2026-05-13T10:49:33.037Z",
+      "decisionAt": "",
+      "decidedBy": ""
+    },
+    "OPS-FB-02": {
+      "status": "pending",
+      "notes": "",
+      "updatedAt": "2026-05-13T10:49:33.037Z",
+      "decisionAt": "",
+      "decidedBy": ""
+    },
+    "OPS-COLL-01": {
+      "status": "pending",
+      "notes": "",
+      "updatedAt": "2026-05-13T10:49:33.037Z",
+      "decisionAt": "",
+      "decidedBy": ""
+    },
+    "OPS-BOOST-01": {
+      "status": "pending",
+      "notes": "",
+      "updatedAt": "2026-05-13T10:49:33.037Z",
+      "decisionAt": "",
+      "decidedBy": ""
+    }
+  }
+}

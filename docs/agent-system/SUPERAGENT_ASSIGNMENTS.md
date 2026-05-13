@@ -25,8 +25,8 @@ Informationspflicht:
 | Webbie | Website, UX, SEO, Performance | UI-Regression, SEO-Drift, langsame Core Web Vitals, neue Landing-Anforderung | Analyse, Vorschlag, Testplan | Merge, Deploy, groessere Strukturumbauten |
 | Winnie | Windows Tool / Flight Deck | Import/Publish-Probleme, Crash-Hinweise, Pipeline-Fehler, neue Desktop-Funktion | Diagnose, Testlauf, Patch-Vorschlag | Produktive Pipeline-Aenderung, Release-Build, sensitive IPC-Aenderung |
 | Guardian | QA und Risiko | fehlgeschlagene Tests, Lint-Fehler, Security-Risiko, Inkonsistenz | Findings, Gate-Block, Risikoeinschaetzung | Freigabe von Ausnahmen/Reduktion von Pflichtgates |
-| Manni | Promotion und Branding | Conversion-Drop, neue Kampagne, EPK-Luecke, Tracking-Unklarheit | Hypothesen, Content-Plan, Messplan | Produktive Kampagnen-/Tracking-Umschaltung mit Technikfolge |
-| Designer | Visual Design und Creative Assets | schwache Hook-Retention, hohe Creative-Fatigue, inkonsistentes Branding | Creative-Pack, Design-Hypothesen, Varianten | finale Social-Live-Assets mit Nutzer-OK |
+| Manni | Promotion, Branding und PR-Reach-Operations | Conversion-Drop, neue Kampagne, EPK-Luecke, Tracking-Unklarheit, Social-Reichweitenchance | Hypothesen, Content-Plan, Messplan, PR-/Social-Operations-Plan fuer Instagram, Facebook und passende weitere Plattformen | Produktive Kampagnen-/Tracking-Umschaltung, Social-Live-Ausspielung, Community-Reaktionen, Outreach oder Paid-Test mit Nutzer-OK |
+| Designer | Corporate Design, Visual Design, Creative Assets und Vorlagen-System | schwache Hook-Retention, hohe Creative-Fatigue, inkonsistentes Branding, Manni-Reel-Output bereit, wiederholbarer Asset-Bedarf | Creative-Pack, Design-Hypothesen, CD-Review, website-konforme Reel-/Story-Varianten, wiederverwendbare Vorlagen fuer andere Agenten | finale Social-Live-Assets mit Nutzer-OK, verbindliche Template-Freigabe fuer Agenten |
 | Mentor | Lernsystem und Wissen | wiederholte Fehler, Wissensluecke, veraltete Doku | Wiki-Update, Lernschleife, Runbook-Entwurf | verbindliche Prozessaenderung fuer alle Agenten |
 | Refactor | Verschlankung/Architektur | hohe Komplexitaet, Dupplikate, Wartungsbremsen, Performance-Schuld | Refactor-Plan, Impact-Analyse, PoC | breite Umstrukturierung, moduluebergreifende Umbauten |
 | Repository | Branching, GitHub, Releases | Branch-Konflikte, chaotische Commits, Release-Druck, Strukturdrift | Monitoring, Bereinigungsvorschlag, Policy-Check | Merge-Freigabe, Branch-Regel-Anpassung, Release-Schaltung |
@@ -56,9 +56,12 @@ Eine Aenderung gilt als gravierend, wenn mindestens einer dieser Punkte zutrifft
 ## Pflichtfluss fuer Social-Live-Ausspielung
 
 1. Manni + Designer erzeugen Queue und Creative-Pack.
-2. Vor externer Ausspielung ist persoenliches Nutzer-OK Pflicht.
-3. Job mit `outputVisibility: external_live` bleibt ohne Nutzer-OK blockiert.
-4. Freigabe wird im Decision Log dokumentiert.
+2. Designer prueft jeden Manni-Reel-Output gegen das AIRDOX Corporate Design und ueberarbeitet ihn so, dass er mit Website, EPK und Social-Auftritt harmoniert.
+3. Designer leitet aus wiederkehrenden Assets verbindliche Vorlagen ab, damit Manni, Webbie, Mentor und andere Agenten spaeter CD-konform weiterarbeiten koennen.
+4. Manni plant konkrete PR-/Social-Reach-Operationen: Reels/Shorts, Stories, Kommentare/Antworten, Collab- oder Tagging-Anfragen, kleine Boost-Tests und Plattformvarianten fuer Instagram, Facebook, TikTok, YouTube Shorts oder passende Nischenkanaele.
+5. Vor externer Ausspielung, Antwort, Outreach, Boosting oder anderer sichtbarer Plattformaktion ist persoenliches Nutzer-OK Pflicht.
+6. Job mit `outputVisibility: external_live` bleibt ohne Nutzer-OK blockiert.
+7. Freigabe, Plattform, Copy, Asset-ID, Zeitpunkt, Ziel-KPI und erster Messzeitpunkt werden im Decision Log dokumentiert.
 
 ## Dokumentationspflicht
 
