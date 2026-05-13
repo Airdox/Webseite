@@ -66,6 +66,7 @@ airdox-mobile/
 # Playwright
 playwright-report/
 test-results/
+output/playwright/
 
 # Local temporary debug artifacts
 tmp-*
