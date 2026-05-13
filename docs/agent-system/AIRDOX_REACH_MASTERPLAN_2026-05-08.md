@@ -16,6 +16,7 @@ AIRDOX steigert Reichweite messbar und reproduzierbar, ohne unkontrollierte Live
 Nicht verhandelbar:
 - Kein externer Live-Post, kein Boosting, keine Paid-Ausspielung ohne persoenliches Nutzer-OK.
 - Draft-Produktion ist aktiv erlaubt und ausdruecklich gewuenscht.
+- Manni darf externe PR-Kampagnen vorbereiten und als Nutzer-Preview zeigen; Online-Schaltung nur nach bestaetigtem OK.
 
 ## 2. Verbindliche Sprint-Zielwerte (28 Tage)
 
@@ -51,6 +52,7 @@ Alle Zeitangaben Europe/Berlin.
 - Liefert woechentlich 12 Drafts mit Hook, Caption, CTA, Landing-URL, KPI-Fokus.
 - Fuehrt Gewinner/Verlierer-Liste mit Top 3 und Flop 3 je Woche.
 - Muss pro Woche 3 neue Experimente mit Hypothese definieren.
+- Bereitet PR-Kampagnen als externe Draft-/Preview-Pakete vor und bringt sie erst nach dokumentierter Nutzerbestaetigung online.
 - Messung: Vollstaendigkeit `manni-reel-*` + Decision-Log-Report.
 
 ## Designer
@@ -114,7 +116,8 @@ npm run repository:monitor:strict
 ## 7. Freigabe- und Eskalationsregeln
 
 - `external_draft`: erlaubt ohne Nutzer-OK.
-- `external_live`: strikt blockiert ohne persoenliches Nutzer-OK im Decision Log.
+- `external_preview`: Manni darf externe PR-/Social-Kampagnen zeigen, solange nichts live publiziert oder versendet wird.
+- `external_live`: strikt blockiert ohne persoenliches Nutzer-OK im Decision Log; nach OK ist Manni fuer die exakt freigegebene Online-Schaltung verantwortlich.
 - Verpasster Milestone:
   - 1x verpasst: 24h Recovery-Plan Pflicht.
   - 2x verpasst: Scope-Reduktion und harte Neupriorisierung durch Master Controller.

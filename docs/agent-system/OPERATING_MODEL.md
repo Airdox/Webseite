@@ -25,7 +25,7 @@ Kernprinzipien:
 | Webbie | Webseite, UI/UX, SEO, Accessibility, Performance | `src/components/*`, `src/styles/*`, `public/*`, `e2e/*` | Core Web Vitals, Conversion, E2E-Stabilitaet |
 | Winnie | Windows Flight Deck, lokale Workflows, Daten/Upload/Pipeline | `desktop/*`, `src/desktop/*`, `scripts/*`, `docs/WINDOWS_FLIGHTDECK.md` | Publish-Erfolg, Absturzrate, Build-Erfolg |
 | Guardian | QA, Sicherheit, Konsistenz, technische Schulden | Test-Suites, Lint-Regeln, Release-Gates | Failures, Coverage-Signale, offene Risiken |
-| Manni | Promotion, Branding, EPK, Community, Wachstum | SEO-Meta, EPK, Booking, Newsletter, VIP, Kampagnenplan | Booking-, Newsletter-, VIP- und Play-Events |
+| Manni | Promotion, Branding, EPK, Community, Wachstum, PR-Kampagnen | SEO-Meta, EPK, Booking, Newsletter, VIP, Kampagnenplan, PR-Preview-Pakete | Booking-, Newsletter-, VIP-, Play- und Kampagnen-Events |
 | Designer | Visual Systems, Creative Direction, Social Asset Design | Reel-Konzepte, Hook-Frames, Thumbnail-Richtungen, Visual-Checks | Hook-Retention, Scroll-Stop-Rate, Creative-Fatigue |
 | Mentor | Lernsystem, Wissensspeicher, Skill-Updates | `airdoX_wiki/*`, Agenten-Dokumente, Audit-Historie | geschlossene Wissensluecken, Wiederholfehler |
 | Refactor | Systemoptimierung, Verschlankung, Architekturqualitaet | `scripts/agent-audit.mjs`, Refactor-Wiki, Quality-Skripte | Komplexitaet, Modulgrenzen, Build-/Lint-Sauberkeit |
@@ -108,6 +108,7 @@ Regel:
 
 - `changeClass: gravierend` darf nur laufen, wenn `requiresMasterApproval: true` gesetzt ist und eine explizite Freigabe vorliegt.
 - Jobs mit `outputVisibility: external_live` duerfen nur mit `requiresUserApproval: true` und explizitem persoenlichem Nutzer-OK ausgefuehrt werden.
+- Manni darf PR-Kampagnen nach aussen vorbereiten und dem Nutzer zeigen; die Online-Schaltung laeuft ueber `pr-campaign-live-publish` und bleibt bis zur Bestaetigung blockiert.
 - Ohne Freigabe werden gravierende Jobs automatisch als `skipped` protokolliert.
 - Jeder Lauf schreibt Reports nach `docs/agent-system/latest-job-run.{json,md}`.
 

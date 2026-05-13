@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-08T08:20:04.463Z",
+  "generatedAt": "2026-05-13T04:14:24.996Z",
   "agent": "Manni",
   "scenario": "B",
   "scenarioLabel": "Collab- und Creator-Leverage",
@@ -7,11 +7,271 @@
   "itemCount": 12,
   "queue": [
     {
+      "id": "reel-recording-2026-05-07-2-00-00-00-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-13T04:14:24.996Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
+      "priority": 1,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_07-2",
+      "sourceSetTitle": "LIVE SET MAY 2026 #2",
+      "sourceTrack": "TSVI - Music Is Moving (Original Mix)",
+      "sourceTimestamp": "00:00:00",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_07-2",
+      "hook": "Warte auf den Drop bei 00:00",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Markiere den Creator oder DJ, der bei diesem Einstieg mitziehen soll.",
+      "hashtags": [
+        "#techno",
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
+      ],
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Warte auf den Drop bei 00:00. TSVI setzt den ersten Move, der Clip bleibt roh und direkt. Wer wuerde dazu ein Collab-Set bauen?",
+      "experiment": {
+        "hypothesis": "drop-moment Hook aus LIVE SET MAY 2026 #2 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-05-20"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Warte auf den Drop bei 00:00",
+        "firstFrameDirection": "Schwarzer 9:16-Start mit Deck/Waveform-Close-up, roter Timestamp-Pin auf 00:00.",
+        "styleVariant": "raw_drop_marker",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Hook-Text in oberes Mittel-Drittel, max. 2 Zeilen; Timestamp-Pin links der Waveform, keine wichtigen Details unten rechts wegen Reels/TikTok-UI.",
+        "rawAssetProofNeeds": "12-15s Export ab Set-Start, sichtbare Waveform oder Deck-Screen, 1 Still bei 00:00 fuer Thumbnail, Landing-URL und Audio-/Trackname gegen Set-Metadaten pruefen."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-05-07-2-00-01-53-transition-breakdown",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-13T04:14:24.996Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
+      "priority": 2,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_07-2",
+      "sourceSetTitle": "LIVE SET MAY 2026 #2",
+      "sourceTrack": "Saint Amour - Smoke On The Water (Original Mix)",
+      "sourceTimestamp": "00:01:53",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_07-2",
+      "hook": "So baue ich den Uebergang bei 01:53",
+      "concept": "Split-Screen: Deck A / Deck B plus kurze On-Screen-Erklaerung.",
+      "cta": "Markiere jemanden, der solche Uebergaenge im Collab-Set lesen kann.",
+      "hashtags": [
+        "#techno",
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
+      ],
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Der Wechsel bei 01:53 ist der Moment fuer Creator, die gern sehen, wie ein Set gebaut wird. Saint Amour rein, Energie halten, sauber raus.",
+      "experiment": {
+        "hypothesis": "transition-breakdown Hook aus LIVE SET MAY 2026 #2 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-05-20"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Uebergang bei 01:53",
+        "firstFrameDirection": "Split-Screen Deck A/Deck B mit kleinem Pfeil zwischen den Wellenformen.",
+        "styleVariant": "deck_split_screen",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Split vertikal 50/50 halten; Hook oben mittig, Pfeil und Beatmarker im zentralen sicheren Bereich, keine Labels unterhalb der unteren 18 Prozent.",
+        "rawAssetProofNeeds": "18-22s Clip mit 6s vor und 12s nach 01:53, Deck-A/B-Sicht oder rekonstruierte Waveform, kurzer Proof-Still des Trackwechsels, Landing-URL pruefen, keine fremden UI-/Accountdaten im Bild."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-05-07-2-00-04-57-crowd-energy",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-13T04:14:24.996Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
+      "priority": 3,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_07-2",
+      "sourceSetTitle": "LIVE SET MAY 2026 #2",
+      "sourceTrack": "TSVI - Music Is Moving (Original Mix)",
+      "sourceTimestamp": "00:04:57",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_07-2",
+      "hook": "Dieser Moment killt den Floor bei 04:57",
+      "concept": "POV-Cut mit Crowd-Reaction und schneller Wiederholung.",
+      "cta": "Teile den Clip mit der Person, die diesen Moment im Raum hoeren muss.",
+      "hashtags": [
+        "#techno",
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
+      ],
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Bei 04:57 kippt das Set vom Aufbau in Floor-Energie. Wenn du den Moment fuehlst, schick ihn an jemanden fuer ein gemeinsames Set.",
+      "experiment": {
+        "hypothesis": "crowd-energy Hook aus LIVE SET MAY 2026 #2 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-05-20"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Floor-Moment 04:57",
+        "firstFrameDirection": "Dunkler Crowd-/Floor-Frame oder POV-Deck-Shot mit Bewegungslinien.",
+        "styleVariant": "floor_energy_loop",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Main-Text links oben mit hoher Kontrastflaeche; Motion/Reaction in der Bildmitte frei lassen; CTA nicht im unteren Drittel platzieren.",
+        "rawAssetProofNeeds": "10-14s Loop um 04:57 mit klar erkennbarem Energie-Wechsel, optional Crowd-Reaction nur ohne identifizierbare Gesichter oder mit Unkenntlichmachung, Thumbnail-Still, Track-/Timestamp-Proof aus Setliste."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-05-07-2-00-05-21-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-05-13T04:14:24.996Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
+      "priority": 4,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_07-2",
+      "sourceSetTitle": "LIVE SET MAY 2026 #2",
+      "sourceTrack": "Shermanology - Girl On The Beat (Extended Mix)",
+      "sourceTimestamp": "00:05:21",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_07-2",
+      "hook": "Warte auf den Drop bei 05:21",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Markiere den Act, der auf diesen Drop antworten soll.",
+      "hashtags": [
+        "#techno",
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
+      ],
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Noch 3 Sekunden bis der Drop bei 05:21 sitzt. Shermanology liefert den Push, der als Collab-Teaser funktionieren kann.",
+      "experiment": {
+        "hypothesis": "drop-moment Hook aus LIVE SET MAY 2026 #2 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-05-20"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Noch 3 Sekunden bis Drop",
+        "firstFrameDirection": "Enger Waveform-Zoom auf den Peak kurz vor 05:21.",
+        "styleVariant": "raw_drop_marker",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Countdown gross im oberen Drittel, Track-Info klein links mittig, Drop-Marker zentral; keine Copy am rechten Rand wegen Share-/Like-Spalte.",
+        "rawAssetProofNeeds": "15s Export mit 5s Build-up und Drop-Aufloesung, separater Thumbnail-Still auf Waveform-Peak, Audiopegel pruefen, Landing-URL und Trackname validieren."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
       "id": "reel-recording-2026-05-07-00-00-00-drop-moment",
       "owner": "Manni",
       "status": "planned",
       "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
       "scenario": "B",
       "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 1,
@@ -74,7 +334,7 @@
       "owner": "Manni",
       "status": "planned",
       "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
       "scenario": "B",
       "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 2,
@@ -137,7 +397,7 @@
       "owner": "Manni",
       "status": "planned",
       "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
       "scenario": "B",
       "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 3,
@@ -200,7 +460,7 @@
       "owner": "Manni",
       "status": "planned",
       "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
       "scenario": "B",
       "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 4,
@@ -263,7 +523,7 @@
       "owner": "Manni",
       "status": "planned",
       "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
       "scenario": "B",
       "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 1,
@@ -326,7 +586,7 @@
       "owner": "Manni",
       "status": "planned",
       "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
       "scenario": "B",
       "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 2,
@@ -389,7 +649,7 @@
       "owner": "Manni",
       "status": "planned",
       "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
       "scenario": "B",
       "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 3,
@@ -452,7 +712,7 @@
       "owner": "Manni",
       "status": "planned",
       "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-13T04:14:24.996Z",
       "scenario": "B",
       "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 4,
@@ -499,258 +759,6 @@
       },
       "creativePack": {
         "firstFrameText": "Warte auf den Drop bei 07:23",
-        "styleVariant": "raw_drop_marker",
-        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
-        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
-      },
-      "reporting": {
-        "postingStatus": "planned",
-        "resultStatus": "pending",
-        "winnerSignal": "",
-        "learning": ""
-      }
-    },
-    {
-      "id": "reel-recording-2026-05-02-rauchst-du-raus-00-00-00-drop-moment",
-      "owner": "Manni",
-      "status": "planned",
-      "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
-      "scenario": "B",
-      "scenarioLabel": "Collab- und Creator-Leverage",
-      "priority": 1,
-      "platforms": [
-        "instagram_reels",
-        "tiktok",
-        "youtube_shorts"
-      ],
-      "sourceSetId": "recording_2026_05_02_rauchst_du_raus",
-      "sourceSetTitle": "RAUCHST DU RAUS",
-      "sourceTrack": "Tanith - Triage (Shifting Bodies) (Original Mix)",
-      "sourceTimestamp": "00:00:00",
-      "landingUrl": "https://airdox.info/#set-recording_2026_05_02_rauchst_du_raus",
-      "hook": "Warte auf den Drop bei 00:00",
-      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
-      "cta": "Markiere jemanden fuer ein Collab-Set.",
-      "hashtags": [
-        "#techno",
-        "#collab",
-        "#creator",
-        "#berlinnightlife",
-        "#djreel"
-      ],
-      "kpiFocus": "profile_visits_and_follows",
-      "captionTemplate": "Warte auf den Drop bei 00:00. Tanith - Triage (Shifting Bodies) (Original Mix). Markiere jemanden fuer ein Collab-Set.",
-      "experiment": {
-        "hypothesis": "drop-moment Hook aus RAUCHST DU RAUS steigert Completion Rate und Shares.",
-        "primaryMetric": "completion_rate",
-        "secondaryMetric": "shares",
-        "reportDue": "2026-05-15"
-      },
-      "approval": {
-        "visibility": "external_draft",
-        "creationAllowed": true,
-        "requiresUserApprovalForPublish": true,
-        "status": "draft_allowed_publish_pending_user_ok"
-      },
-      "actionPlan": {
-        "owner": "Manni",
-        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
-        "handoffTo": "Designer",
-        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
-        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
-      },
-      "creativePack": {
-        "firstFrameText": "Warte auf den Drop bei 00:00",
-        "styleVariant": "raw_drop_marker",
-        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
-        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
-      },
-      "reporting": {
-        "postingStatus": "planned",
-        "resultStatus": "pending",
-        "winnerSignal": "",
-        "learning": ""
-      }
-    },
-    {
-      "id": "reel-recording-2026-05-02-rauchst-du-raus-00-00-15-transition-breakdown",
-      "owner": "Manni",
-      "status": "planned",
-      "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
-      "scenario": "B",
-      "scenarioLabel": "Collab- und Creator-Leverage",
-      "priority": 2,
-      "platforms": [
-        "instagram_reels",
-        "tiktok",
-        "youtube_shorts"
-      ],
-      "sourceSetId": "recording_2026_05_02_rauchst_du_raus",
-      "sourceSetTitle": "RAUCHST DU RAUS",
-      "sourceTrack": "Rene Bourgeois, Elke Brauweiler - Je Danse feat. Elke Brauweiler (Dan Caster & Rene Bougeois Club Mix)",
-      "sourceTimestamp": "00:00:15",
-      "landingUrl": "https://airdox.info/#set-recording_2026_05_02_rauchst_du_raus",
-      "hook": "So baue ich den Uebergang bei 00:15",
-      "concept": "Split-Screen: Deck A / Deck B plus kurze On-Screen-Erklaerung.",
-      "cta": "Markiere jemanden fuer ein Collab-Set.",
-      "hashtags": [
-        "#techno",
-        "#collab",
-        "#creator",
-        "#berlinnightlife",
-        "#djreel"
-      ],
-      "kpiFocus": "profile_visits_and_follows",
-      "captionTemplate": "So baue ich den Uebergang bei 00:15. Rene Bourgeois, Elke Brauweiler - Je Danse feat. Elke Brauweiler (Dan Caster & Rene Bougeois Club Mix). Markiere jemanden fuer ein Collab-Set.",
-      "experiment": {
-        "hypothesis": "transition-breakdown Hook aus RAUCHST DU RAUS steigert Completion Rate und Shares.",
-        "primaryMetric": "completion_rate",
-        "secondaryMetric": "shares",
-        "reportDue": "2026-05-15"
-      },
-      "approval": {
-        "visibility": "external_draft",
-        "creationAllowed": true,
-        "requiresUserApprovalForPublish": true,
-        "status": "draft_allowed_publish_pending_user_ok"
-      },
-      "actionPlan": {
-        "owner": "Manni",
-        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
-        "handoffTo": "Designer",
-        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
-        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
-      },
-      "creativePack": {
-        "firstFrameText": "So baue ich den Uebergang bei 00:15",
-        "styleVariant": "deck_split_screen",
-        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
-        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
-      },
-      "reporting": {
-        "postingStatus": "planned",
-        "resultStatus": "pending",
-        "winnerSignal": "",
-        "learning": ""
-      }
-    },
-    {
-      "id": "reel-recording-2026-05-02-rauchst-du-raus-00-03-59-crowd-energy",
-      "owner": "Manni",
-      "status": "planned",
-      "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
-      "scenario": "B",
-      "scenarioLabel": "Collab- und Creator-Leverage",
-      "priority": 3,
-      "platforms": [
-        "instagram_reels",
-        "tiktok",
-        "youtube_shorts"
-      ],
-      "sourceSetId": "recording_2026_05_02_rauchst_du_raus",
-      "sourceSetTitle": "RAUCHST DU RAUS",
-      "sourceTrack": "Charlotte de Witte, Conduit (US) - A Prayer for the Dancefloor (feat. Conduit) (Avalon & GMS Remix)",
-      "sourceTimestamp": "00:03:59",
-      "landingUrl": "https://airdox.info/#set-recording_2026_05_02_rauchst_du_raus",
-      "hook": "Dieser Moment killt den Floor bei 03:59",
-      "concept": "POV-Cut mit Crowd-Reaction und schneller Wiederholung.",
-      "cta": "Markiere jemanden fuer ein Collab-Set.",
-      "hashtags": [
-        "#techno",
-        "#collab",
-        "#creator",
-        "#berlinnightlife",
-        "#djreel"
-      ],
-      "kpiFocus": "profile_visits_and_follows",
-      "captionTemplate": "Dieser Moment killt den Floor bei 03:59. Charlotte de Witte, Conduit (US) - A Prayer for the Dancefloor (feat. Conduit) (Avalon & GMS Remix). Markiere jemanden fuer ein Collab-Set.",
-      "experiment": {
-        "hypothesis": "crowd-energy Hook aus RAUCHST DU RAUS steigert Completion Rate und Shares.",
-        "primaryMetric": "completion_rate",
-        "secondaryMetric": "shares",
-        "reportDue": "2026-05-15"
-      },
-      "approval": {
-        "visibility": "external_draft",
-        "creationAllowed": true,
-        "requiresUserApprovalForPublish": true,
-        "status": "draft_allowed_publish_pending_user_ok"
-      },
-      "actionPlan": {
-        "owner": "Manni",
-        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
-        "handoffTo": "Designer",
-        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
-        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
-      },
-      "creativePack": {
-        "firstFrameText": "Dieser Moment killt den Floor bei 03:59",
-        "styleVariant": "floor_energy_loop",
-        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
-        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
-      },
-      "reporting": {
-        "postingStatus": "planned",
-        "resultStatus": "pending",
-        "winnerSignal": "",
-        "learning": ""
-      }
-    },
-    {
-      "id": "reel-recording-2026-05-02-rauchst-du-raus-00-07-22-drop-moment",
-      "owner": "Manni",
-      "status": "planned",
-      "createdAt": "2026-05-08T08:20:04.463Z",
-      "updatedAt": "2026-05-08T08:20:04.463Z",
-      "scenario": "B",
-      "scenarioLabel": "Collab- und Creator-Leverage",
-      "priority": 4,
-      "platforms": [
-        "instagram_reels",
-        "tiktok",
-        "youtube_shorts"
-      ],
-      "sourceSetId": "recording_2026_05_02_rauchst_du_raus",
-      "sourceSetTitle": "RAUCHST DU RAUS",
-      "sourceTrack": "White Horse - White Horse (If You Wanna Ride) (Dub)",
-      "sourceTimestamp": "00:07:22",
-      "landingUrl": "https://airdox.info/#set-recording_2026_05_02_rauchst_du_raus",
-      "hook": "Warte auf den Drop bei 07:22",
-      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
-      "cta": "Markiere jemanden fuer ein Collab-Set.",
-      "hashtags": [
-        "#techno",
-        "#collab",
-        "#creator",
-        "#berlinnightlife",
-        "#djreel"
-      ],
-      "kpiFocus": "profile_visits_and_follows",
-      "captionTemplate": "Warte auf den Drop bei 07:22. White Horse - White Horse (If You Wanna Ride) (Dub). Markiere jemanden fuer ein Collab-Set.",
-      "experiment": {
-        "hypothesis": "drop-moment Hook aus RAUCHST DU RAUS steigert Completion Rate und Shares.",
-        "primaryMetric": "completion_rate",
-        "secondaryMetric": "shares",
-        "reportDue": "2026-05-15"
-      },
-      "approval": {
-        "visibility": "external_draft",
-        "creationAllowed": true,
-        "requiresUserApprovalForPublish": true,
-        "status": "draft_allowed_publish_pending_user_ok"
-      },
-      "actionPlan": {
-        "owner": "Manni",
-        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
-        "handoffTo": "Designer",
-        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
-        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
-      },
-      "creativePack": {
-        "firstFrameText": "Warte auf den Drop bei 07:22",
         "styleVariant": "raw_drop_marker",
         "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
         "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."

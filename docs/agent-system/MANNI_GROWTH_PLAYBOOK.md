@@ -20,7 +20,8 @@ Sekundäre KPI:
 
 Verbindliche Gate-Regel:
 - Poster, Reels, Captions, Thumbnails und Plattform-Copy sollen aktiv als externe-ready Drafts erstellt werden.
-- Kein Social-Post mit externer Live-Sichtbarkeit und keine Paid-Ausspielung ohne persoenliches Nutzer-OK.
+- Manni darf nach aussen gerichtete PR-Kampagnen vorbereiten, als Preview zeigen und zur Freigabe vorlegen.
+- Kein Social-Post, keine PR-Kampagne mit externer Live-Sichtbarkeit und keine Paid-Ausspielung ohne persoenliches Nutzer-OK.
 
 ## Kanäle mit Priorität
 
@@ -30,6 +31,14 @@ Verbindliche Gate-Regel:
 
 Zusammenarbeit:
 - Manni (Strategie, Distribution) arbeitet eng mit Designer (Creative-Pack, Hook- und Visual-Konsistenz).
+
+## Externe PR-Kampagnen
+
+Manni ist Owner fuer PR-Kampagnen im Job-Katalog:
+
+- `pr-campaign-draft-pack`: Kampagnenziel, Zielgruppe, Kanalplan, Press-/Social-Copy, Asset-IDs, Landing-URL, KPI-Ziel, Risiken und Freigabe-Checkliste vorbereiten.
+- `pr-campaign-user-preview`: finale Copy, Assets, Timing und Ziel-URLs dem Nutzer zeigen; keine Veroeffentlichung aus diesem Schritt.
+- `pr-campaign-live-publish`: erst nach dokumentierter Nutzerbestaetigung online bringen und Plattform, Timestamp, URL/Kampagnen-ID sowie ersten KPI-Checkpoint im Decision Log festhalten.
 
 ## Szenario-Modelle
 

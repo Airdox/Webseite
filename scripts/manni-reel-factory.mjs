@@ -244,8 +244,9 @@ planLines.push(
   '',
   '## Approval Boundary',
   '',
-  '- Manni darf Reichweitenaktionen planen, Poster/Reels/Captions als externe-ready Drafts erstellen und KPI-Reports schreiben.',
-  '- Manni darf nichts live posten, boosten oder paid ausspielen, bis persoenliches Nutzer-OK im Decision Log steht.',
+  '- Manni darf Reichweitenaktionen planen, Poster/Reels/Captions und PR-Kampagnen als externe-ready Drafts erstellen, dem Nutzer zeigen und KPI-Reports schreiben.',
+  '- Manni darf nach dokumentiertem Nutzer-OK die exakt freigegebene Kampagne online bringen.',
+  '- Manni darf nichts live posten, boosten, versenden oder paid ausspielen, bis persoenliches Nutzer-OK im Decision Log steht.',
 );
 
 planLines.push('', '## Queue Notes', '');

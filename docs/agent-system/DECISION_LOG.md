@@ -2,6 +2,70 @@
 
 Dieses Log speichert strategische Entscheidungen des Multi-Agenten-Systems. Kurze Eintraege sind beabsichtigt: Datum, Kontext, Entscheidung, Risiko, Recheck.
 
+## 2026-05-13 - Manni darf PR-Kampagnen bis zur Freigabe fuehren
+
+Kontext:
+- Nutzerwunsch: Manni soll nach aussen agieren koennen, PR-Kampagnen vorbereiten, zeigen und nach Bestaetigung online bringen.
+- Bestehende Runner-/Validator-Regel blockiert `external_live` ohne persoenliches Nutzer-OK.
+
+Entscheidung:
+- Manni wird Owner fuer drei PR-Kampagnen-Jobs: `pr-campaign-draft-pack`, `pr-campaign-user-preview`, `pr-campaign-live-publish`.
+- Vorbereitung und Preview sind `external_draft` und ohne Live-Ausspielung erlaubt.
+- Online-Schaltung ist `external_live`, setzt `requiresUserApproval: true` und braucht `--user-approved=pr-campaign-live-publish`.
+
+Risiko:
+- Ohne dokumentierte Nutzerbestaetigung wird keine PR-Kampagne veroeffentlicht, versendet, geboostet oder paid ausgespielt.
+
+Recheck:
+- `npm run agent:jobs:validate`
+- `npm run agent:jobs:run -- --event=pr_campaign_request --status=approved --user-approved=pr-campaign-live-publish`
+
+## 2026-05-13 - social-draft-production fuer Manni Slots 1-4 ausgefuehrt
+
+Kontext:
+- Manueller Job `social-draft-production` wurde fuer Manni + Designer im bestehenden dirty Worktree ausgefuehrt.
+- Arbeitsbereich: `manni-reel-queue.json`, `manni-reel-weekly-plan.md`, `manni-reel-draft-pack.md`.
+- Es liegt kein persoenliches Nutzer-OK fuer externe Live-Ausspielung vor.
+
+Entscheidung:
+- Slots 1-4 wurden als externe Drafts konkretisiert: Hook, erstes Frame, Caption, CTA, Safe-Area-Notiz und Rohasset-/Proof-Bedarf.
+- Approval bleibt unveraendert `draft_allowed_publish_pending_user_ok`; Posting Status bleibt `planned`.
+- Keine externe Ausspielung, kein Boosting, keine Live-Markierung.
+
+Risiko:
+- Drafts sind ohne Rohasset-Export, Track-Proof und Linkcheck noch nicht produktionsfertig fuer Freigabe.
+- Echte Performance- oder Gewinneraussagen bleiben ohne externe KPI-Daten unzulaessig.
+
+Recheck:
+- Nutzerfreigabe im Decision Log vor jeder Live-Ausspielung pruefen.
+- Rohasset-/Proof-Bedarf pro Slot 1-4 vor Freigabepaket abgleichen.
+
+## 2026-05-13 - Manni Masterplan Recheck M0-M3 lokal ausgefuehrt
+
+Kontext:
+- Heutiges Datum im Sprint-Kontext: 2026-05-13.
+- M0, M1 und M2 waren nach Masterplan ueberfaellig; M3 ist als naechster Review am 2026-05-15 18:00 faellig.
+- Es gab keine persoenliche Nutzerfreigabe fuer externe Live-Ausspielung.
+
+Entscheidung:
+- Szenario-B-Reel-Queue wurde lokal neu generiert und bleibt vollstaendig intern: `draft_allowed_publish_pending_user_ok`.
+- Website-Reach-Bridge wurde auf kanonische Events aus dem Masterplan ausgerichtet: `audio_play`, `share`, `sign_up`, `generate_lead`.
+- M2-Route-Matrix und QA-Check wurden als `docs/agent-system/reach-route-matrix-2026-05-13.md` dokumentiert.
+- M3 wird mit Winner/Loser-Hypothesen vorbereitet; echte Gewinner/Verlierer werden ohne externe KPI-Quellen nicht behauptet.
+
+Risiko:
+- M0 bleibt `warn`, weil echte externe Baseline-Werte fuer Reach/Follows/Opt-ins/Booking nicht lokal belegbar sind.
+- M3 kann ohne Live-/Account-Daten nur als internes Hypothesen-Review abgeschlossen werden.
+- Repository-Monitor meldet einen dirty Worktree; aktuell sind die uncommitted Pfade durch diesen lokalen Recheck erklaerbar.
+
+Recheck:
+- `npm run manni:reels:generate -- --scenario=B --count=12`
+- `npm run lint`
+- `npm run test -- --run`
+- `npm run build`
+- `npm run agent:audit -- --strict`
+- `npm run repository:monitor:strict`
+
 ## 2026-05-08 - Fester Arbeitskalender fuer alle Agenten ausser Manni
 
 Kontext:
@@ -291,3 +355,30 @@ Recheck:
 - `npm run agent:jobs:validate -- --strict-warnings`
 - `npm run agent:audit -- --strict`
 - `npm run repository:monitor:strict`
+
+## 2026-05-13 - Source-Control Cleanup und Arbeitsstrang-Schnitt
+
+Kontext:
+- Der Nutzer beauftragte die Bereinigung der Quellcodeverwaltung.
+- Der aktuelle Branch ist `feature/repository-cleanup`.
+- Der Repository-Monitor meldet keine harten Fehler, aber weiterhin uncommitted Pfade, die vor Merge/Release erklaert werden muessen.
+
+Entscheidung:
+- Der aktuelle Arbeitsbaum wurde in vier Arbeitsstraenge geschnitten:
+  - Agent Governance
+  - Growth und Social Drafts
+  - Website Service Flow
+  - Repository Monitoring Outputs
+- Die Schnittlinien und empfohlenen Commit-Gruppen stehen in `docs/agent-system/source-control-cleanup-2026-05-13.md`.
+- `docs/agent-system/latest-repository-monitor.*` wurde als aktueller Monitoring-Snapshot neu erzeugt.
+- Keine fremden Aenderungen wurden zurueckgesetzt oder verworfen.
+
+Risiko:
+- `repository:monitor:strict` bleibt wegen uncommitted Pfaden warnend, aber nicht blockierend.
+- Vor Merge oder Release muessen die Arbeitsstraenge separat committed, verschoben oder durch Master-Controller-Entscheidung in die Dirty-Baseline uebernommen werden.
+
+Recheck:
+- `npm run repository:monitor:strict`
+- `npm run repository:monitor:write`
+- `npm run agent:jobs:validate -- --strict-warnings`
+- `git diff --check`
