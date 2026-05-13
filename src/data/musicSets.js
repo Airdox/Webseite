@@ -3,7 +3,7 @@ export const sets = [
     id: 'recording_2026_05_07-2',
     title: 'LIVE SET MAY 2026 #2',
     date: 'MAY 2026',
-    file: 'airdox strict',
+    file: 'recording_2026_05_07-2.mp3',
     cover: '/assets/airdox-vinyl.jpg',
     duration: '2:58:03',
     isNew: true,
