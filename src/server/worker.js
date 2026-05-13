@@ -398,6 +398,17 @@ router.post('/api/register', async (request, env) => {
     });
 });
 
+router.get('/api/oauth/config', async (request, env) => {
+    const providers = [];
+    if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) providers.push('google');
+    if (env.FACEBOOK_APP_ID && env.FACEBOOK_APP_SECRET) providers.push('facebook');
+
+    return new Response(JSON.stringify({ ok: true, providers }), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+});
+
 router.get('/api/oauth/start', async (request, env) => {
     const url = new URL(request.url);
     const provider = String(url.searchParams.get('provider') || '').toLowerCase();

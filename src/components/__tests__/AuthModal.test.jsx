@@ -56,18 +56,30 @@ describe('AuthModal', () => {
     beforeEach(() => {
         vi.restoreAllMocks();
         localStorage.clear();
+        vi.stubGlobal('fetch', vi.fn(async (url) => {
+            if (String(url).includes('/api/oauth/config')) {
+                return {
+                    ok: true,
+                    json: async () => ({ ok: true, providers: ['google', 'facebook'] }),
+                };
+            }
+            return {
+                ok: true,
+                json: async () => ({ ok: true, message: 'ok' }),
+            };
+        }));
     });
 
     afterEach(() => {
         vi.useRealTimers();
     });
 
-    it('opens Google OAuth popup with provider, mode and origin', () => {
+    it('opens Google OAuth popup with provider, mode and origin', async () => {
         const openSpy = vi.spyOn(window, 'open').mockReturnValue(null);
 
         render(<AuthModal isOpen onClose={vi.fn()} initialMode="register" />);
 
-        fireEvent.click(screen.getByRole('button', { name: /Weiter mit Google/i }));
+        fireEvent.click(await screen.findByRole('button', { name: /Weiter mit Google/i }));
 
         expect(openSpy).toHaveBeenCalledTimes(1);
         const [url] = openSpy.mock.calls[0];
@@ -98,9 +110,17 @@ describe('AuthModal', () => {
     });
 
     it('submits register form with captcha token', async () => {
-        const fetchSpy = vi.fn().mockResolvedValue({
-            ok: true,
-            json: async () => ({ ok: true, message: 'ok' }),
+        const fetchSpy = vi.fn(async (url) => {
+            if (String(url).includes('/api/oauth/config')) {
+                return {
+                    ok: true,
+                    json: async () => ({ ok: true, providers: ['google', 'facebook'] }),
+                };
+            }
+            return {
+                ok: true,
+                json: async () => ({ ok: true, message: 'ok' }),
+            };
         });
         vi.stubGlobal('fetch', fetchSpy);
 
@@ -124,7 +144,8 @@ describe('AuthModal', () => {
             expect(fetchSpy).toHaveBeenCalled();
         });
 
-        const [endpoint, requestInit] = fetchSpy.mock.calls[0];
+        const registerCall = fetchSpy.mock.calls.find(([endpoint]) => String(endpoint).includes('/api/register'));
+        const [endpoint, requestInit] = registerCall;
         expect(endpoint).toContain('/api/register');
         expect(JSON.parse(requestInit.body)).toMatchObject({
             username: 'tester',

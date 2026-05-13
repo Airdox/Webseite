@@ -622,7 +622,8 @@ const verifyTurnstileCaptcha = async ({ token, clientIp, env, expectedAction = '
         }
 
         const normalizedExpectedAction = String(expectedAction || '').trim();
-        if (normalizedExpectedAction) {
+        const isTurnstileTestKeyResult = payload?.metadata?.result_with_testing_key === true;
+        if (normalizedExpectedAction && !isTurnstileTestKeyResult) {
             const responseAction = String(payload?.action || '').trim();
             if (responseAction !== normalizedExpectedAction) {
                 return { ok: false, error: 'CAPTCHA verification failed' };

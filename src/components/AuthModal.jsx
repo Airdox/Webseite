@@ -60,6 +60,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
     const [success, setSuccess] = useState('');
     const [captchaStatus, setCaptchaStatus] = useState('idle');
     const [socialLoadingProvider, setSocialLoadingProvider] = useState('');
+    const [oauthProviders, setOauthProviders] = useState([]);
     const oauthPopupRef = useRef(null);
     const popupCheckIntervalRef = useRef(null);
     const oauthMessageReceivedRef = useRef(false);
@@ -116,6 +117,36 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
             document.body.style.overflow = previousOverflow;
         };
     }, [isOpen, onClose]);
+
+    useEffect(() => {
+        if (!isOpen) return undefined;
+
+        let disposed = false;
+        const controller = new AbortController();
+
+        const loadOAuthConfig = async () => {
+            try {
+                const response = await fetch(`${API_BASE}/api/oauth/config`, {
+                    method: 'GET',
+                    signal: controller.signal,
+                });
+                const data = await response.json().catch(() => ({}));
+                if (!disposed && response.ok && Array.isArray(data.providers)) {
+                    setOauthProviders(data.providers.filter((provider) => provider === 'google' || provider === 'facebook'));
+                }
+            } catch {
+                if (!disposed) setOauthProviders([]);
+            }
+        };
+
+        setOauthProviders([]);
+        loadOAuthConfig();
+
+        return () => {
+            disposed = true;
+            controller.abort();
+        };
+    }, [isOpen]);
 
     useEffect(() => {
         const onMessage = (event) => {
@@ -335,30 +366,36 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                         {mode === 'login' ? t('auth.loginSubtitle') : t('auth.registerSubtitle')}
                     </p>
 
-                    <div className="social-auth-row">
-                        <button
-                            type="button"
-                            className={`btn btn-outline auth-social-btn auth-social-btn-google ${socialLoadingProvider === 'google' ? 'is-loading' : ''}`}
-                            onClick={() => openSocialAuth('google')}
-                            aria-label={t('auth.google')}
-                            disabled={loading || Boolean(socialLoadingProvider)}
-                        >
-                            <span className="auth-social-icon-shell" aria-hidden="true">
-                                <SocialProviderIcon provider="google" />
-                            </span>
-                        </button>
-                        <button
-                            type="button"
-                            className={`btn btn-outline auth-social-btn auth-social-btn-facebook ${socialLoadingProvider === 'facebook' ? 'is-loading' : ''}`}
-                            onClick={() => openSocialAuth('facebook')}
-                            aria-label={t('auth.facebook')}
-                            disabled={loading || Boolean(socialLoadingProvider)}
-                        >
-                            <span className="auth-social-icon-shell" aria-hidden="true">
-                                <SocialProviderIcon provider="facebook" />
-                            </span>
-                        </button>
-                    </div>
+                    {oauthProviders.length > 0 && (
+                        <div className="social-auth-row">
+                            {oauthProviders.includes('google') && (
+                                <button
+                                    type="button"
+                                    className={`btn btn-outline auth-social-btn auth-social-btn-google ${socialLoadingProvider === 'google' ? 'is-loading' : ''}`}
+                                    onClick={() => openSocialAuth('google')}
+                                    aria-label={t('auth.google')}
+                                    disabled={loading || Boolean(socialLoadingProvider)}
+                                >
+                                    <span className="auth-social-icon-shell" aria-hidden="true">
+                                        <SocialProviderIcon provider="google" />
+                                    </span>
+                                </button>
+                            )}
+                            {oauthProviders.includes('facebook') && (
+                                <button
+                                    type="button"
+                                    className={`btn btn-outline auth-social-btn auth-social-btn-facebook ${socialLoadingProvider === 'facebook' ? 'is-loading' : ''}`}
+                                    onClick={() => openSocialAuth('facebook')}
+                                    aria-label={t('auth.facebook')}
+                                    disabled={loading || Boolean(socialLoadingProvider)}
+                                >
+                                    <span className="auth-social-icon-shell" aria-hidden="true">
+                                        <SocialProviderIcon provider="facebook" />
+                                    </span>
+                                </button>
+                            )}
+                        </div>
+                    )}
 
                     {error && <div className="modal-error">{error}</div>}
                     {success && <div className="modal-success">{success}</div>}
