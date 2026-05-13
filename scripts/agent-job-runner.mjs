@@ -106,7 +106,7 @@ if (!existsSync(catalogPath)) {
       continue;
     }
 
-    if (job.outputVisibility === 'external_live' && job.requiresUserApproval === true && !userApprovedJobs.has(job.id)) {
+    if (job.outputVisibility === 'external_live' && !userApprovedJobs.has(job.id)) {
       results.push({
         ...base,
         result: 'skipped',

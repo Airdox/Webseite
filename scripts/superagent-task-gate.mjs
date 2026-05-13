@@ -7,6 +7,7 @@ const eventPath = process.env.GITHUB_EVENT_PATH || '';
 const eventName = process.env.GITHUB_EVENT_NAME || '';
 
 const allowedAgents = new Set([
+  'Master Controller',
   'Webbie',
   'Winnie',
   'Guardian',

@@ -5,6 +5,7 @@ import { join } from 'node:path';
 const root = process.cwd();
 const args = new Set(process.argv.slice(2));
 const catalogPath = join(root, 'docs', 'agent-system', 'job-catalog.json');
+const packagePath = join(root, 'package.json');
 
 const allowedAgents = new Set([
   'Master Controller',
@@ -34,6 +35,8 @@ if (!existsSync(catalogPath)) {
   process.exitCode = 1;
 } else {
   let parsed = null;
+  let packageJson = null;
+
   try {
     parsed = JSON.parse(readFileSync(catalogPath, 'utf8'));
   } catch {
@@ -44,9 +47,30 @@ if (!existsSync(catalogPath)) {
     process.exitCode = 1;
   }
 
-  if (parsed) {
+  if (existsSync(packagePath)) {
+    try {
+      packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
+    } catch {
+      print([
+        'Agent Job Validator: FAIL',
+        'package.json is not valid JSON.',
+      ]);
+      process.exitCode = 1;
+    }
+  } else {
+    print([
+      'Agent Job Validator: FAIL',
+      'Missing file: package.json',
+    ]);
+    process.exitCode = 1;
+  }
+
+  if (parsed && packageJson) {
     const problems = [];
     const warnings = [];
+    const packageScripts = packageJson?.scripts && typeof packageJson.scripts === 'object'
+      ? packageJson.scripts
+      : {};
 
     if (parsed.controller !== 'Master Controller') {
       problems.push('controller must be "Master Controller".');
@@ -66,7 +90,6 @@ if (!existsSync(catalogPath)) {
       const changeClass = String(job?.changeClass || '');
       const requiresMasterApproval = job?.requiresMasterApproval === true;
       const requiresUserApproval = job?.requiresUserApproval === true;
-      const domain = String(job?.domain || '');
       const outputVisibility = String(job?.outputVisibility || '');
 
       if (!idPattern.test(id)) {
@@ -89,14 +112,16 @@ if (!existsSync(catalogPath)) {
       if (changeClass === 'gravierend' && !requiresMasterApproval) {
         problems.push(`${prefix} gravierend jobs must set requiresMasterApproval=true.`);
       }
-      if (domain === 'social_media' && outputVisibility === 'external_live' && !requiresUserApproval) {
-        problems.push(`${prefix} social_media external_live jobs must set requiresUserApproval=true.`);
+      if (outputVisibility === 'external_live' && !requiresUserApproval) {
+        problems.push(`${prefix} external_live jobs must set requiresUserApproval=true.`);
       }
 
       if (execution === 'script') {
         const script = String(job?.script || '');
         if (!script) {
           problems.push(`${prefix}.script is required for script jobs.`);
+        } else if (!Object.prototype.hasOwnProperty.call(packageScripts, script)) {
+          problems.push(`${prefix}.script "${script}" must exist in package.json scripts.`);
         }
         if (Array.isArray(job?.scriptArgs) === false) {
           problems.push(`${prefix}.scriptArgs must be an array when provided.`);

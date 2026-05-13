@@ -422,6 +422,94 @@
       ]
     },
     {
+      "id": "pr-campaign-draft-pack",
+      "title": "Prepare external PR campaign draft pack",
+      "owner": "Manni",
+      "execution": "manual",
+      "manualProtocol": "Prepare outward-facing PR campaign packages with campaign goal, audience, channel plan, press/social copy, asset IDs, landing URL, KPI target, risk notes, and exact approval checklist. Keep every item unpublished until personal user confirmation is logged.",
+      "trigger": {
+        "events": [
+          "weekly_growth_review",
+          "release_candidate",
+          "manual_background",
+          "pr_campaign_request"
+        ],
+        "statuses": [
+          "planning",
+          "weekly",
+          "drafting",
+          "pending_user_ok"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "pr_campaign",
+      "outputVisibility": "external_draft",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md",
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "docs/agent-system/manni-reel-draft-pack.md"
+      ]
+    },
+    {
+      "id": "pr-campaign-user-preview",
+      "title": "Show PR campaign for user confirmation",
+      "owner": "Manni",
+      "execution": "manual",
+      "manualProtocol": "Present the PR campaign package to the user with final channel copy, creative references, landing URLs, scheduled timing, and a clear yes/no approval request. Do not publish from this step.",
+      "trigger": {
+        "events": [
+          "manual_publish_request",
+          "pr_campaign_request",
+          "release_candidate"
+        ],
+        "statuses": [
+          "pending_user_ok",
+          "preview",
+          "ci"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "pr_campaign",
+      "outputVisibility": "external_draft",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
+      "id": "pr-campaign-live-publish",
+      "title": "Publish approved PR campaign externally",
+      "owner": "Manni",
+      "execution": "manual",
+      "manualProtocol": "After explicit personal user confirmation is logged, execute the approved PR campaign exactly as previewed: publish/send only approved copy and assets, record platform/channel, timestamp, URL or campaign ID, and first KPI checkpoint in DECISION_LOG.",
+      "trigger": {
+        "events": [
+          "manual_publish_request",
+          "pr_campaign_request",
+          "winner_detected"
+        ],
+        "statuses": [
+          "approved",
+          "scale",
+          "external_live"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "pr_campaign",
+      "outputVisibility": "external_live",
+      "requiresUserApproval": true,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
       "id": "social-live-publish-gate",
       "title": "Personal approval gate before live social posting",
       "owner": "Manni",

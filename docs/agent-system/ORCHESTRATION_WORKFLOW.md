@@ -14,9 +14,10 @@ Durchgaengiger Ablauf von Orchestrierung bis Job-Ausfuehrung mit klarer Gate-Log
    - erlaubte Agentennamen
    - Trigger-Struktur
    - Execution-Mode
+   - Script-Jobs gegen vorhandene `package.json`-Scripts
    - Approval-Pflicht fuer gravierende Jobs
 4. Ausfuehrung mit `npm run agent:jobs:run -- --event=<event> --status=<status>`.
-   Fuer Social-Live-Jobs zusaetzlich: `--user-approved=<job-id[,job-id...]>`.
+   Fuer alle Jobs mit `outputVisibility: external_live` zusaetzlich: `--user-approved=<job-id[,job-id...]>`.
 5. Runner schreibt Ergebnisberichte:
    - `docs/agent-system/latest-job-run.json`
    - `docs/agent-system/latest-job-run.md`
@@ -42,7 +43,7 @@ Inputs:
 - `event`
 - `status`
 - `approved` (kommagetrennte Freigaben fuer gravierende Job-IDs)
-- `user_approved` (kommagetrennte persoenliche Nutzer-Freigaben fuer Social-Live-Job-IDs)
+- `user_approved` (kommagetrennte persoenliche Nutzer-Freigaben fuer externe Live-Job-IDs)
 
 Der Workflow validiert zuerst den Job-Katalog und fuehrt danach genau die Jobs fuer Event/Status aus.
 
@@ -52,6 +53,11 @@ Der Workflow validiert zuerst den Job-Katalog und fuehrt danach genau die Jobs f
 - Ohne Freigabe bleiben sie im Run-Log als `skipped`.
 - Jobs mit `outputVisibility: external_draft` duerfen ohne Nutzer-OK erstellt werden, bleiben aber unveroeffentlicht.
 - Jobs mit `outputVisibility: external_live` werden ohne persoenliches Nutzer-OK als `skipped` protokolliert.
+- Manni-PR-Kampagnen laufen dreistufig: `pr-campaign-draft-pack` bereitet vor, `pr-campaign-user-preview` zeigt die Kampagne, `pr-campaign-live-publish` bringt sie erst mit `--user-approved=pr-campaign-live-publish` online.
+
+## Migration latest-*
+
+Bestehende `docs/agent-system/latest-*`-Artefakte bleiben Run-Ausgaben und duerfen von Jobs ueberschrieben werden. Neue Governance-Regeln sollten zuerst im Job-Katalog und in den Validatoren landen; danach erzeugen die Runner die aktuellen `latest-*`-Dateien neu.
 
 ## CI-Regel
 

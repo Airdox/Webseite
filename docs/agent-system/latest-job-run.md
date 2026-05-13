@@ -1,8 +1,8 @@
 # AIRDOX Agent Job Run
 
-Generated: 2026-05-02T15:00:35.324Z
-Event: manual_background
-Status: drafting
+Generated: 2026-05-13T04:47:48.354Z
+Event: pr_campaign_request
+Status: external_live
 
 ## Summary
 
@@ -16,5 +16,5 @@ Status: drafting
 
 | Job | Agent | Result | Detail |
 | --- | --- | --- | --- |
-| social-draft-production | Designer | MANUAL | Create poster, reel, caption, thumbnail, and platform-copy drafts from Manni's queue. Draft creation is allowed and encouraged; keep all assets unpublished until personal user OK is logged. |
+| pr-campaign-live-publish | Manni | MANUAL | After explicit personal user confirmation is logged, execute the approved PR campaign exactly as previewed: publish/send only approved copy and assets, record platform/channel, timestamp, URL or campaign ID, and first KPI checkpoint in DECISION_LOG. |
 
