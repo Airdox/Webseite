@@ -110,14 +110,6 @@ const buildLiveSettings = (settings = {}) => ({
   autoDeploy: true,
 });
 
-const buildPublishOnlySettings = (settings = {}) => ({
-  ...settings,
-  autoBuild: false,
-  autoDeploy: false,
-  autoCommit: false,
-  autoPush: false,
-});
-
 const createPublishLogEntry = (step, status, detail) => ({
   timestamp: new Date().toISOString(),
   step,
@@ -514,11 +506,15 @@ const DesktopApp = () => {
     setNotice({ tone, message: detail });
   };
 
+  const hasSuccessfulLogStep = (result, stepName) => (result?.logs || []).some((entry) => (
+    entry?.step === stepName && entry?.status === 'success'
+  ));
+
   const publishCurrentDraft = async () => {
     startPublishRun({
       mode: 'publish',
       label: 'Preflight',
-      detail: `Publish gestartet: ${draft.id || 'new-set'}. Workspace und Manifest werden geprueft.`,
+      detail: `Publish gestartet: ${draft.id || 'new-set'}. Workspace, Manifest und Flight-Deck-Settings werden geprueft.`,
       progress: 12,
     });
 
@@ -527,13 +523,15 @@ const DesktopApp = () => {
       updatePublishRun({
         mode: 'publish',
         label: 'Manifest',
-        detail: 'Workspace ist gueltig. Manifest wird aktualisiert, Audio-Key und Set-ID werden kollisionssicher gesetzt.',
+        detail: latestSettings?.autoDeploy
+          ? 'Workspace ist gueltig. Publish folgt deinen Settings inklusive Build, Deploy und Live-Verify.'
+          : 'Workspace ist gueltig. Manifest wird aktualisiert; Auto Deploy ist in den Settings aus.',
         progress: 38,
       });
       const result = await flightDeckApi.publishSet({
         workspaceRoot: latestSettings?.workspaceRoot,
         draft,
-        settings: buildPublishOnlySettings(latestSettings),
+        settings: latestSettings,
       });
       updatePublishRun({
         mode: 'publish',
@@ -549,10 +547,16 @@ const DesktopApp = () => {
         ...(result.logs || []),
       ]);
       setLastPublish(result);
+      const wentLive = hasSuccessfulLogStep(result, 'verify');
+      const deployedWithoutVerify = hasSuccessfulLogStep(result, 'deploy') && latestSettings?.verifyLiveAfterDeploy === false;
       finishPublishRun({
         mode: 'publish',
-        label: 'Publish abgeschlossen',
-        detail: `Set ${result?.publishedSet?.id || draft.id} wurde publiziert.`,
+        label: wentLive || deployedWithoutVerify ? 'Live abgeschlossen' : 'Publish lokal abgeschlossen',
+        detail: wentLive
+          ? `Set ${result?.publishedSet?.id || draft.id} ist live verifiziert.`
+          : deployedWithoutVerify
+            ? `Set ${result?.publishedSet?.id || draft.id} wurde deployed; Live-Verify ist deaktiviert.`
+            : `Set ${result?.publishedSet?.id || draft.id} wurde lokal publiziert. Auto Deploy ist aus, daher ist es noch nicht live.`,
       });
       await refreshState();
       await refreshTable();

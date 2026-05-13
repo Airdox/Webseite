@@ -1,6 +1,6 @@
 # AIRDOX Repository Monitor
 
-Generated: 2026-05-02T09:09:41.063Z
+Generated: 2026-05-08T09:12:46.392Z
 Agent: Repository
 Repository: D:\webseeite-main
 Branch: feature/repository-cleanup
@@ -10,8 +10,8 @@ Branch: feature/repository-cleanup
 - Checks: 6
 - Failures: 0
 - Warnings: 2
-- Uncommitted paths: 9
-- Unexpected uncommitted paths: 8
+- Uncommitted paths: 53
+- Unexpected uncommitted paths: 49
 - Baseline uncommitted paths: 80
 - Tracked generated artifacts (review): 0
 
@@ -21,21 +21,62 @@ Branch: feature/repository-cleanup
 | --- | --- | --- |
 | branch-naming | PASS | Aktueller Branch: feature/repository-cleanup |
 | required-governance-files | PASS | Gefundene Governance-Dateien: 3/3 |
-| working-tree-cleanliness-total | WARN | 9 uncommitted Pfade insgesamt. |
-| working-tree-cleanliness | WARN | 8 unerwartete uncommitted Pfade (9 gesamt, 80 baseline) |
+| working-tree-cleanliness-total | WARN | 53 uncommitted Pfade insgesamt. |
+| working-tree-cleanliness | WARN | 49 unerwartete uncommitted Pfade (53 gesamt, 80 baseline) |
 | tracked-generated-artifacts | PASS | 0 potentiell generierte Artefaktpfade sind versioniert. |
 | root-html-duplication | PASS | 0 zusaetzliche Root-HTML-Dateien erkannt. |
 
 ## Unexpected Dirty Paths
 
+- M .gitignore
+- M desktop/main/index.cjs
+- M desktop/main/services/pipeline.mjs
+- A  docs/agent-system/AIRDOX_REACH_MASTERPLAN_2026-05-08.md
 - M docs/agent-system/DECISION_LOG.md
-- M docs/agent-system/ORCHESTRATION_WORKFLOW.md
 - M docs/agent-system/SUPERAGENT_ASSIGNMENTS.md
 - M docs/agent-system/job-catalog.json
-- ?? docs/agent-system/MANNI_GROWTH_PLAYBOOK.md
-- ?? docs/agent-system/manni-reel-queue.json
-- ?? docs/agent-system/manni-reel-weekly-plan.md
-- ?? scripts/manni-reel-factory.mjs
+- M docs/agent-system/latest-audit.json
+- M docs/agent-system/latest-audit.md
+- M docs/agent-system/manni-reel-draft-pack.md
+- M docs/agent-system/manni-reel-queue.json
+- M docs/agent-system/manni-reel-weekly-plan.md
+- M scripts/generate-mixcloud-tracklists.mjs
+- M src/components/AuthModal.css
+- M src/components/AuthModal.jsx
+- M src/components/MusicSection.css
+- M src/components/SetCard.jsx
+- M src/data/musicSets.js
+- M src/desktop/DesktopApp.jsx
+- M src/desktop/__tests__/DesktopApp.test.jsx
+- M src/desktop/components/AssistantTab.jsx
+- M src/desktop/components/SetImportTab.jsx
+- M src/desktop/lib/assistantKnowledge.js
+- M src/lib/stats-logic.js
+- M src/server/worker.js
+- ?? .github/workflows/designer-visual-quality.yml
+- ?? .tmp_liveinspect/
+- ?? airdoX_wiki/webseeite-main.code-workspace
+- ?? docs/R2_BACKUP_SETUP.md
+- ?? docs/agent-system/AIRDOX_AGENT_EXECUTION_CALENDAR_2026-05-08.md
+- ?? docs/agent-system/latest-designer-visual-quality.json
+- ?? docs/agent-system/latest-designer-visual-quality.md
+- ?? docs/agent-system/proof/
+- ?? scratch/create-test-user.mjs
+- ?? scratch/live-after-authmodal.js
+- ?? scratch/live-after-deploy-en.html
+- ?? scratch/live-authmodal.js
+- ?? scratch/live-en.html
+- ?? scratch/live-main.js
+- ?? scratch/live-workersdev-en.html
+- ?? scratch/proof-captcha-visible.png
+- ?? scratch/proof-home.png
+- ?? scratch/proof-social-login.png
+- ?? scratch/verify-auth-flow.mjs
+- ?? scratch/verify-credential-login.mjs
+- ?? scripts/backup-r2.ps1
+- ?? scripts/designer-visual-quality-check.mjs
+- ?? scripts/register-r2-backup-task.ps1
+- ?? src/components/__tests__/AuthModal.test.jsx
 
 ## Dirty Baseline Paths
 
@@ -122,15 +163,59 @@ Branch: feature/repository-cleanup
 
 ## All Dirty Paths
 
+- M .gitignore
+- M desktop/main/index.cjs
+- M desktop/main/services/pipeline.mjs
+- A  docs/agent-system/AIRDOX_REACH_MASTERPLAN_2026-05-08.md
 - M docs/agent-system/DECISION_LOG.md
-- M docs/agent-system/ORCHESTRATION_WORKFLOW.md
 - M docs/agent-system/SUPERAGENT_ASSIGNMENTS.md
 - M docs/agent-system/job-catalog.json
+- M docs/agent-system/latest-audit.json
+- M docs/agent-system/latest-audit.md
+- M docs/agent-system/manni-reel-draft-pack.md
+- M docs/agent-system/manni-reel-queue.json
+- M docs/agent-system/manni-reel-weekly-plan.md
 - M package.json
-- ?? docs/agent-system/MANNI_GROWTH_PLAYBOOK.md
-- ?? docs/agent-system/manni-reel-queue.json
-- ?? docs/agent-system/manni-reel-weekly-plan.md
-- ?? scripts/manni-reel-factory.mjs
+- M public/_headers
+- M scripts/generate-mixcloud-tracklists.mjs
+- M src/components/AuthModal.css
+- M src/components/AuthModal.jsx
+- M src/components/MusicSection.css
+- M src/components/SetCard.jsx
+- M src/components/TurnstileCaptcha.jsx
+- M src/data/musicSets.js
+- M src/desktop/DesktopApp.jsx
+- M src/desktop/__tests__/DesktopApp.test.jsx
+- M src/desktop/components/AssistantTab.jsx
+- M src/desktop/components/SetImportTab.jsx
+- M src/desktop/lib/assistantKnowledge.js
+- M src/desktop/mockApi.js
+- M src/lib/stats-logic.js
+- M src/server/worker.js
+- ?? .github/workflows/designer-visual-quality.yml
+- ?? .tmp_liveinspect/
+- ?? airdoX_wiki/webseeite-main.code-workspace
+- ?? docs/R2_BACKUP_SETUP.md
+- ?? docs/agent-system/AIRDOX_AGENT_EXECUTION_CALENDAR_2026-05-08.md
+- ?? docs/agent-system/latest-designer-visual-quality.json
+- ?? docs/agent-system/latest-designer-visual-quality.md
+- ?? docs/agent-system/proof/
+- ?? scratch/create-test-user.mjs
+- ?? scratch/live-after-authmodal.js
+- ?? scratch/live-after-deploy-en.html
+- ?? scratch/live-authmodal.js
+- ?? scratch/live-en.html
+- ?? scratch/live-main.js
+- ?? scratch/live-workersdev-en.html
+- ?? scratch/proof-captcha-visible.png
+- ?? scratch/proof-home.png
+- ?? scratch/proof-social-login.png
+- ?? scratch/verify-auth-flow.mjs
+- ?? scratch/verify-credential-login.mjs
+- ?? scripts/backup-r2.ps1
+- ?? scripts/designer-visual-quality-check.mjs
+- ?? scripts/register-r2-backup-task.ps1
+- ?? src/components/__tests__/AuthModal.test.jsx
 
 ## Tracked Generated Artifacts
 
@@ -139,14 +224,14 @@ Branch: feature/repository-cleanup
 
 ## Recent Commits
 
-- b849c27 chore(repo): bereinige quellcodeverwaltung und agent-orchestrierung
-- 8e1d3b5 feat(flightdeck): publish recording_2026_05_01
-- aecc904 feat(assistant): add optional Ollama answer layer with wiki-context fallback
-- 1216c5b fix(build): resolve set-access conflict and add corporate Windows app icon
-- 371b26a feat(assistant): add wiki-backed Flight Deck expert chat with coverage tests
-- b323435 feat(analytics): add filter engine, DB-backed metrics, and quality tests
-- c26bad3 fix(app): repair broken React imports in App entry
-- 6287bce feat(installer): add Windows installer scripts and configuration
-- 4072205 chore: mergen von website in win-tool zur Synchronisation der Frontend-Features
-- ab9350b feat: automatisierte VIP-Logik und Sichtbarkeit
+- 7fef483 feat(flightdeck): publish recording_2026_05_07-2
+- cd24d0e chore: remove project duality artifacts
+- 7620d47 feat: update flight deck assistant workflow
+- 78cf631 chore: tidy repository metadata
+- 63b3f63 chore: clean repository artifacts
+- b84c6a7 Refactor: Extract logic into custom hooks, simplify components, externalize data
+- 4fbb5d4 feat: automate tracklists and publish May sets
+- c77195e feat(flightdeck): publish recording_2026_05_02-1
+- 05e02e9 feat(flightdeck): publish recording_2026_05_02-1
+- dde543e feat(flightdeck): publish recording_2026_05_02
 

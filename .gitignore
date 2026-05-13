@@ -15,11 +15,14 @@ dist-ssr
 .env
 .env.*
 !.env.example
+.dev.vars
+.dev.vars.*
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
+*.code-workspace
 .DS_Store
 *.suo
 *.ntvs*
@@ -66,6 +69,16 @@ test-results/
 
 # Local temporary debug artifacts
 tmp-*
+.tmp_liveinspect/
+scratch/live-*
+scratch/proof-*
+scratch/verify-*
+scratch/create-test-user.mjs
+docs/agent-system/proof/
 .devserver.pid
 state.json
 .netlify/state.json
+
+# Python cache
+__pycache__/
+*.py[cod]

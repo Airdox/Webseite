@@ -1,52 +1,53 @@
 {
-  "generatedAt": "2026-05-02T14:56:35.309Z",
+  "generatedAt": "2026-05-08T08:20:04.463Z",
   "agent": "Manni",
-  "scenario": "A",
-  "scenarioLabel": "Organischer Engine-Aufbau",
+  "scenario": "B",
+  "scenarioLabel": "Collab- und Creator-Leverage",
   "sourceSetCount": 5,
   "itemCount": 12,
   "queue": [
     {
-      "id": "reel-recording-2026-05-01-00-00-00-drop-moment",
+      "id": "reel-recording-2026-05-07-00-00-00-drop-moment",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 1,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "recording_2026_05_01",
-      "sourceSetTitle": "REC-2026-05-01",
-      "sourceTrack": "Martin Books - Turn (Original Mix)",
+      "sourceSetId": "recording_2026_05_07",
+      "sourceSetTitle": "VHG",
+      "sourceTrack": "Thomas Schumacher, A.D.H.S. - Cold Burn (Original Mix)",
       "sourceTimestamp": "00:00:00",
-      "landingUrl": "https://airdox.info/#set-recording_2026_05_01",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_07",
       "hook": "Warte auf den Drop bei 00:00",
       "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "Warte auf den Drop bei 00:00. Martin Books - Turn (Original Mix). Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Warte auf den Drop bei 00:00. Thomas Schumacher, A.D.H.S. - Cold Burn (Original Mix). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "drop-moment Hook aus REC-2026-05-01 steigert Completion Rate und Shares.",
+        "hypothesis": "drop-moment Hook aus VHG steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -69,46 +70,47 @@
       }
     },
     {
-      "id": "reel-recording-2026-05-01-00-00-37-transition-breakdown",
+      "id": "reel-recording-2026-05-07-00-03-06-transition-breakdown",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 2,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "recording_2026_05_01",
-      "sourceSetTitle": "REC-2026-05-01",
-      "sourceTrack": "Patrick Arbez - Black Church (Original Mix)",
-      "sourceTimestamp": "00:00:37",
-      "landingUrl": "https://airdox.info/#set-recording_2026_05_01",
-      "hook": "So baue ich den Uebergang bei 00:37",
+      "sourceSetId": "recording_2026_05_07",
+      "sourceSetTitle": "VHG",
+      "sourceTrack": "Shermanology - Girl On The Beat (Extended Mix)",
+      "sourceTimestamp": "00:03:06",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_07",
+      "hook": "So baue ich den Uebergang bei 03:06",
       "concept": "Split-Screen: Deck A / Deck B plus kurze On-Screen-Erklaerung.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "So baue ich den Uebergang bei 00:37. Patrick Arbez - Black Church (Original Mix). Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "So baue ich den Uebergang bei 03:06. Shermanology - Girl On The Beat (Extended Mix). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "transition-breakdown Hook aus REC-2026-05-01 steigert Completion Rate und Shares.",
+        "hypothesis": "transition-breakdown Hook aus VHG steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -118,7 +120,7 @@
         "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
       },
       "creativePack": {
-        "firstFrameText": "So baue ich den Uebergang bei 00:37",
+        "firstFrameText": "So baue ich den Uebergang bei 03:06",
         "styleVariant": "deck_split_screen",
         "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
         "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
@@ -131,46 +133,47 @@
       }
     },
     {
-      "id": "reel-recording-2026-05-01-00-03-29-crowd-energy",
+      "id": "reel-recording-2026-05-07-00-06-13-crowd-energy",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 3,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "recording_2026_05_01",
-      "sourceSetTitle": "REC-2026-05-01",
-      "sourceTrack": "Patrick Arbez - Der rote Rabauke (deKai (Berlin) Remix)",
-      "sourceTimestamp": "00:03:29",
-      "landingUrl": "https://airdox.info/#set-recording_2026_05_01",
-      "hook": "Dieser Moment killt den Floor bei 03:29",
+      "sourceSetId": "recording_2026_05_07",
+      "sourceSetTitle": "VHG",
+      "sourceTrack": "Wade - Right Move (Extended Mix)",
+      "sourceTimestamp": "00:06:13",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_07",
+      "hook": "Dieser Moment killt den Floor bei 06:13",
       "concept": "POV-Cut mit Crowd-Reaction und schneller Wiederholung.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "Dieser Moment killt den Floor bei 03:29. Patrick Arbez - Der rote Rabauke (deKai (Berlin) Remix). Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Dieser Moment killt den Floor bei 06:13. Wade - Right Move (Extended Mix). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "crowd-energy Hook aus REC-2026-05-01 steigert Completion Rate und Shares.",
+        "hypothesis": "crowd-energy Hook aus VHG steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -180,7 +183,7 @@
         "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
       },
       "creativePack": {
-        "firstFrameText": "Dieser Moment killt den Floor bei 03:29",
+        "firstFrameText": "Dieser Moment killt den Floor bei 06:13",
         "styleVariant": "floor_energy_loop",
         "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
         "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
@@ -193,46 +196,47 @@
       }
     },
     {
-      "id": "reel-recording-2026-05-01-00-07-48-drop-moment",
+      "id": "reel-recording-2026-05-07-00-09-01-drop-moment",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 4,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "recording_2026_05_01",
-      "sourceSetTitle": "REC-2026-05-01",
-      "sourceTrack": "Alfred Heinrichs - Bitch (Original Mix)",
-      "sourceTimestamp": "00:07:48",
-      "landingUrl": "https://airdox.info/#set-recording_2026_05_01",
-      "hook": "Warte auf den Drop bei 07:48",
+      "sourceSetId": "recording_2026_05_07",
+      "sourceSetTitle": "VHG",
+      "sourceTrack": "RSquared, Iglesias - Let's Freak (Original Mix)",
+      "sourceTimestamp": "00:09:01",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_07",
+      "hook": "Warte auf den Drop bei 09:01",
       "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "Warte auf den Drop bei 07:48. Alfred Heinrichs - Bitch (Original Mix). Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Warte auf den Drop bei 09:01. RSquared, Iglesias - Let's Freak (Original Mix). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "drop-moment Hook aus REC-2026-05-01 steigert Completion Rate und Shares.",
+        "hypothesis": "drop-moment Hook aus VHG steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -242,7 +246,7 @@
         "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
       },
       "creativePack": {
-        "firstFrameText": "Warte auf den Drop bei 07:48",
+        "firstFrameText": "Warte auf den Drop bei 09:01",
         "styleVariant": "raw_drop_marker",
         "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
         "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
@@ -255,46 +259,47 @@
       }
     },
     {
-      "id": "reel-135-00-00-00-drop-moment",
+      "id": "reel-recording-2026-05-02-00-00-00-drop-moment",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 1,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "135",
-      "sourceSetTitle": "SET 135",
-      "sourceTrack": "Nicole Moudaber, Space 92 - Eyes On Me (Original Mix)",
+      "sourceSetId": "recording_2026_05_02",
+      "sourceSetTitle": "SISSYGUT ALLES GUT",
+      "sourceTrack": "Martin Books, Signalfarbe Schwarz - Simone feat. Signalfarbe Schwarz (Original Mix)",
       "sourceTimestamp": "00:00:00",
-      "landingUrl": "https://airdox.info/#set-135",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_02",
       "hook": "Warte auf den Drop bei 00:00",
       "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "Warte auf den Drop bei 00:00. Nicole Moudaber, Space 92 - Eyes On Me (Original Mix). Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Warte auf den Drop bei 00:00. Martin Books, Signalfarbe Schwarz - Simone feat. Signalfarbe Schwarz (Original Mix). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "drop-moment Hook aus SET 135 steigert Completion Rate und Shares.",
+        "hypothesis": "drop-moment Hook aus SISSYGUT ALLES GUT steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -317,46 +322,47 @@
       }
     },
     {
-      "id": "reel-135-00-02-26-transition-breakdown",
+      "id": "reel-recording-2026-05-02-00-00-03-transition-breakdown",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 2,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "135",
-      "sourceSetTitle": "SET 135",
-      "sourceTrack": "Green Velvet, Harvard Bass - Lazer Beams (Adam Beyer & Massano Remix)",
-      "sourceTimestamp": "00:02:26",
-      "landingUrl": "https://airdox.info/#set-135",
-      "hook": "So baue ich den Uebergang bei 02:26",
+      "sourceSetId": "recording_2026_05_02",
+      "sourceSetTitle": "SISSYGUT ALLES GUT",
+      "sourceTrack": "MJ Lan - Generate Bodies (2000)",
+      "sourceTimestamp": "00:00:03",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_02",
+      "hook": "So baue ich den Uebergang bei 00:03",
       "concept": "Split-Screen: Deck A / Deck B plus kurze On-Screen-Erklaerung.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "So baue ich den Uebergang bei 02:26. Green Velvet, Harvard Bass - Lazer Beams (Adam Beyer & Massano Remix). Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "So baue ich den Uebergang bei 00:03. MJ Lan - Generate Bodies (2000). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "transition-breakdown Hook aus SET 135 steigert Completion Rate und Shares.",
+        "hypothesis": "transition-breakdown Hook aus SISSYGUT ALLES GUT steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -366,7 +372,7 @@
         "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
       },
       "creativePack": {
-        "firstFrameText": "So baue ich den Uebergang bei 02:26",
+        "firstFrameText": "So baue ich den Uebergang bei 00:03",
         "styleVariant": "deck_split_screen",
         "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
         "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
@@ -379,46 +385,47 @@
       }
     },
     {
-      "id": "reel-135-00-06-30-crowd-energy",
+      "id": "reel-recording-2026-05-02-00-05-31-crowd-energy",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 3,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "135",
-      "sourceSetTitle": "SET 135",
-      "sourceTrack": "METODI, Marie Vaunt - I Am Free (Oscar L Remix)",
-      "sourceTimestamp": "00:06:30",
-      "landingUrl": "https://airdox.info/#set-135",
-      "hook": "Dieser Moment killt den Floor bei 06:30",
+      "sourceSetId": "recording_2026_05_02",
+      "sourceSetTitle": "SISSYGUT ALLES GUT",
+      "sourceTrack": "Primal Beat - Blowing My Head Up (Diatek Remix)",
+      "sourceTimestamp": "00:05:31",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_02",
+      "hook": "Dieser Moment killt den Floor bei 05:31",
       "concept": "POV-Cut mit Crowd-Reaction und schneller Wiederholung.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "Dieser Moment killt den Floor bei 06:30. METODI, Marie Vaunt - I Am Free (Oscar L Remix). Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Dieser Moment killt den Floor bei 05:31. Primal Beat - Blowing My Head Up (Diatek Remix). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "crowd-energy Hook aus SET 135 steigert Completion Rate und Shares.",
+        "hypothesis": "crowd-energy Hook aus SISSYGUT ALLES GUT steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -428,7 +435,7 @@
         "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
       },
       "creativePack": {
-        "firstFrameText": "Dieser Moment killt den Floor bei 06:30",
+        "firstFrameText": "Dieser Moment killt den Floor bei 05:31",
         "styleVariant": "floor_energy_loop",
         "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
         "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
@@ -441,46 +448,47 @@
       }
     },
     {
-      "id": "reel-135-00-11-49-drop-moment",
+      "id": "reel-recording-2026-05-02-00-07-23-drop-moment",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 4,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "135",
-      "sourceSetTitle": "SET 135",
-      "sourceTrack": "Chuckie, LMFAO - Let The Bass Kick In Miami Bitch (Extended Mix)",
-      "sourceTimestamp": "00:11:49",
-      "landingUrl": "https://airdox.info/#set-135",
-      "hook": "Warte auf den Drop bei 11:49",
+      "sourceSetId": "recording_2026_05_02",
+      "sourceSetTitle": "SISSYGUT ALLES GUT",
+      "sourceTrack": "Alfred Heinrichs, Martin Books - Mothers Slap (Original Mix)",
+      "sourceTimestamp": "00:07:23",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_02",
+      "hook": "Warte auf den Drop bei 07:23",
       "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "Warte auf den Drop bei 11:49. Chuckie, LMFAO - Let The Bass Kick In Miami Bitch (Extended Mix). Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Warte auf den Drop bei 07:23. Alfred Heinrichs, Martin Books - Mothers Slap (Original Mix). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "drop-moment Hook aus SET 135 steigert Completion Rate und Shares.",
+        "hypothesis": "drop-moment Hook aus SISSYGUT ALLES GUT steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -490,7 +498,7 @@
         "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
       },
       "creativePack": {
-        "firstFrameText": "Warte auf den Drop bei 11:49",
+        "firstFrameText": "Warte auf den Drop bei 07:23",
         "styleVariant": "raw_drop_marker",
         "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
         "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
@@ -503,46 +511,47 @@
       }
     },
     {
-      "id": "reel-recording-2026-04-12-00-00-drop-moment",
+      "id": "reel-recording-2026-05-02-rauchst-du-raus-00-00-00-drop-moment",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 1,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "recording_2026_04_12",
-      "sourceSetTitle": "REC 12.04.2026",
-      "sourceTrack": "Nico Moreno - Purple Widow",
-      "sourceTimestamp": "00:00",
-      "landingUrl": "https://airdox.info/#set-recording_2026_04_12",
+      "sourceSetId": "recording_2026_05_02_rauchst_du_raus",
+      "sourceSetTitle": "RAUCHST DU RAUS",
+      "sourceTrack": "Tanith - Triage (Shifting Bodies) (Original Mix)",
+      "sourceTimestamp": "00:00:00",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_02_rauchst_du_raus",
       "hook": "Warte auf den Drop bei 00:00",
       "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "Warte auf den Drop bei 00:00. Nico Moreno - Purple Widow. Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Warte auf den Drop bei 00:00. Tanith - Triage (Shifting Bodies) (Original Mix). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "drop-moment Hook aus REC 12.04.2026 steigert Completion Rate und Shares.",
+        "hypothesis": "drop-moment Hook aus RAUCHST DU RAUS steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -565,46 +574,47 @@
       }
     },
     {
-      "id": "reel-recording-2026-04-12-05-42-transition-breakdown",
+      "id": "reel-recording-2026-05-02-rauchst-du-raus-00-00-15-transition-breakdown",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 2,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "recording_2026_04_12",
-      "sourceSetTitle": "REC 12.04.2026",
-      "sourceTrack": "Klangkuenstler - Weltschmerz",
-      "sourceTimestamp": "05:42",
-      "landingUrl": "https://airdox.info/#set-recording_2026_04_12",
-      "hook": "So baue ich den Uebergang bei 05:42",
+      "sourceSetId": "recording_2026_05_02_rauchst_du_raus",
+      "sourceSetTitle": "RAUCHST DU RAUS",
+      "sourceTrack": "Rene Bourgeois, Elke Brauweiler - Je Danse feat. Elke Brauweiler (Dan Caster & Rene Bougeois Club Mix)",
+      "sourceTimestamp": "00:00:15",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_02_rauchst_du_raus",
+      "hook": "So baue ich den Uebergang bei 00:15",
       "concept": "Split-Screen: Deck A / Deck B plus kurze On-Screen-Erklaerung.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "So baue ich den Uebergang bei 05:42. Klangkuenstler - Weltschmerz. Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "So baue ich den Uebergang bei 00:15. Rene Bourgeois, Elke Brauweiler - Je Danse feat. Elke Brauweiler (Dan Caster & Rene Bougeois Club Mix). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "transition-breakdown Hook aus REC 12.04.2026 steigert Completion Rate und Shares.",
+        "hypothesis": "transition-breakdown Hook aus RAUCHST DU RAUS steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -614,7 +624,7 @@
         "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
       },
       "creativePack": {
-        "firstFrameText": "So baue ich den Uebergang bei 05:42",
+        "firstFrameText": "So baue ich den Uebergang bei 00:15",
         "styleVariant": "deck_split_screen",
         "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
         "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
@@ -627,46 +637,47 @@
       }
     },
     {
-      "id": "reel-recording-2026-04-12-11-15-crowd-energy",
+      "id": "reel-recording-2026-05-02-rauchst-du-raus-00-03-59-crowd-energy",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 3,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "recording_2026_04_12",
-      "sourceSetTitle": "REC 12.04.2026",
-      "sourceTrack": "I Hate Models - Daydream",
-      "sourceTimestamp": "11:15",
-      "landingUrl": "https://airdox.info/#set-recording_2026_04_12",
-      "hook": "Dieser Moment killt den Floor bei 11:15",
+      "sourceSetId": "recording_2026_05_02_rauchst_du_raus",
+      "sourceSetTitle": "RAUCHST DU RAUS",
+      "sourceTrack": "Charlotte de Witte, Conduit (US) - A Prayer for the Dancefloor (feat. Conduit) (Avalon & GMS Remix)",
+      "sourceTimestamp": "00:03:59",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_02_rauchst_du_raus",
+      "hook": "Dieser Moment killt den Floor bei 03:59",
       "concept": "POV-Cut mit Crowd-Reaction und schneller Wiederholung.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "Dieser Moment killt den Floor bei 11:15. I Hate Models - Daydream. Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Dieser Moment killt den Floor bei 03:59. Charlotte de Witte, Conduit (US) - A Prayer for the Dancefloor (feat. Conduit) (Avalon & GMS Remix). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "crowd-energy Hook aus REC 12.04.2026 steigert Completion Rate und Shares.",
+        "hypothesis": "crowd-energy Hook aus RAUCHST DU RAUS steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -676,7 +687,7 @@
         "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
       },
       "creativePack": {
-        "firstFrameText": "Dieser Moment killt den Floor bei 11:15",
+        "firstFrameText": "Dieser Moment killt den Floor bei 03:59",
         "styleVariant": "floor_energy_loop",
         "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
         "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
@@ -689,46 +700,47 @@
       }
     },
     {
-      "id": "reel-recording-2026-04-12-18-30-drop-moment",
+      "id": "reel-recording-2026-05-02-rauchst-du-raus-00-07-22-drop-moment",
       "owner": "Manni",
       "status": "planned",
-      "createdAt": "2026-05-02T09:08:48.901Z",
-      "updatedAt": "2026-05-02T14:56:35.309Z",
-      "scenario": "A",
-      "scenarioLabel": "Organischer Engine-Aufbau",
+      "createdAt": "2026-05-08T08:20:04.463Z",
+      "updatedAt": "2026-05-08T08:20:04.463Z",
+      "scenario": "B",
+      "scenarioLabel": "Collab- und Creator-Leverage",
       "priority": 4,
       "platforms": [
         "instagram_reels",
         "tiktok",
         "youtube_shorts"
       ],
-      "sourceSetId": "recording_2026_04_12",
-      "sourceSetTitle": "REC 12.04.2026",
-      "sourceTrack": "Airdox - Unreleased ID",
-      "sourceTimestamp": "18:30",
-      "landingUrl": "https://airdox.info/#set-recording_2026_04_12",
-      "hook": "Warte auf den Drop bei 18:30",
+      "sourceSetId": "recording_2026_05_02_rauchst_du_raus",
+      "sourceSetTitle": "RAUCHST DU RAUS",
+      "sourceTrack": "White Horse - White Horse (If You Wanna Ride) (Dub)",
+      "sourceTimestamp": "00:07:22",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_02_rauchst_du_raus",
+      "hook": "Warte auf den Drop bei 07:22",
       "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
-      "cta": "Follow fuer den naechsten Part.",
+      "cta": "Markiere jemanden fuer ein Collab-Set.",
       "hashtags": [
         "#techno",
-        "#berlintechno",
-        "#undergroundtechno",
-        "#reelsmusic",
-        "#djset"
+        "#collab",
+        "#creator",
+        "#berlinnightlife",
+        "#djreel"
       ],
-      "kpiFocus": "watch_time_and_shares",
-      "captionTemplate": "Warte auf den Drop bei 18:30. Airdox - Unreleased ID. Follow fuer den naechsten Part.",
+      "kpiFocus": "profile_visits_and_follows",
+      "captionTemplate": "Warte auf den Drop bei 07:22. White Horse - White Horse (If You Wanna Ride) (Dub). Markiere jemanden fuer ein Collab-Set.",
       "experiment": {
-        "hypothesis": "drop-moment Hook aus REC 12.04.2026 steigert Completion Rate und Shares.",
+        "hypothesis": "drop-moment Hook aus RAUCHST DU RAUS steigert Completion Rate und Shares.",
         "primaryMetric": "completion_rate",
         "secondaryMetric": "shares",
-        "reportDue": "2026-05-09"
+        "reportDue": "2026-05-15"
       },
       "approval": {
-        "visibility": "internal_planning",
-        "requiresUserApproval": true,
-        "status": "blocked_external_until_user_ok"
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
       },
       "actionPlan": {
         "owner": "Manni",
@@ -738,7 +750,7 @@
         "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
       },
       "creativePack": {
-        "firstFrameText": "Warte auf den Drop bei 18:30",
+        "firstFrameText": "Warte auf den Drop bei 07:22",
         "styleVariant": "raw_drop_marker",
         "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
         "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."

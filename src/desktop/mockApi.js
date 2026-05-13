@@ -314,6 +314,11 @@ export const mockFlightDeckApi = {
     return { optimized: true };
   },
   async askAssistant(payload) {
-    return { source: 'mock-local', answer: answerToolQuestion(payload?.question || '') };
+    const local = answerToolQuestion(payload?.question || '');
+    return {
+      source: local?.source || 'mock-local',
+      answer: local?.text || String(local || ''),
+      actions: local?.actions || [],
+    };
   },
 };

@@ -447,9 +447,11 @@ ipcMain.handle('flightdeck:assistant-ask', async (_event, payload) => {
       };
     }
     if (wiki?.answer) return wiki;
+    const local = answerToolQuestion(question);
     return {
-      source: 'local-expert-fallback',
-      answer: answerToolQuestion(question),
+      source: local?.source || 'local-expert-fallback',
+      answer: local?.text || String(local || ''),
+      actions: local?.actions || [],
     };
   } catch (error) {
     await writeStartupLog(`Assistant error: ${error.message}`);

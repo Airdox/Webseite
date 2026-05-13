@@ -1,0 +1,42 @@
+name: Designer Visual Quality
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 4 * * *'
+
+jobs:
+  designer-visual-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate job catalog
+        run: npm run agent:jobs:validate -- --strict-warnings
+
+      - name: Run daily Designer visual quality job
+        run: npm run agent:jobs:run -- --event=daily_visual_review --status=daily
+
+      - name: Upload visual quality reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: designer-visual-quality-report
+          path: |
+            docs/agent-system/job-catalog.json
+            docs/agent-system/latest-job-run.json
+            docs/agent-system/latest-job-run.md
+            docs/agent-system/latest-designer-visual-quality.json
+            docs/agent-system/latest-designer-visual-quality.md
+            docs/agent-system/proof/designer-visual-quality

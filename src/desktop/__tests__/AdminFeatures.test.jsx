@@ -82,14 +82,21 @@ describe('Advanced Analytics Tab', () => {
   });
 
   it('applies date and dimension filters to metrics', () => {
+    const today = new Date();
+    const recentDate = (daysAgo) => {
+      const date = new Date(today);
+      date.setDate(date.getDate() - daysAgo);
+      return date.toISOString();
+    };
+
     const propsWithLogs = {
       ...defaultProps,
       analyticsData: {
         ...defaultProps.analyticsData,
         eventLogs: [
-          { event_type: 'play', item_id: 'set-1', country: 'DE', device_type: 'desktop', created_at: '2026-04-10T12:00:00.000Z' },
-          { event_type: 'like', item_id: 'set-1', country: 'DE', device_type: 'desktop', created_at: '2026-04-11T12:00:00.000Z' },
-          { event_type: 'play', item_id: 'set-2', country: 'US', device_type: 'mobile', created_at: '2026-04-12T12:00:00.000Z' },
+          { event_type: 'play', item_id: 'set-1', country: 'DE', device_type: 'desktop', created_at: recentDate(3) },
+          { event_type: 'like', item_id: 'set-1', country: 'DE', device_type: 'desktop', created_at: recentDate(2) },
+          { event_type: 'play', item_id: 'set-2', country: 'US', device_type: 'mobile', created_at: recentDate(1) },
         ],
       },
     };

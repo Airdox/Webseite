@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-05-06T03:42:47.426Z",
+  "generatedAt": "2026-05-08T09:12:28.319Z",
   "repository": "D:\\webseeite-main",
   "controller": {
     "name": "Master Controller",
     "mission": "Priorisierung, Koordination, Release-Entscheidungen und Audit-Auswertung."
   },
   "summary": {
-    "averageScore": 93,
-    "dirtyPathCount": 6,
-    "testFileCount": 20,
+    "averageScore": 92,
+    "dirtyPathCount": 51,
+    "testFileCount": 21,
     "cssFileCount": 21
   },
   "gate": {
@@ -196,7 +196,7 @@
           "label": "Ausreichende Testdateien",
           "status": "pass",
           "weight": 1.5,
-          "detail": "20 Test-/Spec-Dateien gefunden."
+          "detail": "21 Test-/Spec-Dateien gefunden."
         },
         {
           "label": "Worker/API-Testsignale",
@@ -214,7 +214,7 @@
           "label": "Arbeitsbaum sauber",
           "status": "warn",
           "weight": 1.5,
-          "detail": "6 uncommitted Pfade gefunden; vor Releases klaeren."
+          "detail": "51 uncommitted Pfade gefunden; vor Releases klaeren."
         },
         {
           "label": "Env-Beispiel vorhanden",
@@ -440,7 +440,7 @@
           "label": "Grosse JSX-Dateien begrenzt",
           "status": "warn",
           "weight": 1.5,
-          "detail": "src/desktop/DesktopApp.jsx hat 1390 Zeilen."
+          "detail": "src/desktop/DesktopApp.jsx hat 1394 Zeilen."
         },
         {
           "label": "Desktop Services modularisiert",
@@ -471,7 +471,7 @@
       "id": "repository",
       "name": "Repository",
       "mission": "Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet.",
-      "score": 95,
+      "score": 87,
       "checks": [
         {
           "label": "Repository-Governance dokumentiert",
@@ -511,9 +511,9 @@
         },
         {
           "label": "Arbeitsbaum releasebereit",
-          "status": "pass",
+          "status": "warn",
           "weight": 1.5,
-          "detail": "6 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+          "detail": "51 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
         },
         {
           "label": "Parallele Deployment-Konfigs begrenzt",

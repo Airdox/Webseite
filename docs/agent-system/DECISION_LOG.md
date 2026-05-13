@@ -2,6 +2,84 @@
 
 Dieses Log speichert strategische Entscheidungen des Multi-Agenten-Systems. Kurze Eintraege sind beabsichtigt: Datum, Kontext, Entscheidung, Risiko, Recheck.
 
+## 2026-05-08 - Fester Arbeitskalender fuer alle Agenten ausser Manni
+
+Kontext:
+- Nach dem Manni-Reichweitenmasterplan sollen auch die anderen Agenten nach demselben Muster verbindlich terminiert arbeiten.
+- Ziel: Jeder Agent hat klare Arbeitspakete, feste Termine und eindeutige Messkriterien bis Sprintende.
+
+Entscheidung:
+- Neuer verbindlicher Kalender: `docs/agent-system/AIRDOX_AGENT_EXECUTION_CALENDAR_2026-05-08.md`.
+- Der Kalender fixiert:
+  - Meilensteine M0 bis M6 mit Datum/Uhrzeit,
+  - Pflichtaufgaben pro Agent (Master Controller, Webbie, Winnie, Guardian, Designer, Mentor, Refactor, Repository),
+  - feste Weekly-Cadence und Pflicht-Outputs,
+  - Abnahme-Gates pro Milestone.
+- Manni bleibt im separaten Reichweitenmasterplan (`AIRDOX_REACH_MASTERPLAN_2026-05-08.md`) als Reichweiten-Lead gefuehrt; der neue Kalender synchronisiert alle Support-Rollen darauf.
+
+Risiko:
+- Ohne disziplinierte Milestone-Abnahme kann der Kalender zu einer reinen Doku ohne Wirkung werden.
+- Mehrere parallele Arbeitsstraenge im dirty Worktree brauchen strikte Repository-Fuehrung, sonst verliert die Zeitplanung an Verbindlichkeit.
+
+Recheck:
+- `npm run agent:jobs:validate -- --strict-warnings`
+- `npm run agent:audit -- --strict`
+- `npm run repository:monitor:strict`
+
+## 2026-05-08 - Manni Reach Masterplan mit fixen Milestones als verbindliche Messbasis
+
+Kontext:
+- Der Nutzer fordert einen detaillierten Promotion-/Reichweitenplan mit fixen Terminen und festen Vorgaben.
+- Alle Agenten sollen auf dasselbe Reichweitenziel einzahlen und an verbindlichen Meilensteinen messbar sein.
+- Bestehende Manni-Artefakte waren vorhanden, aber mussten fuer den heutigen Lauf aktualisiert und verankert werden.
+
+Entscheidung:
+- Neuer bindender Plan: `docs/agent-system/AIRDOX_REACH_MASTERPLAN_2026-05-08.md`.
+- Der Plan definiert:
+  - Sprint-Zeitraum 2026-05-08 bis 2026-06-05,
+  - feste Milestones M0-M6 mit konkreten Termin-Deadlines,
+  - KPI-Zielwerte und harte Muss-Ergebnisse pro Milestone,
+  - messbare Scorecards fuer Manni, Designer, Webbie, Guardian, Refactor, Repository, Winnie, Mentor und Master Controller.
+- Manni-Produktionsartefakte wurden frisch erzeugt:
+  - `docs/agent-system/manni-reel-queue.json`
+  - `docs/agent-system/manni-reel-weekly-plan.md`
+  - `docs/agent-system/manni-reel-draft-pack.md`
+  - Generiert am 2026-05-08, Szenario B (Collab- und Creator-Leverage).
+
+Risiko:
+- KPI-Baselines muessen bis Milestone M0 sauber festgehalten werden, sonst sind Fortschrittsaussagen unscharf.
+- Hoher Draft-Output ohne diszipliniertes Winner/Loser-Review erzeugt Aktivitaet ohne echten Reichweitengewinn.
+- Dirty Worktree kann Release-/Merge-Disziplin erschweren, wenn Repository-Gates nicht konsequent eingehalten werden.
+
+Recheck:
+- `npm run manni:reels:generate -- --scenario=B --count=12`
+- `npm run lint`
+- `npm run test -- --run`
+- `npm run build`
+- `npm run agent:audit -- --strict`
+- `npm run repository:monitor:strict`
+
+## 2026-05-07 - Designer als taeglicher visueller Qualitaetswaechter
+
+Kontext:
+- Der Nutzer fordert einen strikt visuellen Qualitaetsagenten mit User-Blick auf Website-Lesbarkeit, Glitches, Artefakte und Sprachkonsistenz im deutschen Frontend.
+
+Entscheidung:
+- Neuer Script-Job `designer:visual:check` als automatisierter Designer-Check mit Screenshots und Befundbericht.
+- Neuer Job `designer-daily-visual-quality` im `job-catalog.json`, Trigger `daily_visual_review` + `daily`, inklusive `--strict` Gate.
+- Neuer Workflow `.github/workflows/designer-visual-quality.yml` mit taeglichem Schedule und Artefakt-Upload.
+- Der Report wird maschinell in `docs/agent-system/latest-designer-visual-quality.{json,md}` gespeichert.
+- UI-Fix in `SetCard`: klare Trennung von Datum/Dauer sowie deutsche Monatsdarstellung auf deutscher Seite.
+
+Risiko:
+- Bei bewusst extrem kleinem/experimentellem Typografie-Stil kann der neue Lesbarkeits-Gate Warnungen/Fails erzeugen.
+- Visual Checks brauchen Build + Browserlauf und erhoehen die taegliche CI-Laufzeit.
+
+Recheck:
+- `npm run agent:jobs:validate -- --strict-warnings`
+- `npm run agent:jobs:run -- --event=daily_visual_review --status=daily`
+- `npm run designer:visual:check -- --strict`
+
 ## 2026-05-02 - Multi-Agenten-System als ausfuehrbarer Audit-Loop
 
 Kontext:

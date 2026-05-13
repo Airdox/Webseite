@@ -26,6 +26,7 @@ const corsHeaders = {
 };
 
 const OAUTH_STATE_COOKIE = 'airdox_oauth_state';
+const OAUTH_STATE_DELIMITER = '~';
 
 const parseCookies = (request) => {
     const raw = request.headers.get('cookie') || '';
@@ -36,24 +37,82 @@ const parseCookies = (request) => {
         if (idx === -1) continue;
         const key = pair.slice(0, idx).trim();
         const value = pair.slice(idx + 1).trim();
-        out[key] = decodeURIComponent(value);
+        try {
+            out[key] = decodeURIComponent(value);
+        } catch {
+            out[key] = value;
+        }
     }
     return out;
 };
 
 const randomState = () => crypto.randomUUID().replace(/-/g, '');
 
-const buildPopupHtml = ({ ok, payload }) => {
+const sanitizeOrigin = (value) => {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    try {
+        const url = new URL(raw);
+        if (!['http:', 'https:'].includes(url.protocol)) return '';
+        return url.origin;
+    } catch {
+        return '';
+    }
+};
+
+const safeDecodeURIComponent = (value) => {
+    try {
+        return decodeURIComponent(String(value || ''));
+    } catch {
+        return String(value || '');
+    }
+};
+
+const isTruthyFlag = (value) => {
+    const flag = String(value || '').trim().toLowerCase();
+    return flag === 'true' || flag === '1' || flag === 'yes' || flag === 'on';
+};
+
+const isLocalhostRequest = (request) => {
+    try {
+        const host = new URL(request.url).hostname;
+        return host === '127.0.0.1' || host === 'localhost' || host === '::1';
+    } catch {
+        return false;
+    }
+};
+
+const isDevSocialAuthBypassEnabled = (env, request) => (
+    isTruthyFlag(env.ALLOW_DEV_SOCIAL_AUTH) && isLocalhostRequest(request)
+);
+
+const buildCookieAttributes = (request) => {
+    const protocol = new URL(request.url).protocol;
+    return protocol === 'https:'
+        ? 'Path=/; HttpOnly; SameSite=Lax; Secure'
+        : 'Path=/; HttpOnly; SameSite=Lax';
+};
+
+const buildSetCookieHeader = (request, { name, value, maxAge }) => (
+    `${name}=${encodeURIComponent(value)}; ${buildCookieAttributes(request)}; Max-Age=${maxAge}`
+);
+
+const buildPopupHtml = ({ ok, payload, targetOrigin = '' }) => {
     const serialized = JSON.stringify({ ok, ...payload });
+    const serializedTargetOrigin = JSON.stringify(String(targetOrigin || ''));
     return `<!doctype html><html><head><meta charset="utf-8"><title>AIRDOX Auth</title></head><body><script>
         (function () {
             var data = ${serialized};
+            var targetOrigin = ${serializedTargetOrigin};
             try {
                 if (data.ok && data.token) {
                     localStorage.setItem('airdox_token', data.token);
                 }
                 if (window.opener && !window.opener.closed) {
-                    window.opener.postMessage({ source: 'airdox-oauth', ...data }, window.location.origin);
+                    window.opener.postMessage(
+                        { source: 'airdox-oauth', ...data },
+                        targetOrigin || window.location.origin
+                    );
                 }
             } catch (e) {}
             setTimeout(function () { window.close(); }, 40);
@@ -61,9 +120,26 @@ const buildPopupHtml = ({ ok, payload }) => {
     </script></body></html>`;
 };
 
-const buildOAuthRedirectUri = (request, provider) => {
-    const url = new URL(request.url);
-    return `${url.origin}/api/oauth/callback/${provider}`;
+const popupErrorResponse = (targetOrigin, message, status = 400) => {
+    const html = buildPopupHtml({
+        ok: false,
+        payload: { error: message || 'OAuth login failed' },
+        targetOrigin,
+    });
+    return new Response(html, {
+        status,
+        headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    });
+};
+
+const resolveOAuthRedirectBase = (request, env) => {
+    const configured = sanitizeOrigin(env.OAUTH_REDIRECT_BASE_URL || env.PUBLIC_APP_ORIGIN || '');
+    if (configured) return configured;
+    return new URL(request.url).origin;
+};
+
+const buildOAuthRedirectUri = (request, provider, env) => {
+    return `${resolveOAuthRedirectBase(request, env)}/api/oauth/callback/${provider}`;
 };
 
 const buildOAuthStartUrl = ({ provider, authEndpoint, clientId, redirectUri, state, scope }) => {
@@ -326,23 +402,59 @@ router.get('/api/oauth/start', async (request, env) => {
     const url = new URL(request.url);
     const provider = String(url.searchParams.get('provider') || '').toLowerCase();
     const mode = String(url.searchParams.get('mode') || 'login').toLowerCase();
+    const openerOrigin = sanitizeOrigin(url.searchParams.get('origin') || '');
     if (!['google', 'facebook'].includes(provider)) {
+        if (openerOrigin) return popupErrorResponse(openerOrigin, 'Unsupported provider');
         return new Response(JSON.stringify({ ok: false, error: 'Unsupported provider' }), {
             status: 400,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
     }
 
+    if (isDevSocialAuthBypassEnabled(env, request)) {
+        const mockResult = await handleAuthRequest({
+            body: {
+                action: 'oauth_dev_mock',
+                provider,
+                ...buildAuthBody(request, {}),
+            },
+            env,
+        });
+
+        const html = buildPopupHtml({
+            ok: mockResult.status === 200 && mockResult.body?.ok,
+            payload: mockResult.status === 200
+                ? { token: mockResult.body?.token || '', provider, mock: true }
+                : { error: mockResult.body?.error || 'OAuth login failed', provider },
+            targetOrigin: openerOrigin,
+        });
+
+        return new Response(html, {
+            status: mockResult.status === 200 ? 200 : 400,
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8',
+            },
+        });
+    }
+
     const configResult = await handleAuthRequest({ body: { action: 'oauth_start', provider }, env });
     if (configResult.status !== 200 || !configResult.body?.ok) {
+        if (openerOrigin) {
+            return popupErrorResponse(openerOrigin, configResult.body?.error || 'OAuth login failed', configResult.status || 400);
+        }
         return new Response(JSON.stringify(configResult.body), {
             status: configResult.status,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
     }
 
-    const state = `${randomState()}.${mode}.${provider}`;
-    const redirectUri = buildOAuthRedirectUri(request, provider);
+    const state = [
+        randomState(),
+        mode,
+        provider,
+        encodeURIComponent(openerOrigin),
+    ].join(OAUTH_STATE_DELIMITER);
+    const redirectUri = buildOAuthRedirectUri(request, provider, env);
     const clientId = provider === 'google' ? env.GOOGLE_CLIENT_ID : env.FACEBOOK_APP_ID;
     const startUrl = buildOAuthStartUrl({
         provider,
@@ -357,7 +469,7 @@ router.get('/api/oauth/start', async (request, env) => {
         status: 302,
         headers: {
             Location: startUrl,
-            'Set-Cookie': `${OAUTH_STATE_COOKIE}=${encodeURIComponent(state)}; Path=/; Max-Age=600; HttpOnly; SameSite=Lax; Secure`,
+            'Set-Cookie': buildSetCookieHeader(request, { name: OAUTH_STATE_COOKIE, value: state, maxAge: 600 }),
         },
     });
 });
@@ -368,19 +480,43 @@ const handleOAuthCallback = async (request, env, provider) => {
     const state = String(url.searchParams.get('state') || '');
     const cookies = parseCookies(request);
     const expectedState = cookies[OAUTH_STATE_COOKIE] || '';
+    const fallbackPopupTargetOrigin = sanitizeOrigin(safeDecodeURIComponent(state.split(OAUTH_STATE_DELIMITER)[3] || ''));
 
     if (!code || !state || !expectedState || state !== expectedState) {
-        const html = buildPopupHtml({ ok: false, payload: { error: 'OAuth state mismatch or missing code' } });
+        const html = buildPopupHtml({
+            ok: false,
+            payload: { error: 'OAuth state mismatch or missing code' },
+            targetOrigin: fallbackPopupTargetOrigin,
+        });
         return new Response(html, {
             status: 400,
             headers: {
                 'Content-Type': 'text/html; charset=utf-8',
-                'Set-Cookie': `${OAUTH_STATE_COOKIE}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax; Secure`,
+                'Set-Cookie': buildSetCookieHeader(request, { name: OAUTH_STATE_COOKIE, value: '', maxAge: 0 }),
             },
         });
     }
 
-    const redirectUri = buildOAuthRedirectUri(request, provider);
+    const [, , stateProvider, rawOpenerOrigin = ''] = state.split(OAUTH_STATE_DELIMITER);
+    if (stateProvider !== provider) {
+        const html = buildPopupHtml({
+            ok: false,
+            payload: { error: 'OAuth provider mismatch' },
+            targetOrigin: fallbackPopupTargetOrigin,
+        });
+        return new Response(html, {
+            status: 400,
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8',
+                'Set-Cookie': buildSetCookieHeader(request, { name: OAUTH_STATE_COOKIE, value: '', maxAge: 0 }),
+            },
+        });
+    }
+
+    const decodedStateOrigin = sanitizeOrigin(safeDecodeURIComponent(rawOpenerOrigin || ''));
+    const targetOrigin = decodedStateOrigin || sanitizeOrigin(request.headers.get('Origin') || request.headers.get('Referer') || '');
+
+    const redirectUri = buildOAuthRedirectUri(request, provider, env);
     const oauthResult = await handleAuthRequest({
         body: {
             action: 'oauth_exchange',
@@ -399,13 +535,14 @@ const handleOAuthCallback = async (request, env, provider) => {
         payload: oauthResult.status === 200
             ? { token: oauthResult.body?.token || '', provider }
             : { error: oauthResult.body?.error || 'OAuth login failed', provider },
+        targetOrigin,
     });
 
     return new Response(html, {
         status: oauthResult.status === 200 ? 200 : 400,
         headers: {
             'Content-Type': 'text/html; charset=utf-8',
-            'Set-Cookie': `${OAUTH_STATE_COOKIE}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax; Secure`,
+            'Set-Cookie': buildSetCookieHeader(request, { name: OAUTH_STATE_COOKIE, value: '', maxAge: 0 }),
         },
     });
 };

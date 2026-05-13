@@ -26,6 +26,9 @@ const REGISTER_SUCCESS_MAX_PER_IP = 3;
 const REGISTER_IDENTIFIER_WINDOW_MINUTES = 60;
 const REGISTER_IDENTIFIER_MAX_ATTEMPTS = 5;
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+const TURNSTILE_VERIFY_TIMEOUT_MS = 8000;
+const TURNSTILE_MAX_TOKEN_LENGTH = 4096;
+const TURNSTILE_REGISTER_ACTION = 'register';
 const SOCIAL_PROVIDERS = new Set(['google', 'facebook']);
 
 let sqlClient = null;
@@ -362,6 +365,11 @@ const isCaptchaRequired = (env) => {
     return true;
 };
 
+const isDevSocialAuthAllowed = (env) => {
+    const flag = String(env.ALLOW_DEV_SOCIAL_AUTH || '').trim().toLowerCase();
+    return flag === 'true' || flag === '1' || flag === 'yes' || flag === 'on';
+};
+
 const normalizeIp = (value) => String(value || '').trim().slice(0, 128);
 const normalizeUsername = (value = '') => String(value || '')
     .trim()
@@ -582,21 +590,30 @@ const isRegisterIdentifierRateLimited = async (sql, identifier) => {
     return Number(row?.attempts || 0) >= REGISTER_IDENTIFIER_MAX_ATTEMPTS;
 };
 
-const verifyTurnstileCaptcha = async ({ token, clientIp, env }) => {
-    if (!token) return { ok: false, error: 'CAPTCHA token missing' };
+const verifyTurnstileCaptcha = async ({ token, clientIp, env, expectedAction = '' }) => {
+    const normalizedToken = String(token || '').trim();
+    if (!normalizedToken) return { ok: false, error: 'CAPTCHA token missing' };
+    if (normalizedToken.length > TURNSTILE_MAX_TOKEN_LENGTH) {
+        return { ok: false, error: 'CAPTCHA verification failed' };
+    }
+
     const secret = resolveTurnstileSecret(env);
     if (!secret) return { ok: false, error: 'CAPTCHA service not configured' };
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), TURNSTILE_VERIFY_TIMEOUT_MS);
 
     try {
         const formBody = new URLSearchParams();
         formBody.set('secret', secret);
-        formBody.set('response', token);
+        formBody.set('response', normalizedToken);
         if (clientIp) formBody.set('remoteip', clientIp);
 
         const response = await fetch(TURNSTILE_VERIFY_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: formBody.toString(),
+            signal: controller.signal,
         });
 
         const payload = await response.json().catch(() => ({}));
@@ -604,23 +621,27 @@ const verifyTurnstileCaptcha = async ({ token, clientIp, env }) => {
             return { ok: false, error: 'CAPTCHA verification failed' };
         }
 
+        const normalizedExpectedAction = String(expectedAction || '').trim();
+        if (normalizedExpectedAction) {
+            const responseAction = String(payload?.action || '').trim();
+            if (responseAction !== normalizedExpectedAction) {
+                return { ok: false, error: 'CAPTCHA verification failed' };
+            }
+        }
+
         return { ok: true };
     } catch (error) {
+        if (error?.name === 'AbortError') {
+            return { ok: false, error: 'CAPTCHA verification failed' };
+        }
         console.error('CAPTCHA verification error:', error);
         return { ok: false, error: 'CAPTCHA verification failed' };
+    } finally {
+        clearTimeout(timeoutId);
     }
 };
 
 export const handleAuthRequest = async ({ body, env }) => {
-    const sql = getSqlClient(env);
-    if (!sql) return { status: 500, body: errorBody('Database not configured') };
-
-    try {
-        await ensureInitialized(sql);
-    } catch (error) {
-        return { status: 500, body: errorBody('Database initialization failed', error?.message) };
-    }
-
     const {
         action,
         username,
@@ -633,10 +654,6 @@ export const handleAuthRequest = async ({ body, env }) => {
         code,
         redirectUri,
     } = body || {};
-    const clientIp = normalizeIp(rawClientIp);
-    const normalizedUsername = String(username || '').trim();
-    const normalizedEmail = String(email || '').trim().toLowerCase();
-    const loginIdentifier = String(email || username || '').trim();
 
     if (action === 'oauth_start') {
         const providerName = String(provider || '').toLowerCase();
@@ -649,6 +666,23 @@ export const handleAuthRequest = async ({ body, env }) => {
         }
         return { status: 200, body: { ok: true, provider: providerName, authEndpoint: config.authEndpoint, scope: config.scope } };
     }
+
+    const sql = getSqlClient(env);
+    if (!sql) return { status: 500, body: errorBody('Database not configured') };
+
+    try {
+        await ensureInitialized(sql);
+    } catch (error) {
+        return { status: 500, body: errorBody('Database initialization failed', error?.message) };
+    }
+
+    const clientIp = normalizeIp(rawClientIp);
+    const normalizedUsername = String(username || '').trim();
+    const normalizedEmail = String(email || '').trim().toLowerCase();
+    const loginIdentifier = String(email || username || '').trim();
+    const normalizedLoginIdentifier = loginIdentifier.includes('@')
+        ? loginIdentifier.toLowerCase()
+        : loginIdentifier;
 
     // Validate Token (Session)
     if (action === 'validate') {
@@ -668,7 +702,7 @@ export const handleAuthRequest = async ({ body, env }) => {
     }
 
     if (!action || !password || (action === 'register' && (!normalizedUsername || !normalizedEmail)) || (action === 'login' && !loginIdentifier)) {
-        const socialAction = action === 'oauth_exchange';
+        const socialAction = action === 'oauth_exchange' || action === 'oauth_dev_mock';
         if (!socialAction) {
             return { status: 400, body: errorBody('Missing required fields') };
         }
@@ -694,6 +728,7 @@ export const handleAuthRequest = async ({ body, env }) => {
                     token: captchaToken,
                     clientIp,
                     env,
+                    expectedAction: TURNSTILE_REGISTER_ACTION,
                 });
                 if (!captchaResult.ok) {
                     await recordAuthAttempt(sql, {
@@ -736,7 +771,12 @@ export const handleAuthRequest = async ({ body, env }) => {
         }
 
         if (action === 'login') {
-            const [user] = await sql`SELECT * FROM users WHERE email = ${loginIdentifier} OR username = ${loginIdentifier}`;
+            const [user] = await sql`
+                SELECT *
+                FROM users
+                WHERE email = ${normalizedLoginIdentifier}
+                   OR username = ${loginIdentifier}
+            `;
             if (!user) return { status: 401, body: errorBody('Invalid credentials') };
 
             const hashedPassword = await hashPassword(password, user.salt);
@@ -769,12 +809,18 @@ export const handleAuthRequest = async ({ body, env }) => {
                 return { status: 400, body: errorBody('Missing OAuth code or redirectUri') };
             }
 
-            const identity = await exchangeSocialCode({
-                provider: providerName,
-                code: String(code),
-                redirectUri: String(redirectUri),
-                env,
-            });
+            let identity = null;
+            try {
+                identity = await exchangeSocialCode({
+                    provider: providerName,
+                    code: String(code),
+                    redirectUri: String(redirectUri),
+                    env,
+                });
+            } catch (exchangeError) {
+                console.error('OAuth exchange failed:', exchangeError);
+                return { status: 401, body: errorBody('OAuth login failed') };
+            }
 
             const user = await resolveOrCreateSocialUser(sql, identity);
             const oauthToken = generateToken();
@@ -790,6 +836,42 @@ export const handleAuthRequest = async ({ body, env }) => {
                     token: oauthToken,
                     user: { id: user.id, username: user.username, email: user.email },
                     provider: providerName,
+                },
+            };
+        }
+
+        if (action === 'oauth_dev_mock') {
+            if (!isDevSocialAuthAllowed(env)) {
+                return { status: 403, body: errorBody('Dev social auth bypass is disabled') };
+            }
+
+            const providerName = String(provider || '').toLowerCase();
+            if (!SOCIAL_PROVIDERS.has(providerName)) {
+                return { status: 400, body: errorBody('Unsupported social provider') };
+            }
+
+            const identity = {
+                provider: providerName,
+                providerUserId: `dev_${providerName}_local`,
+                email: `dev_${providerName}@social.airdox.local`,
+                username: `${providerName}_local_dev`,
+            };
+
+            const user = await resolveOrCreateSocialUser(sql, identity);
+            const oauthToken = generateToken();
+            await sql`
+                INSERT INTO sessions (id, user_id)
+                VALUES (${oauthToken}, ${user.id});
+            `;
+
+            return {
+                status: 200,
+                body: {
+                    ok: true,
+                    token: oauthToken,
+                    user: { id: user.id, username: user.username, email: user.email },
+                    provider: providerName,
+                    mock: true,
                 },
             };
         }

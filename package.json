@@ -28,6 +28,7 @@
     "agent:audit:write": "node scripts/agent-audit.mjs --write",
     "agent:jobs:validate": "node scripts/agent-job-validator.mjs",
     "agent:jobs:run": "node scripts/agent-job-runner.mjs",
+    "designer:visual:check": "node scripts/designer-visual-quality-check.mjs",
     "agents:background": "node scripts/agent-background-cycle.mjs",
     "agents:background:deep": "node scripts/agent-background-cycle.mjs --deep",
     "repository:monitor": "node scripts/repository-monitor.mjs",
@@ -44,7 +45,9 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "db:generate": "drizzle-kit generate",
-    "deploy": "vite build && npx wrangler deploy"
+    "deploy": "vite build && npx wrangler deploy",
+    "backup:r2": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/backup-r2.ps1",
+    "backup:r2:task": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/register-r2-backup-task.ps1"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1037.0",

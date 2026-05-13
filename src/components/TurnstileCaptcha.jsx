@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { t } from '../utils/i18n';
 
 const TURNSTILE_SCRIPT_ID = 'airdox-turnstile-script';
 const TURNSTILE_SCRIPT_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+const TURNSTILE_LOAD_TIMEOUT_MS = 12000;
 
 let turnstileLoadPromise = null;
 
@@ -12,6 +13,36 @@ const loadTurnstileScript = () => {
     if (turnstileLoadPromise) return turnstileLoadPromise;
 
     turnstileLoadPromise = new Promise((resolve, reject) => {
+        let timeoutId = null;
+
+        const clearLoadTimeout = () => {
+            if (timeoutId !== null) {
+                clearTimeout(timeoutId);
+                timeoutId = null;
+            }
+        };
+
+        const rejectLoad = (message = 'Failed to load Turnstile script') => {
+            clearLoadTimeout();
+            reject(new Error(message));
+        };
+
+        const resolveWithApi = () => {
+            clearLoadTimeout();
+            if (!window.turnstile) {
+                rejectLoad('Turnstile API unavailable after script load');
+                return;
+            }
+            resolve(window.turnstile);
+        };
+
+        const armTimeout = () => {
+            clearLoadTimeout();
+            timeoutId = setTimeout(() => {
+                rejectLoad('Turnstile script load timed out');
+            }, TURNSTILE_LOAD_TIMEOUT_MS);
+        };
+
         const attachNewScript = () => {
             const script = document.createElement('script');
             script.id = TURNSTILE_SCRIPT_ID;
@@ -21,29 +52,41 @@ const loadTurnstileScript = () => {
             script.setAttribute('data-turnstile-status', 'loading');
             script.onload = () => {
                 script.setAttribute('data-turnstile-status', 'loaded');
-                resolve(window.turnstile);
+                resolveWithApi();
             };
             script.onerror = () => {
                 script.setAttribute('data-turnstile-status', 'error');
-                reject(new Error('Failed to load Turnstile script'));
+                rejectLoad();
             };
             document.head.appendChild(script);
+            armTimeout();
         };
 
         const existing = document.getElementById(TURNSTILE_SCRIPT_ID);
         if (existing) {
+            if (window.turnstile) {
+                resolve(window.turnstile);
+                return;
+            }
             const existingStatus = existing.getAttribute('data-turnstile-status');
             if (existingStatus === 'error' || existingStatus === 'loaded') {
                 existing.remove();
                 attachNewScript();
                 return;
             }
-            existing.addEventListener('load', () => resolve(window.turnstile), { once: true });
-            existing.addEventListener('error', () => reject(new Error('Failed to load Turnstile script')), { once: true });
+            existing.setAttribute('data-turnstile-status', 'loading');
+            existing.addEventListener('load', resolveWithApi, { once: true });
+            existing.addEventListener('error', () => rejectLoad(), { once: true });
+            armTimeout();
             return;
         }
 
         attachNewScript();
+    });
+
+    turnstileLoadPromise = turnstileLoadPromise.catch((error) => {
+        turnstileLoadPromise = null;
+        throw error;
     });
 
     return turnstileLoadPromise;
@@ -52,8 +95,27 @@ const loadTurnstileScript = () => {
 const TurnstileCaptcha = ({ enabled = true, siteKey = '', onTokenChange, onStatusChange, retryKey = 0 }) => {
     const containerRef = useRef(null);
     const widgetIdRef = useRef(null);
+    const onTokenChangeRef = useRef(onTokenChange);
+    const onStatusChangeRef = useRef(onStatusChange);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const [localRetryKey, setLocalRetryKey] = useState(0);
+
+    useEffect(() => {
+        onTokenChangeRef.current = onTokenChange;
+    }, [onTokenChange]);
+
+    useEffect(() => {
+        onStatusChangeRef.current = onStatusChange;
+    }, [onStatusChange]);
+
+    const emitTokenChange = useCallback((token) => {
+        onTokenChangeRef.current?.(token);
+    }, []);
+
+    const emitStatusChange = useCallback((status) => {
+        onStatusChangeRef.current?.(status);
+    }, []);
 
     useEffect(() => {
         let disposed = false;
@@ -62,13 +124,23 @@ const TurnstileCaptcha = ({ enabled = true, siteKey = '', onTokenChange, onStatu
             if (!enabled || !containerRef.current) return;
             if (!siteKey) {
                 setError(t('captcha.missing'));
-                onStatusChange?.('missing');
+                setLoading(false);
+                emitStatusChange('missing');
                 return;
             }
             try {
-                onStatusChange?.('loading');
+                setError('');
+                setLoading(true);
+                emitStatusChange('loading');
                 const turnstile = await loadTurnstileScript();
-                if (disposed || !turnstile || !containerRef.current) return;
+                if (disposed) return;
+                if (!turnstile || !containerRef.current) {
+                    setLoading(false);
+                    setError(t('captcha.loadError'));
+                    emitStatusChange('error');
+                    emitTokenChange('');
+                    return;
+                }
 
                 if (widgetIdRef.current !== null) {
                     turnstile.remove(widgetIdRef.current);
@@ -78,34 +150,41 @@ const TurnstileCaptcha = ({ enabled = true, siteKey = '', onTokenChange, onStatu
                 widgetIdRef.current = turnstile.render(containerRef.current, {
                     sitekey: siteKey,
                     theme: 'dark',
+                    action: 'register',
                     callback: (token) => {
                         setError('');
-                        onStatusChange?.('verified');
-                        onTokenChange?.(token);
+                        setLoading(false);
+                        emitStatusChange('verified');
+                        emitTokenChange(token);
                     },
                     'expired-callback': () => {
-                        onStatusChange?.('expired');
-                        onTokenChange?.('');
+                        setLoading(false);
+                        setError('');
+                        emitStatusChange('expired');
+                        emitTokenChange('');
                     },
                     'error-callback': () => {
                         setError(t('captcha.loadError'));
-                        onStatusChange?.('error');
-                        onTokenChange?.('');
+                        setLoading(false);
+                        emitStatusChange('error');
+                        emitTokenChange('');
                         turnstileLoadPromise = null;
                     },
                 });
-                onStatusChange?.('ready');
+                setLoading(false);
+                emitStatusChange('ready');
             } catch {
                 if (!disposed) {
                     turnstileLoadPromise = null;
+                    setLoading(false);
                     setError(t('captcha.loadError'));
-                    onStatusChange?.('error');
-                    onTokenChange?.('');
+                    emitStatusChange('error');
+                    emitTokenChange('');
                 }
             }
         };
 
-        onTokenChange?.('');
+        emitTokenChange('');
         initWidget();
 
         return () => {
@@ -119,7 +198,7 @@ const TurnstileCaptcha = ({ enabled = true, siteKey = '', onTokenChange, onStatu
                 widgetIdRef.current = null;
             }
         };
-    }, [enabled, siteKey, onTokenChange, onStatusChange, retryKey, localRetryKey]);
+    }, [enabled, siteKey, retryKey, localRetryKey, emitTokenChange, emitStatusChange]);
 
     if (!enabled) return null;
     if (!siteKey) {
@@ -128,8 +207,9 @@ const TurnstileCaptcha = ({ enabled = true, siteKey = '', onTokenChange, onStatu
 
     const handleRetry = () => {
         setError('');
-        onTokenChange?.('');
-        onStatusChange?.('loading');
+        setLoading(true);
+        emitTokenChange('');
+        emitStatusChange('loading');
         turnstileLoadPromise = null;
         setLocalRetryKey((prev) => prev + 1);
     };
@@ -137,10 +217,11 @@ const TurnstileCaptcha = ({ enabled = true, siteKey = '', onTokenChange, onStatu
     return (
         <div className="turnstile-field">
             <div ref={containerRef} className="turnstile-widget" />
+            {loading && !error && <div className="captcha-loading-hint">{t('captcha.loading')}</div>}
             {error && (
                 <div className="auth-error-row">
                     <div className="auth-error">{error}</div>
-                    <button type="button" className="auth-retry-btn" onClick={handleRetry}>
+                    <button type="button" className="auth-retry-btn" onClick={handleRetry} disabled={loading}>
                         {t('captcha.retry')}
                     </button>
                 </div>

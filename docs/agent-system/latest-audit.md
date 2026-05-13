@@ -1,16 +1,16 @@
 # AIRDOX Agent Audit
 
-Generated: 2026-05-06T03:42:47.426Z
+Generated: 2026-05-08T09:12:28.319Z
 Repository: D:\webseeite-main
 Controller: Master Controller
 
 ## Summary
 
-- Average score: 93/100
+- Average score: 92/100
 - Gate status: pass
-- Test files: 20
+- Test files: 21
 - CSS files: 21
-- Uncommitted paths: 6
+- Uncommitted paths: 51
 
 ## Agent Scores
 
@@ -23,7 +23,7 @@ Controller: Master Controller
 | Designer | 100/100 | Visual Design, Creative Direction und Social-Asset-Qualitaet. |
 | Mentor | 100/100 | Wissensspeicherung, Lernschleifen, Prozessverbesserung und Agenten-Weiterentwicklung. |
 | Refactor | 86/100 | Systemoptimierung, Verschlankung, Architekturqualitaet und technische Effizienz. |
-| Repository | 95/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
+| Repository | 87/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
 
 ## Webbie
 
@@ -67,10 +67,10 @@ Next actions:
 - PASS: Standard Quality Scripts - Build, Lint, Unit- und E2E-Tests sind in package.json verankert.
 - PASS: Test Runner konfiguriert - Vitest und Playwright sind konfiguriert.
 - PASS: ESLint konfiguriert - ESLint Flat Config ist vorhanden.
-- PASS: Ausreichende Testdateien - 20 Test-/Spec-Dateien gefunden.
+- PASS: Ausreichende Testdateien - 21 Test-/Spec-Dateien gefunden.
 - PASS: Worker/API-Testsignale - Server-/API-Code ist vorhanden; dedizierte Testsignale werden geprueft.
 - PASS: Web-CI-Gate vorhanden - Warnung, wenn GitHub Actions kein Web-Lint/Test/Build-Gate enthaelt.
-- WARN: Arbeitsbaum sauber - 6 uncommitted Pfade gefunden; vor Releases klaeren.
+- WARN: Arbeitsbaum sauber - 51 uncommitted Pfade gefunden; vor Releases klaeren.
 - PASS: Env-Beispiel vorhanden - .env.example ist fuer sichere Konfiguration vorhanden.
 
 Next actions:
@@ -131,7 +131,7 @@ Next actions:
 - PASS: Quality-Skripte vorhanden - Web- und Desktop-Quality-Gates sind in package.json abrufbar.
 - PASS: Generierte Ordner aus Lint ausgeschlossen - Warnung, wenn generierte Build-/Wrangler-Artefakte vom Lint erfasst werden.
 - PASS: Root-HTML-Duplikate reduziert - Keine Root-HTML-Kopien neben den Vite-Einstiegen gefunden.
-- WARN: Grosse JSX-Dateien begrenzt - src/desktop/DesktopApp.jsx hat 1390 Zeilen.
+- WARN: Grosse JSX-Dateien begrenzt - src/desktop/DesktopApp.jsx hat 1394 Zeilen.
 - PASS: Desktop Services modularisiert - Desktop-Main-Logik ist in mehrere Services geschnitten.
 - WARN: Deployment-Ziele konsolidiert - Warnung, wenn mehrere Deployment-Ziele parallel gepflegt werden muessen.
 - PASS: Dependency-Footprint kontrolliert - 10 Runtime-Abhaengigkeiten gefunden.
@@ -149,7 +149,7 @@ Next actions:
 - PASS: Branching-Hinweise vorhanden - Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist.
 - PASS: Commit-Konvention dokumentiert - Warnung, wenn Commit-Typen nicht klar festgelegt sind.
 - PASS: Change-Tracking vorhanden - Warnung, wenn Entscheidungen oder Audit-Historie fehlen.
-- PASS: Arbeitsbaum releasebereit - 6 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
+- WARN: Arbeitsbaum releasebereit - 51 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
 - WARN: Parallele Deployment-Konfigs begrenzt - Warnung, wenn zu viele Deployment-Targets parallel gepflegt werden.
 - PASS: Gefaehrdete Artefaktordner ignoriert - Warnung, wenn Build-/Wrangler-/Release-Artefakte nicht sauber ignoriert werden.
 

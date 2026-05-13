@@ -3,7 +3,7 @@ export const ASSISTANT_KNOWLEDGE = [
     id: 'online-publish',
     title: 'Set online stellen (Website verfügbar machen)',
     keywords: ['online', 'website', 'webseite', 'verfügbar', 'set online stellen', 'veröffentlichen', 'publizieren', 'go live', 'live stellen'],
-    answer: 'So stellst du ein Set online:\n1) Workspace verbinden und Settings speichern.\n2) Im Tab "Set Import" Audio/Cover/Tracklist laden.\n3) Draft prüfen (id, title, file, tracks).\n4) "Publizieren" für Manifest/Assets oder direkt "Alles ausführen & Live" für Publish + Build/Deploy.\n5) Danach im Browser prüfen, ob das Set in der Music-Sektion sichtbar ist.\n\nBei Fehlern: Build-/Deploy-Command in Advanced Settings prüfen.',
+    answer: 'So stellst du ein Set online:\n1) Workspace verbinden und Settings speichern.\n2) Im Tab "Set Import" Audio/Cover/Tracklist laden.\n3) Draft prüfen (id, title, file, tracks).\n4) "Publish nach Settings" nutzen, wenn Auto Deploy aktiv ist, oder "Alles ausführen & Live" für die erzwungene Live-Pipeline.\n5) Erst wenn der Publish Log den Schritt "verify" erfolgreich zeigt, ist das Set wirklich live.\n\nBei Fehlern: Build-/Deploy-Command in Advanced Settings prüfen.',
     actions: ['navigate:import'],
   },
   {
@@ -24,7 +24,7 @@ export const ASSISTANT_KNOWLEDGE = [
     id: 'publish',
     title: 'Publizieren und live stellen',
     keywords: ['publish', 'publizieren', 'live', 'deploy', 'build', 'go live', 'pipeline', 'alles ausführen'],
-    answer: 'Publish vs. Go Live:\n\n• "Publish Set" → Nur Manifest + Assets aktualisieren (lokal)\n• "Alles ausführen & Live" → Volle Pipeline: Upload → Manifest → Build → Deploy\n\nPipeline-Schritte:\n1) Preflight: Workspace + Manifest validieren\n2) Upload: Audio nach R2 hochladen\n3) Manifest: musicSets.js aktualisieren\n4) Build: Frontend neu bauen\n5) Deploy: Via Wrangler/Cloudflare deployen\n6) Git: Commit + Push (wenn aktiviert)\n\nBei Fehler: Prüfe Build-/Deploy-Command in Advanced Settings.',
+    answer: 'Publish vs. Go Live:\n\n• "Publish nach Settings" → Nutzt deine gespeicherten Flight-Deck-Settings. Wenn Auto Deploy aktiv ist, läuft Upload → Manifest → Build → Deploy → Verify.\n• "Alles ausführen & Live" → Erzwingt die Live-Pipeline auch dann, wenn Auto Build/Deploy in den Settings aus waren.\n\nPipeline-Schritte:\n1) Preflight: Workspace + Manifest validieren\n2) Upload: Audio nach R2 hochladen\n3) Manifest: musicSets.js aktualisieren\n4) Build: Frontend neu bauen\n5) Deploy: Via Wrangler/Cloudflare deployen\n6) Verify: Live-Bundle auf der Website gegen Set-ID und Track-Tokens prüfen\n7) Git: Commit + Push (wenn aktiviert)\n\nBei Fehler: Prüfe Build-/Deploy-Command in Advanced Settings.',
     actions: ['navigate:import'],
   },
   {

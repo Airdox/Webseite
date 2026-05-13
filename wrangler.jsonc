@@ -8,6 +8,11 @@
     "not_found_handling": "single-page-application",
     "binding": "ASSETS"
   },
+  "vars": {
+    "REQUIRE_CAPTCHA": "true",
+    "OAUTH_REDIRECT_BASE_URL": "https://airdox.info",
+    "PUBLIC_APP_ORIGIN": "https://airdox.info"
+  },
   "r2_buckets": [
     {
       "binding": "PUBLIC",

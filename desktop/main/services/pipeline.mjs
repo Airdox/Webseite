@@ -344,6 +344,10 @@ const pushLog = (logs, step, status, detail) => {
   });
 };
 
+const sleep = (ms) => new Promise((resolve) => {
+  setTimeout(resolve, ms);
+});
+
 const TRACK_TIME_PATTERN = /^\d{1,2}:\d{2}(?::\d{2})?$/;
 
 const hasSeekableTrackTime = (value = '') => {
@@ -374,6 +378,31 @@ const getSeekableTracks = (tracks = []) => {
   ));
 };
 
+const PLACEHOLDER_SET_TITLE_PATTERN = /^airdox set(?: #\d+)?$/i;
+
+const formatPublishedAtLabel = (rawValue = '') => {
+  const match = String(rawValue || '').trim().match(/^(20\d{2})-(\d{2})-(\d{2})$/);
+  if (!match) return '';
+  const [, year, month, day] = match;
+  return `${day}.${month}.${year}`;
+};
+
+const buildAutoSetTitle = (draft = {}) => {
+  const dateLabel = String(draft.date || '').trim();
+  if (dateLabel) return `LIVE SET ${dateLabel}`;
+
+  const publishedAtLabel = formatPublishedAtLabel(draft.publishedAt);
+  if (publishedAtLabel) return `LIVE SET ${publishedAtLabel}`;
+
+  const idDateMatch = String(draft.generatedBaseId || draft.id || '').match(/(20\d{2})[_-](\d{2})[_-](\d{2})/);
+  if (idDateMatch) {
+    const [, year, month, day] = idDateMatch;
+    return `LIVE SET ${day}.${month}.${year}`;
+  }
+
+  return 'LIVE SET';
+};
+
 const fetchTextOrThrow = async (url) => {
   const response = await fetch(url, {
     headers: { 'cache-control': 'no-cache' },
@@ -384,12 +413,18 @@ const fetchTextOrThrow = async (url) => {
   return response.text();
 };
 
+const withCacheBuster = (url, key = 'flightdeckVerify') => {
+  const parsed = new URL(url);
+  parsed.searchParams.set(key, String(Date.now()));
+  return parsed.href;
+};
+
 const getScriptAssetUrls = (html = '', siteUrl = '') => {
   const matches = [...String(html).matchAll(/<script\b[^>]*\bsrc=["']([^"']+\.js[^"']*)["'][^>]*>/gi)];
   return matches.map((match) => new URL(match[1], siteUrl).href);
 };
 
-const verifyLiveBundle = async ({ siteUrl, publishDraft }) => {
+const verifyLiveBundleOnce = async ({ siteUrl, publishDraft }) => {
   const baseUrl = String(siteUrl || DEFAULT_FLIGHT_DECK_SETTINGS.liveSiteUrl).trim();
   const verifyUrl = new URL(baseUrl);
   verifyUrl.searchParams.set('flightdeckVerify', String(Date.now()));
@@ -400,7 +435,9 @@ const verifyLiveBundle = async ({ siteUrl, publishDraft }) => {
     throw new Error(`Live verify failed: no JavaScript bundle found at ${baseUrl}`);
   }
 
-  const bundleText = (await Promise.all(scriptUrls.map(fetchTextOrThrow))).join('\n');
+  const bundleText = (await Promise.all(scriptUrls.map((scriptUrl) => (
+    fetchTextOrThrow(withCacheBuster(scriptUrl, 'v'))
+  )))).join('\n');
   const seekableTracks = getSeekableTracks(publishDraft.tracks);
   const firstTrack = seekableTracks[0];
   const lastTrack = seekableTracks[seekableTracks.length - 1];
@@ -423,6 +460,29 @@ const verifyLiveBundle = async ({ siteUrl, publishDraft }) => {
     scriptCount: scriptUrls.length,
     checkedTokens: requiredTokens.length,
   };
+};
+
+const verifyLiveBundle = async ({ siteUrl, publishDraft }) => {
+  const maxAttempts = 12;
+  const delayMs = 5000;
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const result = await verifyLiveBundleOnce({ siteUrl, publishDraft });
+      return {
+        ...result,
+        attempts: attempt,
+      };
+    } catch (error) {
+      lastError = error;
+      if (attempt < maxAttempts) {
+        await sleep(delayMs);
+      }
+    }
+  }
+
+  throw lastError || new Error('Live verify failed.');
 };
 
 const quotePath = (relativePath) => `"${relativePath.replace(/\\/g, '\\\\')}"`;
@@ -556,6 +616,7 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
   const logs = [];
   const changedPaths = [];
   const publishDraft = { ...draft };
+  let currentSets = null;
   const defaultCoverPath = String(mergedSettings.defaultCoverPath || '/assets/airdox-vinyl.jpg').trim();
   const configuredCoverPolicy = Boolean(mergedSettings.extractEmbeddedCover);
   publishDraft.file = String(publishDraft.file || '').trim();
@@ -565,7 +626,7 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
   }
 
   if (publishDraft.sourceAudioPath || publishDraft.generatedBaseId || publishDraft.isNew) {
-    const currentSets = await readSets(workspaceRoot);
+    currentSets = await readSets(workspaceRoot);
     const resolvedIdentity = resolveUniqueSetDraftIdentity(publishDraft, {
       existingSets: currentSets,
     });
@@ -584,8 +645,33 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
     Object.assign(publishDraft, resolvedIdentity);
   }
 
-  if (/^airdox set(?: #\d+)?$/i.test(String(publishDraft.title || '').trim())) {
-    throw new Error('Bitte vergib einen echten Set-Namen. Das erkannte Datum bleibt intern erhalten, wird aber nicht mehr als Set-Titel verwendet.');
+  if (PLACEHOLDER_SET_TITLE_PATTERN.test(String(publishDraft.title || '').trim())) {
+    if (!currentSets) {
+      currentSets = await readSets(workspaceRoot);
+    }
+    const previousTitle = String(publishDraft.title || '').trim();
+    const fallbackTitle = buildAutoSetTitle(publishDraft);
+    const resolvedFallbackIdentity = resolveUniqueSetDraftIdentity(
+      {
+        ...publishDraft,
+        title: fallbackTitle,
+        generatedBaseTitle: fallbackTitle,
+      },
+      {
+        existingSets: currentSets,
+      },
+    );
+    Object.assign(publishDraft, resolvedFallbackIdentity);
+    pushLog(
+      logs,
+      'identity',
+      'info',
+      `Replaced generic set title "${previousTitle}" with automatic title "${publishDraft.title}".`,
+    );
+  }
+
+  if (PLACEHOLDER_SET_TITLE_PATTERN.test(String(publishDraft.title || '').trim())) {
+    throw new Error('Konnte keinen publish-faehigen Set-Titel ableiten. Bitte vergib einen echten Set-Namen im Draft.');
   }
 
   const seekableTrackCount = getSeekableTrackCount(publishDraft.tracks);
@@ -684,7 +770,7 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
         logs,
         'verify',
         'success',
-        `Verified live bundle on ${verifyResult.siteUrl}: ${verifyResult.checkedTokens} set/track tokens across ${verifyResult.scriptCount} script asset(s).`,
+        `Verified live bundle on ${verifyResult.siteUrl}: ${verifyResult.checkedTokens} set/track tokens across ${verifyResult.scriptCount} script asset(s) after ${verifyResult.attempts} attempt(s).`,
       );
     }
   }

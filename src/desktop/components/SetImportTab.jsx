@@ -119,11 +119,17 @@ const SetImportTab = ({
             {publishBusy && <LoaderCircle className="fd-spin" size={18} aria-hidden="true" />}
           </div>
           <div className="fd-toolbar-actions">
-            <button type="button" className="fd-button primary" onClick={onPublish} disabled={busy || !draft.id || !draft.file}>
+            <button
+              type="button"
+              className="fd-button primary"
+              onClick={onPublish}
+              disabled={busy || !draft.id || !draft.file}
+              title="Fuehrt Publish gemaess deinen Flight-Deck-Settings aus. Wenn Auto Deploy aktiv ist, wird gebaut, deployed und live verifiziert."
+            >
               {publishBusy && publishStatus?.mode === 'publish'
                 ? <LoaderCircle className="fd-spin" size={16} />
                 : <Upload size={16} />}
-              {publishBusy && publishStatus?.mode === 'publish' ? 'Publish laeuft...' : 'Publish Set'}
+              {publishBusy && publishStatus?.mode === 'publish' ? 'Publish laeuft...' : 'Publish nach Settings'}
             </button>
             <button
               type="button"

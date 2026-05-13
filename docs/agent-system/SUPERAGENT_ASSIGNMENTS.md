@@ -11,6 +11,8 @@ Strategische Prioritaet:
 - Primaeres Systemziel ist Reichweitenwachstum und nachhaltiger Audience-Aufbau.
 - Manni fuehrt dieses Ziel operativ ueber `docs/agent-system/MANNI_GROWTH_PLAYBOOK.md`.
 - Der aktive Reichweiten-Sprint liegt in `docs/agent-system/REACH_SPRINT_2026-05-02.md`.
+- Der verbindliche Meilenstein- und Messplan liegt in `docs/agent-system/AIRDOX_REACH_MASTERPLAN_2026-05-08.md`.
+- Die verbindliche Einsatzplanung fuer alle weiteren Rollen liegt in `docs/agent-system/AIRDOX_AGENT_EXECUTION_CALENDAR_2026-05-08.md`.
 
 Informationspflicht:
 - Fehlen fuer eine Aufgabe Daten oder Kontext, muss der zustaendige Agent aktiv nachfragen oder die Informationen eigenstaendig beschaffen.

@@ -13,7 +13,8 @@ vi.stubGlobal('IntersectionObserver', class {
 
 // Mock i18n
 vi.mock('../../utils/i18n', () => ({
-    t: (key) => key
+    t: (key) => key,
+    getCurrentLocale: () => 'de'
 }));
 
 // Mock Music Sets

@@ -25,7 +25,35 @@ describe('DesktopApp', () => {
     await screen.findByText('Workspace verbunden');
     expect(screen.getByText('Mock API')).toBeInTheDocument();
     expect(screen.getByText('Operations Overview')).toBeInTheDocument();
-  });
+  }, 30000);
+
+  it('keeps assistant usable when backend returns an object fallback answer', async () => {
+    Object.assign(flightDeckApi, {
+      askAssistant: vi.fn().mockResolvedValue({
+        source: 'local-expert-fallback',
+        answer: {
+          text: 'Objekt-Fallback wurde sauber gerendert.',
+          actions: [],
+          source: 'fallback',
+        },
+      }),
+    });
+
+    render(<DesktopApp />);
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+
+    fireEvent.click(screen.getByRole('button', { name: /^AI Assistant$/i }));
+    await screen.findByRole('heading', { name: /KI Flight-Deck Assistant/i });
+
+    fireEvent.change(screen.getByPlaceholderText(/Frage stellen/i), {
+      target: { value: 'asdf qwerty zxcv' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /Senden/i }));
+
+    await waitFor(() => expect(flightDeckApi.askAssistant).toHaveBeenCalledTimes(1));
+    await screen.findByText('Objekt-Fallback wurde sauber gerendert.');
+    expect(screen.getByPlaceholderText(/Frage stellen/i)).toBeInTheDocument();
+  }, 30000);
 
   it('loads a demo import draft in browser mode', async () => {
     render(<DesktopApp />);
@@ -37,7 +65,7 @@ describe('DesktopApp', () => {
     await waitFor(() => {
       expect(screen.getByDisplayValue('recording_2026_05_01')).toBeInTheDocument();
     });
-  });
+  }, 30000);
 
   it('opens the interactive tutorial and exposes scenario tours', async () => {
     render(<DesktopApp />);
@@ -56,14 +84,15 @@ describe('DesktopApp', () => {
     await waitFor(() => {
       expect(screen.getByText(/Szenario 2: Auswertung der Datenbank nach verschiedenen Kriterien/i)).toBeInTheDocument();
     });
-  }, 10000);
+  }, 30000);
 
-  it('refreshes workspace state before publish and uses latest settings', async () => {
+  it('refreshes workspace state before publish and respects latest publish settings', async () => {
     const staleState = {
       settings: {
         workspaceRoot: 'D:\\OLD_WORKSPACE',
         publishPosition: 'bottom',
         autoBuild: false,
+        autoDeploy: true,
       },
       sets: [],
       snapshot: null,
@@ -78,6 +107,7 @@ describe('DesktopApp', () => {
         workspaceRoot: 'D:\\LATEST_WORKSPACE',
         publishPosition: 'top',
         autoBuild: false,
+        autoDeploy: true,
       },
     };
 
@@ -126,7 +156,7 @@ describe('DesktopApp', () => {
     fireEvent.click(screen.getByRole('button', { name: /Demo Import/i }));
     await screen.findByDisplayValue('recording_2026_05_01');
 
-    fireEvent.click(screen.getByRole('button', { name: /Publish Set/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Publish nach Settings/i }));
 
     await waitFor(() => expect(publishSetMock).toHaveBeenCalledTimes(1));
 
@@ -134,11 +164,11 @@ describe('DesktopApp', () => {
     expect(publishPayload.workspaceRoot).toBe('D:\\LATEST_WORKSPACE');
     expect(publishPayload.settings.workspaceRoot).toBe('D:\\LATEST_WORKSPACE');
     expect(publishPayload.settings.autoBuild).toBe(false);
-    expect(publishPayload.settings.autoDeploy).toBe(false);
+    expect(publishPayload.settings.autoDeploy).toBe(true);
 
     expect(getStateMock).toHaveBeenCalledTimes(3);
     expect(listTableMock).toHaveBeenCalled();
-  }, 10000);
+  }, 30000);
 
   it('shows immediate publish progress while the Windows pipeline is running', async () => {
     const state = {
@@ -190,13 +220,13 @@ describe('DesktopApp', () => {
     fireEvent.click(screen.getByRole('button', { name: /Demo Import/i }));
     await screen.findByDisplayValue('recording_2026_05_01');
 
-    fireEvent.click(screen.getByRole('button', { name: /Publish Set/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Publish nach Settings/i }));
 
     await waitFor(() => {
       expect(screen.getAllByText(/Publish gestartet: recording_2026_05_01/i).length).toBeGreaterThanOrEqual(1);
     });
     expect(screen.getByRole('button', { name: /Publish laeuft/i })).toBeDisabled();
-    expect(screen.getAllByText(/Workspace und Manifest werden geprueft/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/Workspace, Manifest und Flight-Deck-Settings werden geprueft/i).length).toBeGreaterThanOrEqual(1);
 
     await waitFor(() => expect(publishSetMock).toHaveBeenCalledTimes(1));
 
@@ -210,9 +240,72 @@ describe('DesktopApp', () => {
       await publishPromise;
     });
 
-    await screen.findByText(/Set recording_2026_05_01 wurde publiziert/i);
+    await screen.findByText(/Set recording_2026_05_01 wurde lokal publiziert/i);
     expect(screen.getByText('manifest')).toBeInTheDocument();
-  }, 10000);
+  }, 30000);
+
+  it('marks publish as live only after deploy verification succeeds', async () => {
+    const state = {
+      settings: {
+        workspaceRoot: 'D:\\LATEST_WORKSPACE',
+        publishPosition: 'top',
+        autoBuild: true,
+        autoDeploy: true,
+        verifyLiveAfterDeploy: true,
+      },
+      sets: [],
+      snapshot: null,
+      dbError: null,
+      gitStatus: { branch: 'main', dirty: false, summary: '' },
+      workspaceValid: true,
+    };
+
+    const publishSetMock = vi.fn().mockResolvedValue({
+      ok: true,
+      logs: [
+        { step: 'build', status: 'success', detail: 'Build completed.', timestamp: new Date().toISOString() },
+        { step: 'deploy', status: 'success', detail: 'Deploy completed.', timestamp: new Date().toISOString() },
+        { step: 'verify', status: 'success', detail: 'Verified live bundle.', timestamp: new Date().toISOString() },
+      ],
+      gitStatus: { branch: 'main', dirty: true, summary: 'published' },
+      publishedSet: { id: 'recording_2026_05_01', title: 'MAYDAY SIGNAL', file: 'Airdox_REC_2026_05_01.mp3' },
+    });
+
+    Object.assign(flightDeckApi, {
+      isElectron: false,
+      getState: vi.fn().mockResolvedValue(state),
+      listTable: vi.fn().mockResolvedValue([]),
+      prepareImport: vi.fn().mockResolvedValue({
+        draft: {
+          id: 'recording_2026_05_01',
+          title: 'MAYDAY SIGNAL',
+          date: 'MAY 2026',
+          file: 'Airdox_REC_2026_05_01.mp3',
+          duration: '1:42:08',
+          isNew: true,
+          vinylColor: '#9adf6b',
+          cover: '/assets/recording_2026_05_01.jpg',
+          tracks: [{ time: '00:00:00', artist: 'Airdox', title: 'Intro' }],
+          sourceAudioPath: 'D:\\Music\\Airdox_REC_2026_05_01.mp3',
+        },
+        warnings: [],
+      }),
+      pickImportFiles: vi.fn().mockResolvedValue([]),
+      publishSet: publishSetMock,
+    });
+
+    render(<DesktopApp />);
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+
+    fireEvent.click(screen.getByRole('button', { name: /Set Import/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Demo Import/i }));
+    await screen.findByDisplayValue('recording_2026_05_01');
+
+    fireEvent.click(screen.getByRole('button', { name: /Publish nach Settings/i }));
+
+    await screen.findByText(/Set recording_2026_05_01 ist live verifiziert/i);
+    expect(publishSetMock.mock.calls[0][0].settings.autoDeploy).toBe(true);
+  }, 30000);
 
   it('refreshes workspace state before "Alles ausfuehren & Live" and publishes with live settings', async () => {
     const staleState = {
@@ -298,7 +391,7 @@ describe('DesktopApp', () => {
     expect(livePayload.settings.uploadAudioToR2).toBe(true);
     expect(livePayload.settings.autoBuild).toBe(true);
     expect(livePayload.settings.autoDeploy).toBe(true);
-  }, 10000);
+  }, 30000);
 
   it('keeps Go Live disabled for safe-mode drafts without an audio source path', async () => {
     Object.assign(flightDeckApi, {

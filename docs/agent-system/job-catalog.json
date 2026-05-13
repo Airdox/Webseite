@@ -195,6 +195,35 @@
       ]
     },
     {
+      "id": "designer-daily-visual-quality",
+      "title": "Daily website visual quality inspection",
+      "owner": "Designer",
+      "execution": "script",
+      "script": "designer:visual:check",
+      "scriptArgs": [
+        "--strict"
+      ],
+      "trigger": {
+        "events": [
+          "daily_visual_review"
+        ],
+        "statuses": [
+          "daily"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "website_visual",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-designer-visual-quality.json",
+        "docs/agent-system/latest-designer-visual-quality.md",
+        "docs/agent-system/proof/designer-visual-quality/*"
+      ]
+    },
+    {
       "id": "designer-pdf-draft-build",
       "title": "Build AIRDOX branded PDF draft pack",
       "owner": "Designer",

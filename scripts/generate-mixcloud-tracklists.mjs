@@ -424,7 +424,8 @@ const processCueFile = async ({
   const content = await fs.readFile(sourceFile, 'utf8');
   const parsedCue = parseCueDocument(content, { sourceFile });
   if (parsedCue.validation.errors.length > 0) {
-    throw new Error(`Tracklist validation failed for ${path.basename(sourceFile)}: ${parsedCue.validation.errors.join(' ')}`);
+    console.warn(`[tracklist-automation] Skipping ${path.basename(sourceFile)}: ${parsedCue.validation.errors.join(' ')}`);
+    return null;
   }
   const deduped = dedupeTracks(parsedCue.tracks, dedupeWindowSeconds);
   const outputs = await writeTracklistFiles({
@@ -584,7 +585,7 @@ const main = async () => {
     const summary = [];
     for (const sourceFile of sourceFiles) {
       const item = await processByMode(sourceFile);
-      summary.push(item);
+      if (item) summary.push(item);
     }
 
     const summaryPath = await writeSummary({ outputRoot, mode, items: summary });
@@ -665,24 +666,26 @@ const main = async () => {
         pendingStability.delete(sourceFile);
         fileSignatures.set(sourceFile, signature);
         const item = await processByMode(sourceFile);
-        processedItems.set(sourceFile, item);
-        await writeSummary({
-          outputRoot,
-          mode,
-          items: [...processedItems.values()],
-          summaryName: '_summary.watch.json',
-        });
-        console.log(`[watch] updated: ${sourceFile}`);
-        console.log(`        -> ${item.textPath} (${item.trackCount} tracks)`);
-        if (item.validationStatus) {
-          console.log(`        -> validation ${item.validationStatus}`);
-        }
-        if (item.localTextPath) {
-          console.log(`        -> local ${item.localTextPath}`);
-        }
-        if (item.mp3Status) {
-          const durationLabel = Number.isFinite(item.durationSeconds) ? `, ${Math.round(item.durationSeconds / 60)}min` : '';
-          console.log(`        -> mp3 ${item.mp3Status}${durationLabel}${item.mp3Path ? ` (${item.mp3Path})` : ''}`);
+        if (item) {
+          processedItems.set(sourceFile, item);
+          await writeSummary({
+            outputRoot,
+            mode,
+            items: [...processedItems.values()],
+            summaryName: '_summary.watch.json',
+          });
+          console.log(`[watch] updated: ${sourceFile}`);
+          console.log(`        -> ${item.textPath} (${item.trackCount} tracks)`);
+          if (item.validationStatus) {
+            console.log(`        -> validation ${item.validationStatus}`);
+          }
+          if (item.localTextPath) {
+            console.log(`        -> local ${item.localTextPath}`);
+          }
+          if (item.mp3Status) {
+            const durationLabel = Number.isFinite(item.durationSeconds) ? `, ${Math.round(item.durationSeconds / 60)}min` : '';
+            console.log(`        -> mp3 ${item.mp3Status}${durationLabel}${item.mp3Path ? ` (${item.mp3Path})` : ''}`);
+          }
         }
       }
     } catch (error) {

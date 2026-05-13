@@ -1,9 +1,30 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Check, Share2 } from 'lucide-react';
-import { t } from '../utils/i18n';
+import { getCurrentLocale, t } from '../utils/i18n';
 import { buildAudioApiHref } from '../lib/set-access';
 import { buildSetAnchorId, buildSetShareUrl } from '../lib/set-links';
 import { getSeekableTracks, parseTrackTimeToSeconds } from '../utils/timeUtils';
+
+const DE_MONTH_TOKEN_MAP = {
+    MAY: 'MAI',
+    OCT: 'OKT',
+    DEC: 'DEZ'
+};
+
+const formatSetDateLabel = (rawDate = '') => {
+    const value = String(rawDate || '').trim();
+    if (!value || getCurrentLocale() !== 'de') return value;
+
+    const parts = value.split(/\s+/);
+    if (!parts.length) return value;
+
+    const firstToken = parts[0].replace('.', '').toUpperCase();
+    if (DE_MONTH_TOKEN_MAP[firstToken]) {
+        parts[0] = DE_MONTH_TOKEN_MAP[firstToken];
+        return parts.join(' ');
+    }
+    return value;
+};
 
 const SetCard = ({
     set,
@@ -18,9 +39,10 @@ const SetCard = ({
     onTrackClick,
     onVote
 }) => {
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
     const [isCopied, setIsCopied] = useState(false);
     const shareResetTimerRef = useRef(null);
+    const dateLabel = formatSetDateLabel(set.date);
 
     const seekableTracks = getSeekableTracks(set.tracks);
 
@@ -174,27 +196,13 @@ const SetCard = ({
                     </div>
                 )}
 
-                {isSetPlaying && (
-                    <div className="visualizer-container active">
-                        {[...Array(12)].map((_, i) => (
-                            <div
-                                key={i}
-                                className="visualizer-bar-animated"
-                                style={{
-                                    '--delay': `${i * 0.15}s`,
-                                    '--height': `${20 + (i * 7) % 30}px`
-                                }}
-                            />
-                        ))}
-                    </div>
-                )}
             </div>
 
             <div className="set-info">
                 <h3 className="set-title">{set.title}</h3>
                 <div className="set-meta">
-                    <span className="set-date">{set.date}</span>
-                    {set.duration && <span className="set-duration">{set.duration}</span>}
+                    <span className="set-date">{dateLabel}</span>
+                    {set.duration && <span className="set-duration"> | {set.duration}</span>}
                 </div>
 
                 <div className="set-actions">

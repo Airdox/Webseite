@@ -34,10 +34,20 @@ const getSourceLabel = (source = '') => {
   return SOURCE_LABELS[source] || { label: source || 'Lokal', color: 'var(--airdox-muted)' };
 };
 
+const normalizeAssistantText = (value) => {
+  if (typeof value === 'string') return value;
+  if (value && typeof value === 'object') {
+    if (typeof value.text === 'string') return value.text;
+    if (typeof value.answer === 'string') return value.answer;
+  }
+  return String(value ?? '');
+};
+
 const formatMessageText = (text = '') => {
+  const safeText = normalizeAssistantText(text);
   // Split into segments: code blocks, inline code, and regular text
   const parts = [];
-  let remaining = text;
+  let remaining = safeText;
   let key = 0;
 
   // Handle code blocks (```)
@@ -57,7 +67,7 @@ const formatMessageText = (text = '') => {
   }
 
   if (parts.length === 0) {
-    parts.push({ type: 'text', content: text, key: 0 });
+    parts.push({ type: 'text', content: safeText, key: 0 });
   }
 
   return parts.map((part) => {
@@ -218,12 +228,13 @@ const AssistantTab = ({
         if (result?.answer) {
           // Merge: Backend answer + local actions
           const backendSource = result.source || 'backend';
+          const backendText = normalizeAssistantText(result.answer);
           if (backendSource.startsWith('ollama:') || backendSource === 'wiki') {
-            finalText = result.answer;
+            finalText = backendText;
             finalSource = backendSource;
           } else if (typeof localResult !== 'string' && localResult.source === 'fallback') {
             // Backend had something, local didn't — use backend
-            finalText = result.answer;
+            finalText = backendText;
             finalSource = backendSource;
           }
         }
@@ -394,6 +405,7 @@ const AssistantTab = ({
           <button
             type="button"
             className="fd-button fd-assistant-send-btn"
+            aria-label="Senden"
             onClick={() => void send()}
             disabled={isThinking || !input.trim()}
           >
