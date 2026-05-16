@@ -1,0 +1,72 @@
+{
+  "generatedAt": "2026-05-16T15:35:12.767Z",
+  "version": "v2026-05-16",
+  "brandName": "AIRDOX",
+  "tokens": "docs/brand/airdox-brand-tokens.json",
+  "assets": [
+    {
+      "id": "reel-drop-peak",
+      "type": "reel",
+      "width": 1080,
+      "height": 1920,
+      "title": "PEAK MOMENT",
+      "subtitle": "FULL SET ONLINE",
+      "cta": "AIRDOX.INFO",
+      "safeArea": {
+        "top": 190,
+        "right": 90,
+        "bottom": 300,
+        "left": 90
+      },
+      "file": "public/brand-assets/v2026-05-16/reel-drop-peak.svg"
+    },
+    {
+      "id": "story-pressure-test",
+      "type": "story",
+      "width": 1080,
+      "height": 1920,
+      "title": "PRESSURE TEST",
+      "subtitle": "BERLIN UNDERGROUND TECHNO",
+      "cta": "BOOKING / EPK / MUSIC ARCHIVE",
+      "safeArea": {
+        "top": 190,
+        "right": 90,
+        "bottom": 300,
+        "left": 90
+      },
+      "file": "public/brand-assets/v2026-05-16/story-pressure-test.svg"
+    },
+    {
+      "id": "thumbnail-full-set",
+      "type": "thumbnail",
+      "width": 1280,
+      "height": 720,
+      "title": "AIRDOX LIVE SET",
+      "subtitle": "DARK ROOM ENERGY",
+      "cta": "FULL SET ON AIRDOX.INFO",
+      "safeArea": {
+        "top": 96,
+        "right": 80,
+        "bottom": 104,
+        "left": 80
+      },
+      "file": "public/brand-assets/v2026-05-16/thumbnail-full-set.svg"
+    },
+    {
+      "id": "square-release-card",
+      "type": "square",
+      "width": 1080,
+      "height": 1080,
+      "title": "NEW SET",
+      "subtitle": "AIRDOX SIGNAL DROP",
+      "cta": "LISTEN / SHARE / BOOK",
+      "safeArea": {
+        "top": 90,
+        "right": 80,
+        "bottom": 100,
+        "left": 80
+      },
+      "file": "public/brand-assets/v2026-05-16/square-release-card.svg"
+    }
+  ]
+}
