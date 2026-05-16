@@ -2,18 +2,21 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const handleSubscribeRequest = vi.fn();
 const handleAuthRequest = vi.fn();
+const handleAudienceEventRequest = vi.fn();
 
 vi.mock('../../lib/stats-logic.js', () => ({
     handleStatsRequest: vi.fn(),
     handleBookingRequest: vi.fn(),
     handleAuthRequest,
     handleSubscribeRequest,
+    handleAudienceEventRequest,
 }));
 
 describe('worker API routing', () => {
     beforeEach(() => {
         handleSubscribeRequest.mockReset();
         handleAuthRequest.mockReset();
+        handleAudienceEventRequest.mockReset();
     });
 
     it('routes POST /api/subscribe to the subscribe handler', async () => {
@@ -35,6 +38,41 @@ describe('worker API routing', () => {
         expect(body).toEqual({ ok: true, success: true });
         expect(handleSubscribeRequest).toHaveBeenCalledWith({
             body: { email: 'reach-test@example.com' },
+            env: {},
+        });
+    });
+
+    it('routes consented POST /api/audience-events to the audience handler', async () => {
+        handleAudienceEventRequest.mockResolvedValue({
+            status: 202,
+            headers: { 'cache-control': 'no-store' },
+            body: { ok: true, stored: true },
+        });
+        const { default: worker } = await import('../worker.js');
+        const request = new Request('https://airdox.test/api/audience-events', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                consent: { analytics: true },
+                type: 'set_play',
+                contentId: 'live-set-may-2026',
+                sessionIdHash: 'session-demo',
+            }),
+        });
+
+        const response = await worker.fetch(request, {}, {});
+        const body = await response.json();
+
+        expect(response.status).toBe(202);
+        expect(body).toEqual({ ok: true, stored: true });
+        expect(handleAudienceEventRequest).toHaveBeenCalledWith({
+            body: {
+                consent: { analytics: true },
+                type: 'set_play',
+                contentId: 'live-set-may-2026',
+                sessionIdHash: 'session-demo',
+                cf: undefined,
+            },
             env: {},
         });
     });

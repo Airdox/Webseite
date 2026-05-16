@@ -2,6 +2,7 @@ import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import BookingSection from '../BookingSection';
+import { audienceEvents } from '../../utils/audienceSignals';
 
 vi.mock('../../hooks/useRevealOnScroll', () => ({
     default: () => {},
@@ -28,6 +29,13 @@ vi.mock('../../utils/i18n', () => ({
         'booking.sendErrorPrefix': 'Nachricht konnte nicht gesendet werden.',
         'booking.contextLabel': 'Ausgewaehltes Set',
     }[key] || key),
+}));
+
+vi.mock('../../utils/audienceSignals', () => ({
+    audienceEvents: {
+        bookingClick: vi.fn(),
+        contactSubmit: vi.fn(),
+    },
 }));
 
 describe('BookingSection', () => {
@@ -86,6 +94,12 @@ describe('BookingSection', () => {
                 status: 'success',
             });
         });
+        expect(audienceEvents.contactSubmit).toHaveBeenCalledWith({
+            contentId: undefined,
+            contentType: 'booking_form',
+            source: 'booking_form_cloudflare',
+            value: 1,
+        });
     });
 
     it('prefills booking context from a selected set and tracks the handoff', async () => {
@@ -110,6 +124,12 @@ describe('BookingSection', () => {
             setId: 'live-set-may-2026-2',
             setTitle: 'LIVE SET MAY 2026 #2',
             source: 'set_card',
+        });
+        expect(audienceEvents.bookingClick).toHaveBeenCalledWith({
+            contentId: 'live-set-may-2026-2',
+            contentType: 'music_set',
+            source: 'set_card',
+            value: 1,
         });
     });
 });

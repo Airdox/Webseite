@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
 import { statsSync } from '../utils/stats-sync';
+import { audienceEvents } from '../utils/audienceSignals';
 // jsmediatags removed
 
 const isDev = import.meta.env?.DEV;
@@ -309,6 +310,14 @@ export const AudioProvider = ({ children }) => {
                     setId: track.id,
                     setTitle: track.title || track.id || 'unknown',
                     source: 'audio_player'
+                });
+            }
+            if (action === 'play' && track) {
+                audienceEvents.setPlay({
+                    contentId: track.id,
+                    contentType: 'music_set',
+                    source: 'audio_player',
+                    value: 1
                 });
             }
         };

@@ -30,6 +30,35 @@ const TURNSTILE_VERIFY_TIMEOUT_MS = 8000;
 const TURNSTILE_MAX_TOKEN_LENGTH = 4096;
 const TURNSTILE_REGISTER_ACTION = 'register';
 const SOCIAL_PROVIDERS = new Set(['google', 'facebook']);
+const VALID_AUDIENCE_EVENTS = new Set([
+    'route_view',
+    'section_view',
+    'cta_view',
+    'set_play',
+    'set_complete',
+    'video_play',
+    'tracklist_open',
+    'deep_scroll',
+    'share_click',
+    'copy_link',
+    'newsletter_signup',
+    'booking_click',
+    'contact_submit',
+    'epk_download',
+    'external_social_click'
+]);
+const BLOCKED_AUDIENCE_FIELDS = new Set([
+    'ip',
+    'email',
+    'name',
+    'phone',
+    'address',
+    'exactLocation',
+    'formMessage',
+    'rawUserAgent',
+    'fingerprint',
+    'userId'
+]);
 
 let sqlClient = null;
 let initPromise = null;
@@ -881,6 +910,69 @@ export const handleAuthRequest = async ({ body, env }) => {
     } catch (error) {
         console.error('Auth Error:', error);
         return { status: 500, body: errorBody('Authentication failed', error.message) };
+    }
+};
+
+export const handleAudienceEventRequest = async ({ body, env }) => {
+    const headers = { 'cache-control': 'no-store' };
+    const sql = getSqlClient(env);
+
+    if (!body || typeof body !== 'object') {
+        return { status: 400, headers, body: errorBody('Invalid audience event') };
+    }
+
+    for (const field of BLOCKED_AUDIENCE_FIELDS) {
+        if (Object.prototype.hasOwnProperty.call(body, field)) {
+            return { status: 400, headers, body: errorBody(`Blocked audience field: ${field}`) };
+        }
+    }
+
+    if (body.consent !== true && body.consent?.analytics !== true) {
+        return { status: 202, headers, body: { ok: true, skipped: true, reason: 'analytics_consent_missing' } };
+    }
+
+    const eventType = String(body.type || '').trim();
+    if (!VALID_AUDIENCE_EVENTS.has(eventType)) {
+        return { status: 400, headers, body: errorBody('Unsupported audience event type') };
+    }
+
+    if (!sql) {
+        return { status: 202, headers, body: { ok: true, _fallback: true, stored: false, reason: 'Database not configured' } };
+    }
+
+    try {
+        await ensureInitialized(sql);
+    } catch (error) {
+        return { status: 500, headers, body: errorBody('Database initialization failed', error?.message) };
+    }
+
+    try {
+        const sessionId = String(body.sessionIdHash || '').slice(0, 160) || null;
+        const itemId = String(body.contentId || body.contentType || body.route || '').slice(0, 240) || null;
+        const cf = body.cf || {};
+        const country = String(cf.country || body.country || 'Unknown').slice(0, 80);
+        const city = String(cf.city || 'Unknown').slice(0, 120);
+        const region = String(cf.region || 'Unknown').slice(0, 120);
+        const device = String(body.deviceClass || 'Unknown').slice(0, 80);
+        const referrer = String(body.referrerGroup || body.campaign || body.route || '').slice(0, 240) || null;
+
+        await sql`
+            INSERT INTO analytics_logs (
+                event_type, item_id, session_id,
+                country, city, region,
+                device_type, browser, os, referrer
+            )
+            VALUES (
+                ${eventType}, ${itemId}, ${sessionId},
+                ${country}, ${city}, ${region},
+                ${device}, ${'Unknown'}, ${String(body.locale || 'Unknown').slice(0, 80)}, ${referrer}
+            );
+        `;
+
+        return { status: 202, headers, body: { ok: true, stored: true } };
+    } catch (error) {
+        console.error('Audience event storage failed:', error);
+        return { status: 500, headers, body: errorBody('Audience event storage failed', error?.message) };
     }
 };
 

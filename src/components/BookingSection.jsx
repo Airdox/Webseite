@@ -3,6 +3,7 @@ import './BookingSection.css';
 import { t } from '../utils/i18n';
 import { readApiError } from '../utils/apiResponse';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
+import { audienceEvents } from '../utils/audienceSignals';
 
 const BookingSection = () => {
     const sectionRef = useRef(null);
@@ -47,6 +48,12 @@ const BookingSection = () => {
                 setId: nextContext.setId,
                 setTitle: nextContext.setTitle,
                 source: nextContext.source
+            });
+            audienceEvents.bookingClick({
+                contentId: nextContext.setId || undefined,
+                contentType: 'music_set',
+                source: nextContext.source,
+                value: 1
             });
         };
 
@@ -96,6 +103,12 @@ const BookingSection = () => {
                         status: 'success'
                     });
                 }
+                audienceEvents.contactSubmit({
+                    contentId: bookingContext?.setId || undefined,
+                    contentType: bookingContext?.setId ? 'music_set' : 'booking_form',
+                    source: bookingContext?.source || 'booking_form_cloudflare',
+                    value: 1
+                });
             } else {
                 throw new Error(await readApiError(response, t('booking.sendError')));
             }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Newsletter.css';
 import { t } from '../utils/i18n';
 import { readApiError, readApiJson } from '../utils/apiResponse';
+import { audienceEvents } from '../utils/audienceSignals';
 
 const Newsletter = () => {
     const [email, setEmail] = useState('');
@@ -29,6 +30,11 @@ const Newsletter = () => {
                 window.airdoxAnalyticsV2?.trackEvent('sign_up', {
                     method: 'newsletter',
                     status: 'success'
+                });
+                audienceEvents.newsletterSignup({
+                    contentType: 'newsletter',
+                    source: 'newsletter_section',
+                    value: 1
                 });
             } else {
                 throw new Error(await readApiError(response, t('newsletter.subscriptionFailed')));

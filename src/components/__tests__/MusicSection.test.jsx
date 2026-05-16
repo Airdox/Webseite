@@ -3,6 +3,7 @@ import MusicSection from '../MusicSection';
 import { AudioProvider } from '../../contexts/AudioContext';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
+import { audienceEvents } from '../../utils/audienceSignals';
 
 // Mock IntersectionObserver
 vi.stubGlobal('IntersectionObserver', class {
@@ -15,6 +16,14 @@ vi.stubGlobal('IntersectionObserver', class {
 vi.mock('../../utils/i18n', () => ({
     t: (key) => key,
     getCurrentLocale: () => 'de'
+}));
+
+vi.mock('../../utils/audienceSignals', () => ({
+    audienceEvents: {
+        bookingClick: vi.fn(),
+        setPlay: vi.fn(),
+        shareClick: vi.fn(),
+    },
 }));
 
 // Mock Music Sets
@@ -225,6 +234,12 @@ describe('MusicSection Synchronisation', () => {
                 source: 'audio_player',
             });
         });
+        expect(audienceEvents.setPlay).toHaveBeenCalledWith({
+            contentId: 'test-set-1',
+            contentType: 'music_set',
+            source: 'audio_player',
+            value: 1,
+        });
     }, 15000);
 
     it('tracks the canonical share event when a set link is copied', async () => {
@@ -252,6 +267,13 @@ describe('MusicSection Synchronisation', () => {
                 method: 'clipboard',
                 source: 'set_card',
             });
+        });
+        expect(audienceEvents.shareClick).toHaveBeenCalledWith({
+            contentId: 'test-set-1',
+            contentType: 'music_set',
+            method: 'clipboard',
+            source: 'set_card',
+            value: 1,
         });
     });
 
@@ -282,6 +304,12 @@ describe('MusicSection Synchronisation', () => {
             setId: 'test-set-1',
             setTitle: 'Test Set 1',
             source: 'set_card',
+        });
+        expect(audienceEvents.bookingClick).toHaveBeenCalledWith({
+            contentId: 'test-set-1',
+            contentType: 'music_set',
+            source: 'set_card',
+            value: 1,
         });
 
         window.removeEventListener('airdox_booking_prefill', bookingPrefillHandler);

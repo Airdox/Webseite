@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Newsletter from '../Newsletter';
+import { audienceEvents } from '../../utils/audienceSignals';
 
 vi.mock('../../utils/i18n', () => ({
     t: (key) => ({
@@ -15,6 +16,12 @@ vi.mock('../../utils/i18n', () => ({
         'newsletter.subscriptionFailed': 'Fehler',
         'newsletter.error': 'Fehler',
     }[key] || key),
+}));
+
+vi.mock('../../utils/audienceSignals', () => ({
+    audienceEvents: {
+        newsletterSignup: vi.fn(),
+    },
 }));
 
 describe('Newsletter', () => {
@@ -38,6 +45,11 @@ describe('Newsletter', () => {
                 method: 'newsletter',
                 status: 'success',
             });
+        });
+        expect(audienceEvents.newsletterSignup).toHaveBeenCalledWith({
+            contentType: 'newsletter',
+            source: 'newsletter_section',
+            value: 1,
         });
     });
 });

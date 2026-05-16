@@ -3,6 +3,7 @@ import { CalendarCheck, Check, Share2 } from 'lucide-react';
 import { getCurrentLocale, t } from '../utils/i18n';
 import { buildSetAnchorId, buildSetShareUrl } from '../lib/set-links';
 import { getSeekableTracks, parseTrackTimeToSeconds } from '../utils/timeUtils';
+import { audienceEvents } from '../utils/audienceSignals';
 
 const DE_MONTH_TOKEN_MAP = {
     MAY: 'MAI',
@@ -86,6 +87,13 @@ const SetCard = ({
             ...eventData,
             source: 'set_card'
         });
+        audienceEvents.shareClick({
+            contentId: set.id,
+            contentType: 'music_set',
+            method,
+            source: 'set_card',
+            value: 1
+        });
     };
 
     const handleShareSet = async (event) => {
@@ -138,6 +146,12 @@ const SetCard = ({
             setId: set.id,
             setTitle: set.title,
             source: 'set_card'
+        });
+        audienceEvents.bookingClick({
+            contentId: set.id,
+            contentType: 'music_set',
+            source: 'set_card',
+            value: 1
         });
         window.dispatchEvent(new CustomEvent('airdox_booking_prefill', { detail: bookingDetail }));
         window.setTimeout(() => {

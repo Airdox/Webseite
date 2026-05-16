@@ -1,6 +1,6 @@
 
 import { Router } from './router.js';
-import { handleStatsRequest, handleBookingRequest, handleAuthRequest, handleSubscribeRequest } from '../lib/stats-logic.js';
+import { handleStatsRequest, handleBookingRequest, handleAuthRequest, handleSubscribeRequest, handleAudienceEventRequest } from '../lib/stats-logic.js';
 import { sets } from '../data/musicSets.js';
 import { normalizeAudioBaseFilename, partitionSetsByAccess } from '../lib/set-access.js';
 
@@ -390,6 +390,29 @@ router.post('/api/subscribe', async (request, env) => {
         return new Response(JSON.stringify(result.body), {
             status: result.status,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    } catch {
+        return new Response(JSON.stringify({ ok: false, error: 'Invalid Request' }), {
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    }
+});
+
+// POST /api/audience-events
+router.post('/api/audience-events', async (request, env) => {
+    try {
+        const body = await request.json();
+        const result = await handleAudienceEventRequest({
+            body: {
+                ...body,
+                cf: request.cf,
+            },
+            env
+        });
+        return new Response(JSON.stringify(result.body), {
+            status: result.status,
+            headers: { ...(result.headers || {}), ...corsHeaders, 'Content-Type': 'application/json' }
         });
     } catch {
         return new Response(JSON.stringify({ ok: false, error: 'Invalid Request' }), {
