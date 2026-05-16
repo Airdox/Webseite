@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Check, Share2 } from 'lucide-react';
+import { CalendarCheck, Check, Share2 } from 'lucide-react';
 import { getCurrentLocale, t } from '../utils/i18n';
 import { buildSetAnchorId, buildSetShareUrl } from '../lib/set-links';
 import { getSeekableTracks, parseTrackTimeToSeconds } from '../utils/timeUtils';
@@ -124,6 +124,27 @@ const SetCard = ({
         }
     };
 
+    const handleBookingIntent = (event) => {
+        event.stopPropagation();
+        const bookingDetail = {
+            setId: set.id,
+            setTitle: set.title,
+            source: 'set_card',
+            event: `AIRDOX Booking - ${set.title}`,
+            message: t('booking.prefillMessage').replace('{setTitle}', set.title)
+        };
+        const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
+        analytics?.trackEvent?.('booking_intent', {
+            setId: set.id,
+            setTitle: set.title,
+            source: 'set_card'
+        });
+        window.dispatchEvent(new CustomEvent('airdox_booking_prefill', { detail: bookingDetail }));
+        window.setTimeout(() => {
+            document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 0);
+    };
+
     const handleCoverKeyDown = (event) => {
         if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
@@ -205,7 +226,12 @@ const SetCard = ({
                 <h3 className="set-title">{set.title}</h3>
                 <div className="set-meta">
                     <span className="set-date">{dateLabel}</span>
-                    {set.duration && <span className="set-duration"> | {set.duration}</span>}
+                    {set.duration && (
+                        <>
+                            <span className="set-meta-separator" aria-hidden="true">|</span>
+                            <span className="set-duration">{set.duration}</span>
+                        </>
+                    )}
                 </div>
 
                 <div className="set-actions">
@@ -221,6 +247,15 @@ const SetCard = ({
                             <Share2 size={16} aria-hidden="true" />
                         )}
                         <span>{isCopied ? t('music.shareCopied') : t('music.share')}</span>
+                    </button>
+                    <button
+                        type="button"
+                        className="set-booking-btn"
+                        onClick={handleBookingIntent}
+                        aria-label={`${t('music.bookingIntentLabel')} ${set.title}`}
+                    >
+                        <CalendarCheck size={16} aria-hidden="true" />
+                        <span>{t('music.bookingIntent')}</span>
                     </button>
 
                 </div>

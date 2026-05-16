@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './BookingSection.css';
 import { t } from '../utils/i18n';
 import { readApiError } from '../utils/apiResponse';
@@ -17,6 +17,42 @@ const BookingSection = () => {
     const [focused, setFocused] = useState({});
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState(null);
+    const [bookingContext, setBookingContext] = useState(null);
+
+    useEffect(() => {
+        const handleBookingPrefill = (event) => {
+            const detail = event.detail || {};
+            const setTitle = String(detail.setTitle || '').trim();
+            const source = String(detail.source || 'set_card').trim();
+            const nextContext = {
+                setId: String(detail.setId || '').trim(),
+                setTitle,
+                source
+            };
+            setSubmitted(false);
+            setBookingContext(nextContext);
+            setFormData((current) => ({
+                ...current,
+                event: String(detail.event || (setTitle ? `AIRDOX Booking - ${setTitle}` : current.event)).trim(),
+                message: String(detail.message || current.message).trim()
+            }));
+            setFocused((current) => ({
+                ...current,
+                event: true,
+                message: true
+            }));
+
+            const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
+            analytics?.trackEvent?.('booking_prefill', {
+                setId: nextContext.setId,
+                setTitle: nextContext.setTitle,
+                source: nextContext.source
+            });
+        };
+
+        window.addEventListener('airdox_booking_prefill', handleBookingPrefill);
+        return () => window.removeEventListener('airdox_booking_prefill', handleBookingPrefill);
+    }, []);
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -47,11 +83,16 @@ const BookingSection = () => {
             if (response.ok) {
                 setSubmitted(true);
                 setFormData({ name: '', email: '', event: '', message: '' });
+                setBookingContext(null);
                 const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
                 if (analytics?.trackEvent) {
-                    analytics.trackEvent('booking_submit', { source: 'booking_form_cloudflare' });
+                    analytics.trackEvent('booking_submit', {
+                        source: bookingContext?.source || 'booking_form_cloudflare',
+                        setId: bookingContext?.setId || undefined,
+                        setTitle: bookingContext?.setTitle || undefined
+                    });
                     analytics.trackEvent('generate_lead', {
-                        source: 'booking_form_cloudflare',
+                        source: bookingContext?.source || 'booking_form_cloudflare',
                         status: 'success'
                     });
                 }
@@ -160,8 +201,22 @@ const BookingSection = () => {
 
 
                                 <h3 className="form-title">{t('booking.formTitle')}</h3>
+                                {bookingContext?.setTitle && (
+                                    <div className="booking-context-pill" aria-live="polite">
+                                        <span>{t('booking.contextLabel')}</span>
+                                        <strong>{bookingContext.setTitle}</strong>
+                                    </div>
+                                )}
 
                                 {error && <div className="form-error">{error}</div>}
+
+                                {bookingContext && (
+                                    <>
+                                        <input type="hidden" name="source" value={bookingContext.source} />
+                                        <input type="hidden" name="setId" value={bookingContext.setId} />
+                                        <input type="hidden" name="setTitle" value={bookingContext.setTitle} />
+                                    </>
+                                )}
 
                                 <div className={`form-group ${focused.name || formData.name ? 'focused' : ''}`}>
                                     <input type="text" name="name" id="name" value={formData.name}

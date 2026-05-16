@@ -634,6 +634,62 @@
       ]
     },
     {
+      "id": "guardian-risk-summary",
+      "title": "Summarize current release and quality risk",
+      "owner": "Guardian",
+      "execution": "script",
+      "script": "guardian:risk:write",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "pr_review",
+          "release_candidate"
+        ],
+        "statuses": [
+          "standard",
+          "deep",
+          "ci"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-guardian-risk-summary.json",
+        "docs/agent-system/latest-guardian-risk-summary.md"
+      ]
+    },
+    {
+      "id": "agent-routing-review",
+      "title": "Route changed files to responsible agents",
+      "owner": "Master Controller",
+      "execution": "script",
+      "script": "agent:route:write",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "pr_review",
+          "release_candidate"
+        ],
+        "statuses": [
+          "standard",
+          "deep",
+          "ci"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-agent-routing.json",
+        "docs/agent-system/latest-agent-routing.md"
+      ]
+    },
+    {
       "id": "learning-gap-update",
       "title": "Learning gap and runbook update",
       "owner": "Mentor",

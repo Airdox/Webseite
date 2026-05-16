@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -38,6 +40,12 @@ jobs:
 
       - name: Repository monitor
         run: npm run repository:monitor:strict
+
+      - name: Agent routing
+        run: npm run agent:route -- --base=origin/main
+
+      - name: Guardian risk summary
+        run: npm run guardian:risk -- --strict --base=origin/main
 
       - name: Lint
         run: npm run lint

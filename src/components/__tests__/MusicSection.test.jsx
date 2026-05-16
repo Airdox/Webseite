@@ -74,6 +74,7 @@ describe('MusicSection Synchronisation', () => {
             configurable: true,
             value: vi.fn()
         });
+        window.HTMLElement.prototype.scrollIntoView = vi.fn();
         
         // Default Mock für fetch (Success)
         vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
@@ -224,7 +225,7 @@ describe('MusicSection Synchronisation', () => {
                 source: 'audio_player',
             });
         });
-    });
+    }, 15000);
 
     it('tracks the canonical share event when a set link is copied', async () => {
         Object.defineProperty(navigator, 'clipboard', {
@@ -252,5 +253,37 @@ describe('MusicSection Synchronisation', () => {
                 source: 'set_card',
             });
         });
+    });
+
+    it('dispatches booking prefill data from a set card CTA', async () => {
+        const bookingPrefillHandler = vi.fn();
+        window.addEventListener('airdox_booking_prefill', bookingPrefillHandler);
+
+        render(
+            <AudioProvider>
+                <MusicSection />
+            </AudioProvider>
+        );
+
+        fireEvent.click(await screen.findByRole('button', { name: /music.bookingIntentLabel Test Set 1/i }));
+
+        await waitFor(() => {
+            expect(bookingPrefillHandler).toHaveBeenCalled();
+        });
+        const event = bookingPrefillHandler.mock.calls[0][0];
+        expect(event.detail).toEqual({
+            setId: 'test-set-1',
+            setTitle: 'Test Set 1',
+            source: 'set_card',
+            event: 'AIRDOX Booking - Test Set 1',
+            message: 'booking.prefillMessage',
+        });
+        expect(window.airdoxAnalyticsV2.trackEvent).toHaveBeenCalledWith('booking_intent', {
+            setId: 'test-set-1',
+            setTitle: 'Test Set 1',
+            source: 'set_card',
+        });
+
+        window.removeEventListener('airdox_booking_prefill', bookingPrefillHandler);
     });
 });

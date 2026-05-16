@@ -169,10 +169,22 @@
 }
 
 .set-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
     font-family: var(--font-mono);
     font-size: 0.75rem;
     color: var(--text-muted);
     letter-spacing: 0.05em;
+}
+
+.set-duration {
+    white-space: nowrap;
+}
+
+.set-meta-separator {
+    color: rgba(255, 255, 255, 0.28);
 }
 
 .set-actions {
@@ -183,7 +195,8 @@
     margin-top: 15px;
 }
 
-.set-share-btn {
+.set-share-btn,
+.set-booking-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -195,7 +208,7 @@
     color: var(--text-secondary);
     background: rgba(255, 255, 255, 0.04);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     line-height: 1;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -216,6 +229,22 @@
     background: rgba(0, 255, 136, 0.08);
 }
 
+.set-booking-btn {
+    color: #041014;
+    border-color: rgba(0, 245, 255, 0.42);
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
+    font-weight: 800;
+}
+
+.set-booking-btn:hover,
+.set-booking-btn:focus-visible {
+    color: #000;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+    transform: translateY(-1px);
+    box-shadow: 0 0 18px rgba(0, 245, 255, 0.22);
+}
+
 .set-stats {
     padding: var(--space-4) var(--space-6);
     background: rgba(0, 0, 0, 0.12);
@@ -230,7 +259,7 @@
     align-items: center;
     gap: 8px;
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
 }
 
@@ -248,7 +277,7 @@
     padding: 4px 8px;
     border-radius: 4px;
     color: var(--text-muted);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -267,7 +296,7 @@
     border-radius: 8px;
     color: var(--neon-cyan);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     letter-spacing: 1px;
 }
 
@@ -314,7 +343,7 @@
 
 .tracklist-title {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     color: var(--neon-pink);
     text-transform: uppercase;
     margin: 0;
@@ -517,7 +546,7 @@
     }
 
     .track-time {
-        font-size: 0.7rem;
+        font-size: 0.75rem;
     }
 }
 

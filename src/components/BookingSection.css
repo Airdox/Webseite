@@ -82,7 +82,33 @@ a.detail-value:hover {
     font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-5);
+}
+
+.booking-context-pill {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    margin-bottom: var(--space-6);
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 245, 255, 0.22);
+    border-radius: 8px;
+    background: rgba(0, 245, 255, 0.07);
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.booking-context-pill span {
+    color: var(--text-muted);
+}
+
+.booking-context-pill strong {
+    color: var(--neon-cyan);
+    font-weight: 800;
 }
 
 .booking-form .form-group {

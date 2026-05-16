@@ -39,3 +39,7 @@ jobs:
             docs/agent-system/latest-repository-monitor.json
             docs/agent-system/latest-repository-monitor.md
             docs/agent-system/latest-background-cycle.json
+            docs/agent-system/latest-agent-routing.json
+            docs/agent-system/latest-agent-routing.md
+            docs/agent-system/latest-guardian-risk-summary.json
+            docs/agent-system/latest-guardian-risk-summary.md

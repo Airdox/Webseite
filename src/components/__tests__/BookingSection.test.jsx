@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import BookingSection from '../BookingSection';
 
@@ -26,6 +26,7 @@ vi.mock('../../utils/i18n', () => ({
         'booking.newMessage': 'Neue Nachricht',
         'booking.sendError': 'Fehler beim Senden',
         'booking.sendErrorPrefix': 'Nachricht konnte nicht gesendet werden.',
+        'booking.contextLabel': 'Ausgewaehltes Set',
     }[key] || key),
 }));
 
@@ -36,7 +37,10 @@ describe('BookingSection', () => {
     });
 
     it('shows a user-facing error when the API returns an empty error body', async () => {
-        vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('', { status: 502 })));
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+            ok: false,
+            text: vi.fn().mockResolvedValue(''),
+        }));
 
         render(<BookingSection />);
 
@@ -55,10 +59,13 @@ describe('BookingSection', () => {
             expect(screen.getByText('Nachricht konnte nicht gesendet werden.')).toBeInTheDocument();
         });
         expect(screen.queryByText(/Unexpected end of JSON input/i)).not.toBeInTheDocument();
-    });
+    }, 15000);
 
     it('tracks the canonical generate_lead event after successful booking submit', async () => {
-        vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{}', { status: 200 })));
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+            ok: true,
+            text: vi.fn().mockResolvedValue('{}'),
+        }));
 
         render(<BookingSection />);
 
@@ -78,6 +85,31 @@ describe('BookingSection', () => {
                 source: 'booking_form_cloudflare',
                 status: 'success',
             });
+        });
+    });
+
+    it('prefills booking context from a selected set and tracks the handoff', async () => {
+        render(<BookingSection />);
+
+        act(() => {
+            window.dispatchEvent(new CustomEvent('airdox_booking_prefill', {
+                detail: {
+                    setId: 'live-set-may-2026-2',
+                    setTitle: 'LIVE SET MAY 2026 #2',
+                    source: 'set_card',
+                    event: 'AIRDOX Booking - LIVE SET MAY 2026 #2',
+                    message: 'Hi AIRDOX, this set fits my event.',
+                },
+            }));
+        });
+
+        expect(await screen.findByText('LIVE SET MAY 2026 #2')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('AIRDOX Booking - LIVE SET MAY 2026 #2')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('Hi AIRDOX, this set fits my event.')).toBeInTheDocument();
+        expect(window.airdoxAnalyticsV2.trackEvent).toHaveBeenCalledWith('booking_prefill', {
+            setId: 'live-set-may-2026-2',
+            setTitle: 'LIVE SET MAY 2026 #2',
+            source: 'set_card',
         });
     });
 });

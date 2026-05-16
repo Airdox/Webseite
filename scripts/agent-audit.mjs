@@ -251,11 +251,11 @@ const agents = [
       check('Wissenslog vorhanden', exists('airdoX_wiki/wiki/log.md'), 'Wiki-Log ist fuer Erfahrungslernen vorhanden.'),
       check('Agenten-Operating-Model vorhanden', exists('docs/agent-system/OPERATING_MODEL.md'), 'Das Multi-Agenten-System ist als Operating Model dokumentiert.', { weight: 1.5 }),
       check('Agenten-Decision-Log vorhanden', exists('docs/agent-system/DECISION_LOG.md'), 'Strategische Agentenentscheidungen werden im Decision Log gespeichert.'),
-      check('Mentor-Wiki-Schleifen vorhanden', [
+      check('Mentor-Lernschleifen vorhanden', exists('docs/agent-system/MENTOR_LEARNING_LOOPS.md') || [
         'airdoX_wiki/wiki/local-09-mentor-audit.md',
         'airdoX_wiki/wiki/local-10-agent-decisions.md',
         'airdoX_wiki/wiki/local-11-feedback-loops.md',
-      ].every(exists), 'Mentor-Audit, Agentenentscheidungen und Feedbackschleifen sind im Wiki verankert.', { weight: 1.5 }),
+      ].every(exists), 'Mentor-Audit, Agentenentscheidungen und Feedbackschleifen sind versioniert oder im Wiki verankert.', { weight: 1.5 }),
       check('Agenten-Audit skriptbar', hasScript('agent:audit') && exists('scripts/agent-audit.mjs'), 'Agenten-Audit ist per npm ausfuehrbar.', { weight: 1.5 }),
       optional('Entwicklerhandbuch vorhanden', exists('docs/ADMIN_SUITE_DEVELOPER_GUIDE.md'), 'Admin Suite Developer Guide beschreibt Erweiterungsmuster.'),
       optional('Assistant-Testsignale', anyFile((filePath) => filePath.includes('assistant') && /test|spec/.test(filePath)), 'Assistant-Logik hat Testsignale.'),
@@ -271,7 +271,7 @@ const agents = [
     'Refactor',
     'Systemoptimierung, Verschlankung, Architekturqualitaet und technische Effizienz.',
     [
-      check('Refactor-Wissensseite vorhanden', exists('airdoX_wiki/wiki/local-12-refactor-optimization.md'), 'Refactor besitzt eine eigene Optimierungs- und Verschlankungsseite im Wiki.'),
+      check('Refactor-Wissensseite vorhanden', exists('docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md') || exists('airdoX_wiki/wiki/local-12-refactor-optimization.md'), 'Refactor besitzt eine eigene Optimierungs- und Verschlankungsseite als versioniertes Runbook oder im Wiki.'),
       check('Quality-Skripte vorhanden', hasScript('quality:web') && hasScript('quality:desktop'), 'Web- und Desktop-Quality-Gates sind in package.json abrufbar.'),
       optional('Generierte Ordner aus Lint ausgeschlossen', /\.wrangler/.test(read('eslint.config.js')) && /dist/.test(read('eslint.config.js')), 'Warnung, wenn generierte Build-/Wrangler-Artefakte vom Lint erfasst werden.'),
       optional('Root-HTML-Duplikate reduziert', rootHtmlCopies.length === 0, rootHtmlCopies.length ? `${rootHtmlCopies.length} Root-HTML-Kopien koennen Head-/SEO-Drift erzeugen.` : 'Keine Root-HTML-Kopien neben den Vite-Einstiegen gefunden.', { weight: 1.5 }),

@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "generatedBy": "Master Controller",
+  "description": "Path-based routing rules for assigning changed files to AIRDOX agents and required quality gates.",
+  "defaultReviewAgents": [
+    "Guardian",
+    "Master Controller"
+  ],
+  "rules": [
+    {
+      "id": "website-experience",
+      "agent": "Webbie",
+      "role": "primary",
+      "paths": [
+        "src/components/**",
+        "src/styles/**",
+        "src/App.jsx",
+        "src/main.jsx",
+        "index.html",
+        "en/index.html",
+        "public/**"
+      ],
+      "recommendedGates": [
+        "npm run lint",
+        "npm run test -- --run",
+        "npm run build"
+      ]
+    },
+    {
+      "id": "visual-quality",
+      "agent": "Designer",
+      "role": "review",
+      "paths": [
+        "src/**/*.css",
+        "public/assets/**",
+        "docs/agent-system/proof/**"
+      ],
+      "recommendedGates": [
+        "npm run designer:visual:check -- --strict"
+      ]
+    },
+    {
+      "id": "desktop-flightdeck",
+      "agent": "Winnie",
+      "role": "primary",
+      "paths": [
+        "desktop/**",
+        "src/desktop/**",
+        "desktop.html",
+        "electron-builder.json",
+        "scripts/desktop-*.ps1"
+      ],
+      "recommendedGates": [
+        "npm run desktop:test:logic"
+      ]
+    },
+    {
+      "id": "quality-security",
+      "agent": "Guardian",
+      "role": "review",
+      "paths": [
+        "src/server/**",
+        "scripts/**",
+        ".github/workflows/**",
+        "package.json",
+        "package-lock.json",
+        "eslint.config.js",
+        "vitest.config.js",
+        "playwright.config.js"
+      ],
+      "recommendedGates": [
+        "npm run agent:audit -- --strict",
+        "npm run guardian:risk -- --strict"
+      ]
+    },
+    {
+      "id": "growth-conversion",
+      "agent": "Manni",
+      "role": "primary",
+      "paths": [
+        "src/components/BookingSection.jsx",
+        "src/components/Newsletter.jsx",
+        "src/components/VIPSection.jsx",
+        "src/components/EPKSection.jsx",
+        "docs/agent-system/MANNI_*.md",
+        "docs/agent-system/manni-*",
+        "scripts/manni-*.mjs",
+        "scripts/social-*.mjs"
+      ],
+      "recommendedGates": [
+        "npm run build"
+      ]
+    },
+    {
+      "id": "learning-documentation",
+      "agent": "Mentor",
+      "role": "review",
+      "paths": [
+        "docs/**",
+        "airdoX_wiki/**"
+      ],
+      "recommendedGates": [
+        "npm run agent:audit -- --strict"
+      ]
+    },
+    {
+      "id": "refactor-architecture",
+      "agent": "Refactor",
+      "role": "review",
+      "paths": [
+        "src/**/*.js",
+        "src/**/*.jsx",
+        "desktop/**/*.mjs",
+        "scripts/**/*.mjs"
+      ],
+      "recommendedGates": [
+        "npm run test -- --run",
+        "npm run build"
+      ]
+    },
+    {
+      "id": "repository-governance",
+      "agent": "Repository",
+      "role": "review",
+      "paths": [
+        ".gitignore",
+        ".gitattributes",
+        ".github/**",
+        "docs/agent-system/REPOSITORY_GOVERNANCE.md"
+      ],
+      "recommendedGates": [
+        "npm run repository:monitor:strict"
+      ]
+    }
+  ]
+}
