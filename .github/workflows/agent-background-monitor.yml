@@ -43,3 +43,5 @@ jobs:
             docs/agent-system/latest-agent-routing.md
             docs/agent-system/latest-guardian-risk-summary.json
             docs/agent-system/latest-guardian-risk-summary.md
+            docs/agent-system/latest-agent-currency.json
+            docs/agent-system/latest-agent-currency.md

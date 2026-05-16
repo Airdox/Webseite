@@ -66,6 +66,35 @@
       ]
     },
     {
+      "id": "mentor-agent-currency",
+      "title": "Check agent source currency and continuous learning gaps",
+      "owner": "Mentor",
+      "execution": "script",
+      "script": "mentor:currency:write",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "monthly_learning_review",
+          "incident_review"
+        ],
+        "statuses": [
+          "deep",
+          "weekly",
+          "monthly",
+          "needs_learning"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-agent-currency.json",
+        "docs/agent-system/latest-agent-currency.md"
+      ]
+    },
+    {
       "id": "windows-tool-healthcheck",
       "title": "Windows Tool deep logic check",
       "owner": "Winnie",

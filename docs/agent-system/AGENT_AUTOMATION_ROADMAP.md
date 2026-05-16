@@ -19,6 +19,7 @@ Das Agentensystem soll Änderungen nicht nur dokumentieren, sondern automatisch 
 4. Job-Catalog-Erweiterung für Routing- und Risk-Jobs.
 5. CI-Anbindung in `web-quality.yml` und Hintergrund-Artefakte in `agent-background-monitor.yml`.
 6. Versionierte Lern- und Refactor-Runbooks für nachvollziehbare Folgeanalysen.
+7. Mentor-Currency-Check fuer regelmaessige Quellen- und Runbook-Aktualitaet.
 
 ## Zielbild
 
@@ -49,3 +50,4 @@ Wenn später ein Fehler auftritt, werden in dieser Reihenfolge geprüft:
 - Designer-Visual-Check um Booking- und Mobile-Konversionspfade erweitern.
 - Master-Controller-Gate stärker an `changeClass` und `requiresMasterApproval` koppeln.
 - Wiederkehrende Hintergrundläufe als Trendkurve speichern, nicht nur als Latest-Report.
+- Agent-Currency-Warnungen automatisch in konkrete Verbesserungs-Issues oder Work Orders ueberfuehren.

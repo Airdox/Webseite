@@ -256,6 +256,7 @@ const agents = [
         'airdoX_wiki/wiki/local-10-agent-decisions.md',
         'airdoX_wiki/wiki/local-11-feedback-loops.md',
       ].every(exists), 'Mentor-Audit, Agentenentscheidungen und Feedbackschleifen sind versioniert oder im Wiki verankert.', { weight: 1.5 }),
+      check('Mentor-Currency-Check skriptbar', hasScript('mentor:currency') && exists('scripts/mentor-agent-currency.mjs'), 'Mentor kann Quellen- und Runbook-Aktualitaet fuer Fachagenten pruefen.', { weight: 1.5 }),
       check('Agenten-Audit skriptbar', hasScript('agent:audit') && exists('scripts/agent-audit.mjs'), 'Agenten-Audit ist per npm ausfuehrbar.', { weight: 1.5 }),
       optional('Entwicklerhandbuch vorhanden', exists('docs/ADMIN_SUITE_DEVELOPER_GUIDE.md'), 'Admin Suite Developer Guide beschreibt Erweiterungsmuster.'),
       optional('Assistant-Testsignale', anyFile((filePath) => filePath.includes('assistant') && /test|spec/.test(filePath)), 'Assistant-Logik hat Testsignale.'),

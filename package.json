@@ -28,6 +28,8 @@
     "brand:epk": "node scripts/build-airdox-epk.mjs",
     "brand:epk:pdf": "node scripts/build-airdox-epk.mjs --pdf",
     "manni:reels:generate": "node scripts/manni-reel-factory.mjs",
+    "mentor:currency": "node scripts/mentor-agent-currency.mjs",
+    "mentor:currency:write": "node scripts/mentor-agent-currency.mjs --write",
     "social:auto": "node scripts/social-auto-publisher.mjs",
     "social:auto:dry": "node scripts/social-auto-publisher.mjs --skip-render",
     "social:run": "npm run social:auto && npm run social:youtube:render:test && npm run social:youtube:publish -- --privacy=unlisted",
