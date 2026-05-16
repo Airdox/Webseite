@@ -582,7 +582,7 @@
       "title": "Execute approved PR and social reach operations",
       "owner": "Manni",
       "execution": "manual",
-      "manualProtocol": "After explicit personal user confirmation is logged, execute or commission only the approved operations exactly as previewed. Allowed operations include posting approved Instagram/Facebook Reels or Stories, publishing approved Shorts/TikTok variants, replying/commenting with approved copy, sending approved collab/tag/repost requests, placing approved community posts, starting approved small boost tests, or activating approved newsletter/website bridges. Record platform, action type, timestamp, URL or campaign ID, asset IDs, spend, first KPI checkpoint, and any platform response in DECISION_LOG.",
+      "manualProtocol": "After explicit personal user confirmation is logged, execute or commission only the approved operations exactly as previewed. Allowed operations include posting approved Instagram/Facebook Reels or Stories, publishing approved Shorts/TikTok variants, replying/commenting with approved copy, sending approved collab/tag/repost requests, placing approved community posts, or activating approved newsletter/website bridges. Boost tests, paid spend, or budget activation require a separate explicit approval and must stay skipped when the operation approval state is rejected or pending. Record platform, action type, timestamp, URL or campaign ID, asset IDs, spend, first KPI checkpoint, and any platform response in DECISION_LOG.",
       "trigger": {
         "events": [
           "manual_publish_request",

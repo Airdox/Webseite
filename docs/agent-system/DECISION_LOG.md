@@ -2,6 +2,27 @@
 
 Dieses Log speichert strategische Entscheidungen des Multi-Agenten-Systems. Kurze Eintraege sind beabsichtigt: Datum, Kontext, Entscheidung, Risiko, Recheck.
 
+## 2026-05-13 - Manni Manual Platform Handoff ohne Boost
+
+Kontext:
+- Nutzerauftrag fuer Unteragent Manni: ausschliesslich approved Operations aus `manni-approval-state.json` und `MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md` lokal ausarbeiten.
+- Approved: `OPS-IG-01`, `OPS-FB-01`, `OPS-IG-02`, `OPS-FB-02`, `OPS-COLL-01`.
+- Rejected: `OPS-BOOST-01`.
+- Im Repo liegen keine Social-Publishing-Credentials.
+
+Entscheidung:
+- Neuer manueller Handoff: `docs/agent-system/MANNI_MANUAL_PLATFORM_HANDOFF_2026-05-13.md`.
+- Der Handoff listet Assets, Copy, Timing, KPI-Checkpoints und Blocker fuer die approved Operations.
+- `OPS-BOOST-01` wurde ausgeschlossen und nicht als aktiv, pending, vorbereitet oder budgetiert dokumentiert.
+
+Risiko:
+- Externe Plattformveroeffentlichung, Outreach und KPI-Erhebung koennen lokal nicht abgeschlossen werden.
+- Ohne echte Plattform-URLs bleiben alle KPI-Felder pending.
+
+Recheck:
+- Nach realer manueller Plattform-Ausfuehrung URLs, Zeitpunkte, 2h/24h/7d-KPIs und Blocker im Handoff oder Decision Log nachtragen.
+- Keine Boost-Vorbereitung ohne neue explizite Freigabe und geaenderten Approval-State.
+
 ## 2026-05-13 - Designer wird CD-Reviewer und Template-Owner fuer Social Assets
 
 Kontext:
@@ -33,7 +54,7 @@ Kontext:
 Entscheidung:
 - Der Nutzerauftrag gilt als Freigabe fuer den lokalen Dispatch von `pr-social-reach-ops-execute`.
 - Manni erhaelt den ausfuehrbaren Operationsauftrag `docs/agent-system/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md`.
-- Der Auftrag umfasst Instagram/Facebook-Reels, Stories, Community-/Page-Post, Collab-/Tagging-Anfrage und einen kleinen Boost-Test nur auf Gewinnerasset.
+- Der Auftrag umfasst Instagram/Facebook-Reels, Stories, Community-/Page-Post und Collab-/Tagging-Anfrage. Der vormals geplante kleine Boost-Test ist im aktuellen Approval-State als `OPS-BOOST-01` rejected und ausgeschlossen.
 
 Risiko:
 - Die reale Plattformveroeffentlichung kann lokal nicht direkt abgeschlossen werden, solange keine Plattformzugaenge/API-Connectoren bereitstehen.
@@ -52,7 +73,7 @@ Kontext:
 Entscheidung:
 - Manni bleibt Owner fuer PR und wird auf konkrete Social-Reach-Operations erweitert.
 - Neue Jobs: `pr-social-reach-ops-plan` und `pr-social-reach-ops-execute`.
-- Erlaubte Operationen nach Freigabe: Reels/Shorts, Stories, sichtbare Kommentare/Antworten, Collab-/Tagging-Anfragen, Repost-/Community-Posts, kleine Boost-Tests sowie Newsletter-/Website-Bridges.
+- Erlaubte Operationen nach Freigabe: Reels/Shorts, Stories, sichtbare Kommentare/Antworten, Collab-/Tagging-Anfragen, Repost-/Community-Posts sowie Newsletter-/Website-Bridges. Kleine Boost-Tests brauchen eine separate Freigabe; im aktuellen Manni-Auftrag ist `OPS-BOOST-01` rejected.
 - Planung ist `external_draft`; Ausfuehrung ist `external_live` und braucht `--user-approved=pr-social-reach-ops-execute`.
 
 Risiko:

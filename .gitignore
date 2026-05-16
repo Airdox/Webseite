@@ -83,6 +83,8 @@ exports/
 .devserver.pid
 state.json
 .netlify/state.json
+docs/agent-system/social-auto-output/
+docs/agent-system/download.png
 
 # Python cache
 __pycache__/

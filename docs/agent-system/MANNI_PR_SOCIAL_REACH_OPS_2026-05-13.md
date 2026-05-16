@@ -12,11 +12,10 @@ Manni darf die untenstehenden Aktionen ausfuehren oder beauftragen, sobald Platt
 Keine Abweichung ohne neue Freigabe:
 - keine andere Copy
 - kein anderes Asset
-- kein anderes Budget
 - keine DM-/Kommentar-Antwort ausser den freigegebenen Varianten
-- kein Paid-Spend ueber die unten genannten Limits
+- kein Paid-Spend, Boost-Test oder Budgeteinsatz ohne neue explizite Freigabe
 
-## Plattform-Aktionen
+## Approved Plattform-Aktionen
 
 | ID | Plattform | Aktion | Copy/Hook | Asset | Ziel-URL | Timing | KPI-Ziel | Budget |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -25,7 +24,12 @@ Keine Abweichung ohne neue Freigabe:
 | OPS-IG-02 | Instagram | Story-Sequenz | Frame 1: `PRESSURE TEST`; Frame 2: `FULL SET ONLINE`; Frame 3: `BOOKING / EPK` | Reel-First-Frame + EPK-/Website-Screenshot | Website/Music oder EPK Link | 30-60 Min nach Reel | Story Taps, Link-Klicks | 0 EUR |
 | OPS-FB-02 | Facebook | Community-/Page-Post | `New AIRDOX set moment is live. Dark, direct Berlin techno for rooms that need pressure.` | Reel Thumbnail + Website Link | Website/Music Deep Link | gleicher Tag | Link-Klicks, Shares | 0 EUR |
 | OPS-COLL-01 | Instagram/Facebook | Collab-/Tagging-Anfrage | `AIRDOX drop clip for Berlin techno audiences. Open for repost/collab if it fits your channel.` | OPS-IG-01 Clip | Profil/Reel Link | nach erstem Reel-Link | Antworten, Reposts, Collab-Akzeptanz | 0 EUR |
-| OPS-BOOST-01 | Instagram/Facebook | kleiner Boost-Test nur auf Gewinnerasset | Gewinner-Reel-Copy unveraendert, CTA `Listen / booking via profile` | Asset mit bester organischer Performance nach 24h | Website/Music Deep Link | nur wenn OPS-IG-01 oder OPS-FB-01 organisch ueber Median liegt | CPE/Profilbesuch, Link-Klicks | max. 10 EUR |
+
+## Rejected / gesperrt
+
+| ID | Plattform | Status | Sperre |
+| --- | --- | --- | --- |
+| OPS-BOOST-01 | Instagram/Facebook | rejected | Kein Boost-Test, kein Budget, keine Gewinnerasset-Vorbereitung, keine Aktiv-Markierung und keine externe Paid-Ausspielung. |
 
 ## Produzierte Assets
 
@@ -80,7 +84,7 @@ Aktuell bevorzugtes CD-konformes Webstyle-Reel mit Nutzer-gewaehltem Ausschnitt:
 5. OPS-COLL-01 nur an passende Szene-/Partnerprofile senden, nicht massenhaft.
 6. Nach 2h erste KPI notieren: Views, Reach, Profilbesuche, Link-Klicks, Shares, Saves.
 7. Nach 24h Gewinner bestimmen.
-8. OPS-BOOST-01 nur starten, wenn ein organischer Gewinner existiert und Budgetlimit eingehalten wird.
+8. OPS-BOOST-01 nicht starten und nicht vorbereiten; rejected bleibt unabhaengig von organischer Performance gesperrt.
 9. Ergebnisse mit Links/Kampagnen-IDs in `docs/agent-system/DECISION_LOG.md` dokumentieren.
 
 ## Messfenster
@@ -103,3 +107,25 @@ Runner result:
 - `pr-social-reach-ops-execute`: manual execution Auftrag aktiviert.
 - `pr-campaign-live-publish`: korrekt blockiert, weil nur der Social-Reach-Ops-Execute-Job freigegeben wurde.
 - Run log: `docs/agent-system/latest-job-run.md`
+
+## Dispatch-Ergaenzung 2026-05-13 - Manual Platform Handoff
+
+Manni hat den lokalen Handoff fuer die approved Operations erstellt: `docs/agent-system/MANNI_MANUAL_PLATFORM_HANDOFF_2026-05-13.md`.
+
+Freigegeben fuer manuelle Plattform-Ausfuehrung:
+
+- `OPS-IG-01`
+- `OPS-FB-01`
+- `OPS-IG-02`
+- `OPS-FB-02`
+- `OPS-COLL-01`
+
+Nicht ausgefuehrt und nicht vorbereitet:
+
+- `OPS-BOOST-01` bleibt rejected. Kein Boost-Briefing, kein Budget, keine Gewinnerasset-Vorbereitung und keine Aktiv-Markierung.
+
+Blocker:
+
+- Im Repo sind keine Social-Publishing-Credentials oder Plattform-Connectoren vorhanden.
+- Es wurde keine echte externe Veroeffentlichung, kein Outreach und kein Paid-Spend behauptet.
+- KPI-Zeiten starten erst nach realer manueller Plattform-Ausfuehrung.
