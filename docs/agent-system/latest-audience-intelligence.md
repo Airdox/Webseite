@@ -1,6 +1,6 @@
 # Latest Audience Intelligence
 
-Generated: 2026-05-16T14:45:05.107Z
+Generated: 2026-05-16T14:47:09.282Z
 
 Consent mode: consented-aggregate
 Consented events analyzed: 0

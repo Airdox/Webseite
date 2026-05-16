@@ -98,10 +98,8 @@ const tryOnce = async () => {
 let verified = false;
 while (Date.now() < deadline) {
   // retry loop until processed and playable
-  // eslint-disable-next-line no-await-in-loop
   verified = await tryOnce();
   if (verified) break;
-  // eslint-disable-next-line no-await-in-loop
   await page.waitForTimeout(intervalSec * 1000);
 }
 
