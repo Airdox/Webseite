@@ -1,19 +1,12 @@
 {
-  "generatedAt": "2026-05-16T05:09:16.561Z",
+  "generatedAt": "2026-05-16T15:03:36.484Z",
   "agent": "Designer",
   "baseUrl": "http://127.0.0.1:4173",
   "lifecycle": {
-    "build": {
-      "startedAt": "2026-05-16T05:09:16.566Z",
-      "endedAt": "2026-05-16T05:09:57.154Z",
-      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run build --",
-      "ok": true,
-      "exitCode": 0,
-      "error": ""
-    },
+    "build": null,
     "preview": {
       "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run preview -- --host 127.0.0.1 --port 4173",
-      "startedAt": "2026-05-16T05:09:57.297Z"
+      "startedAt": "2026-05-16T15:03:36.560Z"
     }
   },
   "checks": [
