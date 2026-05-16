@@ -127,7 +127,13 @@ async function runVisualChecks() {
       await page.waitForTimeout(300);
 
       const pageShot = join(screenshotDir, `${scenario.id}-viewport.png`);
-      await page.screenshot({ path: pageShot, fullPage: false });
+      await page.screenshot({
+        path: pageShot,
+        fullPage: false,
+        animations: 'disabled',
+        caret: 'hide',
+        timeout: 10000,
+      });
       screenshots.push(pageShot);
 
       const musicSection = page.locator('#music');
@@ -135,7 +141,13 @@ async function runVisualChecks() {
       await page.waitForTimeout(350);
 
       const musicShot = join(screenshotDir, `${scenario.id}-music.png`);
-      await page.screenshot({ path: musicShot, fullPage: false });
+      await page.screenshot({
+        path: musicShot,
+        fullPage: false,
+        animations: 'disabled',
+        caret: 'hide',
+        timeout: 10000,
+      });
       screenshots.push(musicShot);
 
       const evaluation = await page.evaluate(() => {
@@ -370,6 +382,18 @@ async function runVisualChecks() {
         }
 
         const horizontalOverflowPx = Math.max(0, Math.round(document.documentElement.scrollWidth - window.innerWidth));
+        const technicalUiPatterns = [
+          /komponente wird geladen/i,
+          /loading_component/i,
+          /\bundefined\b/i,
+          /\bnull\b/i,
+          /unexpected error/i,
+          /stack trace/i,
+        ];
+        const visibleText = normalize(document.body?.innerText || '');
+        const technicalUiText = technicalUiPatterns
+          .filter((pattern) => pattern.test(visibleText))
+          .map((pattern) => String(pattern));
 
         return {
           cardCount: cards.length,
@@ -379,6 +403,7 @@ async function runVisualChecks() {
           englishUiCandidates,
           layoutIssues,
           readabilityIssues,
+          technicalUiText,
         };
       });
 
@@ -413,6 +438,23 @@ async function runVisualChecks() {
           `${scenario.id}-horizontal-overflow`,
           'pass',
           `${scenario.id}: Kein horizontaler Overflow.`,
+        );
+      }
+
+      if (evaluation.technicalUiText.length > 0) {
+        pushCheck(
+          checks,
+          `${scenario.id}-technical-ui-text`,
+          'fail',
+          `${scenario.id}: Technische Lade-, Debug- oder Fehlertexte sind im sichtbaren UI gelandet.`,
+          { technicalUiText: evaluation.technicalUiText },
+        );
+      } else {
+        pushCheck(
+          checks,
+          `${scenario.id}-technical-ui-text`,
+          'pass',
+          `${scenario.id}: Keine technischen Lade-/Debugtexte im sichtbaren UI.`,
         );
       }
 

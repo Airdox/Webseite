@@ -4,14 +4,15 @@ import { AudioProvider } from './contexts/AudioContext';
 import Hero from './components/Hero';
 import Navigation from './components/Navigation';
 import SmoothScroll from './components/SmoothScroll';
+import BioSection from './components/BioSection';
+import MusicSection from './components/MusicSection';
+import BookingSection from './components/BookingSection';
 
-// Lazy load components below the fold
-const MusicSection = lazy(() => import('./components/MusicSection'));
+// Lazy-load secondary sections only. Primary navigation targets stay eager so
+// normal scrolling never exposes a chunk-loading state.
 const VIPSection = lazy(() => import('./components/VIPSection'));
-const BioSection = lazy(() => import('./components/BioSection'));
 const EPKSection = lazy(() => import('./components/EPKSection')); // [NEW]
 const Newsletter = lazy(() => import('./components/Newsletter')); // [NEW]
-const BookingSection = lazy(() => import('./components/BookingSection'));
 const Footer = lazy(() => import('./components/Footer'));
 const Visualizer = lazy(() => import('./components/Visualizer')); // [NEW]
 const AuthModal = lazy(() => import('./components/AuthModal')); // [NEW]
@@ -22,23 +23,11 @@ import CookieBanner from './components/CookieBanner';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import AtmosphericBackground from './components/AtmosphericBackground';
 import './styles/global.css';
-import { t } from './utils/i18n';
 
-// Loading Fallback Component
+// Keep lazy section fallback invisible; user-facing loading text makes normal
+// code-splitting look like a broken page while chunks resolve.
 const SectionLoading = () => (
-  <div style={{
-    height: '20vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'rgba(0,0,0,0.5)',
-    color: 'var(--accent-cyan)',
-    fontFamily: 'var(--font-mono)',
-    fontSize: '0.8rem',
-    letterSpacing: '2px'
-  }}>
-    {t('app.loadingComponent')}
-  </div>
+  <div style={{ minHeight: '1px' }} aria-hidden="true" />
 );
 
 // Loading Screen Component
@@ -118,23 +107,17 @@ function App() {
             <Suspense fallback={null}>
               <Visualizer />
             </Suspense>
-            <Navigation onOpenAuth={openAuth} />
+          <Navigation onOpenAuth={openAuth} />
           <Hero />
-          <Suspense fallback={<SectionLoading />}>
-            <BioSection />
-          </Suspense>
-          <Suspense fallback={<SectionLoading />}>
-            <MusicSection />
-          </Suspense>
+          <BioSection />
+          <MusicSection />
           <Suspense fallback={<SectionLoading />}>
             <VIPSection onOpenAuth={openAuth} />
           </Suspense>
           <Suspense fallback={<SectionLoading />}>
             <EPKSection />
           </Suspense>
-          <Suspense fallback={<SectionLoading />}>
-            <BookingSection />
-          </Suspense>
+          <BookingSection />
           <Suspense fallback={<SectionLoading />}>
             <Newsletter />
           </Suspense>

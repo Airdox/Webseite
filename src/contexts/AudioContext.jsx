@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
+import { statsSync } from '../utils/stats-sync';
 // jsmediatags removed
 
 const isDev = import.meta.env?.DEV;
@@ -389,9 +390,7 @@ export const AudioProvider = ({ children }) => {
         };
         const handlePlaying = () => {
             if (currentTrackRef.current) {
-                import('../utils/stats-sync').then(({ statsSync }) => {
-                    statsSync.trackPlay(currentTrackRef.current.id);
-                });
+                statsSync.trackPlay(currentTrackRef.current.id);
             }
         };
         const handlePause = () => {

@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-05-08T09:01:26.095Z",
+  "generatedAt": "2026-05-16T05:09:16.561Z",
   "agent": "Designer",
   "baseUrl": "http://127.0.0.1:4173",
   "lifecycle": {
     "build": {
-      "startedAt": "2026-05-08T09:01:26.099Z",
-      "endedAt": "2026-05-08T09:01:44.425Z",
+      "startedAt": "2026-05-16T05:09:16.566Z",
+      "endedAt": "2026-05-16T05:09:57.154Z",
       "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run build --",
       "ok": true,
       "exitCode": 0,
@@ -13,7 +13,7 @@
     },
     "preview": {
       "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run preview -- --host 127.0.0.1 --port 4173",
-      "startedAt": "2026-05-08T09:01:44.467Z"
+      "startedAt": "2026-05-16T05:09:57.297Z"
     }
   },
   "checks": [
@@ -30,217 +30,22 @@
       "evidence": {}
     },
     {
+      "id": "desktop-technical-ui-text",
+      "level": "pass",
+      "detail": "desktop: Keine technischen Lade-/Debugtexte im sichtbaren UI.",
+      "evidence": {}
+    },
+    {
       "id": "desktop-meta-readability",
-      "level": "fail",
-      "detail": "desktop: Datum/Dauer wirken zusammengezogen oder zusammengeklebt.",
-      "evidence": {
-        "lowMetaSpacing": [
-          {
-            "title": "LIVE SET MAY 2026 #2",
-            "dateText": "MAI 2026",
-            "durationText": "| 2:58:03",
-            "metaText": "MAI 2026 | 2:58:03",
-            "gapPx": 0,
-            "suspiciousMerge": false
-          },
-          {
-            "title": "VHG",
-            "dateText": "MAI 2026",
-            "durationText": "| 3:16:06",
-            "metaText": "MAI 2026 | 3:16:06",
-            "gapPx": 0,
-            "suspiciousMerge": false
-          },
-          {
-            "title": "SISSYGUT ALLES GUT",
-            "dateText": "MAI 2026",
-            "durationText": "| 1:51:45",
-            "metaText": "MAI 2026 | 1:51:45",
-            "gapPx": 0,
-            "suspiciousMerge": false
-          },
-          {
-            "title": "RAUCHST DU RAUS",
-            "dateText": "MAI 2026",
-            "durationText": "| 1:22:21",
-            "metaText": "MAI 2026 | 1:22:21",
-            "gapPx": 0,
-            "suspiciousMerge": false
-          }
-        ],
-        "mergedMeta": []
-      }
+      "level": "pass",
+      "detail": "desktop: Datum und Dauer sind sauber getrennt.",
+      "evidence": {}
     },
     {
       "id": "desktop-readability-user-eye",
-      "level": "fail",
-      "detail": "desktop: Lesbarkeit ist fuer User teilweise zu schlecht (Kontrast/Schriftgroesse).",
-      "evidence": {
-        "readabilityFails": [
-          {
-            "severity": "fail",
-            "type": "tiny-font",
-            "selector": "tracklist-title",
-            "text": "Trackliste",
-            "fontSizePx": 9.6,
-            "contrast": 5.53
-          },
-          {
-            "severity": "fail",
-            "type": "tiny-font",
-            "selector": "tracklist-title",
-            "text": "Trackliste",
-            "fontSizePx": 9.6,
-            "contrast": 5.53
-          },
-          {
-            "severity": "fail",
-            "type": "tiny-font",
-            "selector": "tracklist-title",
-            "text": "Trackliste",
-            "fontSizePx": 9.6,
-            "contrast": 5.53
-          },
-          {
-            "severity": "fail",
-            "type": "tiny-font",
-            "selector": "tracklist-title",
-            "text": "Trackliste",
-            "fontSizePx": 9.6,
-            "contrast": 5.53
-          }
-        ],
-        "readabilityWarns": [
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Teilen",
-            "fontSizePx": 11.2,
-            "contrast": 18.47
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Teilen",
-            "fontSizePx": 11.2,
-            "contrast": 18.47
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Teilen",
-            "fontSizePx": 11.2,
-            "contrast": 18.47
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Teilen",
-            "fontSizePx": 11.2,
-            "contrast": 18.47
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Wiedergaben: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Wiedergaben: 67",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Wiedergaben: 26",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Wiedergaben: 13",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt nicht: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt nicht: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt: 1",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt nicht: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt nicht: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          }
-        ]
-      }
+      "level": "pass",
+      "detail": "desktop: Lesbarkeit wirkt stabil fuer User.",
+      "evidence": {}
     },
     {
       "id": "desktop-de-language-months",
@@ -273,217 +78,22 @@
       "evidence": {}
     },
     {
+      "id": "mobile-technical-ui-text",
+      "level": "pass",
+      "detail": "mobile: Keine technischen Lade-/Debugtexte im sichtbaren UI.",
+      "evidence": {}
+    },
+    {
       "id": "mobile-meta-readability",
-      "level": "fail",
-      "detail": "mobile: Datum/Dauer wirken zusammengezogen oder zusammengeklebt.",
-      "evidence": {
-        "lowMetaSpacing": [
-          {
-            "title": "LIVE SET MAY 2026 #2",
-            "dateText": "MAI 2026",
-            "durationText": "| 2:58:03",
-            "metaText": "MAI 2026 | 2:58:03",
-            "gapPx": 0,
-            "suspiciousMerge": false
-          },
-          {
-            "title": "VHG",
-            "dateText": "MAI 2026",
-            "durationText": "| 3:16:06",
-            "metaText": "MAI 2026 | 3:16:06",
-            "gapPx": 0,
-            "suspiciousMerge": false
-          },
-          {
-            "title": "SISSYGUT ALLES GUT",
-            "dateText": "MAI 2026",
-            "durationText": "| 1:51:45",
-            "metaText": "MAI 2026 | 1:51:45",
-            "gapPx": 0,
-            "suspiciousMerge": false
-          },
-          {
-            "title": "RAUCHST DU RAUS",
-            "dateText": "MAI 2026",
-            "durationText": "| 1:22:21",
-            "metaText": "MAI 2026 | 1:22:21",
-            "gapPx": 0,
-            "suspiciousMerge": false
-          }
-        ],
-        "mergedMeta": []
-      }
+      "level": "pass",
+      "detail": "mobile: Datum und Dauer sind sauber getrennt.",
+      "evidence": {}
     },
     {
       "id": "mobile-readability-user-eye",
-      "level": "fail",
-      "detail": "mobile: Lesbarkeit ist fuer User teilweise zu schlecht (Kontrast/Schriftgroesse).",
-      "evidence": {
-        "readabilityFails": [
-          {
-            "severity": "fail",
-            "type": "tiny-font",
-            "selector": "tracklist-title",
-            "text": "Trackliste",
-            "fontSizePx": 9.6,
-            "contrast": 5.53
-          },
-          {
-            "severity": "fail",
-            "type": "tiny-font",
-            "selector": "tracklist-title",
-            "text": "Trackliste",
-            "fontSizePx": 9.6,
-            "contrast": 5.53
-          },
-          {
-            "severity": "fail",
-            "type": "tiny-font",
-            "selector": "tracklist-title",
-            "text": "Trackliste",
-            "fontSizePx": 9.6,
-            "contrast": 5.53
-          },
-          {
-            "severity": "fail",
-            "type": "tiny-font",
-            "selector": "tracklist-title",
-            "text": "Trackliste",
-            "fontSizePx": 9.6,
-            "contrast": 5.53
-          }
-        ],
-        "readabilityWarns": [
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Teilen",
-            "fontSizePx": 11.2,
-            "contrast": 18.47
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Teilen",
-            "fontSizePx": 11.2,
-            "contrast": 18.47
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Teilen",
-            "fontSizePx": 11.2,
-            "contrast": 18.47
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Teilen",
-            "fontSizePx": 11.2,
-            "contrast": 18.47
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Wiedergaben: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Wiedergaben: 67",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Wiedergaben: 26",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Wiedergaben: 13",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt nicht: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt nicht: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt: 1",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt nicht: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          },
-          {
-            "severity": "warn",
-            "type": "small-font",
-            "selector": "SPAN",
-            "text": "Gefällt nicht: 0",
-            "fontSizePx": 11.2,
-            "contrast": 19.95
-          }
-        ]
-      }
+      "level": "pass",
+      "detail": "mobile: Lesbarkeit wirkt stabil fuer User.",
+      "evidence": {}
     },
     {
       "id": "mobile-de-language-months",
@@ -511,11 +121,11 @@
     "D:\\webseeite-main\\docs\\agent-system\\proof\\designer-visual-quality\\mobile-music.png"
   ],
   "summary": {
-    "totalChecks": 14,
-    "failCount": 4,
+    "totalChecks": 16,
+    "failCount": 0,
     "warnCount": 0,
-    "passCount": 10,
-    "needsAttention": true,
-    "status": "fail"
+    "passCount": 16,
+    "needsAttention": false,
+    "status": "pass"
   }
 }
