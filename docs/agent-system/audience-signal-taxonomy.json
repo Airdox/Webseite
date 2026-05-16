@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "privacyMode": "consented-aggregate",
+  "goals": {
+    "reach": {
+      "description": "Increase qualified discovery from search, social, direct sharing, and returning visitors.",
+      "events": ["route_view", "share_click", "copy_link", "external_social_click", "return_visit"]
+    },
+    "engagement": {
+      "description": "Understand which music, video, and editorial content creates meaningful interaction.",
+      "events": ["set_play", "set_complete", "video_play", "deep_scroll", "tracklist_open"]
+    },
+    "conversion": {
+      "description": "Move qualified visitors toward newsletter, contact, booking, and EPK actions.",
+      "events": ["newsletter_signup", "booking_click", "contact_submit", "epk_download"]
+    },
+    "content_reuse": {
+      "description": "Identify content that should be repackaged for social, newsletter, SEO, and booking material.",
+      "events": ["set_play", "set_complete", "share_click", "return_visit"]
+    }
+  },
+  "eventWeights": {
+    "contact_submit": 100,
+    "booking_click": 90,
+    "newsletter_signup": 75,
+    "epk_download": 65,
+    "set_complete": 55,
+    "share_click": 45,
+    "copy_link": 40,
+    "return_visit": 38,
+    "set_play": 35,
+    "video_play": 28,
+    "tracklist_open": 24,
+    "deep_scroll": 20,
+    "external_social_click": 18,
+    "cta_view": 10,
+    "section_view": 8,
+    "route_view": 5
+  },
+  "segments": {
+    "booking_intent": ["booking_click", "contact_submit", "epk_download"],
+    "fan_intent": ["set_play", "set_complete", "newsletter_signup", "return_visit"],
+    "sharing_intent": ["share_click", "copy_link", "external_social_click"],
+    "discovery_intent": ["route_view", "section_view", "video_play"]
+  },
+  "recommendedFields": [
+    "timestamp",
+    "sessionIdHash",
+    "consent.analytics",
+    "type",
+    "route",
+    "contentId",
+    "contentType",
+    "campaign",
+    "referrerGroup",
+    "deviceClass",
+    "locale",
+    "value"
+  ],
+  "blockedFields": [
+    "ip",
+    "email",
+    "name",
+    "phone",
+    "address",
+    "exactLocation",
+    "formMessage",
+    "rawUserAgent",
+    "fingerprint"
+  ]
+}

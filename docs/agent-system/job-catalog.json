@@ -9,6 +9,7 @@
     "Manni",
     "Designer",
     "Mentor",
+    "Audience Intelligence",
     "Refactor",
     "Repository"
   ],
@@ -92,6 +93,42 @@
       "outputs": [
         "docs/agent-system/latest-agent-currency.json",
         "docs/agent-system/latest-agent-currency.md"
+      ]
+    },
+    {
+      "id": "audience-intelligence-cycle",
+      "title": "Audience intelligence and growth signal review",
+      "owner": "Audience Intelligence",
+      "execution": "script",
+      "script": "audience:intelligence:write",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "weekly_growth_review",
+          "pr_campaign_request",
+          "reach_drop",
+          "winner_detected"
+        ],
+        "statuses": [
+          "standard",
+          "deep",
+          "weekly",
+          "planning",
+          "incident",
+          "scale"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "audience_intelligence",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-audience-intelligence.json",
+        "docs/agent-system/latest-audience-intelligence.md"
       ]
     },
     {

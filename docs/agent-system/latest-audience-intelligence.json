@@ -1,0 +1,51 @@
+{
+  "generatedAt": "2026-05-16T14:45:05.107Z",
+  "agent": "audience-intelligence",
+  "privacy": {
+    "mode": "consented-aggregate",
+    "blockedFields": [
+      "ip",
+      "email",
+      "name",
+      "phone",
+      "address",
+      "exactLocation",
+      "formMessage",
+      "rawUserAgent",
+      "fingerprint",
+      "userId"
+    ]
+  },
+  "summary": {
+    "eventSource": null,
+    "totalRawEvents": 0,
+    "totalConsentedEvents": 0,
+    "rejectedEvents": 0,
+    "byType": [],
+    "topRoutes": [],
+    "topContent": [],
+    "topCampaigns": [],
+    "topReferrers": [],
+    "topDevices": [],
+    "intentSegments": {
+      "booking_intent": 0,
+      "fan_intent": 0,
+      "sharing_intent": 0,
+      "discovery_intent": 0
+    },
+    "journeyStats": {
+      "sessions": 0,
+      "sessionsWithPlay": 0,
+      "sessionsWithNewsletter": 0,
+      "sessionsWithBooking": 0
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "high",
+      "title": "Start collecting consented audience events",
+      "reason": "No consented analytics events were found, so recommendations are based on readiness only.",
+      "action": "Wire route, CTA, set-play, newsletter, booking, and share events into a consent-aware analytics export."
+    }
+  ]
+}

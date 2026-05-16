@@ -92,6 +92,22 @@
       ]
     },
     {
+      "id": "audience-intelligence",
+      "agent": "Audience Intelligence",
+      "role": "review",
+      "paths": [
+        "scripts/audience-intelligence-agent.mjs",
+        "docs/agent-system/latest-audience-intelligence.*",
+        "docs/agent-system/MANNI_*.md",
+        "docs/agent-system/manni-*",
+        "src/data/musicSets.js"
+      ],
+      "recommendedGates": [
+        "npm run audience:intelligence",
+        "npm run agent:jobs:validate -- --strict-warnings"
+      ]
+    },
+    {
       "id": "learning-documentation",
       "agent": "Mentor",
       "role": "review",
