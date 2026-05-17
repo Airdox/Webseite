@@ -12,47 +12,33 @@ const defaultSettings = {
   workspaceRoot: 'D:\\Airdox\\Webseite',
 };
 
-const defaultSets = [
-  {
-    id: 'recording_2026_04_12',
-    title: 'REC 12.04.2026',
-    date: 'APR 2026',
-    file: 'Airdox_REC_2026_04_12.mp3',
-    cover: '/assets/je_prohibition_sign.png',
-    duration: '2:30:15',
-    isNew: true,
-    vinylColor: '#ccff00',
-    tracks: [
-      { time: '00:00', artist: 'Nico Moreno', title: 'Purple Widow' },
-      { time: '05:42', artist: 'Klangkuenstler', title: 'Weltschmerz' },
-    ],
-  },
-  {
-    id: 'secret_set_2025_12_22',
-    title: 'SECRET SET (PIRATE STUDIO)',
-    date: '22.12.2025',
-    file: 'Airdox_Secret_Set_Pirate_Studio_22_12_2025_full.mp3',
-    duration: '2:46:56',
-    isNew: false,
-    vinylColor: '#ff00ff',
-  },
-];
+import { musicSets } from '../data/musicSets.js';
+
+const defaultSets = musicSets.map(set => ({
+  id: set.id,
+  title: set.title,
+  date: set.date,
+  file: set.file,
+  duration: set.duration,
+  isNew: set.isNew,
+  vinylColor: set.vinylColor,
+  tracks: set.tracks || []
+}));
 
 const defaultTables = {
   track_stats: [],
   analytics_logs: [],
   bookings: [],
-  subscribers: [
-    { id: 1, email: 'vip@airdox.info', status: 'active', created_at: '2026-04-20T18:00:00.000Z' },
-  ],
-  users: [
-    { id: 1, username: 'airdox-admin', email: 'admin@airdox.info', created_at: '2026-04-18T10:00:00.000Z' },
-    { id: 2, username: 'vip-user', email: 'vip@airdox.info', created_at: '2026-04-19T10:00:00.000Z' },
-  ],
-  sessions: [
-    { id: 'session_demo', user_id: 2, username: 'vip-user', email: 'vip@airdox.info', created_at: '2026-04-24T10:00:00.000Z', expires_at: '2026-05-01T10:00:00.000Z' },
-  ],
+  subscribers: [],
+  users: [],
+  sessions: [],
 };
+
+// Clear stale mock cache so we always see reality
+if (typeof localStorage !== 'undefined') {
+  localStorage.removeItem(SETS_KEY);
+  localStorage.removeItem(TABLES_KEY);
+}
 
 const loadJson = (key, fallback) => {
   try {

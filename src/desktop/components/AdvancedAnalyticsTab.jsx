@@ -36,12 +36,17 @@ const PRESETS = [
   { label: '7 Tage', days: 7 },
   { label: '30 Tage', days: 30 },
   { label: '90 Tage', days: 90 },
-  { label: 'Alles', days: 365 },
+  { label: 'Alles', days: 'all' },
 ];
 
 const DateRangeSelector = ({ startDate, endDate, onStartChange, onEndChange }) => {
   const applyPreset = (days) => {
     const end = new Date();
+    if (days === 'all') {
+      onStartChange('2000-01-01');
+      onEndChange(end.toISOString().split('T')[0]);
+      return;
+    }
     const start = new Date();
     start.setDate(start.getDate() - days);
     onStartChange(start.toISOString().split('T')[0]);
