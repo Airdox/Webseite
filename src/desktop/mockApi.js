@@ -471,8 +471,8 @@ export const mockFlightDeckApi = {
     saveJson(TABLES_KEY, tables);
     return true;
   },
-  async runReadonlyQuery() {
-    throw new Error('Read-only SQL braucht die Windows-App mit echter Datenbankverbindung. Die Browser-Vorschau fuehrt keine Query gegen Mock-Daten aus.');
+  async runReadonlyQuery(payload) {
+    throw new Error('Fake SQL mock was disabled. Please run the Electron Desktop App to connect to the real database.');
   },
   async syncTrackStats() {
     const tables = loadTables();

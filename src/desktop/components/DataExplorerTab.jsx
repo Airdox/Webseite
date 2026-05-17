@@ -290,27 +290,7 @@ const DataExplorerTab = ({
         </section>
       )}
 
-      <section className="fd-surface">
-        <div className="fd-section-head">
-          <h3>Read-only SQL</h3>
-          <span>SELECT / WITH / EXPLAIN</span>
-        </div>
-        <textarea
-          className="fd-sql-editor"
-          value={queryText}
-          onChange={(event) => setQueryText(event.target.value)}
-          spellCheck={false}
-        />
-        <div className="fd-toolbar-actions">
-          <button type="button" className="fd-button" onClick={onRunQuery}>Run Query</button>
-        </div>
-        {queryResult && (
-          <div className="fd-query-result">
-            <strong>{queryResult.rowCount} rows</strong>
-            <pre>{JSON.stringify(queryResult.rows, null, 2)}</pre>
-          </div>
-        )}
-      </section>
+
     </div>
   );
 };
