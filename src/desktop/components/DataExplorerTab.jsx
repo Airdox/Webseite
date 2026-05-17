@@ -217,6 +217,7 @@ const GenericTable = ({ definition, rows, onDelete }) => (
 );
 
 const DataExplorerTab = ({
+  isElectron = false,
   tableName,
   setTableName,
   search,
@@ -241,6 +242,18 @@ const DataExplorerTab = ({
 
   return (
     <div className="fd-panel-stack">
+      <section className={`fd-data-source-card ${isElectron ? 'ok' : 'warn'}`}>
+        <div>
+          <strong>{isElectron ? 'Echte Datenbank verbunden' : 'Browser-Vorschau ohne Datenbank'}</strong>
+          <p>
+            {isElectron
+              ? `Tabellen, Exporte und Read-only SQL laufen gegen die Workspace-Datenbank. Aktive Tabelle: ${tableName}.`
+              : 'Diese Vorschau darf keine SQL-Abfragen gegen Mock-Daten vortaeuschen. Exporte laden nur die aktuell sichtbaren Browser-Zeilen herunter.'}
+          </p>
+        </div>
+        <span>{isElectron ? 'DATABASE' : 'NO SQL MOCK'}</span>
+      </section>
+
       <TableToolbar
         tableName={tableName}
         setTableName={setTableName}

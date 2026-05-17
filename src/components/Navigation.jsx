@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Moon, Sun } from 'lucide-react';
 import { t, getCurrentLocale } from '../utils/i18n';
 import './Navigation.css';
 
-const Navigation = ({ onOpenAuth = () => {} }) => {
+const Navigation = ({ onOpenAuth = () => {}, theme = 'dark', onToggleTheme = () => {} }) => {
     const [scrolled, setScrolled] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
     const [activeSection, setActiveSection] = useState('home');
@@ -73,6 +74,7 @@ const Navigation = ({ onOpenAuth = () => {} }) => {
     ];
 
     const currentLocale = getCurrentLocale();
+    const isLightTheme = theme === 'light';
 
     return (
         <>
@@ -112,6 +114,20 @@ const Navigation = ({ onOpenAuth = () => {} }) => {
                             </button>
                         ))}
                     </div>
+
+                    <label className="theme-switch" title={isLightTheme ? t('nav.theme.dark') : t('nav.theme.light')}>
+                        <input
+                            type="checkbox"
+                            checked={isLightTheme}
+                            onChange={onToggleTheme}
+                            aria-label={isLightTheme ? t('nav.theme.dark') : t('nav.theme.light')}
+                        />
+                        <span className="theme-switch-track" aria-hidden="true">
+                            <Moon className="theme-switch-icon moon" size={15} strokeWidth={2.2} />
+                            <Sun className="theme-switch-icon sun" size={15} strokeWidth={2.2} />
+                            <span className="theme-switch-thumb"></span>
+                        </span>
+                    </label>
 
                     {/* Language Toggle */}
                     <div className="lang-toggle">
@@ -198,6 +214,19 @@ const Navigation = ({ onOpenAuth = () => {} }) => {
                             <button onClick={() => onOpenAuth('login')} className="btn btn-secondary">{t('nav.login')}</button>
                             <button onClick={() => onOpenAuth('register')} className="btn btn-primary">{t('nav.joinVip')}</button>
                         </div>
+                        <label className="theme-switch theme-switch-mobile" title={isLightTheme ? t('nav.theme.dark') : t('nav.theme.light')}>
+                            <input
+                                type="checkbox"
+                                checked={isLightTheme}
+                                onChange={onToggleTheme}
+                                aria-label={isLightTheme ? t('nav.theme.dark') : t('nav.theme.light')}
+                            />
+                            <span className="theme-switch-track" aria-hidden="true">
+                                <Moon className="theme-switch-icon moon" size={15} strokeWidth={2.2} />
+                                <Sun className="theme-switch-icon sun" size={15} strokeWidth={2.2} />
+                                <span className="theme-switch-thumb"></span>
+                            </span>
+                        </label>
                         <a href="mailto:airdox82@gmail.com" className="mobile-contact-link">
                             {t('nav.getInTouch')}
                         </a>

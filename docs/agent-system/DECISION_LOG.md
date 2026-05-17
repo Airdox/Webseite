@@ -463,3 +463,23 @@ Recheck:
 - `npm run repository:monitor:write`
 - `npm run agent:jobs:validate -- --strict-warnings`
 - `git diff --check`
+
+## 2026-05-16 - Designer auf Motion- und Audio-reactive Creative Direction gehoben
+
+Kontext:
+- Der Nutzer war mit Designer-Entwuerfen unzufrieden, weil sie zu statisch wirkten.
+- Reels sollen State-of-the-Art wirken und mit Effekten wie Equalizer, Waveform, Parallax-Stills oder Kinetic Type ueberraschen.
+
+Entscheidung:
+- Designer bekommt eine verbindliche Creative-Direction-Datei: `docs/agent-system/DESIGNER_CREATIVE_DIRECTION.md`.
+- Corporate-Design- und Reel-Template-Regeln fordern jetzt Motion-/Audio-Signatur, Still-Pruefung und `creative_static_risk` bei reinen Text-/Logo-Frames.
+- Der Brand-Asset-Generator erzeugt zusaetzliche Reel-Richtungen: `reel-signal-system`, `reel-club-still-parallax`, `reel-glitch-type-drop`.
+- Der Agent-Audit prueft, ob Designer-Motion-Regeln und Social-Reel-Motion-Felder vorhanden sind.
+
+Risiko:
+- SVG-Templates bleiben Produktionsvorlagen und ersetzen noch keinen finalen MP4-Render mit echter Audioanalyse.
+- Fuer echte Reels muss der naechste Schritt Audio-/Frame-Extraktion und ffmpeg-Rendering nutzen.
+
+Recheck:
+- `npm run brand:assets:strict`
+- `npm run agent:audit`

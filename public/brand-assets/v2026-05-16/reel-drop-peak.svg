@@ -1,10 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-label="AIRDOX PEAK MOMENT">
   <defs>
-    <linearGradient id="edgeGlow" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="#00f0ff" stop-opacity="0.9"/>
-      <stop offset="0.58" stop-color="#0f141a" stop-opacity="0.4"/>
-      <stop offset="1" stop-color="#9adf6b" stop-opacity="0.8"/>
+    <linearGradient id="stageWash" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#21133f" stop-opacity="0.95"/>
+      <stop offset="0.45" stop-color="#0f141a" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#061f25" stop-opacity="0.98"/>
     </linearGradient>
+    <linearGradient id="edgeGlow" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#00f0ff" stop-opacity="0.95"/>
+      <stop offset="0.42" stop-color="#ff2bd6" stop-opacity="0.86"/>
+      <stop offset="1" stop-color="#9adf6b" stop-opacity="0.82"/>
+    </linearGradient>
+    <pattern id="signalGrid" width="54" height="54" patternUnits="userSpaceOnUse">
+      <path d="M54 0H0V54" fill="none" stroke="#263241" stroke-width="1" opacity="0.55"/>
+      <circle cx="0" cy="54" r="2.5" fill="#00f0ff" opacity="0.38"/>
+    </pattern>
     <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
       <feGaussianBlur stdDeviation="18" result="blur"/>
       <feMerge>
@@ -14,10 +23,48 @@
     </filter>
   </defs>
   <rect width="100%" height="100%" fill="#050608"/>
+  <rect width="100%" height="100%" fill="url(#stageWash)" opacity="0.72"/>
+  <rect width="100%" height="100%" fill="url(#signalGrid)" opacity="0.34"/>
   <rect x="28" y="28" width="1024" height="1864" fill="none" stroke="#263241" stroke-width="2"/>
-  <rect x="90" y="190" width="900" height="1430" fill="#0f141a" opacity="0.58"/>
-  <path d="M90 206 H585" stroke="#00f0ff" stroke-width="10" filter="url(#softGlow)"/>
+  <path d="M72 447 L990 1660" stroke="#ff2bd6" stroke-width="34" opacity="0.24" filter="url(#softGlow)"/>
+  <path d="M114 648 L990 1660" stroke="#00f0ff" stroke-width="10" opacity="0.68"/>
+  <rect x="90" y="190" width="900" height="1430" fill="#0f141a" opacity="0.68"/>
+  <rect x="820" y="190" width="170" height="1430" fill="#21133f" opacity="0.82"/>
+  <path d="M90 206 H486" stroke="#00f0ff" stroke-width="10" filter="url(#softGlow)"/>
+  <path d="M252 1190 H828" stroke="#ff2bd6" stroke-width="4" opacity="0.86"/>
   <path d="M540 1596 H990" stroke="#9adf6b" stroke-width="8" opacity="0.9"/>
+  <g opacity="0.78">
+    <rect x="854" y="340" width="16" height="601" fill="#00f0ff"/>
+    <rect x="882" y="410" width="16" height="429" fill="#ff2bd6"/>
+    <rect x="910" y="300" width="16" height="686" fill="#9adf6b"/>
+  </g>
+  <g opacity="0.86" aria-label="audio reactive equalizer direction">
+    <rect x="116" y="1202" width="12" height="18" rx="0" fill="#00f0ff" opacity="0.52"/>
+    <rect x="142" y="1185" width="12" height="35" rx="0" fill="#ff2bd6" opacity="0.62"/>
+    <rect x="168" y="1168" width="12" height="52" rx="0" fill="#9adf6b" opacity="0.72"/>
+    <rect x="194" y="1151" width="12" height="69" rx="0" fill="#00f0ff" opacity="0.8200000000000001"/>
+    <rect x="220" y="1134" width="12" height="86" rx="0" fill="#ff2bd6" opacity="0.52"/>
+    <rect x="246" y="1199" width="12" height="21" rx="0" fill="#9adf6b" opacity="0.62"/>
+    <rect x="272" y="1182" width="12" height="38" rx="0" fill="#00f0ff" opacity="0.72"/>
+    <rect x="298" y="1165" width="12" height="55" rx="0" fill="#ff2bd6" opacity="0.8200000000000001"/>
+    <rect x="324" y="1148" width="12" height="72" rx="0" fill="#9adf6b" opacity="0.52"/>
+    <rect x="350" y="1131" width="12" height="89" rx="0" fill="#00f0ff" opacity="0.62"/>
+    <rect x="376" y="1196" width="12" height="24" rx="0" fill="#ff2bd6" opacity="0.72"/>
+    <rect x="402" y="1179" width="12" height="41" rx="0" fill="#9adf6b" opacity="0.8200000000000001"/>
+    <rect x="428" y="1162" width="12" height="58" rx="0" fill="#00f0ff" opacity="0.52"/>
+    <rect x="454" y="1145" width="12" height="75" rx="0" fill="#ff2bd6" opacity="0.62"/>
+    <rect x="480" y="1128" width="12" height="92" rx="0" fill="#9adf6b" opacity="0.72"/>
+    <rect x="506" y="1193" width="12" height="27" rx="0" fill="#00f0ff" opacity="0.8200000000000001"/>
+    <rect x="532" y="1176" width="12" height="44" rx="0" fill="#ff2bd6" opacity="0.52"/>
+    <rect x="558" y="1159" width="12" height="61" rx="0" fill="#9adf6b" opacity="0.62"/>
+    <rect x="584" y="1142" width="12" height="78" rx="0" fill="#00f0ff" opacity="0.72"/>
+    <rect x="610" y="1125" width="12" height="95" rx="0" fill="#ff2bd6" opacity="0.8200000000000001"/>
+    <rect x="636" y="1190" width="12" height="30" rx="0" fill="#9adf6b" opacity="0.52"/>
+    <rect x="662" y="1173" width="12" height="47" rx="0" fill="#00f0ff" opacity="0.62"/>
+    <rect x="688" y="1156" width="12" height="64" rx="0" fill="#ff2bd6" opacity="0.72"/>
+    <rect x="714" y="1139" width="12" height="81" rx="0" fill="#9adf6b" opacity="0.8200000000000001"/>
+    <path d="M110 1254 C288 1174, 522 1298, 774 1192 S950 1238, 974 1208" fill="none" stroke="#00f0ff" stroke-width="4" opacity="0.78"/>
+  </g>
   <g font-family="Inter, Arial, sans-serif" fill="#f5f8ff">
     <text x="90" y="268" font-size="48" font-weight="800" letter-spacing="0">AIRDOX</text>
     <text x="90" y="312" font-size="24" font-weight="600" fill="#9aa6b2" letter-spacing="0">Berlin Underground Techno</text>
@@ -26,10 +73,17 @@
     <text x="90" y="1528" font-size="36" font-weight="800" fill="#f5f8ff" letter-spacing="0">AIRDOX.INFO</text>
     <text x="90" y="1572" font-size="22" font-weight="600" fill="#9aa6b2" letter-spacing="0">https://airdox.info</text>
   </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="0" fill="#9aa6b2" opacity="0.88">
+    <text x="90" y="1442">MOTION: audio-reactive equalizer + waveform spine</text>
+    <text x="90" y="1470">EFFECT: beat pulse with cyan/pink light gate</text>
+    <text x="90" y="1498">STILL: source video or website music-section still</text>
+  </g>
   <g opacity="0.75">
     <rect x="820" y="218" width="170" height="14" fill="#00f0ff"/>
-    <rect x="886" y="242" width="104" height="14" fill="#9adf6b"/>
+    <rect x="858" y="242" width="132" height="14" fill="#ff2bd6"/>
+    <rect x="902" y="266" width="88" height="14" fill="#9adf6b"/>
     <rect x="90" y="1598" width="70" height="10" fill="#00f0ff"/>
   </g>
+  <text x="842" y="1550" transform="rotate(-90 842 1550)" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#ffc857" letter-spacing="0">SIGNAL / AIRDOX</text>
   <rect x="90" y="190" width="900" height="1430" fill="none" stroke="url(#edgeGlow)" stroke-width="3" opacity="0.72"/>
 </svg>

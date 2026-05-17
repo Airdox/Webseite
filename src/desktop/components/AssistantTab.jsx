@@ -2,35 +2,37 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Bot, ChevronRight, Copy, Check, ExternalLink, Loader2,
   MessageSquare, Send, Sparkles, Trash2, Zap,
+  Rocket, BarChart3, Wrench, CheckCircle2, Package, TrendingUp,
+  FolderOpen, HelpCircle,
 } from 'lucide-react';
 import { answerToolQuestion } from '../lib/assistantEngine.js';
 import { ASSISTANT_ACTIONS } from '../lib/assistantKnowledge.js';
 import { flightDeckApi } from '../api.js';
 
 const PROMPTS = [
-  { text: 'Wie stelle ich ein Set online?', icon: '🚀' },
-  { text: 'Zeig mir den aktuellen Status', icon: '📊' },
-  { text: 'Wie behebe ich einen Datenbankfehler?', icon: '🔧' },
-  { text: 'Was muss ich vor Go Live prüfen?', icon: '✅' },
-  { text: 'Erkläre den Batch Import', icon: '📦' },
-  { text: 'Wie analysiere ich schwache Sets?', icon: '📈' },
-  { text: 'Öffne den Set Import', icon: '📁' },
-  { text: 'Was kannst du alles?', icon: '🤖' },
+  { text: 'Wie stelle ich ein Set online?', icon: Rocket },
+  { text: 'Zeig mir den aktuellen Status', icon: BarChart3 },
+  { text: 'Wie behebe ich einen Datenbankfehler?', icon: Wrench },
+  { text: 'Was muss ich vor Go Live prüfen?', icon: CheckCircle2 },
+  { text: 'Erkläre den Batch Import', icon: Package },
+  { text: 'Wie analysiere ich schwache Sets?', icon: TrendingUp },
+  { text: 'Öffne den Set Import', icon: FolderOpen },
+  { text: 'Was kannst du alles?', icon: HelpCircle },
 ];
 
 const SOURCE_LABELS = {
   'knowledge': { label: 'Wiki', color: 'var(--airdox-lime)' },
   'state': { label: 'Live Status', color: 'var(--airdox-cyan)' },
-  'action': { label: 'Aktion', color: '#f97316' },
+  'action': { label: 'Aktion', color: 'var(--airdox-warning)' },
   'local': { label: 'Lokal', color: 'var(--airdox-muted)' },
   'system': { label: 'System', color: 'var(--airdox-muted)' },
-  'fallback': { label: 'Experte', color: '#c084fc' },
+  'fallback': { label: 'Experte', color: 'var(--airdox-lime)' },
   'mock-local': { label: 'Lokal', color: 'var(--airdox-muted)' },
   'error-fallback': { label: 'Fehler', color: 'var(--airdox-danger)' },
 };
 
 const getSourceLabel = (source = '') => {
-  if (source.startsWith('ollama:')) return { label: 'KI', color: '#c084fc' };
+  if (source.startsWith('ollama:')) return { label: 'KI', color: 'var(--airdox-lime)' };
   return SOURCE_LABELS[source] || { label: source || 'Lokal', color: 'var(--airdox-muted)' };
 };
 
@@ -160,7 +162,7 @@ const AssistantTab = ({
     {
       id: 'welcome',
       role: 'assistant',
-      text: 'Willkommen im Flight-Deck-Assistenten! 👋\n\nIch bin dein Experte für das AIRDOX Flight Deck. Ich kann:\n\n• 📋 Alle Features erklären und Anleitungen geben\n• 🔍 Den aktuellen System-Status auswerten\n• 🚀 Aktionen ausführen (Tabs öffnen, Status aktualisieren)\n• 🔧 Fehler diagnostizieren und Lösungen vorschlagen\n\nStell mir einfach deine Frage oder wähle einen Vorschlag unten!',
+      text: 'AIRDOX Flight-Deck-Assistent bereit.\n\nIch helfe bei Workspace, Import, Analytics, Deploy, Datenbank und Monitoring. Ich kann Status prüfen, Schritte erklären, passende Tabs öffnen und konkrete Fehlerwege vorschlagen.\n\nStell eine Frage oder wähle einen operativen Einstieg oben.',
       source: 'system',
       actions: [],
       timestamp: Date.now(),
@@ -310,18 +312,21 @@ const AssistantTab = ({
       <section className="fd-surface fd-assistant-container">
         {/* Prompt Suggestions */}
         <div className="fd-assistant-prompts" aria-label="Vorschläge">
-          {PROMPTS.map((prompt) => (
-            <button
-              type="button"
-              key={prompt.text}
-              className="fd-prompt-chip"
-              onClick={() => void send(prompt.text)}
-              disabled={isThinking}
-            >
-              <span className="fd-prompt-emoji">{prompt.icon}</span>
-              {prompt.text}
-            </button>
-          ))}
+          {PROMPTS.map((prompt) => {
+            const PromptIcon = prompt.icon;
+            return (
+              <button
+                type="button"
+                key={prompt.text}
+                className="fd-prompt-chip"
+                onClick={() => void send(prompt.text)}
+                disabled={isThinking}
+              >
+                <PromptIcon size={14} className="fd-prompt-icon" aria-hidden="true" />
+                {prompt.text}
+              </button>
+            );
+          })}
         </div>
 
         {/* Chat Messages */}

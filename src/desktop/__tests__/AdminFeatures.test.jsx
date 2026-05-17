@@ -10,22 +10,13 @@ import LiveUpdateManager from '../lib/LiveUpdateManager';
 describe('Advanced Analytics Tab', () => {
   const defaultProps = {
     analyticsData: {
-      totalViews: 1000,
-      totalPlays: 500,
-      totalLikes: 250,
-      totalDislikes: 50,
-      eventsByType: { play: 500, like: 250, dislike: 50, view: 200 },
-      topSets: [
-        { id: 'set-1', plays: 100, likes: 50 },
-        { id: 'set-2', plays: 80, likes: 40 },
+      realData: true,
+      source: 'database',
+      eventLogs: [
+        { event_type: 'play', item_id: 'set-1', country: 'DE', device_type: 'desktop', created_at: '2026-05-01T10:00:00.000Z' },
+        { event_type: 'play', item_id: 'set-2', country: 'AT', device_type: 'mobile', created_at: '2026-05-01T11:00:00.000Z' },
+        { event_type: 'like', item_id: 'set-1', country: 'DE', device_type: 'desktop', created_at: '2026-05-01T12:00:00.000Z' },
       ],
-      topCountries: [
-        { code: 'DE', count: 300 },
-        { code: 'AT', count: 150 },
-      ],
-      deviceTypeBreakdown: { mobile: 600, desktop: 400 },
-      hourlyDistribution: new Array(24).fill(0).map(() => Math.floor(Math.random() * 50)),
-      conversionRate: 0.5,
     },
     onExport: vi.fn(),
     onRefresh: vi.fn(),
@@ -46,25 +37,18 @@ describe('Advanced Analytics Tab', () => {
   });
 
   it('displays correct metric values', () => {
-    const { getByText } = render(<AdvancedAnalyticsTab {...defaultProps} />);
-    expect(
-      getByText(defaultProps.analyticsData.totalViews.toLocaleString('de-DE'), {
-        selector: '.fd-metric-value',
-      }),
-    ).toBeTruthy();
-    expect(
-      getByText(defaultProps.analyticsData.totalPlays.toLocaleString('de-DE'), {
-        selector: '.fd-metric-value',
-      }),
-    ).toBeTruthy();
+    const { container } = render(<AdvancedAnalyticsTab {...defaultProps} />);
+    const metricValues = Array.from(container.querySelectorAll('.fd-metric-value')).map((node) => node.textContent);
+    expect(metricValues).toContain('3');
+    expect(metricValues).toContain('2');
   });
 
-  it('calls onRefresh when refresh button is clicked', async () => {
+  it('calls onRefresh when filter button is clicked', async () => {
     const onRefresh = vi.fn();
-    const { getByRole } = render(
+    const { getAllByRole } = render(
       <AdvancedAnalyticsTab {...defaultProps} onRefresh={onRefresh} />,
     );
-    const refreshBtn = getByRole('button', { name: /Aktualisieren/ });
+    const refreshBtn = getAllByRole('button', { name: /Filter anwenden/ })[0];
     fireEvent.click(refreshBtn);
     expect(onRefresh).toHaveBeenCalled();
   });
@@ -81,7 +65,7 @@ describe('Advanced Analytics Tab', () => {
     expect(container.textContent).not.toContain('-1:00');
   });
 
-  it('applies date and dimension filters to metrics', () => {
+  it('sends date and dimension filters to the data source only after apply', () => {
     const today = new Date();
     const recentDate = (daysAgo) => {
       const date = new Date(today);
@@ -101,16 +85,25 @@ describe('Advanced Analytics Tab', () => {
       },
     };
 
-    const { getAllByRole, container } = render(<AdvancedAnalyticsTab {...propsWithLogs} />);
+    const onRefresh = vi.fn();
+    const { getAllByRole, container } = render(<AdvancedAnalyticsTab {...propsWithLogs} onRefresh={onRefresh} />);
     const metricValues = () => Array.from(container.querySelectorAll('.fd-metric-value')).map((node) => node.textContent);
     expect(metricValues()[0]).toBe('3');
 
     const selects = getAllByRole('combobox');
     fireEvent.change(selects[2], { target: { value: 'DE' } });
-    expect(metricValues()[0]).toBe('2');
+    fireEvent.click(getAllByRole('button', { name: /Filter anwenden/i })[0]);
+    expect(metricValues()[0]).toBe('3');
+    expect(onRefresh).toHaveBeenLastCalledWith(expect.objectContaining({
+      filters: expect.objectContaining({ country: 'DE' }),
+    }));
 
     fireEvent.change(selects[0], { target: { value: 'play' } });
-    expect(metricValues()[0]).toBe('1');
+    fireEvent.click(getAllByRole('button', { name: /Filter anwenden/i })[0]);
+    expect(metricValues()[0]).toBe('3');
+    expect(onRefresh).toHaveBeenLastCalledWith(expect.objectContaining({
+      filters: expect.objectContaining({ country: 'DE', eventType: 'play' }),
+    }));
   });
 });
 

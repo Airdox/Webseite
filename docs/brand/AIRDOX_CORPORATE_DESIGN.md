@@ -64,6 +64,14 @@ Pflichtkriterien:
 - Keine internen Hinweise wie `draft`, `pending`, `approval` im sichtbaren Asset.
 - Export als H.264/AAC MP4 und optional Preview-PNG.
 
+Kuenstlerische Pflichtkriterien:
+
+- Reel-/Story-Assets duerfen nicht nur statisch sein. Mindestens eine sichtbare Motion- oder Audio-Reaktivitaetsidee ist Pflicht.
+- Bevorzugte Motion-Signaturen: Equalizer, Waveform, VU-Meter, Beat-Pulse, Scanline-Sweep, Glitch-Hit, Kinetic-Type-Hit, Parallax-Still oder Light-Gate.
+- Designer prueft verwendbare Stills aus Website, Cover, Preview-Frames, EPK oder Quellvideo und inszeniert sie mit Crop, Maske, Tiefenebene, Farbpass oder Beat-Reveal.
+- Ein unveraenderter Screenshot oder ein reiner Text-Frame gilt als `creative_static_risk` und muss ueberarbeitet werden.
+- Fuer relevante Reels muss Designer mindestens drei Richtungen denken: `signal_system`, `club_still_parallax`, `glitch_type_drop`.
+
 Aktueller Designer-Handoff:
 
 - Manni liefert Rohidee, Caption, Hook, CTA und Audio-/Clip-Quelle.

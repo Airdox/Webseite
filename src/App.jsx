@@ -24,6 +24,15 @@ import AnalyticsDashboard from './components/AnalyticsDashboard';
 import AtmosphericBackground from './components/AtmosphericBackground';
 import './styles/global.css';
 
+const THEME_STORAGE_KEY = 'airdox-theme-mode';
+
+const getInitialTheme = () => {
+  if (typeof window === 'undefined') return 'dark';
+  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+  if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme;
+  return 'dark';
+};
+
 // Keep lazy section fallback invisible; user-facing loading text makes normal
 // code-splitting look like a broken page while chunks resolve.
 const SectionLoading = () => (
@@ -44,9 +53,22 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [authModal, setAuthModal] = useState({ isOpen: false, mode: 'login' });
+  const [theme, setTheme] = useState(getInitialTheme);
 
   const openAuth = (mode = 'login') => setAuthModal({ isOpen: true, mode });
   const closeAuth = () => setAuthModal({ ...authModal, isOpen: false });
+  const toggleTheme = () => setTheme((current) => (current === 'light' ? 'dark' : 'light'));
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) {
+      themeColor.setAttribute('content', theme === 'light' ? '#f6fbff' : '#00f0ff');
+    }
+  }, [theme]);
 
   useEffect(() => {
     // Simulate loading progress
@@ -107,7 +129,7 @@ function App() {
             <Suspense fallback={null}>
               <Visualizer />
             </Suspense>
-          <Navigation onOpenAuth={openAuth} />
+          <Navigation onOpenAuth={openAuth} theme={theme} onToggleTheme={toggleTheme} />
           <Hero />
           <BioSection />
           <MusicSection />

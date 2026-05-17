@@ -157,7 +157,7 @@ const OverviewTab = ({
           </button>
           <button type="button" className="fd-button secondary" onClick={() => onJumpToTab?.('analytics')}>
             <BarChart3 size={16} />
-            Analytics
+            Auswertung
           </button>
           <button type="button" className="fd-button secondary" onClick={() => onJumpToTab?.('assistant')}>
             <Bot size={16} />

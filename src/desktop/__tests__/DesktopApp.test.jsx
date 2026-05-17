@@ -67,6 +67,36 @@ describe('DesktopApp', () => {
     });
   }, 30000);
 
+  it('exports Data Explorer rows as a real browser download in preview mode', async () => {
+    const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    const createObjectUrl = vi.fn(() => 'blob:flightdeck-export');
+    const revokeObjectUrl = vi.fn();
+    Object.defineProperty(URL, 'createObjectURL', { configurable: true, value: createObjectUrl });
+    Object.defineProperty(URL, 'revokeObjectURL', { configurable: true, value: revokeObjectUrl });
+
+    render(<DesktopApp />);
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+
+    fireEvent.click(screen.getByRole('button', { name: /^Data Explorer$/i }));
+    await screen.findByText('NO SQL MOCK');
+    fireEvent.click(screen.getByRole('button', { name: /^JSON$/i }));
+
+    await waitFor(() => expect(createObjectUrl).toHaveBeenCalledTimes(1));
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+    expect(revokeObjectUrl).toHaveBeenCalledWith('blob:flightdeck-export');
+  }, 30000);
+
+  it('does not fake read-only SQL results in browser preview mode', async () => {
+    render(<DesktopApp />);
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+
+    fireEvent.click(screen.getByRole('button', { name: /^Data Explorer$/i }));
+    await screen.findByText('NO SQL MOCK');
+    fireEvent.click(screen.getByRole('button', { name: /Run Query/i }));
+
+    await screen.findByText(/Read-only SQL braucht die Windows-App mit echter Datenbankverbindung/i);
+  }, 30000);
+
   it('opens the interactive tutorial and exposes scenario tours', async () => {
     render(<DesktopApp />);
     await screen.findByRole('heading', { name: 'Flight Deck' });

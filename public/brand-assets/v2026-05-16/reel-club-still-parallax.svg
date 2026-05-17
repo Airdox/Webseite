@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-label="AIRDOX PRESSURE TEST">
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-label="AIRDOX FULL SET">
   <defs>
     <linearGradient id="stageWash" x1="0" x2="1" y1="0" y2="1">
       <stop offset="0" stop-color="#21133f" stop-opacity="0.95"/>
@@ -68,15 +68,15 @@
   <g font-family="Inter, Arial, sans-serif" fill="#f5f8ff">
     <text x="90" y="268" font-size="48" font-weight="800" letter-spacing="0">AIRDOX</text>
     <text x="90" y="312" font-size="24" font-weight="600" fill="#9aa6b2" letter-spacing="0">Berlin Underground Techno</text>
-    <text x="90" y="876" font-size="128" font-weight="900" letter-spacing="0">PRESSURE TEST</text>
-    <text x="90" y="942" font-size="44" font-weight="700" fill="#00f0ff" letter-spacing="0">BERLIN UNDERGROUND TECHNO</text>
-    <text x="90" y="1528" font-size="36" font-weight="800" fill="#f5f8ff" letter-spacing="0">BOOKING / EPK / MUSIC ARCHIVE</text>
+    <text x="90" y="876" font-size="128" font-weight="900" letter-spacing="0">FULL SET</text>
+    <text x="90" y="942" font-size="44" font-weight="700" fill="#00f0ff" letter-spacing="0">CLUB STILL PARALLAX</text>
+    <text x="90" y="1528" font-size="36" font-weight="800" fill="#f5f8ff" letter-spacing="0">AIRDOX.INFO</text>
     <text x="90" y="1572" font-size="22" font-weight="600" fill="#9aa6b2" letter-spacing="0">https://airdox.info</text>
   </g>
   <g font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="0" fill="#9aa6b2" opacity="0.88">
-    <text x="90" y="1442">MOTION: story-frame beat pulse + mini waveform</text>
-    <text x="90" y="1470">EFFECT: mask reveal + scanline sweep</text>
-    <text x="90" y="1498">STILL: website hero or EPK still</text>
+    <text x="90" y="1442">MOTION: slow camera push + beat-synced light gate</text>
+    <text x="90" y="1470">EFFECT: posterize pass + three-layer parallax</text>
+    <text x="90" y="1498">STILL: cover art, website screenshot, or reel preview frame</text>
   </g>
   <g opacity="0.75">
     <rect x="820" y="218" width="170" height="14" fill="#00f0ff"/>

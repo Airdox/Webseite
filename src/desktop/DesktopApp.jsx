@@ -25,18 +25,107 @@ import {
 } from './lib/setManifest.js';
 import './desktop.css';
 
+const TAB_GROUPS = [
+  {
+    id: 'run',
+    label: 'Betrieb',
+    description: 'Startpunkt, Live-Pipeline und tägliche Kontrolle.',
+  },
+  {
+    id: 'publish',
+    label: 'Publish',
+    description: 'Sets vorbereiten, prüfen und gesammelt live stellen.',
+  },
+  {
+    id: 'data',
+    label: 'Daten',
+    description: 'Analytics, Tabellen und Nutzer-/Eventsignale auswerten.',
+  },
+  {
+    id: 'system',
+    label: 'System',
+    description: 'Workspace, Settings, Monitoring und Hilfe.',
+  },
+];
+
 const TABS = [
-  { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-  { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-  { id: 'explorer', label: 'Data Explorer', icon: Database },
-  { id: 'import', label: 'Set Import', icon: UploadCloud },
-  { id: 'batch', label: 'Batch Import', icon: Package },
-  { id: 'flightdeck', label: 'Flight Deck', icon: RadioTower },
-  { id: 'settings', label: 'Advanced Settings', icon: Settings2 },
-  { id: 'monitor', label: 'System Monitor', icon: Activity },
-  { id: 'marketing', label: 'Marketing Manager', icon: Sparkles },
-  { id: 'tutorial', label: 'Tutorial', icon: BookOpen },
-  { id: 'assistant', label: 'AI Assistant', icon: Bot },
+  {
+    id: 'overview',
+    label: 'Overview',
+    group: 'run',
+    icon: LayoutDashboard,
+    description: 'Status, Risiken und die wichtigsten nächsten Aktionen auf einen Blick.',
+  },
+  {
+    id: 'flightdeck',
+    label: 'Flight Deck',
+    group: 'run',
+    icon: RadioTower,
+    description: 'Workspace und lokale Pipeline-Grundlagen verbinden.',
+  },
+  {
+    id: 'import',
+    label: 'Set Import',
+    group: 'publish',
+    icon: UploadCloud,
+    description: 'Ein einzelnes Set vorbereiten, Tracklist prüfen und gezielt publizieren.',
+  },
+  {
+    id: 'batch',
+    label: 'Batch Import',
+    group: 'publish',
+    icon: Package,
+    description: 'Mehrere Sets als Queue vorbereiten und kontrolliert live stellen.',
+  },
+  {
+    id: 'marketing',
+    label: 'Marketing Manager',
+    group: 'publish',
+    icon: Sparkles,
+    description: 'Manni-Entwürfe, Freigaben und externe Aktionen sauber trennen.',
+  },
+  {
+    id: 'analytics',
+    label: 'Analytics',
+    group: 'data',
+    icon: BarChart3,
+    description: 'Plays, Views, Geräte, Länder und Set-Performance analysieren.',
+  },
+  {
+    id: 'explorer',
+    label: 'Data Explorer',
+    group: 'data',
+    icon: Database,
+    description: 'Tabellen prüfen, exportieren und gezielte Read-only-Abfragen fahren.',
+  },
+  {
+    id: 'settings',
+    label: 'Advanced Settings',
+    group: 'system',
+    icon: Settings2,
+    description: 'Pipeline-Optionen, Deploy-Verhalten und lokale Pfade einstellen.',
+  },
+  {
+    id: 'monitor',
+    label: 'System Monitor',
+    group: 'system',
+    icon: Activity,
+    description: 'Lokale Ressourcen, Warnungen und Prozesse beobachten.',
+  },
+  {
+    id: 'tutorial',
+    label: 'Tutorial',
+    group: 'system',
+    icon: BookOpen,
+    description: 'Geführte Szenarien für Import, Auswertung und Go Live.',
+  },
+  {
+    id: 'assistant',
+    label: 'AI Assistant',
+    group: 'system',
+    icon: Bot,
+    description: 'Konkrete Fragen stellen und passende Bereiche direkt öffnen.',
+  },
 ];
 
 const TUTORIAL_CHECKLIST_KEY = 'flightdeck-tutorial-checklist';
@@ -260,6 +349,49 @@ const DesktopApp = () => {
     : isBatchRunning
       ? `Batch ${batchProgress.current} / ${batchProgress.total}`
       : canGoLive ? 'Pipeline bereit' : 'Pipeline wartet';
+  const activeTabConfig = TABS.find((tab) => tab.id === activeTab) || TABS[0];
+  const activeTabGroup = TAB_GROUPS.find((group) => group.id === activeTabConfig.group) || TAB_GROUPS[0];
+  const blockingItems = readinessItems.filter((item) => item.tone === 'warn' || item.tone === 'danger');
+  const nextStep = (() => {
+    if (!appState.workspaceValid) {
+      return {
+        label: 'Workspace verbinden',
+        detail: 'Ohne gueltiges AIRDOX-Verzeichnis bleiben Import, Datenbank und Deploy blockiert.',
+        action: () => jumpToTab('flightdeck'),
+        actionLabel: 'Workspace öffnen',
+      };
+    }
+    if (activeTab === 'batch' && selectedBatchCount > 0) {
+      return {
+        label: 'Batch pruefen und live stellen',
+        detail: `${selectedBatchCount} Set${selectedBatchCount === 1 ? '' : 's'} sind fuer die Live-Aktion markiert.`,
+        action: () => goLiveBatchSelection(),
+        actionLabel: 'Auswahl live stellen',
+      };
+    }
+    if (canDraftGoLive) {
+      return {
+        label: 'Draft live bringen',
+        detail: `${draft.id} ist vorbereitet. Vor Live kurz Titel, Audioquelle und Tracklist pruefen.`,
+        action: () => goLiveNow(),
+        actionLabel: 'Live ausfuehren',
+      };
+    }
+    if (selectedBatchCount > 0) {
+      return {
+        label: 'Batch wartet',
+        detail: 'Es gibt ausgewaehlte Batch-Sets. Wechsle in Batch Import fuer Kontrolle und Live-Lauf.',
+        action: () => jumpToTab('batch'),
+        actionLabel: 'Batch öffnen',
+      };
+    }
+    return {
+      label: 'Set vorbereiten',
+      detail: 'Importiere ein Set oder baue eine Batch-Queue. Danach werden Publish und Go Live freigeschaltet.',
+      action: () => jumpToTab('import'),
+      actionLabel: 'Import starten',
+    };
+  })();
 
   const deferredSearch = useDeferredValue(search);
   const filteredRows = rows.filter((row) => matchesSearch(row, deferredSearch));
@@ -1022,6 +1154,7 @@ const DesktopApp = () => {
     if (activeTab === 'explorer') {
       return (
         <DataExplorerTab
+          isElectron={flightDeckApi.isElectron}
           tableName={tableName}
           setTableName={setTableName}
           search={search}
@@ -1104,9 +1237,9 @@ const DesktopApp = () => {
             () => flightDeckApi.exportAnalyticsReport({ workspaceRoot: settingsDraft?.workspaceRoot, type }),
             `${type} Report exportiert.`,
           )}
-          onRefresh={async () => {
+          onRefresh={async (query = {}) => {
             const data = await runAsyncAction(
-              () => flightDeckApi.getAnalyticsData({ workspaceRoot: settingsDraft?.workspaceRoot }),
+              () => flightDeckApi.getAnalyticsData({ workspaceRoot: settingsDraft?.workspaceRoot, ...query }),
               'Analytics aktualisiert.',
             );
             if (data) setAnalyticsData(data);
@@ -1308,62 +1441,26 @@ const DesktopApp = () => {
   return (
     <div className="fd-app-shell">
       <header className="fd-app-header">
-        <div className="fd-header-copy">
+        <div className="fd-brand-block">
           <span className="fd-eyebrow">AIRDOX</span>
-          <h1>Flight Deck</h1>
-          <p>{settingsDraft?.workspaceRoot || 'Kein Workspace gewaehlt'}</p>
-          <div className="fd-command-strip" aria-label="Schnellaktionen">
-            <button type="button" className="fd-command-button" onClick={refreshState} disabled={busy}>
-              <RefreshCw size={15} />
-              Refresh
-            </button>
-            <button type="button" className="fd-command-button" onClick={() => jumpToTab('import')}>
-              <UploadCloud size={15} />
-              Import
-            </button>
-            <button type="button" className="fd-command-button" onClick={() => jumpToTab('batch')}>
-              <ListChecks size={15} />
-              Batch
-            </button>
-            <button type="button" className="fd-command-button" onClick={() => jumpToTab('assistant')}>
-              <Bot size={15} />
-              Assistant
-            </button>
+          <div>
+            <h1>Flight Deck</h1>
+            <p>{settingsDraft?.workspaceRoot || 'Kein Workspace gewaehlt'}</p>
           </div>
         </div>
-        <div className="fd-runtime-meta">
-          <div className="fd-health-grid" aria-label="Operations Status">
-            {headerStats.map((stat) => (
-              <span key={stat.label} className={`fd-health-tile ${stat.tone}`}>
-                <small>{stat.label}</small>
-                <strong>{stat.value}</strong>
-              </span>
-            ))}
-          </div>
-          <div className="fd-readiness-rail" aria-label="Pipeline readiness">
-            {readinessItems.map((item) => (
-              <span key={item.label} className={`fd-readiness-item ${item.tone}`}>
-                <small>{item.label}</small>
-                <strong>{item.detail}</strong>
-              </span>
-            ))}
-          </div>
-          <div
-            className={`fd-operation-progress ${busy || isBatchRunning ? 'active' : ''}`}
-            role="progressbar"
-            aria-label="Aktueller Prozessfortschritt"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow={activeProgress}
-          >
-            <div className="fd-operation-progress-head">
-              <span>{activeProgressLabel}</span>
-              <strong>{activeProgress}%</strong>
-            </div>
-            <div className="fd-operation-progress-track">
-              <span style={{ width: `${activeProgress}%` }} />
-            </div>
-          </div>
+        <div className="fd-top-actions" aria-label="Globale Aktionen">
+          <span className={`fd-status-pill ${appState.workspaceValid ? 'ok' : 'warn'}`}>
+            {appState.workspaceValid ? 'Workspace verbunden' : 'Workspace fehlt'}
+          </span>
+          <span className={`fd-status-pill ${canGoLive ? 'ok' : 'warn'}`}>
+            <Gauge size={14} />
+            {liveLabel}
+          </span>
+          {!flightDeckApi.isElectron && <span className="fd-status-pill mock">Mock API</span>}
+          <button type="button" className="fd-command-button" onClick={refreshState} disabled={busy}>
+            <RefreshCw size={15} className={busy ? 'fd-spin' : ''} />
+            Refresh
+          </button>
           <button
             type="button"
             className="fd-button"
@@ -1374,53 +1471,148 @@ const DesktopApp = () => {
             <Rocket size={16} />
             Alles ausfuehren & Live
           </button>
-          <span className={`fd-status-pill ${canGoLive ? 'ok' : 'warn'}`}>
-            <Gauge size={14} />
-            {liveLabel}
-          </span>
-          <button
-            type="button"
-            className="fd-button secondary"
-            onClick={() => openTutorial({ tourId: DEFAULT_TOUR_ID, tabId: activeTab })}
-          >
-            <BookOpen size={16} />
-            Interaktive Tour
-          </button>
-          <span className={`fd-status-pill ${appState.workspaceValid ? 'ok' : 'warn'}`}>
-            {appState.workspaceValid ? 'Workspace verbunden' : 'Workspace fehlt'}
-          </span>
-          <span className="fd-status-pill neutral">{appState.gitStatus.branch || 'no-branch'}</span>
-          {!flightDeckApi.isElectron && <span className="fd-status-pill mock">Mock API</span>}
         </div>
       </header>
 
-      <nav className="fd-tabbar" aria-label="Flight Deck tabs">
-        {TABS.map((tab) => {
-          const Icon = tab.icon;
-          return (
+      <div className="fd-workbench">
+        <aside className="fd-sidebar" aria-label="Flight Deck navigation">
+          <div className="fd-sidebar-section fd-sidebar-primary">
+            <span className="fd-sidebar-kicker">Naechster Schritt</span>
+            <strong>{nextStep.label}</strong>
+            <p>{nextStep.detail}</p>
             <button
-              key={tab.id}
               type="button"
-              className={`fd-tab ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
+              className="fd-button secondary"
+              onClick={nextStep.action}
+              disabled={busy || isBatchRunning}
             >
-              <Icon size={16} />
-              <span>{tab.label}</span>
+              <Rocket size={15} />
+              {nextStep.actionLabel}
             </button>
-          );
-        })}
-      </nav>
+          </div>
 
-      {notice && (
-        <section className={`fd-notice ${notice.tone}`}>
-          <CircleAlert size={16} />
-          <span>{notice.message}</span>
+          <nav className="fd-sidebar-nav" aria-label="Flight Deck tabs">
+            {TAB_GROUPS.map((group) => (
+              <section key={group.id} className="fd-nav-group">
+                <div className="fd-nav-group-head">
+                  <span>{group.label}</span>
+                  <small>{group.description}</small>
+                </div>
+                {TABS.filter((tab) => tab.group === group.id).map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      className={`fd-nav-item ${activeTab === tab.id ? 'active' : ''}`}
+                      onClick={() => setActiveTab(tab.id)}
+                    >
+                      <Icon size={16} />
+                      <span>{tab.label}</span>
+                      <small aria-hidden="true">{tab.description}</small>
+                    </button>
+                  );
+                })}
+              </section>
+            ))}
+          </nav>
+        </aside>
+
+        <section className="fd-workspace">
+          <section className="fd-workspace-head">
+            <div className="fd-workspace-title">
+              <span className="fd-eyebrow">{activeTabGroup.label}</span>
+              <h2>{activeTabConfig.label}</h2>
+              <p>{activeTabConfig.description}</p>
+            </div>
+            <div className="fd-workspace-actions">
+              <button type="button" className="fd-command-button" onClick={() => jumpToTab('import')}>
+                <UploadCloud size={15} />
+                Import
+              </button>
+              <button type="button" className="fd-command-button" onClick={() => jumpToTab('batch')}>
+                <ListChecks size={15} />
+                Batch
+              </button>
+              <button type="button" className="fd-command-button" onClick={() => jumpToTab('assistant')}>
+                <Bot size={15} />
+                Assistant
+              </button>
+              <button
+                type="button"
+                className="fd-command-button"
+                onClick={() => openTutorial({ tourId: DEFAULT_TOUR_ID, tabId: activeTab })}
+              >
+                <BookOpen size={15} />
+                Interaktive Tour
+              </button>
+            </div>
+          </section>
+
+          <section className="fd-ops-brief" aria-label="Operations Status">
+            <div className="fd-ops-states">
+              {headerStats.map((stat) => (
+                <span key={stat.label} className={`fd-health-tile ${stat.tone}`}>
+                  <small>{stat.label}</small>
+                  <strong>{stat.value}</strong>
+                </span>
+              ))}
+            </div>
+            <div className="fd-ops-readiness">
+              {readinessItems.map((item) => (
+                <span key={item.label} className={`fd-readiness-item ${item.tone}`}>
+                  <small>{item.label}</small>
+                  <strong>{item.detail}</strong>
+                </span>
+              ))}
+            </div>
+            <div
+              className={`fd-operation-progress ${busy || isBatchRunning ? 'active' : ''}`}
+              role="progressbar"
+              aria-label="Aktueller Prozessfortschritt"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow={activeProgress}
+            >
+              <div className="fd-operation-progress-head">
+                <span>{activeProgressLabel}</span>
+                <strong>{activeProgress}%</strong>
+              </div>
+              <div className="fd-operation-progress-track">
+                <span style={{ width: `${activeProgress}%` }} />
+              </div>
+            </div>
+            <div className={`fd-blocker-summary ${blockingItems.length ? 'warn' : 'ok'}`}>
+              <strong>{blockingItems.length ? `${blockingItems.length} Blocker` : 'Betrieb klar'}</strong>
+              <span>
+                {blockingItems.length
+                  ? blockingItems.map((item) => `${item.label}: ${item.detail}`).join(' / ')
+                  : 'Keine akuten Blocker in Workspace, Draft, Audio oder Pipeline.'}
+              </span>
+            </div>
+          </section>
+
+          {notice && (
+            <section className={`fd-notice ${notice.tone}`}>
+              <CircleAlert size={16} />
+              <span>{notice.message}</span>
+            </section>
+          )}
+
+          <main className="fd-main-content">
+            {settingsDraft && renderTab()}
+          </main>
+
+          <button
+            type="button"
+            className="fd-tour-fab"
+            onClick={() => openTutorial({ tourId: DEFAULT_TOUR_ID, tabId: activeTab })}
+            aria-label="Tour öffnen"
+          >
+            <BookOpen size={16} />
+          </button>
         </section>
-      )}
-
-      <main className="fd-main-content">
-        {settingsDraft && renderTab()}
-      </main>
+      </div>
 
       {tutorialOpen && (
         <GuidedTutorialOverlay

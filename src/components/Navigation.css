@@ -13,7 +13,7 @@
 }
 
 .nav-scrolled {
-    background: rgba(0, 0, 0, 0.72);
+    background: var(--nav-surface);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-subtle);
@@ -82,6 +82,95 @@
 .nav-links {
     display: flex;
     gap: var(--space-1);
+}
+
+/* Theme Switch */
+.theme-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-left: var(--space-3);
+    cursor: pointer;
+}
+
+.theme-switch input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.theme-switch-track {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    width: 68px;
+    height: 34px;
+    padding: 3px;
+    border: 1px solid var(--theme-switch-border);
+    border-radius: var(--border-radius-full);
+    background:
+        linear-gradient(135deg, var(--theme-switch-bg-start), var(--theme-switch-bg-end)),
+        var(--bg-card);
+    box-shadow: var(--theme-switch-shadow);
+    transition: border-color var(--duration-normal) var(--ease-smooth),
+        box-shadow var(--duration-normal) var(--ease-smooth),
+        background var(--duration-normal) var(--ease-smooth);
+}
+
+.theme-switch-thumb {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 35% 30%, #ffffff 0 18%, var(--theme-switch-thumb) 19% 100%);
+    box-shadow: var(--theme-switch-thumb-shadow);
+    transition: transform var(--duration-normal) var(--ease-spring),
+        background var(--duration-normal) var(--ease-smooth),
+        box-shadow var(--duration-normal) var(--ease-smooth);
+}
+
+.theme-switch input:checked + .theme-switch-track .theme-switch-thumb {
+    transform: translateX(34px);
+}
+
+.theme-switch-icon {
+    position: relative;
+    z-index: 1;
+    justify-self: center;
+    color: var(--text-muted);
+    transition: color var(--duration-normal) var(--ease-smooth),
+        opacity var(--duration-normal) var(--ease-smooth),
+        transform var(--duration-normal) var(--ease-smooth);
+}
+
+.theme-switch-icon.moon {
+    color: var(--neon-cyan);
+}
+
+.theme-switch-icon.sun {
+    color: var(--text-muted);
+    opacity: 0.65;
+}
+
+.theme-switch input:checked + .theme-switch-track .moon {
+    color: var(--text-muted);
+    opacity: 0.55;
+}
+
+.theme-switch input:checked + .theme-switch-track .sun {
+    color: var(--light-sun);
+    opacity: 1;
+    transform: rotate(18deg);
+}
+
+.theme-switch input:focus-visible + .theme-switch-track {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
 }
 
 /* Language Toggle */
@@ -220,6 +309,29 @@
     box-shadow: 0 0 10px rgba(255, 0, 170, 0.24);
 }
 
+:root[data-theme="light"] .nav-action-btn {
+    background: rgba(255, 255, 255, 0.52);
+    color: var(--neon-cyan);
+}
+
+:root[data-theme="light"] .nav-action-login {
+    color: #255434;
+    border-color: rgba(13, 143, 97, 0.32);
+    background: rgba(255, 255, 255, 0.62);
+}
+
+:root[data-theme="light"] .nav-action-register {
+    color: #006f80;
+    border-color: rgba(0, 143, 163, 0.36);
+    background: rgba(232, 249, 252, 0.68);
+}
+
+:root[data-theme="light"] .nav-action-contact {
+    color: #8a0f55;
+    border-color: rgba(207, 22, 127, 0.34);
+    background: rgba(255, 235, 247, 0.7);
+}
+
 /* Mobile Auth Buttons */
 .mobile-auth-btns {
     display: flex;
@@ -282,7 +394,7 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    background: var(--bg-void);
+    background: var(--mobile-menu-bg);
     z-index: 999;
     display: flex;
     align-items: center;
@@ -390,6 +502,11 @@
     .lang-toggle {
         display: none;
     }
+
+    .theme-switch {
+        margin-left: auto;
+        margin-right: var(--space-3);
+    }
 }
 
 @media (max-width: 768px) {
@@ -403,6 +520,11 @@
 
     .menu-toggle {
         display: flex;
+    }
+
+    .theme-switch:not(.theme-switch-mobile) {
+        width: 60px;
+        margin-left: auto;
     }
 }
 

@@ -1,13 +1,16 @@
 import React, { useState, useCallback } from 'react';
-import { Upload, Trash2, AlertTriangle, Play, Pause, Rocket } from 'lucide-react';
+import {
+  Upload, Trash2, AlertTriangle, Play, Pause, Rocket,
+  CheckCircle2, Hourglass, XCircle,
+} from 'lucide-react';
 
 const BatchImportItem = ({ item, index, busy, onRemove, onStatusChange, onToggleSelected }) => {
   const statusColor = {
-    pending: '#888888',
-    ready: '#9adf6b',
-    processing: '#60a5fa',
-    success: '#9adf6b',
-    error: '#f87171',
+    pending: 'var(--airdox-border)',
+    ready: 'var(--airdox-lime)',
+    processing: 'var(--airdox-cyan)',
+    success: 'var(--airdox-lime)',
+    error: 'var(--airdox-danger)',
   };
   const statusLabel = {
     pending: 'wartet',
@@ -18,7 +21,10 @@ const BatchImportItem = ({ item, index, busy, onRemove, onStatusChange, onToggle
   };
 
   return (
-    <div className="fd-batch-item" style={{ borderLeftColor: statusColor[item.status] }}>
+    <div
+      className="fd-batch-item"
+      style={{ '--fd-batch-state-color': statusColor[item.status] || 'var(--airdox-border)' }}
+    >
       <div className="fd-batch-item-header">
         <label className="fd-batch-select" title="Fuer Live-Aktion auswaehlen">
           <input
@@ -151,9 +157,9 @@ const BatchImportTab = ({
         </div>
         <div className="fd-toolbar-actions">
           <div className="fd-batch-stats">
-            <span className="fd-stat green">✓ {successCount}</span>
-            <span className="fd-stat amber">⏳ {pendingCount}</span>
-            <span className="fd-stat red">✗ {errorCount}</span>
+            <span className="fd-stat green"><CheckCircle2 size={14} /> {successCount}</span>
+            <span className="fd-stat amber"><Hourglass size={14} /> {pendingCount}</span>
+            <span className="fd-stat red"><XCircle size={14} /> {errorCount}</span>
           </div>
           {isBatchRunning ? (
             <button

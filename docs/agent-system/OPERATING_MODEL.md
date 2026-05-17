@@ -23,10 +23,10 @@ Kernprinzipien:
 | --- | --- | --- | --- |
 | Master Controller | Priorisierung, Konflikte, Release-Entscheidungen | `docs/agent-system/DECISION_LOG.md`, Audit-Berichte | Durchlaufzeit, Risikoabbau, Release-Bereitschaft |
 | Webbie | Webseite, UI/UX, SEO, Accessibility, Performance | `src/components/*`, `src/styles/*`, `public/*`, `e2e/*` | Core Web Vitals, Conversion, E2E-Stabilitaet |
-| Winnie | Windows Flight Deck, lokale Workflows, Daten/Upload/Pipeline | `desktop/*`, `src/desktop/*`, `scripts/*`, `docs/WINDOWS_FLIGHTDECK.md` | Publish-Erfolg, Absturzrate, Build-Erfolg |
+| Winnie | Windows Flight Deck, lokale Workflows, Daten/Upload/Pipeline, operative Desktop-UI | `desktop/*`, `src/desktop/*`, `scripts/*`, `docs/WINDOWS_FLIGHTDECK.md` | Publish-Erfolg, Absturzrate, Build-Erfolg, Bedienbarkeit im Windows Tool |
 | Guardian | QA, Sicherheit, Konsistenz, technische Schulden | Test-Suites, Lint-Regeln, Release-Gates | Failures, Coverage-Signale, offene Risiken |
 | Manni | Promotion, Branding, EPK, Community, Wachstum, PR-Kampagnen | SEO-Meta, EPK, Booking, Newsletter, VIP, Kampagnenplan, PR-Preview-Pakete | Booking-, Newsletter-, VIP-, Play- und Kampagnen-Events |
-| Designer | Visual Systems, Creative Direction, Social Asset Design | Reel-Konzepte, Hook-Frames, Thumbnail-Richtungen, Visual-Checks | Hook-Retention, Scroll-Stop-Rate, Creative-Fatigue |
+| Designer | Visual Systems, Creative Direction, Flight-Deck-CD-Review, Motion/Audio-reactive Social Asset Design | Reel-Konzepte, Hook-Frames, Thumbnail-Richtungen, Motion-Briefings, Visual-Checks, Desktop-UI-CD-Review | Hook-Retention, Scroll-Stop-Rate, Creative-Fatigue, Surprise-Factor, CD-Konsistenz im Windows Tool |
 | Mentor | Lernsystem, Wissensspeicher, Skill-Updates | `airdoX_wiki/*`, Agenten-Dokumente, Audit-Historie | geschlossene Wissensluecken, Wiederholfehler |
 | Refactor | Systemoptimierung, Verschlankung, Architekturqualitaet | `scripts/agent-audit.mjs`, Refactor-Wiki, Quality-Skripte | Komplexitaet, Modulgrenzen, Build-/Lint-Sauberkeit |
 | Repository | GitHub- und Branch-Organisation, Versionskontrolle, Release-Flow | `docs/agent-system/REPOSITORY_GOVERNANCE.md`, Workflows, Branch-Regeln | Branch-Disziplin, Commit-Qualitaet, Merge-Stabilitaet |
@@ -52,6 +52,7 @@ Aufgaben- und Trigger-Zuweisungen liegen in:
    Waehle Gates passend zum Risiko:
    - Website: `npm run build`, relevante Vitest-Tests, relevante Playwright-Specs.
    - Windows Tool: `npm run desktop:test:logic`, bei Release `npm run desktop:test:e2e`, optional `npm run desktop:dist`.
+   - Windows-Tool-UI: Winnie setzt um, Designer prueft Corporate Design und Bedienbild, Guardian prueft Gate-Risiko.
    - Allgemein: `npm run lint`, `npm run test`, `npm run agent:audit`.
 
 6. Lernen
@@ -174,6 +175,7 @@ Ergaenzender Workflow-Check:
 - Keine dauerhafte "Selbstoptimierung" ohne nachvollziehbare Logs, Tests oder Pull-Request-aehnliche Artefakte.
 - Keine Promotion-Aenderung ohne Tracking- oder Zielmetriken.
 - Keine Windows-Pipeline-Aenderung ohne mindestens einen Logic-Test.
+- Keine sichtbare Windows-Tool-UI-Aenderung ohne Winnie als Primary und Designer als CD-Review; Guardian bleibt Gate-Review bei Release- oder Risikoauswirkung.
 - Keine Website-Layout-Aenderung ohne mobile und desktoprelevante Sichtpruefung oder E2E-Abdeckung.
 - Kein Refactoring ohne klare Vorher-/Nachher-Begruendung und passende Rechecks.
 - Keine Merge-/Release-Aktion ohne dokumentierte Branch-Regel und qualifizierende Quality-Gates.

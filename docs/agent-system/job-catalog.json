@@ -157,6 +157,67 @@
       ]
     },
     {
+      "id": "windows-tool-e2e-check",
+      "title": "Windows Tool end-to-end quality check",
+      "owner": "Winnie",
+      "execution": "script",
+      "script": "desktop:test:e2e",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "manual_background",
+          "windows_tool_review",
+          "release_candidate"
+        ],
+        "statuses": [
+          "deep",
+          "ci",
+          "release_review"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "windows_tool",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "terminal:test-output",
+        "docs/proof/*"
+      ]
+    },
+    {
+      "id": "flightdeck-visual-cd-review",
+      "title": "Flight Deck corporate design review",
+      "owner": "Designer",
+      "execution": "manual",
+      "manualProtocol": "Review the Windows Flight Deck UI against AIRDOX corporate design before release-impacting UI changes. Check dark base, cyan/lime accent discipline, typography, spacing, icon usage, no emoji-led controls, no warm/beige or foreign palette fragments, and usable desktop/mobile responsive browser proof. Route implementation fixes back to Winnie and keep Guardian on the final gate.",
+      "trigger": {
+        "events": [
+          "manual_background",
+          "windows_tool_review",
+          "release_candidate",
+          "ui_regression"
+        ],
+        "statuses": [
+          "planning",
+          "deep",
+          "ci",
+          "release_review"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "windows_tool_corporate_design",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md",
+        "docs/proof/*"
+      ]
+    },
+    {
       "id": "website-quality-battery",
       "title": "Website quality battery",
       "owner": "Webbie",

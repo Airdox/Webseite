@@ -3,11 +3,17 @@ import {
   BarChart3, TrendingUp, Calendar, Zap, Users, Eye, Heart, Volume2,
   Download, Filter, RotateCcw
 } from 'lucide-react';
-import { buildAnalyticsStatsFromEvents, filterEventLogs } from '../lib/analytics.js';
+import { buildAnalyticsStatsFromEvents, normalizeEventLog } from '../lib/analytics.js';
 
-const chartColors = ['#9adf6b', '#60a5fa', '#f97316', '#ec4899', '#8b5cf6', '#14b8a6'];
+const chartColors = [
+  'var(--airdox-lime)',
+  'var(--airdox-cyan)',
+  'var(--airdox-warning)',
+  'var(--airdox-text)',
+  'var(--airdox-muted)',
+];
 
-const ChartBar = ({ label, value, maxValue, color = '#9adf6b' }) => {
+const ChartBar = ({ label, value, maxValue, color = 'var(--airdox-lime)' }) => {
   const percentage = maxValue > 0 ? (value / maxValue) * 100 : 0;
   return (
     <div className="fd-chart-bar">
@@ -17,7 +23,7 @@ const ChartBar = ({ label, value, maxValue, color = '#9adf6b' }) => {
           className="fd-bar-fill fd-bar-animated"
           style={{
             width: `${percentage}%`,
-            backgroundColor: color,
+            background: color,
           }}
         />
       </div>
@@ -82,12 +88,8 @@ const AdvancedAnalyticsTab = ({
   onRefresh = () => {},
   busy = false,
 }) => {
-  const [startDate, setStartDate] = useState(() => {
-    const d = new Date();
-    d.setDate(d.getDate() - 30);
-    return d.toISOString().split('T')[0];
-  });
-  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
+  const [startDate, setStartDate] = useState('2000-01-01');
+  const [endDate, setEndDate] = useState('2100-12-31');
   const [filters, setFilters] = useState({
     eventType: 'all',
     deviceType: 'all',
@@ -98,22 +100,26 @@ const AdvancedAnalyticsTab = ({
     () => (Array.isArray(analyticsData.eventLogs) ? analyticsData.eventLogs : []),
     [analyticsData.eventLogs],
   );
+  const hasExplicitNonRealSource = analyticsData.realData === false
+    || String(analyticsData.source || '').includes('mock')
+    || String(analyticsData.source || '').includes('browser-no-real-data');
+  const hasRealEvents = rawEvents.length > 0 && !hasExplicitNonRealSource;
 
   const filteredStats = useMemo(() => {
-    const filteredEvents = filterEventLogs(rawEvents, { startDate, endDate, filters });
-    return buildAnalyticsStatsFromEvents(filteredEvents);
-  }, [rawEvents, startDate, endDate, filters]);
+    if (!hasRealEvents) return buildAnalyticsStatsFromEvents([]);
+    return buildAnalyticsStatsFromEvents(rawEvents.map(normalizeEventLog));
+  }, [rawEvents, hasRealEvents]);
 
   const fallbackStats = {
-    totalViews: analyticsData.totalViews || 0,
-    totalPlays: analyticsData.totalPlays || 0,
-    totalLikes: analyticsData.totalLikes || 0,
-    eventsByType: analyticsData.eventsByType || {},
-    topSets: analyticsData.topSets || [],
-    topCountries: analyticsData.topCountries || [],
-    deviceTypeBreakdown: analyticsData.deviceTypeBreakdown || {},
-    hourlyDistribution: analyticsData.hourlyDistribution || [],
-    conversionRate: analyticsData.conversionRate || 0,
+    totalViews: 0,
+    totalPlays: 0,
+    totalLikes: 0,
+    eventsByType: {},
+    topSets: [],
+    topCountries: [],
+    deviceTypeBreakdown: {},
+    hourlyDistribution: new Array(24).fill(0),
+    conversionRate: 0,
   };
 
   const {
@@ -126,7 +132,7 @@ const AdvancedAnalyticsTab = ({
     deviceTypeBreakdown,
     hourlyDistribution,
     conversionRate,
-  } = rawEvents.length ? filteredStats : fallbackStats;
+  } = hasRealEvents ? filteredStats : fallbackStats;
 
   const maxPlays = Math.max(...topSets.map((set) => Number(set.plays) || 0), 1);
   const maxCountryCount = Math.max(...topCountries.map((country) => Number(country.count) || 0), 1);
@@ -135,23 +141,24 @@ const AdvancedAnalyticsTab = ({
   const peakHour = peakCount > 0 ? safeHourlyDistribution.indexOf(peakCount) : null;
   const availableCountries = Array.from(new Set(rawEvents.map((event) => String(event.country || '').toUpperCase()).filter(Boolean))).sort();
   const availableDevices = Array.from(new Set(rawEvents.map((event) => String(event.device_type || '').toLowerCase()).filter(Boolean))).sort();
+  const applyFilters = () => onRefresh({ startDate, endDate, filters });
 
   return (
     <div className="fd-panel-stack">
       <section className="fd-toolbar-band">
         <div>
           <h2>Advanced Analytics</h2>
-          <p>Detaillierte Auswertung von Plays, Engagement und Nutzerverhalten.</p>
+          <p>Echte Auswertung aus `analytics_logs`. Mock-, Demo- und Fallback-Daten werden hier nicht als Ergebnis angezeigt.</p>
         </div>
         <div className="fd-toolbar-actions">
           <button
             type="button"
             className="fd-button secondary"
-            onClick={onRefresh}
+            onClick={applyFilters}
             disabled={busy}
           >
             <RotateCcw size={16} className={busy ? 'fd-spin' : ''} />
-            Aktualisieren
+            Filter anwenden
           </button>
           <button
             type="button"
@@ -163,6 +170,18 @@ const AdvancedAnalyticsTab = ({
             Bericht
           </button>
         </div>
+      </section>
+
+      <section className={`fd-data-source-card ${hasRealEvents ? 'ok' : 'warn'}`}>
+        <div>
+          <strong>{hasRealEvents ? 'Echte Datenquelle aktiv' : 'Keine echten Analytics-Daten verbunden'}</strong>
+          <p>
+            {hasRealEvents
+              ? `${analyticsData.sourceLabel || 'Datenbank'} / ${rawEvents.length.toLocaleString('de-DE')} Roh-Events geladen. Top Sets basieren nur auf echten Play-Events aus analytics_logs.${analyticsData.cached ? ` Cache-Grund: ${analyticsData.cacheReason || 'DB-Abfrage fehlgeschlagen.'}` : ''}`
+              : 'Diese Ansicht zeigt keine Demo-Werte. Filter werden nur gegen die echte Datenbank oder gegen den letzten lokal gecachten DB-Stand angewendet.'}
+          </p>
+        </div>
+        <span>{analyticsData.cached ? 'DB CACHE' : hasRealEvents ? 'REAL DATA' : 'NO MOCK DATA'}</span>
       </section>
 
       <section className="fd-surface">
@@ -231,6 +250,15 @@ const AdvancedAnalyticsTab = ({
                 )}
             </select>
           </label>
+          <button
+            type="button"
+            className="fd-button fd-filter-apply"
+            onClick={applyFilters}
+            disabled={busy}
+          >
+            <Filter size={16} />
+            Filter anwenden
+          </button>
         </div>
       </section>
 
@@ -275,15 +303,21 @@ const AdvancedAnalyticsTab = ({
             <span>{topSets.length} Sets</span>
           </div>
           <div className="fd-chart-container">
-            {topSets.slice(0, 10).map((set, idx) => (
-              <ChartBar
-                key={set.id}
-                label={set.id}
-                value={set.plays}
-                maxValue={maxPlays}
-                color={chartColors[idx % chartColors.length]}
-              />
-            ))}
+            {hasRealEvents && topSets.length > 0 ? (
+              topSets.slice(0, 10).map((set, idx) => (
+                <ChartBar
+                  key={set.id}
+                  label={set.id}
+                  value={set.plays}
+                  maxValue={maxPlays}
+                  color={chartColors[idx % chartColors.length]}
+                />
+              ))
+            ) : (
+              <div className="fd-empty-inline">
+                Keine echten Play-Events geladen. Es werden keine erfundenen Topsets angezeigt.
+              </div>
+            )}
           </div>
         </section>
 
@@ -293,20 +327,24 @@ const AdvancedAnalyticsTab = ({
             <span>{topCountries.length} Länder</span>
           </div>
           <div className="fd-list-items">
-            {topCountries.slice(0, 10).map((country) => (
-              <div key={country.code} className="fd-list-item">
-                <span>{country.code}</span>
-                <div className="fd-bar-inline">
-                  <div
-                    className="fd-bar-fill-inline"
-                    style={{
-                      width: `${((Number(country.count) || 0) / maxCountryCount) * 100}%`,
-                    }}
-                  />
+            {hasRealEvents && topCountries.length > 0 ? (
+              topCountries.slice(0, 10).map((country) => (
+                <div key={country.code} className="fd-list-item">
+                  <span>{country.code}</span>
+                  <div className="fd-bar-inline">
+                    <div
+                      className="fd-bar-fill-inline"
+                      style={{
+                        width: `${((Number(country.count) || 0) / maxCountryCount) * 100}%`,
+                      }}
+                    />
+                  </div>
+                  <span>{country.count}</span>
                 </div>
-                <span>{country.count}</span>
-              </div>
-            ))}
+              ))
+            ) : (
+              <div className="fd-empty-inline">Keine echten Geo-Events geladen.</div>
+            )}
           </div>
         </section>
       </div>
@@ -318,13 +356,17 @@ const AdvancedAnalyticsTab = ({
             <span><Zap size={16} /></span>
           </div>
           <div className="fd-list-items">
-            {Object.entries(deviceTypeBreakdown).map(([device, count]) => (
-              <div key={device} className="fd-list-item">
-                <span className="fd-code-cell">{device}</span>
-                <span>{(totalViews > 0 ? ((Number(count) || 0) / totalViews) * 100 : 0).toFixed(1)}%</span>
-                <span className="fd-value-faded">{count}</span>
-              </div>
-            ))}
+            {hasRealEvents && Object.keys(deviceTypeBreakdown).length > 0 ? (
+              Object.entries(deviceTypeBreakdown).map(([device, count]) => (
+                <div key={device} className="fd-list-item">
+                  <span className="fd-code-cell">{device}</span>
+                  <span>{(totalViews > 0 ? ((Number(count) || 0) / totalViews) * 100 : 0).toFixed(1)}%</span>
+                  <span className="fd-value-faded">{count}</span>
+                </div>
+              ))
+            ) : (
+              <div className="fd-empty-inline">Keine echten Device-Events geladen.</div>
+            )}
           </div>
         </section>
 

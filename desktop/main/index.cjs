@@ -165,6 +165,30 @@ const getAppState = async () => {
   };
 };
 
+const getAnalyticsCachePath = () => {
+  try {
+    if (app.isReady()) {
+      return path.join(app.getPath('userData'), 'analytics-cache.json');
+    }
+  } catch {
+    // fall through to temp cache path
+  }
+
+  return path.join(os.tmpdir(), 'airdox-flightdeck-analytics-cache.json');
+};
+
+const writeAnalyticsCache = async (payload) => {
+  const cachePath = getAnalyticsCachePath();
+  await fs.mkdir(path.dirname(cachePath), { recursive: true });
+  await fs.writeFile(cachePath, JSON.stringify(payload, null, 2), 'utf8');
+};
+
+const readAnalyticsCache = async () => {
+  const cachePath = getAnalyticsCachePath();
+  const raw = await fs.readFile(cachePath, 'utf8');
+  return JSON.parse(raw);
+};
+
 const registerAppProtocol = () => {
   protocol.handle('app', (request) => {
     const assetPath = resolveAppProtocolAssetPath({
@@ -389,15 +413,60 @@ ipcMain.handle('flightdeck:get-analytics-data', async (_event, payload) => {
     const { buildAnalyticsStatsFromEvents, normalizeEventLog } = await import('../../src/desktop/lib/analytics.js');
     const { getAnalyticsEvents } = await getServices();
     const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
-    const rows = await getAnalyticsEvents(workspaceRoot, 5000);
+    const query = {
+      limit: payload?.limit || 5000,
+      startDate: payload?.startDate || '',
+      endDate: payload?.endDate || '',
+      filters: payload?.filters || {},
+    };
+    const rows = await getAnalyticsEvents(workspaceRoot, query);
     const normalized = rows.map(normalizeEventLog);
-    return {
+    const response = {
       ...buildAnalyticsStatsFromEvents(normalized),
       eventLogs: rows,
+      source: 'database',
+      realData: true,
+      sourceLabel: 'Neon/Postgres analytics_logs',
+      workspaceRoot,
+      query,
+      rowCount: rows.length,
+      generatedAt: new Date().toISOString(),
     };
+    await writeAnalyticsCache(response);
+    return response;
   } catch (error) {
     await writeStartupLog(`Analytics error: ${error.message}`);
-    return {};
+    try {
+      const cached = await readAnalyticsCache();
+      return {
+        ...cached,
+        source: 'database-cache',
+        realData: true,
+        cached: true,
+        sourceLabel: 'Lokaler Cache der letzten erfolgreichen DB-Abfrage',
+        cacheReason: error.message,
+        generatedAt: cached.generatedAt,
+        servedAt: new Date().toISOString(),
+      };
+    } catch {
+      return {
+        totalViews: 0,
+        totalPlays: 0,
+        totalLikes: 0,
+        totalDislikes: 0,
+        eventsByType: {},
+        topSets: [],
+        topCountries: [],
+        deviceTypeBreakdown: {},
+        hourlyDistribution: new Array(24).fill(0),
+        conversionRate: 0,
+        eventLogs: [],
+        source: 'database-unavailable',
+        realData: false,
+        sourceLabel: 'Datenbank nicht erreichbar und kein lokaler Cache vorhanden',
+        error: error.message,
+      };
+    }
   }
 });
 

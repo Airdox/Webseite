@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: #000;
+    background: var(--bg-void);
     z-index: -10;
     overflow: hidden;
     pointer-events: none;
@@ -49,4 +49,40 @@
     height: 100%;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     opacity: 0.012;
+}
+
+:root[data-theme="light"] .atmospheric-bg {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(233, 246, 255, 0.94)),
+        var(--bg-void);
+}
+
+:root[data-theme="light"] .glow-blob {
+    border-radius: 0;
+    filter: blur(120px);
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+}
+
+:root[data-theme="light"] .blob-1 {
+    width: 70vw;
+    height: 34vw;
+    top: 6%;
+    left: -18%;
+    background: linear-gradient(90deg, rgba(207, 22, 127, 0.24), rgba(0, 143, 163, 0.12));
+    transform: rotate(-12deg);
+}
+
+:root[data-theme="light"] .blob-2 {
+    width: 74vw;
+    height: 30vw;
+    right: -22%;
+    bottom: 8%;
+    background: linear-gradient(90deg, rgba(13, 143, 97, 0.18), rgba(0, 143, 163, 0.2));
+    transform: rotate(14deg);
+}
+
+:root[data-theme="light"] .noise-texture {
+    opacity: 0.028;
+    mix-blend-mode: multiply;
 }

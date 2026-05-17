@@ -77,6 +77,7 @@ scratch/verify-*
 scratch/create-test-user.mjs
 docs/agent-system/proof/
 docs/agent-system/manni-reel-output/
+docs/proof/
 public/campaign/**/*.mp4
 public/campaign/**/*.png
 exports/
@@ -85,7 +86,7 @@ state.json
 .netlify/state.json
 docs/agent-system/social-auto-output/
 docs/agent-system/download.png
-
+.codex-devserver/
 # Python cache
 __pycache__/
 *.py[cod]

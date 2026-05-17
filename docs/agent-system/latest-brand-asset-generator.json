@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-16T15:35:12.767Z",
+  "generatedAt": "2026-05-16T16:23:57.178Z",
   "agent": "Designer",
   "version": "v2026-05-16",
   "manifest": "public/brand-assets/v2026-05-16/manifest.json",
@@ -12,6 +12,9 @@
       "title": "PEAK MOMENT",
       "subtitle": "FULL SET ONLINE",
       "cta": "AIRDOX.INFO",
+      "motionSignature": "audio-reactive equalizer + waveform spine",
+      "stillSource": "source video or website music-section still",
+      "visualEffect": "beat pulse with cyan/pink light gate",
       "safeArea": {
         "top": 190,
         "right": 90,
@@ -21,6 +24,63 @@
       "file": "public/brand-assets/v2026-05-16/reel-drop-peak.svg"
     },
     {
+      "id": "reel-signal-system",
+      "type": "reel",
+      "width": 1080,
+      "height": 1920,
+      "title": "PRESSURE SIGNAL",
+      "subtitle": "AUDIO REACTIVE",
+      "cta": "FULL SET ON AIRDOX.INFO",
+      "motionSignature": "24-bar equalizer + VU meter",
+      "stillSource": "website hero or set preview frame",
+      "visualEffect": "signal scanline + data burn-in",
+      "safeArea": {
+        "top": 190,
+        "right": 90,
+        "bottom": 300,
+        "left": 90
+      },
+      "file": "public/brand-assets/v2026-05-16/reel-signal-system.svg"
+    },
+    {
+      "id": "reel-club-still-parallax",
+      "type": "reel",
+      "width": 1080,
+      "height": 1920,
+      "title": "FULL SET",
+      "subtitle": "CLUB STILL PARALLAX",
+      "cta": "AIRDOX.INFO",
+      "motionSignature": "slow camera push + beat-synced light gate",
+      "stillSource": "cover art, website screenshot, or reel preview frame",
+      "visualEffect": "posterize pass + three-layer parallax",
+      "safeArea": {
+        "top": 190,
+        "right": 90,
+        "bottom": 300,
+        "left": 90
+      },
+      "file": "public/brand-assets/v2026-05-16/reel-club-still-parallax.svg"
+    },
+    {
+      "id": "reel-glitch-type-drop",
+      "type": "reel",
+      "width": 1080,
+      "height": 1920,
+      "title": "NO WARM-UP",
+      "subtitle": "JUST PRESSURE",
+      "cta": "AIRDOX.INFO",
+      "motionSignature": "kinetic type hits + waveform spine",
+      "stillSource": "source-video frame or performance still",
+      "visualEffect": "slit/time-slice glitch burst",
+      "safeArea": {
+        "top": 190,
+        "right": 90,
+        "bottom": 300,
+        "left": 90
+      },
+      "file": "public/brand-assets/v2026-05-16/reel-glitch-type-drop.svg"
+    },
+    {
       "id": "story-pressure-test",
       "type": "story",
       "width": 1080,
@@ -28,6 +88,9 @@
       "title": "PRESSURE TEST",
       "subtitle": "BERLIN UNDERGROUND TECHNO",
       "cta": "BOOKING / EPK / MUSIC ARCHIVE",
+      "motionSignature": "story-frame beat pulse + mini waveform",
+      "stillSource": "website hero or EPK still",
+      "visualEffect": "mask reveal + scanline sweep",
       "safeArea": {
         "top": 190,
         "right": 90,
@@ -44,6 +107,9 @@
       "title": "AIRDOX LIVE SET",
       "subtitle": "DARK ROOM ENERGY",
       "cta": "FULL SET ON AIRDOX.INFO",
+      "motionSignature": "first-frame waveform marker",
+      "stillSource": "set preview or website still",
+      "visualEffect": "posterize pass + edge glow",
       "safeArea": {
         "top": 96,
         "right": 80,
@@ -60,6 +126,9 @@
       "title": "NEW SET",
       "subtitle": "AIRDOX SIGNAL DROP",
       "cta": "LISTEN / SHARE / BOOK",
+      "motionSignature": "static-feed signal bars",
+      "stillSource": "brand asset or cover still",
+      "visualEffect": "data burn-in + light gate",
       "safeArea": {
         "top": 90,
         "right": 80,
@@ -101,6 +170,136 @@
       "detail": "Safe area is defined for platform UI."
     },
     {
+      "id": "reel-drop-peak:motion-signature",
+      "level": "pass",
+      "detail": "Motion signature defined: audio-reactive equalizer + waveform spine."
+    },
+    {
+      "id": "reel-drop-peak:still-source",
+      "level": "pass",
+      "detail": "Still/source direction defined: source video or website music-section still."
+    },
+    {
+      "id": "reel-signal-system:brand-name-visible",
+      "level": "pass",
+      "detail": "AIRDOX brand name is visible in uppercase."
+    },
+    {
+      "id": "reel-signal-system:palette-complete",
+      "level": "pass",
+      "detail": "All required brand palette tokens are used."
+    },
+    {
+      "id": "reel-signal-system:blocked-visible-terms",
+      "level": "pass",
+      "detail": "No blocked internal terms are visible."
+    },
+    {
+      "id": "reel-signal-system:title-contrast",
+      "level": "pass",
+      "detail": "Title contrast is stable (17.4)."
+    },
+    {
+      "id": "reel-signal-system:accent-contrast",
+      "level": "pass",
+      "detail": "Accent contrast is stable (14.39)."
+    },
+    {
+      "id": "reel-signal-system:safe-area",
+      "level": "pass",
+      "detail": "Safe area is defined for platform UI."
+    },
+    {
+      "id": "reel-signal-system:motion-signature",
+      "level": "pass",
+      "detail": "Motion signature defined: 24-bar equalizer + VU meter."
+    },
+    {
+      "id": "reel-signal-system:still-source",
+      "level": "pass",
+      "detail": "Still/source direction defined: website hero or set preview frame."
+    },
+    {
+      "id": "reel-club-still-parallax:brand-name-visible",
+      "level": "pass",
+      "detail": "AIRDOX brand name is visible in uppercase."
+    },
+    {
+      "id": "reel-club-still-parallax:palette-complete",
+      "level": "pass",
+      "detail": "All required brand palette tokens are used."
+    },
+    {
+      "id": "reel-club-still-parallax:blocked-visible-terms",
+      "level": "pass",
+      "detail": "No blocked internal terms are visible."
+    },
+    {
+      "id": "reel-club-still-parallax:title-contrast",
+      "level": "pass",
+      "detail": "Title contrast is stable (17.4)."
+    },
+    {
+      "id": "reel-club-still-parallax:accent-contrast",
+      "level": "pass",
+      "detail": "Accent contrast is stable (14.39)."
+    },
+    {
+      "id": "reel-club-still-parallax:safe-area",
+      "level": "pass",
+      "detail": "Safe area is defined for platform UI."
+    },
+    {
+      "id": "reel-club-still-parallax:motion-signature",
+      "level": "pass",
+      "detail": "Motion signature defined: slow camera push + beat-synced light gate."
+    },
+    {
+      "id": "reel-club-still-parallax:still-source",
+      "level": "pass",
+      "detail": "Still/source direction defined: cover art, website screenshot, or reel preview frame."
+    },
+    {
+      "id": "reel-glitch-type-drop:brand-name-visible",
+      "level": "pass",
+      "detail": "AIRDOX brand name is visible in uppercase."
+    },
+    {
+      "id": "reel-glitch-type-drop:palette-complete",
+      "level": "pass",
+      "detail": "All required brand palette tokens are used."
+    },
+    {
+      "id": "reel-glitch-type-drop:blocked-visible-terms",
+      "level": "pass",
+      "detail": "No blocked internal terms are visible."
+    },
+    {
+      "id": "reel-glitch-type-drop:title-contrast",
+      "level": "pass",
+      "detail": "Title contrast is stable (17.4)."
+    },
+    {
+      "id": "reel-glitch-type-drop:accent-contrast",
+      "level": "pass",
+      "detail": "Accent contrast is stable (14.39)."
+    },
+    {
+      "id": "reel-glitch-type-drop:safe-area",
+      "level": "pass",
+      "detail": "Safe area is defined for platform UI."
+    },
+    {
+      "id": "reel-glitch-type-drop:motion-signature",
+      "level": "pass",
+      "detail": "Motion signature defined: kinetic type hits + waveform spine."
+    },
+    {
+      "id": "reel-glitch-type-drop:still-source",
+      "level": "pass",
+      "detail": "Still/source direction defined: source-video frame or performance still."
+    },
+    {
       "id": "story-pressure-test:brand-name-visible",
       "level": "pass",
       "detail": "AIRDOX brand name is visible in uppercase."
@@ -129,6 +328,16 @@
       "id": "story-pressure-test:safe-area",
       "level": "pass",
       "detail": "Safe area is defined for platform UI."
+    },
+    {
+      "id": "story-pressure-test:motion-signature",
+      "level": "pass",
+      "detail": "Motion signature defined: story-frame beat pulse + mini waveform."
+    },
+    {
+      "id": "story-pressure-test:still-source",
+      "level": "pass",
+      "detail": "Still/source direction defined: website hero or EPK still."
     },
     {
       "id": "thumbnail-full-set:brand-name-visible",
@@ -192,11 +401,11 @@
     }
   ],
   "summary": {
-    "assetCount": 4,
-    "totalChecks": 24,
+    "assetCount": 7,
+    "totalChecks": 52,
     "failCount": 0,
     "warnCount": 0,
-    "passCount": 24,
+    "passCount": 52,
     "status": "pass"
   }
 }

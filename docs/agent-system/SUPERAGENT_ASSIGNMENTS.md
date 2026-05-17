@@ -23,10 +23,10 @@ Informationspflicht:
 | Agent | Kernfaehigkeit | Trigger (Ereignis/Status) | Ausfuehrung ohne Master Controller | Ausfuehrung mit Master Controller |
 | --- | --- | --- | --- | --- |
 | Webbie | Website, UX, SEO, Performance | UI-Regression, SEO-Drift, langsame Core Web Vitals, neue Landing-Anforderung | Analyse, Vorschlag, Testplan | Merge, Deploy, groessere Strukturumbauten |
-| Winnie | Windows Tool / Flight Deck | Import/Publish-Probleme, Crash-Hinweise, Pipeline-Fehler, neue Desktop-Funktion | Diagnose, Testlauf, Patch-Vorschlag | Produktive Pipeline-Aenderung, Release-Build, sensitive IPC-Aenderung |
+| Winnie | Windows Tool / Flight Deck | Import/Publish-Probleme, Crash-Hinweise, Pipeline-Fehler, neue Desktop-Funktion, sichtbare Desktop-UI-Regression | Diagnose, Testlauf, Patch-Vorschlag, operative UI-Korrektur im Flight Deck | Produktive Pipeline-Aenderung, Release-Build, sensitive IPC-Aenderung |
 | Guardian | QA und Risiko | fehlgeschlagene Tests, Lint-Fehler, Security-Risiko, Inkonsistenz | Findings, Gate-Block, Risikoeinschaetzung | Freigabe von Ausnahmen/Reduktion von Pflichtgates |
 | Manni | Promotion, Branding und PR-Reach-Operations | Conversion-Drop, neue Kampagne, EPK-Luecke, Tracking-Unklarheit, Social-Reichweitenchance | Hypothesen, Content-Plan, Messplan, PR-/Social-Operations-Plan fuer Instagram, Facebook und passende weitere Plattformen | Produktive Kampagnen-/Tracking-Umschaltung, Social-Live-Ausspielung, Community-Reaktionen, Outreach oder Paid-Test mit Nutzer-OK |
-| Designer | Corporate Design, Visual Design, Creative Assets und Vorlagen-System | schwache Hook-Retention, hohe Creative-Fatigue, inkonsistentes Branding, Manni-Reel-Output bereit, wiederholbarer Asset-Bedarf | Creative-Pack, Design-Hypothesen, CD-Review, website-konforme Reel-/Story-Varianten, wiederverwendbare Vorlagen fuer andere Agenten | finale Social-Live-Assets mit Nutzer-OK, verbindliche Template-Freigabe fuer Agenten |
+| Designer | Corporate Design, Visual Design, Windows-Tool-CD-Review, Creative Assets und Vorlagen-System | schwache Hook-Retention, hohe Creative-Fatigue, inkonsistentes Branding, Manni-Reel-Output bereit, wiederholbarer Asset-Bedarf, Flight-Deck-UI wirkt fremd oder nicht AIRDOX-konform | Creative-Pack, Design-Hypothesen, CD-Review, Flight-Deck-Designreview, website-konforme Reel-/Story-Varianten, wiederverwendbare Vorlagen fuer andere Agenten | finale Social-Live-Assets mit Nutzer-OK, verbindliche Template-Freigabe fuer Agenten |
 | Mentor | Lernsystem und Wissen | wiederholte Fehler, Wissensluecke, veraltete Doku | Wiki-Update, Lernschleife, Runbook-Entwurf | verbindliche Prozessaenderung fuer alle Agenten |
 | Refactor | Verschlankung/Architektur | hohe Komplexitaet, Dupplikate, Wartungsbremsen, Performance-Schuld | Refactor-Plan, Impact-Analyse, PoC | breite Umstrukturierung, moduluebergreifende Umbauten |
 | Repository | Branching, GitHub, Releases | Branch-Konflikte, chaotische Commits, Release-Druck, Strukturdrift | Monitoring, Bereinigungsvorschlag, Policy-Check | Merge-Freigabe, Branch-Regel-Anpassung, Release-Schaltung |
@@ -77,3 +77,15 @@ Jeder Trigger aus dieser Tabelle muss dort als Job-Eintrag gepflegt sein, inklus
 - `trigger.events` und `trigger.statuses`
 - `changeClass` und `requiresMasterApproval`
 - `execution` (`script` oder `manual`)
+
+## Windows-Tool-UI-Zuweisung
+
+Stand: 2026-05-16
+
+Wenn das Windows Tool funktionell oder visuell wie ein Fremdkoerper wirkt, gilt diese Zuweisung:
+
+- Master Controller priorisiert und trennt Pipeline-, UI-, CD- und QA-Anteile.
+- Winnie ist Primary fuer Umsetzung in `desktop/**`, `src/desktop/**`, `desktop.html`, Installer- und Electron-Build-Pfade.
+- Designer ist Pflicht-Review fuer sichtbare Flight-Deck-Oberflaechen, Corporate-Design-Abgleich, Icon-/Spacing-/Farbdisziplin und Assistant-Darstellung.
+- Guardian prueft Risiken, Tests und Release-Gates.
+- Refactor wird nur hinzugezogen, wenn die UI-Probleme aus Architektur- oder Modulgrenzen entstehen.

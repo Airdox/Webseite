@@ -33,11 +33,11 @@ const SystemMonitorTab = ({
   const getStatusIcon = (status) => {
     switch (status) {
       case 'healthy':
-        return <CheckCircle2 size={16} style={{ color: '#9adf6b' }} />;
+        return <CheckCircle2 size={16} style={{ color: 'var(--airdox-lime)' }} />;
       case 'warning':
-        return <AlertTriangle size={16} style={{ color: '#f97316' }} />;
+        return <AlertTriangle size={16} style={{ color: 'var(--airdox-warning)' }} />;
       case 'critical':
-        return <XCircle size={16} style={{ color: '#f87171' }} />;
+        return <XCircle size={16} style={{ color: 'var(--airdox-danger)' }} />;
       default:
         return null;
     }
@@ -131,7 +131,7 @@ const SystemMonitorTab = ({
           </div>
         </section>
 
-        <section className="fd-metric-card tone-purple">
+        <section className="fd-metric-card tone-blue">
           <div className="fd-metric-icon"><Database size={18} /></div>
           <div>
             <div className="fd-metric-label">DB Connection</div>

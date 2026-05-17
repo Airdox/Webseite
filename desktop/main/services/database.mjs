@@ -292,15 +292,46 @@ export const seedTrackStats = async (workspaceRoot, manifestIds = []) => {
   return true;
 };
 
-export const getAnalyticsEvents = async (workspaceRoot, limit = 5000) => {
+export const getAnalyticsEvents = async (workspaceRoot, { limit = 5000, startDate = '', endDate = '', filters = {} } = {}) => {
   await ensureInitialized(workspaceRoot);
   const sql = await getSql(workspaceRoot);
+
+  const where = [];
+  const params = [];
+  const pushParam = (value) => {
+    params.push(value);
+    return `$${params.length}`;
+  };
+
+  if (startDate) {
+    where.push(`created_at >= ${pushParam(`${startDate}T00:00:00`)}`);
+  }
+
+  if (endDate) {
+    where.push(`created_at <= ${pushParam(`${endDate}T23:59:59.999`)}`);
+  }
+
+  if (filters?.eventType && filters.eventType !== 'all') {
+    where.push(`LOWER(event_type) = LOWER(${pushParam(filters.eventType)})`);
+  }
+
+  if (filters?.deviceType && filters.deviceType !== 'all') {
+    where.push(`LOWER(device_type) = LOWER(${pushParam(filters.deviceType)})`);
+  }
+
+  if (filters?.country && filters.country !== 'all') {
+    where.push(`UPPER(country) = UPPER(${pushParam(filters.country)})`);
+  }
+
+  const limitParam = pushParam(Number(limit) || 5000);
+
   return sql.query(`
     SELECT event_type, item_id, country, device_type, created_at
     FROM analytics_logs
+    ${where.length ? `WHERE ${where.join(' AND ')}` : ''}
     ORDER BY created_at DESC
-    LIMIT $1
-  `, [limit]);
+    LIMIT ${limitParam}
+  `, params);
 };
 
 const READONLY_PREFIX = /^\s*(select|with|explain)\b/i;

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-16T15:35:12.767Z",
+  "generatedAt": "2026-05-16T16:23:57.178Z",
   "version": "v2026-05-16",
   "brandName": "AIRDOX",
   "tokens": "docs/brand/airdox-brand-tokens.json",
@@ -12,6 +12,9 @@
       "title": "PEAK MOMENT",
       "subtitle": "FULL SET ONLINE",
       "cta": "AIRDOX.INFO",
+      "motionSignature": "audio-reactive equalizer + waveform spine",
+      "stillSource": "source video or website music-section still",
+      "visualEffect": "beat pulse with cyan/pink light gate",
       "safeArea": {
         "top": 190,
         "right": 90,
@@ -21,6 +24,63 @@
       "file": "public/brand-assets/v2026-05-16/reel-drop-peak.svg"
     },
     {
+      "id": "reel-signal-system",
+      "type": "reel",
+      "width": 1080,
+      "height": 1920,
+      "title": "PRESSURE SIGNAL",
+      "subtitle": "AUDIO REACTIVE",
+      "cta": "FULL SET ON AIRDOX.INFO",
+      "motionSignature": "24-bar equalizer + VU meter",
+      "stillSource": "website hero or set preview frame",
+      "visualEffect": "signal scanline + data burn-in",
+      "safeArea": {
+        "top": 190,
+        "right": 90,
+        "bottom": 300,
+        "left": 90
+      },
+      "file": "public/brand-assets/v2026-05-16/reel-signal-system.svg"
+    },
+    {
+      "id": "reel-club-still-parallax",
+      "type": "reel",
+      "width": 1080,
+      "height": 1920,
+      "title": "FULL SET",
+      "subtitle": "CLUB STILL PARALLAX",
+      "cta": "AIRDOX.INFO",
+      "motionSignature": "slow camera push + beat-synced light gate",
+      "stillSource": "cover art, website screenshot, or reel preview frame",
+      "visualEffect": "posterize pass + three-layer parallax",
+      "safeArea": {
+        "top": 190,
+        "right": 90,
+        "bottom": 300,
+        "left": 90
+      },
+      "file": "public/brand-assets/v2026-05-16/reel-club-still-parallax.svg"
+    },
+    {
+      "id": "reel-glitch-type-drop",
+      "type": "reel",
+      "width": 1080,
+      "height": 1920,
+      "title": "NO WARM-UP",
+      "subtitle": "JUST PRESSURE",
+      "cta": "AIRDOX.INFO",
+      "motionSignature": "kinetic type hits + waveform spine",
+      "stillSource": "source-video frame or performance still",
+      "visualEffect": "slit/time-slice glitch burst",
+      "safeArea": {
+        "top": 190,
+        "right": 90,
+        "bottom": 300,
+        "left": 90
+      },
+      "file": "public/brand-assets/v2026-05-16/reel-glitch-type-drop.svg"
+    },
+    {
       "id": "story-pressure-test",
       "type": "story",
       "width": 1080,
@@ -28,6 +88,9 @@
       "title": "PRESSURE TEST",
       "subtitle": "BERLIN UNDERGROUND TECHNO",
       "cta": "BOOKING / EPK / MUSIC ARCHIVE",
+      "motionSignature": "story-frame beat pulse + mini waveform",
+      "stillSource": "website hero or EPK still",
+      "visualEffect": "mask reveal + scanline sweep",
       "safeArea": {
         "top": 190,
         "right": 90,
@@ -44,6 +107,9 @@
       "title": "AIRDOX LIVE SET",
       "subtitle": "DARK ROOM ENERGY",
       "cta": "FULL SET ON AIRDOX.INFO",
+      "motionSignature": "first-frame waveform marker",
+      "stillSource": "set preview or website still",
+      "visualEffect": "posterize pass + edge glow",
       "safeArea": {
         "top": 96,
         "right": 80,
@@ -60,6 +126,9 @@
       "title": "NEW SET",
       "subtitle": "AIRDOX SIGNAL DROP",
       "cta": "LISTEN / SHARE / BOOK",
+      "motionSignature": "static-feed signal bars",
+      "stillSource": "brand asset or cover still",
+      "visualEffect": "data burn-in + light gate",
       "safeArea": {
         "top": 90,
         "right": 80,

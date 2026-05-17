@@ -64,4 +64,38 @@ describe('database service dashboard snapshot', () => {
       { id: 'top_set', plays: 10, likes: 0, dislikes: 0, last_played_at: null },
     ]);
   });
+
+  it('pushes analytics filters into the database query instead of filtering mock data locally', async () => {
+    const { getAnalyticsEvents } = await import('../../../desktop/main/services/database.mjs');
+
+    await getAnalyticsEvents('D:\\AIRDOX\\workspace', {
+      startDate: '2026-05-01',
+      endDate: '2026-05-17',
+      filters: { eventType: 'play', deviceType: 'desktop', country: 'DE' },
+      limit: 50,
+    });
+
+    const analyticsCall = mocks.query.mock.calls.find(([statement]) => String(statement).includes('FROM analytics_logs'));
+    expect(analyticsCall).toBeTruthy();
+    expect(String(analyticsCall[0])).toContain('WHERE');
+    expect(String(analyticsCall[0])).toContain('LOWER(event_type)');
+    expect(String(analyticsCall[0])).toContain('LOWER(device_type)');
+    expect(String(analyticsCall[0])).toContain('UPPER(country)');
+    expect(analyticsCall[1]).toEqual([
+      '2026-05-01T00:00:00',
+      '2026-05-17T23:59:59.999',
+      'play',
+      'desktop',
+      'DE',
+      50,
+    ]);
+  });
+
+  it('rejects write statements in the read-only SQL endpoint', async () => {
+    const { runReadonlyQuery } = await import('../../../desktop/main/services/database.mjs');
+
+    await expect(runReadonlyQuery('D:\\AIRDOX\\workspace', 'delete from track_stats;'))
+      .rejects
+      .toThrow(/Only read-only/);
+  });
 });

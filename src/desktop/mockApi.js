@@ -39,14 +39,8 @@ const defaultSets = [
 ];
 
 const defaultTables = {
-  track_stats: [
-    { id: 'secret_set_2025_12_22', plays: 71, likes: 1, dislikes: 0, last_played_at: null },
-    { id: 'recording_2026_04_12', plays: 62, likes: 1, dislikes: 0, last_played_at: '2026-04-25T03:16:57.139Z' },
-  ],
-  analytics_logs: [
-    { id: 2, event_type: 'play', item_id: 'recording_2026_04_12', session_id: 'demo_session', country: 'DE', city: 'Berlin', region: 'Berlin', device_type: 'Desktop', browser: 'Chrome', os: 'Windows', referrer: 'direct', created_at: '2026-04-25T03:16:57.139Z' },
-    { id: 1, event_type: 'play', item_id: 'secret_set_2025_12_22', session_id: 'demo_session', country: 'DE', city: 'Berlin', region: 'Berlin', device_type: 'Desktop', browser: 'Chrome', os: 'Windows', referrer: 'direct', created_at: '2026-04-24T23:12:12.500Z' },
-  ],
+  track_stats: [],
+  analytics_logs: [],
   bookings: [],
   subscribers: [
     { id: 1, email: 'vip@airdox.info', status: 'active', created_at: '2026-04-20T18:00:00.000Z' },
@@ -71,6 +65,36 @@ const loadJson = (key, fallback) => {
 const saveJson = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
   return value;
+};
+
+const csvEscape = (value) => `"${String(value ?? '').replace(/"/g, '""')}"`;
+
+const serializeRows = (rows = [], format = 'json') => {
+  if (format !== 'csv') return JSON.stringify(rows, null, 2);
+  if (!rows.length) return '';
+  const columns = Object.keys(rows[0]);
+  return [
+    columns.map(csvEscape).join(','),
+    ...rows.map((row) => columns.map((column) => csvEscape(row[column])).join(',')),
+  ].join('\n');
+};
+
+const triggerBrowserDownload = ({ content, fileName, mimeType }) => {
+  if (typeof document === 'undefined' || typeof URL === 'undefined' || typeof Blob === 'undefined') {
+    return false;
+  }
+
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  return true;
 };
 
 const loadSettings = () => loadJson(SETTINGS_KEY, defaultSettings);
@@ -240,19 +264,7 @@ const buildSnapshot = () => {
 
 const nextId = (rows) => rows.reduce((max, row) => Math.max(max, Number(row.id) || 0), 0) + 1;
 
-const defaultAnalyticsLogs = [
-  { id: 1, event_type: 'play', item_id: 'recording_2026_04_12', country: 'DE', device_type: 'desktop', created_at: '2026-04-05T09:12:00.000Z' },
-  { id: 2, event_type: 'play', item_id: 'secret_set_2025_12_22', country: 'DE', device_type: 'mobile', created_at: '2026-04-06T11:20:00.000Z' },
-  { id: 3, event_type: 'like', item_id: 'recording_2026_04_12', country: 'AT', device_type: 'mobile', created_at: '2026-04-10T19:05:00.000Z' },
-  { id: 4, event_type: 'view', item_id: 'recording_2026_04_12', country: 'US', device_type: 'desktop', created_at: '2026-04-12T22:45:00.000Z' },
-  { id: 5, event_type: 'play', item_id: 'recording_2026_04_12', country: 'CH', device_type: 'tablet', created_at: '2026-04-18T07:08:00.000Z' },
-  { id: 6, event_type: 'dislike', item_id: 'secret_set_2025_12_22', country: 'DE', device_type: 'desktop', created_at: '2026-04-21T15:31:00.000Z' },
-  { id: 7, event_type: 'play', item_id: 'recording_2026_04_12', country: 'US', device_type: 'mobile', created_at: '2026-04-25T03:16:57.139Z' },
-  { id: 8, event_type: 'like', item_id: 'secret_set_2025_12_22', country: 'DE', device_type: 'desktop', created_at: '2026-04-28T23:12:12.500Z' },
-  { id: 9, event_type: 'view', item_id: 'secret_set_2025_12_22', country: 'AT', device_type: 'desktop', created_at: '2026-05-01T08:00:00.000Z' },
-];
-
-const buildMockAnalytics = (eventLogs = defaultAnalyticsLogs) => {
+const buildMockAnalytics = (eventLogs = []) => {
   const eventsByType = {};
   const countryMap = {};
   const deviceTypeBreakdown = {};
@@ -305,6 +317,9 @@ const buildMockAnalytics = (eventLogs = defaultAnalyticsLogs) => {
     hourlyDistribution,
     conversionRate: totalViews > 0 ? totalPlays / totalViews : 0,
     eventLogs,
+    source: 'browser-no-real-data',
+    realData: false,
+    sourceLabel: 'Keine echte Datenbank verbunden',
   };
 };
 
@@ -457,10 +472,7 @@ export const mockFlightDeckApi = {
     return true;
   },
   async runReadonlyQuery() {
-    return {
-      rowCount: 2,
-      rows: loadTables().track_stats,
-    };
+    throw new Error('Read-only SQL braucht die Windows-App mit echter Datenbankverbindung. Die Browser-Vorschau fuehrt keine Query gegen Mock-Daten aus.');
   },
   async syncTrackStats() {
     const tables = loadTables();
@@ -474,13 +486,21 @@ export const mockFlightDeckApi = {
     return { ok: true, count: sets.length };
   },
   async exportRecords(payload) {
-    return { filePath: `C:\\Exports\\${payload.suggestedName}` };
+    const format = payload?.format || 'json';
+    const fileName = payload?.suggestedName || `flightdeck-export.${format}`;
+    const content = serializeRows(payload?.rows || [], format);
+    const downloaded = triggerBrowserDownload({
+      content,
+      fileName,
+      mimeType: format === 'csv' ? 'text/csv;charset=utf-8' : 'application/json;charset=utf-8',
+    });
+    return { filePath: downloaded ? fileName : null, downloaded, content };
   },
   async revealPath() {
     return true;
   },
   async getAnalyticsData() {
-    return buildMockAnalytics(defaultAnalyticsLogs);
+    return buildMockAnalytics([]);
   },
   async exportAnalyticsReport(payload) {
     return { filePath: `C:\\Exports\\analytics-${payload?.type || 'json'}.json` };

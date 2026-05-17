@@ -30,6 +30,12 @@ const tokens = JSON.parse(readFileSync(tokensPath, 'utf8'));
 const palette = tokens.palette || {};
 const identity = tokens.identity || {};
 const typography = tokens.typography || {};
+const extendedPalette = {
+  accentPink: '#ff2bd6',
+  electricBlue: '#4d7cff',
+  deepViolet: '#21133f',
+  signalAmber: '#ffc857',
+};
 
 const requiredPalette = [
   'bg',
@@ -59,6 +65,48 @@ const assetSpecs = [
     title: 'PEAK MOMENT',
     subtitle: 'FULL SET ONLINE',
     cta: 'AIRDOX.INFO',
+    motionSignature: 'audio-reactive equalizer + waveform spine',
+    stillSource: 'source video or website music-section still',
+    visualEffect: 'beat pulse with cyan/pink light gate',
+    safeArea: { top: 190, right: 90, bottom: 300, left: 90 },
+  },
+  {
+    id: 'reel-signal-system',
+    type: 'reel',
+    width: 1080,
+    height: 1920,
+    title: 'PRESSURE SIGNAL',
+    subtitle: 'AUDIO REACTIVE',
+    cta: 'FULL SET ON AIRDOX.INFO',
+    motionSignature: '24-bar equalizer + VU meter',
+    stillSource: 'website hero or set preview frame',
+    visualEffect: 'signal scanline + data burn-in',
+    safeArea: { top: 190, right: 90, bottom: 300, left: 90 },
+  },
+  {
+    id: 'reel-club-still-parallax',
+    type: 'reel',
+    width: 1080,
+    height: 1920,
+    title: 'FULL SET',
+    subtitle: 'CLUB STILL PARALLAX',
+    cta: 'AIRDOX.INFO',
+    motionSignature: 'slow camera push + beat-synced light gate',
+    stillSource: 'cover art, website screenshot, or reel preview frame',
+    visualEffect: 'posterize pass + three-layer parallax',
+    safeArea: { top: 190, right: 90, bottom: 300, left: 90 },
+  },
+  {
+    id: 'reel-glitch-type-drop',
+    type: 'reel',
+    width: 1080,
+    height: 1920,
+    title: 'NO WARM-UP',
+    subtitle: 'JUST PRESSURE',
+    cta: 'AIRDOX.INFO',
+    motionSignature: 'kinetic type hits + waveform spine',
+    stillSource: 'source-video frame or performance still',
+    visualEffect: 'slit/time-slice glitch burst',
     safeArea: { top: 190, right: 90, bottom: 300, left: 90 },
   },
   {
@@ -69,6 +117,9 @@ const assetSpecs = [
     title: 'PRESSURE TEST',
     subtitle: 'BERLIN UNDERGROUND TECHNO',
     cta: 'BOOKING / EPK / MUSIC ARCHIVE',
+    motionSignature: 'story-frame beat pulse + mini waveform',
+    stillSource: 'website hero or EPK still',
+    visualEffect: 'mask reveal + scanline sweep',
     safeArea: { top: 190, right: 90, bottom: 300, left: 90 },
   },
   {
@@ -79,6 +130,9 @@ const assetSpecs = [
     title: 'AIRDOX LIVE SET',
     subtitle: 'DARK ROOM ENERGY',
     cta: 'FULL SET ON AIRDOX.INFO',
+    motionSignature: 'first-frame waveform marker',
+    stillSource: 'set preview or website still',
+    visualEffect: 'posterize pass + edge glow',
     safeArea: { top: 96, right: 80, bottom: 104, left: 80 },
   },
   {
@@ -89,6 +143,9 @@ const assetSpecs = [
     title: 'NEW SET',
     subtitle: 'AIRDOX SIGNAL DROP',
     cta: 'LISTEN / SHARE / BOOK',
+    motionSignature: 'static-feed signal bars',
+    stillSource: 'brand asset or cover still',
+    visualEffect: 'data burn-in + light gate',
     safeArea: { top: 90, right: 80, bottom: 100, left: 80 },
   },
 ];
@@ -139,14 +196,42 @@ const renderSvg = (spec) => {
   const brandSize = spec.type === 'thumbnail' ? 42 : 48;
   const brandName = escapeXml(tokens.brandName || 'AIRDOX');
   const tagline = escapeXml(identity.tagline || 'Berlin Underground Techno');
+  const diagonalEnd = spec.type === 'thumbnail'
+    ? `L${spec.width - 80} ${spec.height - 120}`
+    : `L${spec.width - 90} ${spec.height - 260}`;
+  const sidePanelWidth = spec.type === 'thumbnail' ? 220 : 170;
+  const rhythmY = spec.type === 'square' ? 690 : spec.type === 'thumbnail' ? 470 : 1190;
+  const motionLabel = escapeXml(spec.motionSignature || 'motion signature required');
+  const effectLabel = escapeXml(spec.visualEffect || 'visual effect required');
+  const stillLabel = escapeXml(spec.stillSource || 'still source required');
+  const waveformBaseY = spec.type === 'thumbnail' ? safe.top + safeHeight - 158 : safe.top + Math.round(safeHeight * 0.72);
+  const waveformBars = Array.from({ length: spec.type === 'thumbnail' ? 18 : 24 }, (_, index) => {
+    const x = safe.left + 26 + (index * (spec.type === 'thumbnail' ? 30 : 26));
+    const amplitude = 18 + ((index * 17) % 82);
+    const color = index % 3 === 0
+      ? palette.accentCyan
+      : index % 3 === 1
+        ? extendedPalette.accentPink
+        : palette.accentLime;
+    return `<rect x="${x}" y="${waveformBaseY - amplitude}" width="${spec.type === 'thumbnail' ? 16 : 12}" height="${amplitude}" rx="0" fill="${color}" opacity="${0.52 + ((index % 4) * 0.1)}"/>`;
+  }).join('\n    ');
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${spec.width}" height="${spec.height}" viewBox="0 0 ${spec.width} ${spec.height}" role="img" aria-label="${brandName} ${escapeXml(spec.title)}">
   <defs>
-    <linearGradient id="edgeGlow" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="${palette.accentCyan}" stop-opacity="0.9"/>
-      <stop offset="0.58" stop-color="${palette.surface}" stop-opacity="0.4"/>
-      <stop offset="1" stop-color="${palette.accentLime}" stop-opacity="0.8"/>
+    <linearGradient id="stageWash" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="${extendedPalette.deepViolet}" stop-opacity="0.95"/>
+      <stop offset="0.45" stop-color="${palette.surface}" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#061f25" stop-opacity="0.98"/>
     </linearGradient>
+    <linearGradient id="edgeGlow" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="${palette.accentCyan}" stop-opacity="0.95"/>
+      <stop offset="0.42" stop-color="${extendedPalette.accentPink}" stop-opacity="0.86"/>
+      <stop offset="1" stop-color="${palette.accentLime}" stop-opacity="0.82"/>
+    </linearGradient>
+    <pattern id="signalGrid" width="54" height="54" patternUnits="userSpaceOnUse">
+      <path d="M54 0H0V54" fill="none" stroke="${palette.border}" stroke-width="1" opacity="0.55"/>
+      <circle cx="0" cy="54" r="2.5" fill="${palette.accentCyan}" opacity="0.38"/>
+    </pattern>
     <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
       <feGaussianBlur stdDeviation="18" result="blur"/>
       <feMerge>
@@ -156,10 +241,25 @@ const renderSvg = (spec) => {
     </filter>
   </defs>
   <rect width="100%" height="100%" fill="${palette.bg}"/>
+  <rect width="100%" height="100%" fill="url(#stageWash)" opacity="0.72"/>
+  <rect width="100%" height="100%" fill="url(#signalGrid)" opacity="0.34"/>
   <rect x="28" y="28" width="${spec.width - 56}" height="${spec.height - 56}" fill="none" stroke="${palette.border}" stroke-width="2"/>
-  <rect x="${safe.left}" y="${safe.top}" width="${safeWidth}" height="${safeHeight}" fill="${palette.surface}" opacity="0.58"/>
-  <path d="M${safe.left} ${safe.top + 16} H${safe.left + Math.round(safeWidth * 0.55)}" stroke="${palette.accentCyan}" stroke-width="10" filter="url(#softGlow)"/>
+  <path d="M${safe.left - 18} ${safe.top + Math.round(safeHeight * 0.18)} ${diagonalEnd}" stroke="${extendedPalette.accentPink}" stroke-width="34" opacity="0.24" filter="url(#softGlow)"/>
+  <path d="M${safe.left + 24} ${safe.top + Math.round(safeHeight * 0.32)} ${diagonalEnd}" stroke="${palette.accentCyan}" stroke-width="10" opacity="0.68"/>
+  <rect x="${safe.left}" y="${safe.top}" width="${safeWidth}" height="${safeHeight}" fill="${palette.surface}" opacity="0.68"/>
+  <rect x="${safe.left + safeWidth - sidePanelWidth}" y="${safe.top}" width="${sidePanelWidth}" height="${safeHeight}" fill="${extendedPalette.deepViolet}" opacity="0.82"/>
+  <path d="M${safe.left} ${safe.top + 16} H${safe.left + Math.round(safeWidth * 0.44)}" stroke="${palette.accentCyan}" stroke-width="10" filter="url(#softGlow)"/>
+  <path d="M${safe.left + Math.round(safeWidth * 0.18)} ${rhythmY} H${safe.left + Math.round(safeWidth * 0.82)}" stroke="${extendedPalette.accentPink}" stroke-width="4" opacity="0.86"/>
   <path d="M${safe.left + Math.round(safeWidth * 0.5)} ${safe.top + safeHeight - 24} H${safe.left + safeWidth}" stroke="${palette.accentLime}" stroke-width="8" opacity="0.9"/>
+  <g opacity="0.78">
+    <rect x="${safe.left + safeWidth - sidePanelWidth + 34}" y="${safe.top + 150}" width="16" height="${Math.round(safeHeight * 0.42)}" fill="${palette.accentCyan}"/>
+    <rect x="${safe.left + safeWidth - sidePanelWidth + 62}" y="${safe.top + 220}" width="16" height="${Math.round(safeHeight * 0.3)}" fill="${extendedPalette.accentPink}"/>
+    <rect x="${safe.left + safeWidth - sidePanelWidth + 90}" y="${safe.top + 110}" width="16" height="${Math.round(safeHeight * 0.48)}" fill="${palette.accentLime}"/>
+  </g>
+  <g opacity="0.86" aria-label="audio reactive equalizer direction">
+    ${waveformBars}
+    <path d="M${safe.left + 20} ${waveformBaseY + 34} C${safe.left + Math.round(safeWidth * 0.22)} ${waveformBaseY - 46}, ${safe.left + Math.round(safeWidth * 0.48)} ${waveformBaseY + 78}, ${safe.left + Math.round(safeWidth * 0.76)} ${waveformBaseY - 28} S${safe.left + safeWidth - 40} ${waveformBaseY + 18}, ${safe.left + safeWidth - 16} ${waveformBaseY - 12}" fill="none" stroke="${palette.accentCyan}" stroke-width="4" opacity="0.78"/>
+  </g>
   <g font-family="${escapeXml(typography.fontFamily || 'Inter, Arial, sans-serif')}" fill="${palette.textPrimary}">
     <text x="${safe.left}" y="${safe.top + 78}" font-size="${brandSize}" font-weight="800" letter-spacing="0">${brandName}</text>
     <text x="${safe.left}" y="${safe.top + 122}" font-size="24" font-weight="600" fill="${palette.textMuted}" letter-spacing="0">${tagline}</text>
@@ -168,11 +268,18 @@ const renderSvg = (spec) => {
     <text x="${safe.left}" y="${safe.top + safeHeight - 92}" font-size="${ctaSize}" font-weight="800" fill="${palette.textPrimary}" letter-spacing="0">${escapeXml(spec.cta)}</text>
     <text x="${safe.left}" y="${safe.top + safeHeight - 48}" font-size="22" font-weight="600" fill="${palette.textMuted}" letter-spacing="0">${escapeXml(identity.website || 'https://airdox.info')}</text>
   </g>
+  <g font-family="${escapeXml(typography.fontFamily || 'Inter, Arial, sans-serif')}" font-size="18" font-weight="700" letter-spacing="0" fill="${palette.textMuted}" opacity="0.88">
+    <text x="${safe.left}" y="${safe.top + safeHeight - 178}">MOTION: ${motionLabel}</text>
+    <text x="${safe.left}" y="${safe.top + safeHeight - 150}">EFFECT: ${effectLabel}</text>
+    <text x="${safe.left}" y="${safe.top + safeHeight - 122}">STILL: ${stillLabel}</text>
+  </g>
   <g opacity="0.75">
     <rect x="${spec.width - safe.right - 170}" y="${safe.top + 28}" width="170" height="14" fill="${palette.accentCyan}"/>
-    <rect x="${spec.width - safe.right - 104}" y="${safe.top + 52}" width="104" height="14" fill="${palette.accentLime}"/>
+    <rect x="${spec.width - safe.right - 132}" y="${safe.top + 52}" width="132" height="14" fill="${extendedPalette.accentPink}"/>
+    <rect x="${spec.width - safe.right - 88}" y="${safe.top + 76}" width="88" height="14" fill="${palette.accentLime}"/>
     <rect x="${safe.left}" y="${safe.top + safeHeight - 22}" width="70" height="10" fill="${palette.accentCyan}"/>
   </g>
+  <text x="${spec.width - safe.right - 148}" y="${safe.top + safeHeight - 70}" transform="rotate(-90 ${spec.width - safe.right - 148} ${safe.top + safeHeight - 70})" font-family="${escapeXml(typography.fontFamily || 'Inter, Arial, sans-serif')}" font-size="18" font-weight="800" fill="${extendedPalette.signalAmber}" letter-spacing="0">SIGNAL / ${brandName}</text>
   <rect x="${safe.left}" y="${safe.top}" width="${safeWidth}" height="${safeHeight}" fill="none" stroke="url(#edgeGlow)" stroke-width="3" opacity="0.72"/>
 </svg>
 `;
@@ -224,6 +331,20 @@ const validateAsset = (spec, svg) => {
     add('safe-area', 'fail', 'Safe area is too small for social platform UI.');
   } else {
     add('safe-area', 'pass', 'Safe area is defined for platform UI.');
+  }
+
+  const motionSource = `${spec.motionSignature || ''} ${spec.visualEffect || ''}`.toLowerCase();
+  const hasMotionSignature = /(equalizer|waveform|vu meter|beat|pulse|parallax|kinetic|glitch|light gate|scanline)/i.test(motionSource);
+  if ((spec.type === 'reel' || spec.type === 'story') && !hasMotionSignature) {
+    add('motion-signature', 'fail', 'Reel/story asset has no explicit audio or motion signature.');
+  } else if (spec.type === 'reel' || spec.type === 'story') {
+    add('motion-signature', 'pass', `Motion signature defined: ${spec.motionSignature}.`);
+  }
+
+  if ((spec.type === 'reel' || spec.type === 'story') && !spec.stillSource) {
+    add('still-source', 'warn', 'No still/source direction defined for visual depth.');
+  } else if (spec.type === 'reel' || spec.type === 'story') {
+    add('still-source', 'pass', `Still/source direction defined: ${spec.stillSource}.`);
   }
 
   return checks;

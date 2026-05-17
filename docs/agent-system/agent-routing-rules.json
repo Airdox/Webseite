@@ -47,8 +47,26 @@
         "desktop/**",
         "src/desktop/**",
         "desktop.html",
-        "electron-builder.json",
-        "scripts/desktop-*.ps1"
+        "package.json",
+        "scripts/desktop-*.ps1",
+        "scripts/build-win-installer.ps1",
+        "scripts/install-win-tool.ps1",
+        "build/icon.*",
+        "scratch/iexpress-win-installer/**"
+      ],
+      "recommendedGates": [
+        "npm run desktop:test:logic"
+      ]
+    },
+    {
+      "id": "desktop-experience-design",
+      "agent": "Designer",
+      "role": "review",
+      "paths": [
+        "src/desktop/**/*.css",
+        "src/desktop/**/*.jsx",
+        "desktop.html",
+        "build/icon.*"
       ],
       "recommendedGates": [
         "npm run desktop:test:logic"
