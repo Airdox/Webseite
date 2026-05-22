@@ -38,6 +38,8 @@ export const DEFAULT_FLIGHT_DECK_SETTINGS = {
   buildCommand: 'npm run build',
   deployCommand: 'npm run deploy',
   gitCommitTemplate: 'feat(flightdeck): publish {{id}}',
+  photoshopPath: 'D:\\ps\\Photoshop.exe',
+  defaultDesignStyle: 'flicker',
 };
 
 export const extractFilename = (input = '') => input.split(/[\\/]/).pop() || input;
@@ -365,6 +367,7 @@ export const toManifestSet = (draft = {}) => {
     file: String(draft.file || '').trim(),
     cover: draft.cover ? String(draft.cover).trim() : undefined,
     duration: draft.duration ? String(draft.duration).trim() : undefined,
+    bpm: draft.bpm ? Number(draft.bpm) : undefined,
     isNew: Boolean(draft.isNew),
     vinylColor: draft.vinylColor ? String(draft.vinylColor).trim() : undefined,
     tracks: Array.isArray(draft.tracks) ? draft.tracks.map(sanitizeTrack).filter(Boolean) : undefined,

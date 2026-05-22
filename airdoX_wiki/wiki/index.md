@@ -4,7 +4,7 @@ Dies ist das automatisch gepflegte Inhaltsverzeichnis aller Konzepte und Seiten 
 
 ---
 
-**Zuletzt aktualisiert**: 2. Mai 2026
+**Zuletzt aktualisiert**: 22. Mai 2026
 
 ## Inhalte
 - `flightdeck-expert-handbook.md`: Zentrale Betriebs- und Featuredokumentation für das Windtool.
@@ -12,9 +12,12 @@ Dies ist das automatisch gepflegte Inhaltsverzeichnis aller Konzepte und Seiten 
 - `flightdeck-faq.md`: Schnellantworten auf häufige Fragen.
 - `local-00-source-registry.md`: Bewertete Quellenlage und Regel "Code gewinnt".
 - `local-06-quality-assurance.md`: QA-Pfade und Release-Gates.
+- `local-07-current-program-state.md`: Aktueller Zustand des Windtools, verfuegbare Skripte und Tabs.
 - `local-09-mentor-audit.md`: Aktueller Mentor-Audit fuer Lernsystem und Feedbackschleifen.
 - `local-10-agent-decisions.md`: Agentenentscheidungen und Recheck-Regeln.
 - `local-11-feedback-loops.md`: Feste Schleifen von Code, Tests, Doku und Lernen.
 - `local-12-refactor-optimization.md`: Systemweite Verschlankung, Architektur- und Refactor-Regeln.
+- `local-13-recent-updates-may-2026.md`: Detaillierte Übersicht der Updates von Mai 2026 (Komponenten-Refactoring, 6 neue Agent-Skills).
 - `log.md`: Änderungsjournal.
+
 

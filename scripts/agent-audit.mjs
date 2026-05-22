@@ -139,7 +139,7 @@ const agents = [
         'public/manifest.json',
         'public/og-image.png',
       ].every(exists), 'robots, sitemap, manifest und OG-Bild sind vorhanden.'),
-      optional('Deployment-Skripte konsistent', !/npm run build:site/.test(read('netlify.toml')) || hasScript('build:site'), 'Warnung, wenn netlify.toml ein fehlendes NPM-Skript referenziert.'),
+      check('Cloudflare-Deployment konfiguriert', exists('wrangler.jsonc'), 'wrangler.jsonc ist als einziges Deployment-Target vorhanden.'),
       optional('Analytics Consent ohne Direktlade-Risiko', !/googletagmanager\.com\/gtag\/js/.test(read('index.html')), 'Warnung, wenn Google Tag direkt im HTML geladen wird statt nur ueber Consent-Loader.'),
       optional('CSP ohne unsafe-inline', !/unsafe-inline/.test(read('public/_headers')), 'Warnung, wenn CSP unsafe-inline benoetigt.'),
       optional('HTML-Entry-Drift begrenzt', rootHtmlCopies.length === 0, 'Warnung, wenn mehrere root HTML-Kopien SEO/Head-Drift erzeugen koennen.'),
@@ -281,7 +281,7 @@ const agents = [
       optional('Root-HTML-Duplikate reduziert', rootHtmlCopies.length === 0, rootHtmlCopies.length ? `${rootHtmlCopies.length} Root-HTML-Kopien koennen Head-/SEO-Drift erzeugen.` : 'Keine Root-HTML-Kopien neben den Vite-Einstiegen gefunden.', { weight: 1.5 }),
       optional('Grosse JSX-Dateien begrenzt', largestJsx.lines <= 500, largestJsx.filePath ? `${largestJsx.filePath} hat ${largestJsx.lines} Zeilen.` : 'Keine JSX-Dateien gefunden.', { weight: 1.5 }),
       check('Desktop Services modularisiert', fileCount((filePath) => filePath.startsWith('desktop/main/services/') && filePath.endsWith('.mjs')) >= 6, 'Desktop-Main-Logik ist in mehrere Services geschnitten.'),
-      optional('Deployment-Ziele konsolidiert', [exists('wrangler.jsonc'), exists('netlify.toml'), exists('vercel.json')].filter(Boolean).length <= 2, 'Warnung, wenn mehrere Deployment-Ziele parallel gepflegt werden muessen.'),
+      check('Deployment-Ziel konsolidiert', exists('wrangler.jsonc') && !exists('netlify.toml') && !exists('vercel.json'), 'Nur wrangler.jsonc als einziges Deployment-Target vorhanden.'),
       optional('Dependency-Footprint kontrolliert', Object.keys(packageJson.dependencies || {}).length <= 15, `${Object.keys(packageJson.dependencies || {}).length} Runtime-Abhaengigkeiten gefunden.`),
     ],
     [
@@ -302,7 +302,7 @@ const agents = [
       optional('Commit-Konvention dokumentiert', /feat|fix|refactor|docs|chore|ci/.test(read('docs/agent-system/REPOSITORY_GOVERNANCE.md')), 'Warnung, wenn Commit-Typen nicht klar festgelegt sind.'),
       optional('Change-Tracking vorhanden', exists('docs/agent-system/DECISION_LOG.md') && exists('docs/agent-system/latest-audit.md'), 'Warnung, wenn Entscheidungen oder Audit-Historie fehlen.'),
       optional('Arbeitsbaum releasebereit', dirtyFiles.length <= 20, `${dirtyFiles.length} uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.`, { weight: 1.5 }),
-      optional('Parallele Deployment-Konfigs begrenzt', [exists('wrangler.jsonc'), exists('netlify.toml'), exists('vercel.json')].filter(Boolean).length <= 2, 'Warnung, wenn zu viele Deployment-Targets parallel gepflegt werden.'),
+      check('Einziges Deployment-Target', exists('wrangler.jsonc') && !exists('netlify.toml') && !exists('vercel.json'), 'Nur Cloudflare (wrangler.jsonc) als Deployment-Target vorhanden.'),
       optional('Gefaehrdete Artefaktordner ignoriert', [/\.wrangler/.test(read('.gitignore')), /dist/.test(read('.gitignore')), /release/.test(read('.gitignore'))].every(Boolean), 'Warnung, wenn Build-/Wrangler-/Release-Artefakte nicht sauber ignoriert werden.'),
     ],
     [

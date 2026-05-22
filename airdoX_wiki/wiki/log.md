@@ -37,3 +37,18 @@ Dieses Journal protokolliert alle Änderungen und Ingest-Vorgänge im AIRDOX Wik
   * `local-12-refactor-optimization.md`
 * Ziel: Agentenrollen, Audit-Gates, Entscheidungen und Feedbackschleifen dauerhaft nachvollziehbar machen.
 * Nachtrag: Refactor als sechsten Superagenten fuer Systemoptimierung und Verschlankung aufgenommen.
+
+## 22. Mai 2026
+
+* Dokumentation der Mai-Updates:
+  * Erstellung von `local-13-recent-updates-may-2026.md` zur Dokumentation der neuen Code-Refactorings und Skills.
+  * Aktualisierung von `local-07-current-program-state.md` mit den aktuellen `package.json`-Skripten, neu hinzugefügten Tabs und den 6 Agenten-Skills.
+  * Aktualisierung des Wiki-Index `index.md`.
+* Inhalt der Updates:
+  * Zerlegung der monolithischen `GlobalPlayer`- und `Hero`-Komponenten.
+  * Integration von 6 deutschen Agenten-Skills unter `.agents/skills/` zur strukturierten Automatisierung (Social Publisher, YouTube, Brand Assets, EPK, Tracklists, Quality Check).
+  * Behebung des mobilen Vinyl-Cover-Animationsfehlers in der `SetCard`.
+  * Integration der Filterknöpfe ("Alle Sets" / "Live") im Data Explorer.
+  * Bereinigung alter Vercel/Netlify-Dateien, vollständiger Fokus auf Cloudflare.
+* Ziel: Bereitstellung vollständiger Wissensabdeckung für den Chatassistenten im Windows Flight Deck Tool.
+

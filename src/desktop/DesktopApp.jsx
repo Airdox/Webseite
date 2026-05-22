@@ -2,7 +2,7 @@ import React, { startTransition, useCallback, useDeferredValue, useEffect, useMe
 import {
   CircleAlert, Database, LayoutDashboard, RadioTower, UploadCloud,
   BarChart3, Settings2, Package, Activity, BookOpen, Rocket, Bot,
-  RefreshCw, Gauge, ListChecks, Sparkles,
+  RefreshCw, Gauge, ListChecks, Sparkles, Palette,
 } from 'lucide-react';
 import { flightDeckApi } from './api.js';
 import OverviewTab from './components/OverviewTab.jsx';
@@ -16,6 +16,7 @@ import SystemMonitorTab from './components/SystemMonitorTab.jsx';
 import TutorialTab from './components/TutorialTab.jsx';
 import AssistantTab from './components/AssistantTab.jsx';
 import ManniApprovalTab from './components/ManniApprovalTab.jsx';
+import DesignAgentTab from './components/DesignAgentTab.jsx';
 import GuidedTutorialOverlay from './components/GuidedTutorialOverlay.jsx';
 import { TUTORIAL_TOURS } from './lib/tutorialContent.js';
 import {
@@ -83,6 +84,13 @@ const TABS = [
     group: 'publish',
     icon: Sparkles,
     description: 'Manni-Entwürfe, Freigaben und externe Aktionen sauber trennen.',
+  },
+  {
+    id: 'design',
+    label: 'Design Agent',
+    group: 'publish',
+    icon: Palette,
+    description: 'Bilder, Cover & Reels über Photoshop und Gemini KI erzeugen.',
   },
   {
     id: 'analytics',
@@ -749,7 +757,7 @@ const DesktopApp = () => {
       return;
     }
 
-      startPublishRun({
+    startPublishRun({
       mode: 'live',
       label: 'Live-Preflight',
       detail: `Live-Pipeline gestartet: ${draft.id}. Settings, Upload, Build und Deploy werden vorbereitet.`,
@@ -1028,8 +1036,8 @@ const DesktopApp = () => {
         message: batchCancelRef.current
           ? `${successCount} Set${successCount === 1 ? '' : 's'} live, Batch pausiert.`
           : errorCount > 0
-          ? `${successCount} Set${successCount === 1 ? '' : 's'} live, ${errorCount} Fehler im Batch.`
-          : `${successCount} Set${successCount === 1 ? '' : 's'} hochgeladen und live gesetzt.`,
+            ? `${successCount} Set${successCount === 1 ? '' : 's'} live, ${errorCount} Fehler im Batch.`
+            : `${successCount} Set${successCount === 1 ? '' : 's'} hochgeladen und live gesetzt.`,
       });
       setActiveTab('batch');
     } catch (error) {
@@ -1399,6 +1407,16 @@ const DesktopApp = () => {
             );
             if (campaignState) setManniCampaignState(campaignState);
           }}
+        />
+      );
+    }
+
+    if (activeTab === 'design') {
+      return (
+        <DesignAgentTab
+          sets={appState?.sets}
+          busy={busy}
+          flightDeckApi={flightDeckApi}
         />
       );
     }

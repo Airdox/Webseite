@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-05-08T09:12:28.319Z",
+  "generatedAt": "2026-05-22T17:16:53.441Z",
   "repository": "D:\\webseeite-main",
   "controller": {
     "name": "Master Controller",
     "mission": "Priorisierung, Koordination, Release-Entscheidungen und Audit-Auswertung."
   },
   "summary": {
-    "averageScore": 92,
-    "dirtyPathCount": 51,
-    "testFileCount": 21,
+    "averageScore": 94,
+    "dirtyPathCount": 34,
+    "testFileCount": 25,
     "cssFileCount": 21
   },
   "gate": {
@@ -59,10 +59,10 @@
           "detail": "robots, sitemap, manifest und OG-Bild sind vorhanden."
         },
         {
-          "label": "Deployment-Skripte konsistent",
+          "label": "Cloudflare-Deployment konfiguriert",
           "status": "pass",
           "weight": 1,
-          "detail": "Warnung, wenn netlify.toml ein fehlendes NPM-Skript referenziert."
+          "detail": "wrangler.jsonc ist als einziges Deployment-Target vorhanden."
         },
         {
           "label": "Analytics Consent ohne Direktlade-Risiko",
@@ -196,7 +196,7 @@
           "label": "Ausreichende Testdateien",
           "status": "pass",
           "weight": 1.5,
-          "detail": "21 Test-/Spec-Dateien gefunden."
+          "detail": "25 Test-/Spec-Dateien gefunden."
         },
         {
           "label": "Worker/API-Testsignale",
@@ -214,7 +214,7 @@
           "label": "Arbeitsbaum sauber",
           "status": "warn",
           "weight": 1.5,
-          "detail": "51 uncommitted Pfade gefunden; vor Releases klaeren."
+          "detail": "34 uncommitted Pfade gefunden; vor Releases klaeren."
         },
         {
           "label": "Env-Beispiel vorhanden",
@@ -233,7 +233,7 @@
       "id": "manni",
       "name": "Manni",
       "mission": "Promotion, Branding, EPK, Community, Conversion und Wiedererkennbarkeit.",
-      "score": 95,
+      "score": 100,
       "checks": [
         {
           "label": "Brand Story dokumentiert",
@@ -267,7 +267,7 @@
         },
         {
           "label": "Newsletter API geroutet",
-          "status": "warn",
+          "status": "pass",
           "weight": 1,
           "detail": "Warnung, wenn Newsletter-Frontend keinen Worker-Route-Anker hat."
         },
@@ -309,6 +309,12 @@
           "detail": "Das Growth-Playbook ist als Creative-Rahmen verfuegbar."
         },
         {
+          "label": "Designer Creative Direction vorhanden",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Designer besitzt verbindliche Motion-, Audio-Reaktivitaets- und Static-Risk-Regeln."
+        },
+        {
           "label": "Reel Factory skriptbar",
           "status": "pass",
           "weight": 1.5,
@@ -319,6 +325,12 @@
           "status": "pass",
           "weight": 1.5,
           "detail": "Warnung, wenn kreative Wochenplanung noch nicht erzeugt wurde."
+        },
+        {
+          "label": "Social-Reel-Template fordert Motion",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Warnung, wenn Reel-Templates keine Audio-/Motion-Signaturen erzwingen."
         },
         {
           "label": "Visual Proof-Assets vorhanden",
@@ -341,6 +353,7 @@
       ],
       "nextActions": [
         "Hook-Varianten je Reel in 3 visuellen Stilen planen und A/B-testen.",
+        "Statische Reel-Entwuerfe als creative_static_risk markieren und mit Equalizer, Waveform, Parallax-Still oder Kinetic Type ueberarbeiten.",
         "Thumbnail- und First-Frame-Bibliothek fuer wiedererkennbare Social-Branding-Signale aufbauen.",
         "Creative-Fatigue woechentlich messen und Gewinner-Styles priorisieren."
       ]
@@ -376,10 +389,16 @@
           "detail": "Strategische Agentenentscheidungen werden im Decision Log gespeichert."
         },
         {
-          "label": "Mentor-Wiki-Schleifen vorhanden",
+          "label": "Mentor-Lernschleifen vorhanden",
           "status": "pass",
           "weight": 1.5,
-          "detail": "Mentor-Audit, Agentenentscheidungen und Feedbackschleifen sind im Wiki verankert."
+          "detail": "Mentor-Audit, Agentenentscheidungen und Feedbackschleifen sind versioniert oder im Wiki verankert."
+        },
+        {
+          "label": "Mentor-Currency-Check skriptbar",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Mentor kann Quellen- und Runbook-Aktualitaet fuer Fachagenten pruefen."
         },
         {
           "label": "Agenten-Audit skriptbar",
@@ -410,13 +429,13 @@
       "id": "refactor",
       "name": "Refactor",
       "mission": "Systemoptimierung, Verschlankung, Architekturqualitaet und technische Effizienz.",
-      "score": 86,
+      "score": 92,
       "checks": [
         {
           "label": "Refactor-Wissensseite vorhanden",
           "status": "pass",
           "weight": 1,
-          "detail": "Refactor besitzt eine eigene Optimierungs- und Verschlankungsseite im Wiki."
+          "detail": "Refactor besitzt eine eigene Optimierungs- und Verschlankungsseite als versioniertes Runbook oder im Wiki."
         },
         {
           "label": "Quality-Skripte vorhanden",
@@ -440,7 +459,7 @@
           "label": "Grosse JSX-Dateien begrenzt",
           "status": "warn",
           "weight": 1.5,
-          "detail": "src/desktop/DesktopApp.jsx hat 1394 Zeilen."
+          "detail": "src/desktop/DesktopApp.jsx hat 1661 Zeilen."
         },
         {
           "label": "Desktop Services modularisiert",
@@ -449,16 +468,16 @@
           "detail": "Desktop-Main-Logik ist in mehrere Services geschnitten."
         },
         {
-          "label": "Deployment-Ziele konsolidiert",
-          "status": "warn",
+          "label": "Deployment-Ziel konsolidiert",
+          "status": "pass",
           "weight": 1,
-          "detail": "Warnung, wenn mehrere Deployment-Ziele parallel gepflegt werden muessen."
+          "detail": "Nur wrangler.jsonc als einziges Deployment-Target vorhanden."
         },
         {
           "label": "Dependency-Footprint kontrolliert",
           "status": "pass",
           "weight": 1,
-          "detail": "10 Runtime-Abhaengigkeiten gefunden."
+          "detail": "9 Runtime-Abhaengigkeiten gefunden."
         }
       ],
       "nextActions": [
@@ -471,7 +490,7 @@
       "id": "repository",
       "name": "Repository",
       "mission": "Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet.",
-      "score": 87,
+      "score": 92,
       "checks": [
         {
           "label": "Repository-Governance dokumentiert",
@@ -513,13 +532,13 @@
           "label": "Arbeitsbaum releasebereit",
           "status": "warn",
           "weight": 1.5,
-          "detail": "51 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+          "detail": "34 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
         },
         {
-          "label": "Parallele Deployment-Konfigs begrenzt",
-          "status": "warn",
+          "label": "Einziges Deployment-Target",
+          "status": "pass",
           "weight": 1,
-          "detail": "Warnung, wenn zu viele Deployment-Targets parallel gepflegt werden."
+          "detail": "Nur Cloudflare (wrangler.jsonc) als Deployment-Target vorhanden."
         },
         {
           "label": "Gefaehrdete Artefaktordner ignoriert",

@@ -1,16 +1,16 @@
 # AIRDOX Agent Audit
 
-Generated: 2026-05-08T09:12:28.319Z
+Generated: 2026-05-22T17:16:53.441Z
 Repository: D:\webseeite-main
 Controller: Master Controller
 
 ## Summary
 
-- Average score: 92/100
+- Average score: 94/100
 - Gate status: pass
-- Test files: 21
+- Test files: 25
 - CSS files: 21
-- Uncommitted paths: 51
+- Uncommitted paths: 34
 
 ## Agent Scores
 
@@ -19,11 +19,11 @@ Controller: Master Controller
 | Webbie | 92/100 | Website, UX, SEO, Responsiveness, Performance und Conversion. |
 | Winnie | 83/100 | Windows Flight Deck, lokale Automatisierung, Datenbankkommunikation und Release-Stabilitaet. |
 | Guardian | 92/100 | Qualitaet, Sicherheit, Stabilitaet, Regressionen und technische Schulden. |
-| Manni | 95/100 | Promotion, Branding, EPK, Community, Conversion und Wiedererkennbarkeit. |
+| Manni | 100/100 | Promotion, Branding, EPK, Community, Conversion und Wiedererkennbarkeit. |
 | Designer | 100/100 | Visual Design, Creative Direction und Social-Asset-Qualitaet. |
 | Mentor | 100/100 | Wissensspeicherung, Lernschleifen, Prozessverbesserung und Agenten-Weiterentwicklung. |
-| Refactor | 86/100 | Systemoptimierung, Verschlankung, Architekturqualitaet und technische Effizienz. |
-| Repository | 87/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
+| Refactor | 92/100 | Systemoptimierung, Verschlankung, Architekturqualitaet und technische Effizienz. |
+| Repository | 92/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
 
 ## Webbie
 
@@ -33,7 +33,7 @@ Controller: Master Controller
 - PASS: SEO-Meta im deutschen Entry - index.html enthaelt Title, Canonical, Open Graph, JSON-LD und hreflang.
 - PASS: Responsive CSS-Signale - CSS enthaelt responsive Regeln oder stabile Layout-Sizing-Signale.
 - PASS: Public SEO/PWA Assets - robots, sitemap, manifest und OG-Bild sind vorhanden.
-- PASS: Deployment-Skripte konsistent - Warnung, wenn netlify.toml ein fehlendes NPM-Skript referenziert.
+- PASS: Cloudflare-Deployment konfiguriert - wrangler.jsonc ist als einziges Deployment-Target vorhanden.
 - WARN: Analytics Consent ohne Direktlade-Risiko - Warnung, wenn Google Tag direkt im HTML geladen wird statt nur ueber Consent-Loader.
 - WARN: CSP ohne unsafe-inline - Warnung, wenn CSP unsafe-inline benoetigt.
 - PASS: HTML-Entry-Drift begrenzt - Warnung, wenn mehrere root HTML-Kopien SEO/Head-Drift erzeugen koennen.
@@ -67,10 +67,10 @@ Next actions:
 - PASS: Standard Quality Scripts - Build, Lint, Unit- und E2E-Tests sind in package.json verankert.
 - PASS: Test Runner konfiguriert - Vitest und Playwright sind konfiguriert.
 - PASS: ESLint konfiguriert - ESLint Flat Config ist vorhanden.
-- PASS: Ausreichende Testdateien - 21 Test-/Spec-Dateien gefunden.
+- PASS: Ausreichende Testdateien - 25 Test-/Spec-Dateien gefunden.
 - PASS: Worker/API-Testsignale - Server-/API-Code ist vorhanden; dedizierte Testsignale werden geprueft.
 - PASS: Web-CI-Gate vorhanden - Warnung, wenn GitHub Actions kein Web-Lint/Test/Build-Gate enthaelt.
-- WARN: Arbeitsbaum sauber - 51 uncommitted Pfade gefunden; vor Releases klaeren.
+- WARN: Arbeitsbaum sauber - 34 uncommitted Pfade gefunden; vor Releases klaeren.
 - PASS: Env-Beispiel vorhanden - .env.example ist fuer sichere Konfiguration vorhanden.
 
 Next actions:
@@ -85,7 +85,7 @@ Next actions:
 - PASS: Social Sharing Assets - OG/Twitter-Basis ist vorhanden.
 - PASS: Social Profile Signale - JSON-LD verweist auf Social-/Music-Profile.
 - PASS: EPK ohne Platzhalter-Aktionen - Warnung, wenn EPK-Downloads nur per alert/Placeholder reagieren.
-- WARN: Newsletter API geroutet - Warnung, wenn Newsletter-Frontend keinen Worker-Route-Anker hat.
+- PASS: Newsletter API geroutet - Warnung, wenn Newsletter-Frontend keinen Worker-Route-Anker hat.
 - PASS: Sitemap fuer Suchmaschinen - Sitemap ist vorhanden und auf airdox.info ausgerichtet.
 - PASS: Mehrsprachigkeit als Reichweitenhebel - Englische Variante und hreflang sind vorhanden.
 - PASS: Merch-/Community-Flache - Newsletter/VIP bieten Ansatzpunkte fuer Community oder Merch.
@@ -98,14 +98,17 @@ Next actions:
 ## Designer
 
 - PASS: Manni Growth Playbook vorhanden - Das Growth-Playbook ist als Creative-Rahmen verfuegbar.
+- PASS: Designer Creative Direction vorhanden - Designer besitzt verbindliche Motion-, Audio-Reaktivitaets- und Static-Risk-Regeln.
 - PASS: Reel Factory skriptbar - Reel-Factory ist als wiederholbarer Creative-Generator vorhanden.
 - PASS: Reel Queue und Plan vorhanden - Warnung, wenn kreative Wochenplanung noch nicht erzeugt wurde.
+- PASS: Social-Reel-Template fordert Motion - Warnung, wenn Reel-Templates keine Audio-/Motion-Signaturen erzwingen.
 - PASS: Visual Proof-Assets vorhanden - Warnung, wenn kaum visuelle Proof-Assets fuer Creative-Qualitaet vorhanden sind.
 - PASS: UI-Brandflaechen gepflegt - Warnung, wenn zentrale Brandflaechen fuer visuelle Konsistenz fehlen.
 - PASS: Social-Link-Signale gepflegt - Warnung, wenn Kern-Social-Links nicht konsistent verankert sind.
 
 Next actions:
 - Hook-Varianten je Reel in 3 visuellen Stilen planen und A/B-testen.
+- Statische Reel-Entwuerfe als creative_static_risk markieren und mit Equalizer, Waveform, Parallax-Still oder Kinetic Type ueberarbeiten.
 - Thumbnail- und First-Frame-Bibliothek fuer wiedererkennbare Social-Branding-Signale aufbauen.
 - Creative-Fatigue woechentlich messen und Gewinner-Styles priorisieren.
 
@@ -115,7 +118,8 @@ Next actions:
 - PASS: Wissenslog vorhanden - Wiki-Log ist fuer Erfahrungslernen vorhanden.
 - PASS: Agenten-Operating-Model vorhanden - Das Multi-Agenten-System ist als Operating Model dokumentiert.
 - PASS: Agenten-Decision-Log vorhanden - Strategische Agentenentscheidungen werden im Decision Log gespeichert.
-- PASS: Mentor-Wiki-Schleifen vorhanden - Mentor-Audit, Agentenentscheidungen und Feedbackschleifen sind im Wiki verankert.
+- PASS: Mentor-Lernschleifen vorhanden - Mentor-Audit, Agentenentscheidungen und Feedbackschleifen sind versioniert oder im Wiki verankert.
+- PASS: Mentor-Currency-Check skriptbar - Mentor kann Quellen- und Runbook-Aktualitaet fuer Fachagenten pruefen.
 - PASS: Agenten-Audit skriptbar - Agenten-Audit ist per npm ausfuehrbar.
 - PASS: Entwicklerhandbuch vorhanden - Admin Suite Developer Guide beschreibt Erweiterungsmuster.
 - PASS: Assistant-Testsignale - Assistant-Logik hat Testsignale.
@@ -127,14 +131,14 @@ Next actions:
 
 ## Refactor
 
-- PASS: Refactor-Wissensseite vorhanden - Refactor besitzt eine eigene Optimierungs- und Verschlankungsseite im Wiki.
+- PASS: Refactor-Wissensseite vorhanden - Refactor besitzt eine eigene Optimierungs- und Verschlankungsseite als versioniertes Runbook oder im Wiki.
 - PASS: Quality-Skripte vorhanden - Web- und Desktop-Quality-Gates sind in package.json abrufbar.
 - PASS: Generierte Ordner aus Lint ausgeschlossen - Warnung, wenn generierte Build-/Wrangler-Artefakte vom Lint erfasst werden.
 - PASS: Root-HTML-Duplikate reduziert - Keine Root-HTML-Kopien neben den Vite-Einstiegen gefunden.
-- WARN: Grosse JSX-Dateien begrenzt - src/desktop/DesktopApp.jsx hat 1394 Zeilen.
+- WARN: Grosse JSX-Dateien begrenzt - src/desktop/DesktopApp.jsx hat 1661 Zeilen.
 - PASS: Desktop Services modularisiert - Desktop-Main-Logik ist in mehrere Services geschnitten.
-- WARN: Deployment-Ziele konsolidiert - Warnung, wenn mehrere Deployment-Ziele parallel gepflegt werden muessen.
-- PASS: Dependency-Footprint kontrolliert - 10 Runtime-Abhaengigkeiten gefunden.
+- PASS: Deployment-Ziel konsolidiert - Nur wrangler.jsonc als einziges Deployment-Target vorhanden.
+- PASS: Dependency-Footprint kontrolliert - 9 Runtime-Abhaengigkeiten gefunden.
 
 Next actions:
 - Grosse Komponenten schrittweise in getestete Subkomponenten schneiden.
@@ -149,8 +153,8 @@ Next actions:
 - PASS: Branching-Hinweise vorhanden - Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist.
 - PASS: Commit-Konvention dokumentiert - Warnung, wenn Commit-Typen nicht klar festgelegt sind.
 - PASS: Change-Tracking vorhanden - Warnung, wenn Entscheidungen oder Audit-Historie fehlen.
-- WARN: Arbeitsbaum releasebereit - 51 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
-- WARN: Parallele Deployment-Konfigs begrenzt - Warnung, wenn zu viele Deployment-Targets parallel gepflegt werden.
+- WARN: Arbeitsbaum releasebereit - 34 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
+- PASS: Einziges Deployment-Target - Nur Cloudflare (wrangler.jsonc) als Deployment-Target vorhanden.
 - PASS: Gefaehrdete Artefaktordner ignoriert - Warnung, wenn Build-/Wrangler-/Release-Artefakte nicht sauber ignoriert werden.
 
 Next actions:

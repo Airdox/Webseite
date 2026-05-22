@@ -1,17 +1,17 @@
 # AIRDOX Repository Monitor
 
-Generated: 2026-05-13T04:53:20.882Z
+Generated: 2026-05-22T17:17:03.489Z
 Agent: Repository
 Repository: D:\webseeite-main
-Branch: feature/repository-cleanup
+Branch: main
 
 ## Summary
 
 - Checks: 6
 - Failures: 0
 - Warnings: 2
-- Uncommitted paths: 27
-- Unexpected uncommitted paths: 27
+- Uncommitted paths: 36
+- Unexpected uncommitted paths: 34
 - Baseline uncommitted paths: 80
 - Tracked generated artifacts (review): 0
 
@@ -19,42 +19,49 @@ Branch: feature/repository-cleanup
 
 | Check | Level | Detail |
 | --- | --- | --- |
-| branch-naming | PASS | Aktueller Branch: feature/repository-cleanup |
+| branch-naming | PASS | Aktueller Branch: main |
 | required-governance-files | PASS | Gefundene Governance-Dateien: 3/3 |
-| working-tree-cleanliness-total | WARN | 27 uncommitted Pfade insgesamt. |
-| working-tree-cleanliness | WARN | 27 unerwartete uncommitted Pfade (27 gesamt, 80 baseline) |
+| working-tree-cleanliness-total | WARN | 36 uncommitted Pfade insgesamt. |
+| working-tree-cleanliness | WARN | 34 unerwartete uncommitted Pfade (36 gesamt, 80 baseline) |
 | tracked-generated-artifacts | PASS | 0 potentiell generierte Artefaktpfade sind versioniert. |
 | root-html-duplication | PASS | 0 zusaetzliche Root-HTML-Dateien erkannt. |
 
 ## Unexpected Dirty Paths
 
-- M docs/agent-system/AIRDOX_REACH_MASTERPLAN_2026-05-08.md
-- M docs/agent-system/DECISION_LOG.md
-- M docs/agent-system/MANNI_GROWTH_PLAYBOOK.md
-- M docs/agent-system/OPERATING_MODEL.md
-- M docs/agent-system/ORCHESTRATION_WORKFLOW.md
-- M docs/agent-system/job-catalog.json
-- M docs/agent-system/latest-job-run.json
-- M docs/agent-system/latest-job-run.md
-- M docs/agent-system/latest-repository-monitor.json
-- M docs/agent-system/latest-repository-monitor.md
-- M docs/agent-system/manni-reel-draft-pack.md
-- M docs/agent-system/manni-reel-queue.json
-- M docs/agent-system/manni-reel-weekly-plan.md
-- M scripts/agent-job-runner.mjs
-- M scripts/agent-job-validator.mjs
-- M scripts/manni-reel-factory.mjs
-- M scripts/superagent-task-gate.mjs
-- M src/components/BookingSection.jsx
-- M src/components/Newsletter.jsx
-- M src/components/SetCard.jsx
-- M src/components/__tests__/BookingSection.test.jsx
-- M src/components/__tests__/MusicSection.test.jsx
-- M src/contexts/AudioContext.jsx
-- M src/data/agentSystemData.js
-- ?? docs/agent-system/reach-route-matrix-2026-05-13.md
-- ?? docs/agent-system/source-control-cleanup-2026-05-13.md
-- ?? src/components/__tests__/Newsletter.test.jsx
+- M  .env.example
+- M  .gitignore
+- D  .vercelignore
+- D  DEPLOYMENT.md
+- M  README.md
+- M  airdoX_wiki/wiki/index.md
+- M  airdoX_wiki/wiki/log.md
+- D  db/index.ts
+- D  db/schema.ts
+- M  desktop/main/index.cjs
+- M  desktop/main/preload.cjs
+- M docs/agent-system/latest-audit.json
+- M docs/agent-system/latest-audit.md
+- D  drizzle.config.ts
+- M  en/index.html
+- M  eslint.config.js
+- D  netlify.toml
+- M  package-lock.json
+- M  package.json
+- D  public/iuzgfd
+- M  scripts/agent-audit.mjs
+- A  scripts/build-analytics-report.mjs
+- A  scripts/render-daumenkino.mjs
+- D  src/assets/react.svg
+- M  src/components/SetCard.jsx
+- M  src/desktop/components/AdvancedSettingsTab.jsx
+- M  src/desktop/components/DataExplorerTab.jsx
+- A  src/desktop/components/DesignAgentTab.jsx
+- M  src/desktop/components/SetImportTab.jsx
+- M  src/desktop/mockApi.js
+- M  src/hooks/useVinylAnimation.js
+- D  vercel.json
+- M  vite.config.js
+- M  vitest.config.js
 
 ## Dirty Baseline Paths
 
@@ -141,33 +148,42 @@ Branch: feature/repository-cleanup
 
 ## All Dirty Paths
 
-- M docs/agent-system/AIRDOX_REACH_MASTERPLAN_2026-05-08.md
-- M docs/agent-system/DECISION_LOG.md
-- M docs/agent-system/MANNI_GROWTH_PLAYBOOK.md
-- M docs/agent-system/OPERATING_MODEL.md
-- M docs/agent-system/ORCHESTRATION_WORKFLOW.md
-- M docs/agent-system/job-catalog.json
-- M docs/agent-system/latest-job-run.json
-- M docs/agent-system/latest-job-run.md
-- M docs/agent-system/latest-repository-monitor.json
-- M docs/agent-system/latest-repository-monitor.md
-- M docs/agent-system/manni-reel-draft-pack.md
-- M docs/agent-system/manni-reel-queue.json
-- M docs/agent-system/manni-reel-weekly-plan.md
-- M scripts/agent-job-runner.mjs
-- M scripts/agent-job-validator.mjs
-- M scripts/manni-reel-factory.mjs
-- M scripts/superagent-task-gate.mjs
-- M src/components/BookingSection.jsx
-- M src/components/Newsletter.jsx
-- M src/components/SetCard.jsx
-- M src/components/__tests__/BookingSection.test.jsx
-- M src/components/__tests__/MusicSection.test.jsx
-- M src/contexts/AudioContext.jsx
-- M src/data/agentSystemData.js
-- ?? docs/agent-system/reach-route-matrix-2026-05-13.md
-- ?? docs/agent-system/source-control-cleanup-2026-05-13.md
-- ?? src/components/__tests__/Newsletter.test.jsx
+- M  .env.example
+- M  .gitignore
+- D  .vercelignore
+- D  DEPLOYMENT.md
+- M  README.md
+- M  airdoX_wiki/wiki/index.md
+- M  airdoX_wiki/wiki/log.md
+- D  db/index.ts
+- D  db/schema.ts
+- M  desktop/main/index.cjs
+- M  desktop/main/preload.cjs
+- M docs/agent-system/latest-audit.json
+- M docs/agent-system/latest-audit.md
+- D  drizzle.config.ts
+- M  en/index.html
+- M  eslint.config.js
+- D  netlify.toml
+- M  package-lock.json
+- M  package.json
+- D  public/iuzgfd
+- M  scripts/agent-audit.mjs
+- A  scripts/build-analytics-report.mjs
+- A  scripts/render-daumenkino.mjs
+- D  src/assets/react.svg
+- M  src/components/SetCard.jsx
+- M  src/desktop/DesktopApp.jsx
+- M  src/desktop/components/AdvancedSettingsTab.jsx
+- M  src/desktop/components/DataExplorerTab.jsx
+- A  src/desktop/components/DesignAgentTab.jsx
+- M  src/desktop/components/SetImportTab.jsx
+- M  src/desktop/lib/setManifest.js
+- M  src/desktop/mockApi.js
+- M  src/hooks/useVinylAnimation.js
+- D  vercel.json
+- M  vite.config.js
+- M  vitest.config.js
 
 ## Tracked Generated Artifacts
 
@@ -176,14 +192,14 @@ Branch: feature/repository-cleanup
 
 ## Recent Commits
 
-- 2154463 chore: ignore browser proof screenshots
-- 7d0e5d9 fix: restore playable latest set audio
-- 2e0db34 fix: gate social auth by configured providers
-- b33399f chore: clean repository state
-- 7fef483 feat(flightdeck): publish recording_2026_05_07-2
-- cd24d0e chore: remove project duality artifacts
-- 7620d47 feat: update flight deck assistant workflow
-- 78cf631 chore: tidy repository metadata
-- 63b3f63 chore: clean repository artifacts
-- b84c6a7 Refactor: Extract logic into custom hooks, simplify components, externalize data
+- 438103d fix(desktop): import real sets instead of mock, clear stale localstorage cache, fix date filter 'Alles'
+- c18db77 fix(desktop): remove fake SQL screens and mock data completely
+- 5df7ce8 chore: clean up repository and structure files
+- 995eb5a chore: add brand asset preview gallery
+- 05a7ece chore: refresh designer visual quality report
+- a398c17 feat: add brand asset generator
+- 230ec6d chore: refresh audience intelligence report
+- 8997083 feat: wire audience signals into user journeys
+- 1031a6f chore: verify agent system quality gates
+- ada1553 feat: add audience intelligence agent
 

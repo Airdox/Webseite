@@ -84,6 +84,7 @@ const SetImportTab = ({
             <label>Datei<input value={draft.file || ''} onChange={(event) => onDraftChange('file', event.target.value)} /></label>
             <label>Dauer<input value={draft.duration || ''} onChange={(event) => onDraftChange('duration', event.target.value)} /></label>
             <label>Vinyl Color<input type="color" value={draft.vinylColor || '#9adf6b'} onChange={(event) => onDraftChange('vinylColor', event.target.value)} /></label>
+            <label>BPM<input type="number" placeholder="z.B. 128" value={draft.bpm || ''} onChange={(event) => onDraftChange('bpm', event.target.value ? Number(event.target.value) : '')} /></label>
             <label>Cover Path<input value={draft.cover || ''} onChange={(event) => onDraftChange('cover', event.target.value)} /></label>
             <label>Published At<input type="date" value={draft.publishedAt || ''} onChange={(event) => onDraftChange('publishedAt', event.target.value)} /></label>
             <label className="fd-checkbox-row">

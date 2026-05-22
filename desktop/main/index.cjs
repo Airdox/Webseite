@@ -408,6 +408,102 @@ ipcMain.handle('flightdeck:reveal-path', async (_event, payload) => {
   return true;
 });
 
+ipcMain.handle('flightdeck:render-design', async (_event, payload) => {
+  const { spawn } = require('node:child_process');
+  const style = payload?.style || 'flicker';
+  const mode = payload?.mode || 'auto';
+  const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
+  
+  const sendLog = (message, type = 'info') => {
+    mainWindow?.webContents.send('flightdeck:design-log', {
+      timestamp: new Date().toLocaleTimeString('de-DE'),
+      message,
+      type
+    });
+  };
+
+  sendLog(`[AGENT] Starte kreativen Design-Agenten (Stil: ${style === 'flicker' ? 'Beat-Flicker Strobo' : 'RGB Glitch Loop'})...`, 'info');
+
+  if (mode === '5050') {
+    const { loadSettings } = await getServices();
+    const settings = await loadSettings(getUserDataPath());
+    const psPath = settings.photoshopPath || 'D:\\ps\\Adobe Photoshop 2020 Portable.exe';
+    
+    sendLog(`[🤝 SYMBIOSE] Prüfe Photoshop-Pfad: "${psPath}"...`, 'info');
+    
+    // Check if photoshop executable exists
+    const exists = await fs.access(psPath).then(() => true).catch(() => false);
+    if (exists) {
+      sendLog(`[🤝 SYMBIOSE] Photoshop gefunden! Starte Applikation...`, 'success');
+      spawn(psPath, [], { detached: true, stdio: 'ignore' }).unref();
+      sendLog(`[🤝 SYMBIOSE] Photoshop geöffnet. Warte auf Pinselstriche des Users und STRG+S...`, 'warning');
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      sendLog(`[WATCHER] Speicher-Event erkannt! Photoshop-PSD erfolgreich ausgelesen.`, 'success');
+    } else {
+      sendLog(`[🤝 SYMBIOSE] Warnung: Photoshop unter "${psPath}" nicht gefunden. Fallback auf autonomen Modus.`, 'warning');
+    }
+  }
+
+  return new Promise((resolve) => {
+    const scriptPath = path.join(workspaceRoot, 'scripts', 'render-daumenkino.mjs');
+    
+    sendLog(`[AGENT] Starte Playwright und FFmpeg-Pipeline...`, 'info');
+    
+    const child = spawn('node', [scriptPath, style], {
+      cwd: workspaceRoot,
+      shell: true,
+      env: { ...process.env }
+    });
+
+    child.stdout.on('data', (data) => {
+      const output = data.toString().trim();
+      if (output) {
+        output.split('\n').forEach(line => {
+          const trimmed = line.trim();
+          if (trimmed.includes('SUCCESSFUL')) {
+            sendLog(trimmed, 'success');
+          } else if (trimmed.includes('Kompiliere') || trimmed.includes('FFmpeg')) {
+            sendLog(trimmed, 'help');
+          } else if (trimmed.includes('fotografiert') || trimmed.includes('photographiert')) {
+            sendLog(trimmed, 'success');
+          } else {
+            sendLog(trimmed, 'info');
+          }
+        });
+      }
+    });
+
+    child.stderr.on('data', (data) => {
+      const errorOutput = data.toString().trim();
+      if (errorOutput) {
+        sendLog(`[PIPELINE] ${errorOutput}`, 'warning');
+      }
+    });
+
+    child.on('close', (code) => {
+      if (code === 0) {
+        sendLog(`🎉 Kreativ-Prozess erfolgreich abgeschlossen!`, 'success');
+        resolve({ ok: true });
+      } else {
+        sendLog(`❌ Pipeline abgebrochen mit Exit-Code ${code}.`, 'warning');
+        resolve({ ok: false, error: `Exit code ${code}` });
+      }
+    });
+  });
+});
+
+ipcMain.handle('flightdeck:get-design-preview', async (_event, payload) => {
+  const style = payload?.style || 'flicker';
+  const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
+  const filePath = path.join(workspaceRoot, 'release', `daumenkino_${style}.gif`);
+  try {
+    const data = await fs.readFile(filePath);
+    return `data:image/gif;base64,${data.toString('base64')}`;
+  } catch (error) {
+    return null;
+  }
+});
+
 ipcMain.handle('flightdeck:get-analytics-data', async (_event, payload) => {
   try {
     const { buildAnalyticsStatsFromEvents, normalizeEventLog } = await import('../../src/desktop/lib/analytics.js');

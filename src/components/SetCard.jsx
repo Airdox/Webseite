@@ -184,10 +184,7 @@ const SetCard = ({
                     className="cover-vinyl"
                     style={{
                         '--vinyl-color': set.vinylColor || 'var(--neon-cyan)',
-                        '--vinyl-index': index,
-                        '--vinyl-bounce-x': '0px',
-                        '--vinyl-bounce-y': '0px',
-                        transform: 'translate(calc(-50% + var(--vinyl-bounce-x)), calc(-50% + var(--vinyl-bounce-y)))'
+                        '--vinyl-index': index
                     }}
                 >
                     <div className={`mini-vinyl ${isSetPlaying ? 'active-disc spinning-disc' : ''}`}>

@@ -126,7 +126,6 @@ npx wrangler pages deploy dist
 For deeper technical dives, refer to our specialized guides:
 - [Windows Flight Deck](docs/WINDOWS_FLIGHTDECK.md)
 - [Analytics Documentation](ANALYTICS_V2_DOKUMENTATION.md)
-- [Deployment Guide](DEPLOYMENT.md)
 - [Audio Player Logic](AUDIO_PLAYER_DOCS.md)
 
 ---

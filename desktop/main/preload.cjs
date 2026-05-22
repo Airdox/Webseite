@@ -30,4 +30,12 @@ contextBridge.exposeInMainWorld('flightDeckApi', {
   clearCache: (payload) => ipcRenderer.invoke('flightdeck:clear-cache', payload),
   optimizeSystem: (payload) => ipcRenderer.invoke('flightdeck:optimize-system', payload),
   askAssistant: (payload) => ipcRenderer.invoke('flightdeck:assistant-ask', payload),
+  // Design Agent Integration
+  renderDesign: (payload) => ipcRenderer.invoke('flightdeck:render-design', payload),
+  getDesignPreview: (payload) => ipcRenderer.invoke('flightdeck:get-design-preview', payload),
+  onDesignLog: (callback) => {
+    const listener = (_event, log) => callback(log);
+    ipcRenderer.on('flightdeck:design-log', listener);
+    return () => ipcRenderer.removeListener('flightdeck:design-log', listener);
+  }
 });

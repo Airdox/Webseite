@@ -20,6 +20,7 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying) => {
             if (!animatedVinylRef.current) return;
             animatedVinylRef.current.style.removeProperty('--vinyl-bounce-x');
             animatedVinylRef.current.style.removeProperty('--vinyl-bounce-y');
+            animatedVinylRef.current.style.removeProperty('filter');
             animatedVinylRef.current = null;
         };
 
@@ -81,6 +82,7 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying) => {
             if (animatedVinylRef.current && animatedVinylRef.current !== vinyl) {
                 animatedVinylRef.current.style.removeProperty('--vinyl-bounce-x');
                 animatedVinylRef.current.style.removeProperty('--vinyl-bounce-y');
+                animatedVinylRef.current.style.removeProperty('filter');
             }
             animatedVinylRef.current = vinyl;
 
@@ -133,6 +135,12 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying) => {
             const offsetY = physics.y - (maxY / 2);
             vinyl.style.setProperty('--vinyl-bounce-x', `${offsetX.toFixed(2)}px`);
             vinyl.style.setProperty('--vinyl-bounce-y', `${offsetY.toFixed(2)}px`);
+
+            // Beat-reactive color inversion
+            const hueShift = Math.round(energy * 360);
+            const invertAmount = energy > 0.55 ? ((energy - 0.55) / 0.45).toFixed(2) : 0;
+            vinyl.style.setProperty('filter',
+                `hue-rotate(${hueShift}deg) invert(${invertAmount})`);
 
             billiardRafRef.current = requestAnimationFrame(animate);
         };

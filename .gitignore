@@ -38,8 +38,6 @@ dist-ssr
 skills-lock.json
 notebooklm-skill-candidates.md
 
-# Netlify local state and generated functions
-.netlify/
 
 # Large music sets and audio files (tracked via Git LFS or external hosting)
 BACKUP_AUDIO/
@@ -83,10 +81,14 @@ public/campaign/**/*.png
 exports/
 .devserver.pid
 state.json
-.netlify/state.json
+
 docs/agent-system/social-auto-output/
 docs/agent-system/download.png
 .codex-devserver/
 # Python cache
 __pycache__/
 *.py[cod]
+
+# Local idea directories
+daumenkino_idee/
+

@@ -12,9 +12,9 @@ const defaultSettings = {
   workspaceRoot: 'D:\\Airdox\\Webseite',
 };
 
-import { musicSets } from '../data/musicSets.js';
+import { sets } from '../data/musicSets.js';
 
-const defaultSets = musicSets.map(set => ({
+const defaultSets = sets.map(set => ({
   id: set.id,
   title: set.title,
   date: set.date,
@@ -457,7 +457,7 @@ export const mockFlightDeckApi = {
     saveJson(TABLES_KEY, tables);
     return true;
   },
-  async runReadonlyQuery(payload) {
+  async runReadonlyQuery() {
     throw new Error('Fake SQL mock was disabled. Please run the Electron Desktop App to connect to the real database.');
   },
   async syncTrackStats() {
@@ -501,6 +501,14 @@ export const mockFlightDeckApi = {
     return { optimized: true };
   },
   async askAssistant(payload) {
+    const q = String(payload?.question || '').toLowerCase();
+    if (q.includes('skill') || q.includes('update') || q.includes('refactor') || q.includes('mai 2026') || q.includes('wiki') || q.includes('neu')) {
+      return {
+        source: 'local-13-recent-updates-may-2026.md',
+        answer: `Wiki-Treffer:\nAus local-13-recent-updates-may-2026.md: # Flight Deck Local Knowledge: Systemaktualisierungen Mai 2026\n\nStand: 22. Mai 2026\n\n1. Neue KI-Agenten-Skills (.agents/skills/):\n- airdox-social-publisher: Automatisches Herausschneiden von Teasern/Reels/Stories.\n- airdox-youtube-manager: Rendert Visualizer-Videos und automatisiert YouTube-Uploads.\n- airdox-brand-assets: Validiert und generiert brandkonforme SVGs.\n- airdox-epk-generator: Kompiliert das Electronic Press Kit als HTML und PDF.\n- airdox-tracklist-automation: Rekordbox-CUE-Import und MP3-Konvertierung.\n- airdox-quality-check: Gatekeeper für Lints, Tests und Audits.\n\n2. Refactoring der React-Komponenten:\n- Decomposition von GlobalPlayer und Hero in kleinere Subkomponenten.\n- Behebung des mobilen Vinyl-Cover-Animationsfehlers in SetCard.\n\n3. Upgrades im Data Explorer:\n- Filterknöpfe "Alle Sets" und "Live" zur gezielten VIP-Set-Ausblendung.\n\n4. Cloudflare Migration:\n- Vollständige Entfernung von Vercel und Netlify.`,
+        actions: [],
+      };
+    }
     const local = answerToolQuestion(payload?.question || '');
     return {
       source: local?.source || 'mock-local',

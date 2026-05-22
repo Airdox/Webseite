@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, KeyRound, RotateCcw, Search, Trash2 } from 'lucide-react';
+import { Download, ExternalLink, KeyRound, RotateCcw, Search, Trash2 } from 'lucide-react';
 import { TABLE_DEFINITIONS, TABLE_NAMES } from '../lib/tableDefinitions.js';
 
 const formatCell = (value) => {
@@ -39,6 +39,25 @@ const TableToolbar = ({ tableName, setTableName, search, setSearch, onExportJson
   </section>
 );
 
+const formatForDatetimeLocal = (value) => {
+  if (!value) return '';
+  try {
+    const date = new Date(value);
+    if (!isNaN(date.getTime())) {
+      const pad = (num) => String(num).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      const mm = pad(date.getMonth() + 1);
+      const dd = pad(date.getDate());
+      const hh = pad(date.getHours());
+      const min = pad(date.getMinutes());
+      return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return '';
+};
+
 const TrackStatsEditor = ({ rows, onSave, onDelete }) => (
   <div className="fd-record-stack">
     {rows.map((row) => (
@@ -53,7 +72,7 @@ const TrackStatsEditor = ({ rows, onSave, onDelete }) => (
             plays: formData.get('plays'),
             likes: formData.get('likes'),
             dislikes: formData.get('dislikes'),
-            last_played_at: formData.get('last_played_at'),
+            last_played_at: formData.get('last_played_at') || null,
           });
         }}
       >
@@ -67,7 +86,7 @@ const TrackStatsEditor = ({ rows, onSave, onDelete }) => (
           <label>Plays<input name="plays" type="number" defaultValue={row.plays} /></label>
           <label>Likes<input name="likes" type="number" defaultValue={row.likes} /></label>
           <label>Dislikes<input name="dislikes" type="number" defaultValue={row.dislikes} /></label>
-          <label>Last Played<input name="last_played_at" type="datetime-local" defaultValue={row.last_played_at ? String(row.last_played_at).slice(0, 16) : ''} /></label>
+          <label>Last Played<input name="last_played_at" type="datetime-local" defaultValue={formatForDatetimeLocal(row.last_played_at)} /></label>
         </div>
         <button type="submit" className="fd-button">Save Row</button>
       </form>
@@ -218,15 +237,13 @@ const GenericTable = ({ definition, rows, onDelete }) => (
 
 const DataExplorerTab = ({
   isElectron = false,
+  siteBaseUrl = '',
   tableName,
   setTableName,
   search,
   setSearch,
   rows,
   filteredRows,
-  queryText,
-  setQueryText,
-  queryResult,
   onRefresh,
   onExportJson,
   onExportCsv,
@@ -236,7 +253,6 @@ const DataExplorerTab = ({
   onCreateVipUser,
   onResetVipPassword,
   onRevokeSession,
-  onRunQuery,
 }) => {
   const definition = TABLE_DEFINITIONS[tableName];
 
@@ -252,6 +268,37 @@ const DataExplorerTab = ({
           </p>
         </div>
         <span>{isElectron ? 'DATABASE' : 'NO SQL MOCK'}</span>
+      </section>
+
+      <section className="fd-toolbar-band">
+        <div className="fd-section-head" style={{ flex: '1 1 auto' }}>
+          <h3>Windows Tools</h3>
+          <span>Website-Preview</span>
+        </div>
+        <div className="fd-toolbar-actions">
+          <button
+            type="button"
+            className="fd-button secondary"
+            onClick={() => {
+              const base = siteBaseUrl || 'http://localhost:5173';
+              window.open(`${base}/?showAll=1#music`, '_blank', 'noopener');
+            }}
+          >
+            <ExternalLink size={16} />
+            Alle Sets
+          </button>
+          <button
+            type="button"
+            className="fd-button secondary"
+            onClick={() => {
+              const base = siteBaseUrl || 'http://localhost:5173';
+              window.open(`${base}/#music`, '_blank', 'noopener');
+            }}
+          >
+            <ExternalLink size={16} />
+            Live (ohne VIP)
+          </button>
+        </div>
       </section>
 
       <TableToolbar

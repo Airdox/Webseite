@@ -294,6 +294,29 @@ const AdvancedSettingsTab = ({
           </SettingGroup>
 
           <SettingGroup
+            title="Design- & Kreativ-Agent"
+            description="Photoshop-Pfad und Standard-Einstellungen für Renderscripts"
+          >
+            <TextSetting
+              label="Photoshop Pfad (Exe)"
+              value={localSettings.photoshopPath}
+              onChange={(v) => handleChange('photoshopPath', v)}
+              placeholder="D:\ps\Photoshop.exe"
+            />
+            <SelectSetting
+              label="Standard Render-Stil"
+              value={localSettings.defaultDesignStyle || 'flicker'}
+              onChange={(v) => handleChange('defaultDesignStyle', v)}
+              options={[
+                { value: 'flicker', label: 'Beat-Flicker Strobo' },
+                { value: 'glitch', label: 'RGB Glitch Loop' },
+                { value: 'liquid', label: 'Liquid Typography' },
+                { value: 'neon', label: 'Neon Cyberpunk' },
+              ]}
+            />
+          </SettingGroup>
+
+          <SettingGroup
             title="Anzeigeoptionen"
             description="UI- und Theme-Einstellungen"
           >
