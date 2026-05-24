@@ -1,5 +1,223 @@
 export const sets = [
   {
+    id: 'recording_2026_05_24',
+    title: 'LIVE SET MAY 2026',
+    date: 'MAY 2026',
+    file: '01 REC-2026-05-24.mp3',
+    cover: '/assets/airdox-vinyl.jpg',
+    duration: '2:48:52',
+    isNew: true,
+    vinylColor: '#9adf6b',
+    tracks: [
+      {
+        time: '00:00:00',
+        artist: 'Kolter',
+        title: 'What Did You Come For ? (Original Mix)'
+      },
+      {
+        time: '00:01:08',
+        artist: 'East End Dubs, Di Chiara Brothers',
+        title: 'Face Bass (Original Mix)'
+      },
+      {
+        time: '00:07:24',
+        artist: 'Claude VonStroke',
+        title: 'A Little Drizzle (Extended)'
+      },
+      {
+        time: '00:12:39',
+        artist: 'Diego Straube, Taavi',
+        title: 'Mr. Chongo (Original Mix)'
+      },
+      {
+        time: '00:18:40',
+        artist: 'Rene Bourgeois',
+        title: 'Face2Face With My Demon (Original Mix)'
+      },
+      {
+        time: '00:22:44',
+        artist: 'Patrick Arbez',
+        title: 'Hater Content (Original Mix)'
+      },
+      {
+        time: '00:28:34',
+        artist: 'Shermanology',
+        title: 'Girl On The Beat (Extended Mix)'
+      },
+      {
+        time: '00:30:35',
+        artist: 'Tomy Wahl, Cloz',
+        title: 'I Call It Energy feat. That Kid Is You (RIKO & GUGGA Remix)'
+      },
+      {
+        time: '00:33:54',
+        artist: 'Patrick Arbez',
+        title: 'Paralyse (Original Mix)'
+      },
+      {
+        time: '00:40:00',
+        artist: 'Trallez',
+        title: 'Merengue (Original Mix)'
+      },
+      {
+        time: '00:44:51',
+        artist: 'Jody 6',
+        title: 'Cognitive Shift (Original Mix)'
+      },
+      {
+        time: '00:49:18',
+        artist: 'Jamie Jones, Max Dean, Luke Dean',
+        title: 'Gets Like That (Jamie Jones Remix)'
+      },
+      {
+        time: '00:53:15',
+        artist: 'Martin Books, Signalfarbe Schwarz',
+        title: 'Simone feat. Signalfarbe Schwarz (Original Mix)'
+      },
+      {
+        time: '00:58:26',
+        artist: 'Alfred Heinrichs',
+        title: 'Szivem (Original Mix)'
+      },
+      {
+        time: '01:03:08',
+        artist: 'Michael Bibi Michael Bibi Michael Bibi Michael Bibi Michael Bibi Michael Bibi Michael Bibi Michael Bibi',
+        title: 'Reverse (Original Mix)'
+      },
+      {
+        time: '01:06:22',
+        artist: 'Alfred Heinrichs',
+        title: 'Playd (Original Mix)'
+      },
+      {
+        time: '01:10:13',
+        artist: 'Alfred Heinrichs, Haexxa',
+        title: 'Electrify Me (Original Mix)'
+      },
+      {
+        time: '01:12:52',
+        artist: 'Sonata Collective',
+        title: 'Boom Boom Pow (Extended Mix)'
+      },
+      {
+        time: '01:17:13',
+        artist: 'Medusa, Kevin McKay, N2N',
+        title: 'Psychic (Extended Mix)'
+      },
+      {
+        time: '01:19:56',
+        artist: 'Joe Vanditti, Alex Bohemien',
+        title: 'Play This Game (Extended Mix)'
+      },
+      {
+        time: '01:25:13',
+        artist: 'Clover Ray, Laura Scavo',
+        title: 'Do It All Night (Extended Mix)'
+      },
+      {
+        time: '01:28:26',
+        artist: 'Ricky Pellegrino',
+        title: 'Feeling Good (Extended Mix)'
+      },
+      {
+        time: '01:33:07',
+        artist: 'Skylin3, Terri-Anne',
+        title: 'All That She Wants (Extended Mix)'
+      },
+      {
+        time: '01:37:03',
+        artist: 'gmf mix by tobi',
+        title: 'set it off'
+      },
+      {
+        time: '01:40:22',
+        artist: 'FormatB',
+        title: 'Gospel (Super Flu\'s Antichrist Remix)'
+      },
+      {
+        time: '01:45:49',
+        artist: 'Gokhan Guney',
+        title: 'Babet (Gokhan Guney & Emrah Celik Mix)'
+      },
+      {
+        time: '01:48:47',
+        artist: 'Prok & Fitch',
+        title: 'Symphony (Federico Scavo Remix)'
+      },
+      {
+        time: '01:51:41',
+        artist: 'Kevin McKay, Pupa Nas T, Denise Belfon',
+        title: 'Work (CVMPANILE & Draxx Extended Remix)'
+      },
+      {
+        time: '01:54:45',
+        artist: 'Alfred Heinrichs',
+        title: 'I Don´t Know (Rene Bourgeois Remix)'
+      },
+      {
+        time: '02:00:40',
+        artist: 'Rene Bourgeois, Elke Brauweiler',
+        title: 'Je Danse feat. Elke Brauweiler (Mollono.Bass Remix)'
+      },
+      {
+        time: '02:06:08',
+        artist: 'Max Duke',
+        title: 'No Good (Rene Bourgeois "Not Bad" Mix)'
+      },
+      {
+        time: '02:11:51',
+        artist: 'Andy Kohlmann, Rene Bourgeois',
+        title: 'Chaplins Swagger (Original Mix)'
+      },
+      {
+        time: '02:16:52',
+        artist: 'Steve Cole, Her Majesty\'s Sound',
+        title: 'Last Dance (Rene Bourgeois & Dan Caster Remix)'
+      },
+      {
+        time: '02:18:52',
+        artist: 'Rene Bourgeois',
+        title: 'Jimmy Closed the Club (Original Mix)'
+      },
+      {
+        time: '02:22:47',
+        artist: 'Rene Bourgeois',
+        title: 'at night (Alfred Heinrichs Remix)'
+      },
+      {
+        time: '02:25:08',
+        artist: 'Rene Bourgeois',
+        title: 'Mama San (Original Mix)'
+      },
+      {
+        time: '02:31:00',
+        artist: 'Jack Simo',
+        title: 'Get Low (Original Mix)'
+      },
+      {
+        time: '02:33:03',
+        artist: 'Green Velvet, Layton Giordani',
+        title: 'When It Kicks (Rebūke Extended Remix)'
+      },
+      {
+        time: '02:37:41',
+        artist: 'Jack Simo',
+        title: 'Going Crazy (Original Mix)'
+      },
+      {
+        time: '02:40:50',
+        artist: 'Jack Simo',
+        title: 'You Really Got Da Groove (Original Mix)'
+      },
+      {
+        time: '02:43:27',
+        artist: 'Joy Kitikonti',
+        title: 'Pornojoy (Jack Mazzoni Extended Remix)'
+      }
+    ],
+    publishedAt: '2026-05-24'
+  },
+  {
     id: 'recording_2026_05_07-2',
     title: 'LIVE SET MAY 2026 #2',
     date: 'MAY 2026',
