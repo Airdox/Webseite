@@ -1,59 +1,56 @@
-# ☯️ AIRDOX - Project Duality
+# ☯️ AIRDOX - Berlin Underground Techno
 
 [![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)]()
 [![Tech Stack](https://img.shields.io/badge/Stack-React_19_%7C_Vite_%7C_Neon_%7C_Cloudflare-blue.svg)]()
 [![PWA](https://img.shields.io/badge/PWA-Ready-orange.svg)]()
 
-**Airdox** ist eine hochmoderne, leistungsstarke Webanwendung und Plattform für den Berliner Techno-DJ **AIRDOX**. Die Plattform wurde mit dem Fokus auf "Project Duality" entwickelt und erforscht die Spannung zwischen Licht (Engel) und Schatten (Teufel) durch eine immersive Benutzeroberfläche und ein professionelles Audioerlebnis.
+**Airdox** ist eine hochmoderne, leistungsstarke Webanwendung und Plattform für den Berliner Techno-DJ **AIRDOX**. Die Plattform bietet ein immersives Audioerlebnis und präsentiert den Sound von Berlin Underground Techno.
 
 ---
 
-## 🏛️ Vision & Philosophie: Project Duality
-Die Plattform ist nicht nur ein DJ-Portfolio; sie ist eine interaktive Erkundung des Dualismus.
-- **The Angel Modus:** Melodic Techno, Trance-Vibes, Gold/Cyan-Ästhetik.
-- **The Devil Modus:** Hard Techno, Industrial Acid, Schwarz/Rot-Ästhetik.
-- **The Red Thread:** Eine philosophische Reise, die den Benutzer fragt: *"Wer gewinnt am Ende?"*
+## 🏛️ Vision & Philosophie
+Die Plattform dient als zentrale Anlaufstelle für den Sound von AIRDOX, einem Berliner Underground Techno DJ. Sie bietet eine digitale Präsenz, die das musikalische Schaffen und die Live-Auftritte des Künstlers widerspiegelt. Der Fokus liegt auf einem puristischen, kompromisslosen Techno-Sound, der die Tanzfläche in den Mittelpunkt stellt.
 
 ---
 
 ## 🚀 Key Features
 
-*   🎧 **High-End Audio Experience:** "The Blade" Glassmorphism-Player mit Echtzeit-Wellenformvisualisierung und globaler Steuerung.
-*   🔐 **Sicherer VIP-Bereich:** Benutzerauthentifizierungssystem mit Login und Session-Validierung für exklusive Inhalte. Die Registrierung ist derzeit deaktiviert. [1]
-*   📱 **Multi-Plattform-Support:** Vollständig responsive Web-App, installierbare PWA und native mobile Builds via Capacitor.
-*   📊 **Stealth Analytics:** Privates Admin-Dashboard zur Verfolgung von Downloads und Engagement (GDPR-konform), basierend auf Track-Statistiken (Plays, Likes, Dislikes). [1]
+*   🎧 **High-End Audio Experience:** "The Blade" Glassmorphism-Player mit Echtzeit-Wellenformvisualisierung und globaler Steuerung für ein immersives Musikerlebnis.
+*   🔐 **Sicherer VIP-Bereich:** Benutzerauthentifizierungssystem mit Login und Session-Validierung für exklusive Inhalte. Die Registrierung ist derzeit deaktiviert, der Zugang erfolgt über bestehende Accounts. [1]
+*   📱 **Multi-Plattform-Support:** Vollständig responsive Web-App, installierbare Progressive Web App (PWA) und native mobile Builds via Capacitor für Android und iOS.
+*   📊 **Stealth Analytics:** Privates Admin-Dashboard zur Verfolgung von Downloads und Engagement (GDPR-konform), basierend auf detaillierten Track-Statistiken (Plays, Likes, Dislikes). [1]
 *   📩 **Integrierte Buchung:** Direkter Kommunikationskanal für Buchungsanfragen, unterstützt durch Cloudflare Workers und Neon PostgreSQL. [1]
-*   🍪 **Cookie-Banner:** Implementierung eines Cookie-Banners für Datenschutzkonformität.
+*   🍪 **Cookie-Banner:** Implementierung eines Cookie-Banners zur Sicherstellung der Datenschutzkonformität und transparenten Verwaltung von Nutzereinwilligungen.
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 19:** Nutzung der neuesten Concurrent Features und Hooks.
-- **Vite 5:** Blitzschnelle Entwicklung und optimierte Produktions-Builds.
-- **Lenis:** Sanftes Scrolling für ein Premium-Gefühl.
-- **Vanilla CSS / Modules:** Maßgeschneidertes Styling für maximale Performance und Designkontrolle.
+- **React 19:** Nutzung der neuesten Concurrent Features und Hooks für eine reaktionsschnelle Benutzeroberfläche.
+- **Vite 5:** Blitzschnelle Entwicklung und optimierte Produktions-Builds für maximale Performance.
+- **Lenis:** Sanftes Scrolling für ein Premium-Gefühl und verbesserte Benutzererfahrung.
+- **Vanilla CSS / Modules:** Maßgeschneidertes Styling für maximale Performance und präzise Designkontrolle.
 
 ### Backend & Infrastruktur
-- **Cloudflare Workers / Pages:** Edge-Computing für APIs und globales statisches Hosting.
-- **Neon PostgreSQL:** Serverless-Datenbank für Buchungen, Track-Statistiken und Benutzerverwaltung. [1]
-- **Drizzle ORM:** Type-sichere Datenbankinteraktionen.
-- **Wrangler:** CLI für lokale API-Simulation und Deployments.
+- **Cloudflare Workers / Pages:** Edge-Computing für APIs und globales statisches Hosting, um niedrige Latenzzeiten und hohe Verfügbarkeit zu gewährleisten.
+- **Neon PostgreSQL:** Serverless-Datenbank für Buchungen, Track-Statistiken und Benutzerverwaltung, optimiert für skalierbare und performante Datenhaltung. [1]
+- **Drizzle ORM:** Type-sichere Datenbankinteraktionen, die die Entwicklung robuster und fehlerfreier Anwendungen unterstützen.
+- **Wrangler:** CLI für lokale API-Simulation und Deployments, zur effizienten Entwicklung und Bereitstellung von Cloudflare Workers.
 
 ### Mobile & Tools
-- **Capacitor:** Brücke zwischen Web-App und Android/iOS-Ökosystemen.
-- **Playwright / Vitest:** Umfassende E2E- und Unit-Test-Suite.
-- **ESLint:** Erzwingung strenger Coding-Standards.
+- **Capacitor:** Brücke zwischen der Web-App und nativen Android/iOS-Ökosystemen, ermöglicht die Bereitstellung als native mobile Anwendung.
+- **Playwright / Vitest:** Umfassende E2E- und Unit-Test-Suite zur Sicherstellung der Codequalität und Funktionalität.
+- **ESLint:** Erzwingung strenger Coding-Standards zur Aufrechterhaltung einer hohen Codequalität und Konsistenz.
 
 ---
 
 ## ⚙️ Technical Standards
 
 ### Coding Philosophy
-- **Clean Code:** Verwendung beschreibender Namen, modularer Komponenten und Vermeidung von Side Effects in Hooks.
-- **Performance First:** Lazy Loading für große Assets, optimierte Bildformate und effizientes State Management.
-- **Full-Stack Safety:** Type-sichere Datenbankabfragen mit Drizzle ORM und validierte API-Eingaben.
+- **Clean Code:** Verwendung beschreibender Namen, modularer Komponenten und Vermeidung von Side Effects in Hooks für wartbaren und lesbaren Code.
+- **Performance First:** Lazy Loading für große Assets, optimierte Bildformate und effizientes State Management zur Gewährleistung einer schnellen und flüssigen Benutzererfahrung.
+- **Full-Stack Safety:** Type-sichere Datenbankabfragen mit Drizzle ORM und validierte API-Eingaben zur Erhöhung der Sicherheit und Datenintegrität.
 
 ### Project Structure
 ```text
