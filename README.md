@@ -4,69 +4,74 @@
 [![Tech Stack](https://img.shields.io/badge/Stack-React_19_%7C_Vite_%7C_Neon_%7C_Cloudflare-blue.svg)]()
 [![PWA](https://img.shields.io/badge/PWA-Ready-orange.svg)]()
 
-**Airdox** is a cutting-edge, high-performance web application and platform for the Berlin-based Techno DJ **AIRDOX**. Built with a focus on "Project Duality," the platform explores the tension between Light (Angel) and Shadow (Devil) through an immersive interface and professional audio experience.
+**Airdox** ist eine hochmoderne, leistungsstarke Webanwendung und Plattform für den Berliner Techno-DJ **AIRDOX**. Die Plattform wurde mit dem Fokus auf "Project Duality" entwickelt und erforscht die Spannung zwischen Licht (Engel) und Schatten (Teufel) durch eine immersive Benutzeroberfläche und ein professionelles Audioerlebnis.
 
 ---
 
-## 🏛️ Vision & Philosophy: Project Duality
-The platform is not just a DJ portfolio; it is an interactive exploration of dualism.
-- **The Angel Modus:** Melodic Techno, Trance vibes, Gold/Cyan aesthetics.
-- **The Devil Modus:** Hard Techno, Industrial Acid, Black/Red aesthetics.
-- **The Red Thread:** A philosophical journey asking the user: *"Who wins in the end?"*
+## 🏛️ Vision & Philosophie: Project Duality
+Die Plattform ist nicht nur ein DJ-Portfolio; sie ist eine interaktive Erkundung des Dualismus.
+- **The Angel Modus:** Melodic Techno, Trance-Vibes, Gold/Cyan-Ästhetik.
+- **The Devil Modus:** Hard Techno, Industrial Acid, Schwarz/Rot-Ästhetik.
+- **The Red Thread:** Eine philosophische Reise, die den Benutzer fragt: *"Wer gewinnt am Ende?"*
 
 ---
 
 ## 🚀 Key Features
 
-*   🎧 **High-End Audio Experience:** "The Blade" glassmorphism player with real-time waveform visualization.
-*   🔐 **Secure VIP Area:** Custom authentication system (SHA-256) with registration, login, and exclusive high-quality MP3 downloads.
-*   📱 **Multi-Platform Support:** Fully responsive web app, installable PWA, and native mobile builds via Capacitor.
-*   📊 **Stealth Analytics:** Private admin dashboard for tracking downloads and engagement (GDPR compliant).
-*   📩 **Integrated Booking:** Direct communication channel backed by Cloudflare Workers and Neon PostgreSQL.
+*   🎧 **High-End Audio Experience:** "The Blade" Glassmorphism-Player mit Echtzeit-Wellenformvisualisierung und globaler Steuerung.
+*   🔐 **Sicherer VIP-Bereich:** Benutzerauthentifizierungssystem mit Login und Session-Validierung für exklusive Inhalte. Die Registrierung ist derzeit deaktiviert. [1]
+*   📱 **Multi-Plattform-Support:** Vollständig responsive Web-App, installierbare PWA und native mobile Builds via Capacitor.
+*   📊 **Stealth Analytics:** Privates Admin-Dashboard zur Verfolgung von Downloads und Engagement (GDPR-konform), basierend auf Track-Statistiken (Plays, Likes, Dislikes). [1]
+*   📩 **Integrierte Buchung:** Direkter Kommunikationskanal für Buchungsanfragen, unterstützt durch Cloudflare Workers und Neon PostgreSQL. [1]
+*   🍪 **Cookie-Banner:** Implementierung eines Cookie-Banners für Datenschutzkonformität.
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 19:** Utilizing the latest concurrent features and hooks.
-- **Vite 5:** Lightning-fast development and optimized production builds.
-- **Lenis:** Smooth scrolling for a premium, non-native feel.
-- **Vanilla CSS / Modules:** Custom styled for maximum performance and design control.
+- **React 19:** Nutzung der neuesten Concurrent Features und Hooks.
+- **Vite 5:** Blitzschnelle Entwicklung und optimierte Produktions-Builds.
+- **Lenis:** Sanftes Scrolling für ein Premium-Gefühl.
+- **Vanilla CSS / Modules:** Maßgeschneidertes Styling für maximale Performance und Designkontrolle.
 
-### Backend & Infrastructure
-- **Cloudflare Workers / Pages:** Edge-computing for APIs and global static hosting.
-- **Neon PostgreSQL:** Serverless database for booking and analytics.
-- **Drizzle ORM:** Type-safe database interactions.
-- **Wrangler:** CLI for local API simulation and deployments.
+### Backend & Infrastruktur
+- **Cloudflare Workers / Pages:** Edge-Computing für APIs und globales statisches Hosting.
+- **Neon PostgreSQL:** Serverless-Datenbank für Buchungen, Track-Statistiken und Benutzerverwaltung. [1]
+- **Drizzle ORM:** Type-sichere Datenbankinteraktionen.
+- **Wrangler:** CLI für lokale API-Simulation und Deployments.
 
 ### Mobile & Tools
-- **Capacitor:** Bridging the web app to Android/iOS ecosystems.
-- **Playwright / Vitest:** Comprehensive E2E and unit testing suite.
-- **ESLint:** Strict coding standards enforcement.
+- **Capacitor:** Brücke zwischen Web-App und Android/iOS-Ökosystemen.
+- **Playwright / Vitest:** Umfassende E2E- und Unit-Test-Suite.
+- **ESLint:** Erzwingung strenger Coding-Standards.
 
 ---
 
 ## ⚙️ Technical Standards
 
 ### Coding Philosophy
-- **Clean Code:** Use descriptive naming, modular components, and avoid side effects in hooks.
-- **Performance First:** Lazy loading for heavy assets, optimized image formats, and efficient state management.
-- **Full-Stack Safety:** Type-safe database queries and validated API inputs.
+- **Clean Code:** Verwendung beschreibender Namen, modularer Komponenten und Vermeidung von Side Effects in Hooks.
+- **Performance First:** Lazy Loading für große Assets, optimierte Bildformate und effizientes State Management.
+- **Full-Stack Safety:** Type-sichere Datenbankabfragen mit Drizzle ORM und validierte API-Eingaben.
 
 ### Project Structure
 ```text
-├── api/                # Cloudflare Worker API logic
-├── android/            # Capacitor Android project files
-├── functions/          # Serverless functions (Cloudflare)
-├── public/             # Static assets (logos, icons)
+├── api/                # Cloudflare Worker API-Logik
+├── android/            # Capacitor Android-Projektdateien
+├── android-app/        # Native Android App (React Native/Expo)
+├── functions/          # Serverless-Funktionen (Cloudflare)
+├── public/             # Statische Assets (Logos, Icons)
 ├── src/
-│   ├── components/     # Reusable UI elements
-│   ├── contexts/       # Global state (Theme, Audio)
-│   ├── hooks/          # Custom React logic
-│   ├── styles/         # Global CSS and themes
-│   └── lib/            # External library configurations
-├── scripts/            # Build and utility scripts
+│   ├── components/     # Wiederverwendbare UI-Elemente (z.B. Hero, Bio, Music, VIP, Booking, GlobalPlayer, Navigation, AnalyticsDashboard, CookieBanner)
+│   ├── contexts/       # Globaler Zustand (Audio, Toast)
+│   ├── hooks/          # Benutzerdefinierte React-Logik
+│   ├── styles/         # Globales CSS und Themes
+│   └── lib/            # Externe Bibliothekskonfigurationen & Backend-Logik (z.B. stats-logic.js)
+├── scripts/            # Build- und Utility-Skripte
+├── data/               # Daten (z.B. Tracklisten)
+├── db/                 # Datenbank-Schema (Drizzle ORM)
+├── e2e/                # End-to-End-Tests (Playwright)
 └── ...
 ```
 
@@ -77,18 +82,18 @@ The platform is not just a DJ portfolio; it is an interactive exploration of dua
 ### Prerequisites
 - **Node.js** (v18+)
 - **NPM** (v9+)
-- **Cloudflare Account** (for Workers/Pages)
+- **Cloudflare Account** (für Workers/Pages)
 
 ### Installation
 ```bash
-git clone https://github.com/airdox/webseeite-main.git
-cd webseeite-main
+git clone https://github.com/airdox/webseite-main.git
+cd webseite-main
 npm install
 ```
 
 ### Configuration
-1. Copy `.env.example` to `.env`.
-2. Fill in your `DATABASE_URL` and API keys.
+1. Kopieren Sie `.env.example` nach `.env`.
+2. Füllen Sie die erforderlichen Umgebungsvariablen aus. Mindestens `DATABASE_URL` (oder `NEON_DATABASE_URL`) ist für die Datenbankverbindung erforderlich. Optionale Variablen für Cloudflare R2 (`R2_ACCOUNT_ID`, `R2_BUCKET_NAME`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`) können für die Audio-Speicherung konfiguriert werden. [2]
 
 ---
 
@@ -96,23 +101,29 @@ npm install
 
 | Command | Action |
 | :--- | :--- |
-| `npm run dev` | Start Vite development server |
-| `npx wrangler dev` | Simulate local Cloudflare environment |
-| `npm run build` | Generate production-ready static files |
-| `npm run lint` | Check code quality via ESLint |
-| `npm run test` | Run unit and integration tests |
-| `npm run test:e2e` | Run Playwright E2E tests |
+| `npm run dev` | Startet den Vite-Entwicklungsserver |
+| `npx wrangler dev` | Simuliert die lokale Cloudflare-Umgebung |
+| `npm run build` | Generiert produktionsreife statische Dateien |
+| `npm run build:site` | Generiert produktionsreife statische Dateien und führt Post-Build-Audio-Trim-Skripte aus |
+| `npm run lint` | Überprüft die Codequalität via ESLint |
+| `npm run test` | Führt Unit- und Integrationstests aus (Vitest) |
+| `npm run test:e2e` | Führt Playwright E2E-Tests aus |
+| `npm run db:generate` | Generiert Drizzle-Migrationen basierend auf dem Schema |
 
 ---
 
 ## 📖 Internal Documentation
-For deeper technical dives, refer to our specialized guides:
+Für tiefere technische Einblicke konsultieren Sie unsere spezialisierten Leitfäden:
 - [Masterplan (Vision)](PROJECT_MASTERPLAN.md)
 - [Analytics Documentation](ANALYTICS_V2_DOKUMENTATION.md)
-- [Deployment Guide](DEPLOYMENT.md)
-- [Audio Player Logic](AUDIO_PLAYER_DOCS.md)
 
 ---
 
 ## ⚖️ License
 Private Project - © 2026 AIRDOX. All rights reserved.
+
+---
+
+## References
+[1] `/home/ubuntu/Airdox_Webseite/src/lib/stats-logic.js`
+[2] `/home/ubuntu/Airdox_Webseite/.env.example`
