@@ -90,7 +90,7 @@ npm install
 
 ### Configuration
 1. Kopieren Sie `.env.example` nach `.env`.
-2. Füllen Sie die erforderlichen Umgebungsvariablen aus. Mindestens `DATABASE_URL` (oder `NEON_DATABASE_URL`) ist für die Datenbankverbindung erforderlich. Optionale Variablen für Cloudflare R2 (`R2_ACCOUNT_ID`, `R2_BUCKET_NAME`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`) können für die Audio-Speicherung konfiguriert werden. [2]
+2. Füllen Sie die erforderlichen Umgebungsvariablen aus. Mindestens `DATABASE_URL` oder `NEON_DATABASE_URL` ist für die Datenbankverbindung erforderlich. Optionale Variablen für Cloudflare R2 (`R2_ACCOUNT_ID`, `R2_BUCKET_NAME`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`) können für die Audio-Speicherung konfiguriert werden. [2]
 
 ---
 
