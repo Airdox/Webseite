@@ -1,26 +1,62 @@
 {
   "summary": {
-    "generatedAt": "2026-05-02T08:50:29.422Z",
+    "generatedAt": "2026-05-31T16:29:07.780Z",
     "mode": "deep",
-    "totalSteps": 2,
-    "failedSteps": 0,
-    "ok": true
+    "totalSteps": 6,
+    "failedSteps": 1,
+    "ok": false
   },
   "steps": [
     {
       "name": "agent-jobs-validate",
       "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:jobs:validate",
-      "startedAt": "2026-05-02T08:50:29.424Z",
-      "endedAt": "2026-05-02T08:50:30.183Z",
+      "startedAt": "2026-05-31T16:29:07.781Z",
+      "endedAt": "2026-05-31T16:29:08.604Z",
+      "exitCode": 0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "name": "agent-routing-review",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:route:write",
+      "startedAt": "2026-05-31T16:29:08.604Z",
+      "endedAt": "2026-05-31T16:29:09.591Z",
+      "exitCode": 0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "name": "agent-quality-chain",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:quality-chain:write",
+      "startedAt": "2026-05-31T16:29:09.591Z",
+      "endedAt": "2026-05-31T16:29:25.732Z",
       "exitCode": 0,
       "ok": true,
       "error": ""
     },
     {
       "name": "agent-jobs-run",
-      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:jobs:run -- --event=scheduled_background --status=deep",
-      "startedAt": "2026-05-02T08:50:30.183Z",
-      "endedAt": "2026-05-02T08:50:48.786Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:jobs:run -- --event=scheduled_background --status=deep --continue-on-error",
+      "startedAt": "2026-05-31T16:29:25.733Z",
+      "endedAt": "2026-05-31T16:30:32.053Z",
+      "exitCode": 1,
+      "ok": false,
+      "error": ""
+    },
+    {
+      "name": "agent-dependency-radar",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:dependencies:write",
+      "startedAt": "2026-05-31T16:30:32.053Z",
+      "endedAt": "2026-05-31T16:30:32.550Z",
+      "exitCode": 0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "name": "agent-system-health",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:system:health",
+      "startedAt": "2026-05-31T16:30:32.550Z",
+      "endedAt": "2026-05-31T16:30:33.042Z",
       "exitCode": 0,
       "ok": true,
       "error": ""

@@ -1,0 +1,70 @@
+{
+  "generatedAt": "2026-05-24T13:32:19.333Z",
+  "source": {
+    "packagesScanned": 1,
+    "ledgerPath": "docs/agent-system/social-post-ledger.json",
+    "outputRoot": "docs/agent-system/social-auto-output"
+  },
+  "counts": {
+    "ready_to_upload": 2,
+    "blocked": 2
+  },
+  "posts": [
+    {
+      "id": "recording_2026_05_07-2:facebook",
+      "packageId": "recording_2026_05_07-2",
+      "platform": "facebook",
+      "status": "blocked",
+      "sourceStatus": "blocked-missing-meta-oauth",
+      "liveUrl": "",
+      "postedAt": "",
+      "asset": "docs/agent-system/social-auto-output/recording-2026-05-07-2/recording-2026-05-07-2-59s-reel-1078.mp4",
+      "caption": "LIVE SET MAY 2026 #2 is online. RENE BOURGEOIS - FACE2FACE WITH MY DEMON (ORIGINAL MIX). Stream the full set on AIRDOX.INFO.",
+      "nextAction": "Use Meta Business Suite manually or add Meta Graph credentials.",
+      "packageTitle": "LIVE SET MAY 2026 #2",
+      "manifestPath": "docs/agent-system/social-auto-output/recording-2026-05-07-2/manifest.json"
+    },
+    {
+      "id": "recording_2026_05_07-2:instagram",
+      "packageId": "recording_2026_05_07-2",
+      "platform": "instagram",
+      "status": "blocked",
+      "sourceStatus": "blocked-missing-meta-oauth",
+      "liveUrl": "",
+      "postedAt": "",
+      "asset": "docs/agent-system/social-auto-output/recording-2026-05-07-2/recording-2026-05-07-2-59s-reel-1078.mp4",
+      "caption": "LIVE SET MAY 2026 #2\n\nRENE BOURGEOIS - FACE2FACE WITH MY DEMON (ORIGINAL MIX)\nStart at 00:17:58. Full set on AIRDOX.INFO.\n\n#AIRDOX #BerlinTechno #UndergroundTechno #TechnoDJ #LiveSet #DJSet #TechnoReel",
+      "nextAction": "Use Meta Business Suite manually or add Meta Graph credentials.",
+      "packageTitle": "LIVE SET MAY 2026 #2",
+      "manifestPath": "docs/agent-system/social-auto-output/recording-2026-05-07-2/manifest.json"
+    },
+    {
+      "id": "recording_2026_05_07-2:tiktok",
+      "packageId": "recording_2026_05_07-2",
+      "platform": "tiktok",
+      "status": "ready_to_upload",
+      "sourceStatus": "credentials-present-not-uploaded",
+      "liveUrl": "",
+      "postedAt": "",
+      "asset": "docs/agent-system/social-auto-output/recording-2026-05-07-2/recording-2026-05-07-2-59s-reel-1078.mp4",
+      "caption": "LIVE SET MAY 2026 #2 - RENE BOURGEOIS. Full set on AIRDOX.INFO. #AIRDOX #BerlinTechno #UndergroundTechno #TechnoDJ #LiveSet",
+      "nextAction": "Run API upload after platform publishing scope is confirmed.",
+      "packageTitle": "LIVE SET MAY 2026 #2",
+      "manifestPath": "docs/agent-system/social-auto-output/recording-2026-05-07-2/manifest.json"
+    },
+    {
+      "id": "recording_2026_05_07-2:youtube",
+      "packageId": "recording_2026_05_07-2",
+      "platform": "youtube",
+      "status": "ready_to_upload",
+      "sourceStatus": "credentials-present-not-uploaded",
+      "liveUrl": "",
+      "postedAt": "",
+      "asset": "docs/agent-system/social-auto-output/recording-2026-05-07-2/recording-2026-05-07-2-59s-reel-1078.mp4",
+      "caption": "LIVE SET MAY 2026 #2 | RENE BOURGEOIS - FACE2FACE WITH MY DEMON (ORIGINAL MIX) | AIRDOX.INFO",
+      "nextAction": "Run YouTube upload after OAuth is valid and user approval is confirmed.",
+      "packageTitle": "LIVE SET MAY 2026 #2",
+      "manifestPath": "docs/agent-system/social-auto-output/recording-2026-05-07-2/manifest.json"
+    }
+  ]
+}

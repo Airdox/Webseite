@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { parseFile } from 'music-metadata';
 import {
   AUDIO_EXTENSIONS,
@@ -419,12 +420,106 @@ const withCacheBuster = (url, key = 'flightdeckVerify') => {
   return parsed.href;
 };
 
+const DEPLOY_FINGERPRINT_PATH = path.join('public', 'flightdeck-deploy.json');
+const FINGERPRINT_TARGETS = [
+  'index.html',
+  'package-lock.json',
+  'package.json',
+  'src',
+  'vite.config.js',
+  'wrangler.jsonc',
+];
+
+const collectFingerprintFiles = async (workspaceRoot, relativePath) => {
+  const absolutePath = path.join(workspaceRoot, relativePath);
+  let stat = null;
+  try {
+    stat = await fs.stat(absolutePath);
+  } catch {
+    return [];
+  }
+
+  if (stat.isFile()) return [relativePath.replace(/\\/g, '/')];
+  if (!stat.isDirectory()) return [];
+
+  const entries = await fs.readdir(absolutePath, { withFileTypes: true });
+  const nested = await Promise.all(entries
+    .filter((entry) => !entry.name.startsWith('.'))
+    .map((entry) => collectFingerprintFiles(workspaceRoot, path.join(relativePath, entry.name))));
+  return nested.flat();
+};
+
+const buildWorkspaceFingerprint = async (workspaceRoot) => {
+  const files = (await Promise.all(
+    FINGERPRINT_TARGETS.map((targetPath) => collectFingerprintFiles(workspaceRoot, targetPath)),
+  ))
+    .flat()
+    .filter((filePath) => filePath !== DEPLOY_FINGERPRINT_PATH.replace(/\\/g, '/'))
+    .sort((left, right) => left.localeCompare(right));
+
+  const hash = createHash('sha256');
+  for (const filePath of files) {
+    hash.update(`file:${filePath}\n`);
+    hash.update(await fs.readFile(path.join(workspaceRoot, filePath)));
+    hash.update('\n');
+  }
+
+  return {
+    algorithm: 'sha256',
+    hash: hash.digest('hex'),
+    fileCount: files.length,
+  };
+};
+
+const writeDeployFingerprint = async ({ workspaceRoot, publishDraft }) => {
+  const fingerprint = await buildWorkspaceFingerprint(workspaceRoot);
+  const payload = {
+    generatedAt: new Date().toISOString(),
+    source: 'AIRDOX Flight Deck',
+    setId: publishDraft.id,
+    setTitle: publishDraft.title,
+    fingerprint,
+  };
+  const targetPath = path.join(workspaceRoot, DEPLOY_FINGERPRINT_PATH);
+  await ensureDirectory(path.dirname(targetPath));
+  await fs.writeFile(targetPath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
+  return {
+    relativePath: DEPLOY_FINGERPRINT_PATH,
+    payload,
+  };
+};
+
+const verifyLiveFingerprint = async ({ siteUrl, expectedDeployFingerprint }) => {
+  if (!expectedDeployFingerprint?.fingerprint?.hash) return null;
+
+  const markerUrl = new URL('/flightdeck-deploy.json', siteUrl);
+  const liveMarkerText = await fetchTextOrThrow(withCacheBuster(markerUrl.href, 'flightdeckDeploy'));
+  let liveMarker = null;
+  try {
+    liveMarker = JSON.parse(liveMarkerText);
+  } catch {
+    throw new Error('Live verify failed: deployed fingerprint marker is not valid JSON.');
+  }
+
+  const expectedHash = expectedDeployFingerprint.fingerprint.hash;
+  const liveHash = liveMarker?.fingerprint?.hash;
+  if (liveHash !== expectedHash) {
+    throw new Error(`Live verify failed: deployed workspace fingerprint mismatch. expected ${expectedHash}, got ${liveHash || 'missing'}`);
+  }
+
+  return {
+    markerUrl: markerUrl.href,
+    hash: liveHash,
+    fileCount: liveMarker?.fingerprint?.fileCount || 0,
+  };
+};
+
 const getScriptAssetUrls = (html = '', siteUrl = '') => {
   const matches = [...String(html).matchAll(/<script\b[^>]*\bsrc=["']([^"']+\.js[^"']*)["'][^>]*>/gi)];
   return matches.map((match) => new URL(match[1], siteUrl).href);
 };
 
-const verifyLiveBundleOnce = async ({ siteUrl, publishDraft }) => {
+const verifyLiveBundleOnce = async ({ siteUrl, publishDraft, expectedDeployFingerprint }) => {
   const baseUrl = String(siteUrl || DEFAULT_FLIGHT_DECK_SETTINGS.liveSiteUrl).trim();
   const verifyUrl = new URL(baseUrl);
   verifyUrl.searchParams.set('flightdeckVerify', String(Date.now()));
@@ -455,21 +550,27 @@ const verifyLiveBundleOnce = async ({ siteUrl, publishDraft }) => {
     throw new Error(`Live verify failed: deployed bundle is missing ${missingTokens.join(', ')}`);
   }
 
+  const fingerprint = await verifyLiveFingerprint({
+    siteUrl: verifyUrl.href,
+    expectedDeployFingerprint,
+  });
+
   return {
     siteUrl: baseUrl,
     scriptCount: scriptUrls.length,
     checkedTokens: requiredTokens.length,
+    fingerprint,
   };
 };
 
-const verifyLiveBundle = async ({ siteUrl, publishDraft }) => {
+const verifyLiveBundle = async ({ siteUrl, publishDraft, expectedDeployFingerprint }) => {
   const maxAttempts = 12;
   const delayMs = 5000;
   let lastError = null;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
-      const result = await verifyLiveBundleOnce({ siteUrl, publishDraft });
+      const result = await verifyLiveBundleOnce({ siteUrl, publishDraft, expectedDeployFingerprint });
       return {
         ...result,
         attempts: attempt,
@@ -753,6 +854,18 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
     pushLog(logs, 'database', 'success', `Ensured track_stats row for ${publishDraft.id}`);
   }
 
+  let deployFingerprint = null;
+  if (mergedSettings.autoBuild || mergedSettings.autoDeploy) {
+    deployFingerprint = await writeDeployFingerprint({ workspaceRoot, publishDraft });
+    changedPaths.push(deployFingerprint.relativePath);
+    pushLog(
+      logs,
+      'fingerprint',
+      'success',
+      `Prepared deploy fingerprint ${deployFingerprint.payload.fingerprint.hash.slice(0, 12)} from ${deployFingerprint.payload.fingerprint.fileCount} workspace file(s).`,
+    );
+  }
+
   if (mergedSettings.autoBuild) {
     const buildResult = await runWorkspaceCommand({ workspaceRoot, command: mergedSettings.buildCommand });
     pushLog(logs, 'build', 'success', buildResult.stdout || 'Build completed.');
@@ -765,12 +878,13 @@ export const publishSet = async ({ workspaceRoot, draft, settings = DEFAULT_FLIG
       const verifyResult = await verifyLiveBundle({
         siteUrl: mergedSettings.liveSiteUrl,
         publishDraft,
+        expectedDeployFingerprint: deployFingerprint?.payload,
       });
       pushLog(
         logs,
         'verify',
         'success',
-        `Verified live bundle on ${verifyResult.siteUrl}: ${verifyResult.checkedTokens} set/track tokens across ${verifyResult.scriptCount} script asset(s) after ${verifyResult.attempts} attempt(s).`,
+        `Verified live bundle on ${verifyResult.siteUrl}: ${verifyResult.checkedTokens} set/track tokens across ${verifyResult.scriptCount} script asset(s), fingerprint ${verifyResult.fingerprint?.hash?.slice(0, 12) || 'not checked'} after ${verifyResult.attempts} attempt(s).`,
       );
     }
   }

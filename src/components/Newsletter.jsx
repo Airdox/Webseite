@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Newsletter.css';
 import { t } from '../utils/i18n';
-import { readApiError, readApiJson } from '../utils/apiResponse';
+import { buildApiUrl, readApiError, readApiJson } from '../utils/apiResponse';
 import { audienceEvents } from '../utils/audienceSignals';
 
 const Newsletter = () => {
@@ -15,7 +15,7 @@ const Newsletter = () => {
 
         setStatus('loading');
         try {
-            const response = await fetch('/api/subscribe', {
+            const response = await fetch(buildApiUrl('/api/subscribe'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })

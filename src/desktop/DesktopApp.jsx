@@ -238,6 +238,10 @@ const buildReservedSetValues = (sets = [], batchQueue = []) => {
 };
 
 const DesktopApp = () => {
+  const isDesignStudioWindow = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return new URLSearchParams(window.location.search).get('view') === 'design-studio';
+  }, []);
   const [activeTab, setActiveTab] = useState('overview');
   const [appState, setAppState] = useState({
     settings: null,
@@ -282,6 +286,7 @@ const DesktopApp = () => {
   const [isBatchRunning, setIsBatchRunning] = useState(false);
   const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
   const batchCancelRef = useRef(false);
+  const designStudioOpenedRef = useRef(false);
   const [systemStats, setSystemStats] = useState({});
   const [manniCampaignState, setManniCampaignState] = useState(null);
   const [saveStatus, setSaveStatus] = useState(null);
@@ -467,6 +472,16 @@ const DesktopApp = () => {
   useEffect(() => {
     markTutorialVisited(activeTab);
   }, [activeTab, markTutorialVisited]);
+
+  useEffect(() => {
+    if (isDesignStudioWindow || activeTab !== 'design') {
+      if (activeTab !== 'design') designStudioOpenedRef.current = false;
+      return;
+    }
+    if (designStudioOpenedRef.current) return;
+    designStudioOpenedRef.current = true;
+    flightDeckApi.openDesignStudio?.();
+  }, [activeTab, isDesignStudioWindow]);
 
   useEffect(() => {
     if (!flightDeckApi.isElectron) return;
@@ -1169,6 +1184,7 @@ const DesktopApp = () => {
           setSearch={setSearch}
           rows={rows}
           filteredRows={filteredRows}
+          sets={appState.sets}
           queryText={queryText}
           setQueryText={setQueryText}
           queryResult={queryResult}
@@ -1413,11 +1429,19 @@ const DesktopApp = () => {
 
     if (activeTab === 'design') {
       return (
-        <DesignAgentTab
-          sets={appState?.sets}
-          busy={busy}
-          flightDeckApi={flightDeckApi}
-        />
+        <section className="fd-surface fd-design-launcher">
+          <div>
+            <span className="fd-eyebrow">Design Studio</span>
+            <h2>Große Vorschau im separaten Fenster</h2>
+            <p>
+              Der Design-Agent laeuft im eigenen Studio-Fenster, damit Vorschau und Regler gleichzeitig nutzbar bleiben.
+            </p>
+          </div>
+          <button type="button" className="fd-button" onClick={() => flightDeckApi.openDesignStudio?.()}>
+            <Palette size={16} />
+            Design Studio öffnen
+          </button>
+        </section>
       );
     }
 
@@ -1455,6 +1479,36 @@ const DesktopApp = () => {
       />
     );
   };
+
+  if (isDesignStudioWindow) {
+    return (
+      <div className="fd-design-studio-shell">
+        <header className="fd-design-studio-header">
+          <div>
+            <span className="fd-eyebrow">AIRDOX</span>
+            <h1>Design Studio</h1>
+          </div>
+          <span className={`fd-status-pill ${appState.workspaceValid ? 'ok' : 'warn'}`}>
+            {appState.workspaceValid ? 'Workspace verbunden' : 'Workspace fehlt'}
+          </span>
+        </header>
+        <main className="fd-design-studio-main">
+          {settingsDraft ? (
+            <DesignAgentTab
+              sets={appState?.sets}
+              busy={busy}
+              flightDeckApi={flightDeckApi}
+              studioMode
+            />
+          ) : (
+            <section className="fd-empty-state">
+              <p>Design Studio wird geladen...</p>
+            </section>
+          )}
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="fd-app-shell">

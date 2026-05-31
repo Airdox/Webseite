@@ -23,6 +23,10 @@ Mentor verantwortet:
 - Folgeaufgaben fuer Agenten,
 - Ueberfuehrung echter Fehler in neue Gates.
 
+Der tiefere Niveau-Anhebungsplan fuer Bildung, Weiterbildung, Fortbildung und Ausbildung der Agenten liegt in:
+
+- `docs/agent-system/MENTOR_AGENT_LEVEL_UP_PLAN_2026-05-27.md`
+
 ## Regelmaessige Checks
 
 | Intervall | Job | Zweck |
@@ -51,6 +55,10 @@ Ein Agent gilt als aktuell genug, wenn:
 - sein Runbook oder Audit innerhalb der letzten 45 Tage aktualisiert wurde,
 - es einen passenden Gate/Job fuer wiederkehrende Fehler gibt,
 - neue Nutzerbefunde in `DECISION_LOG.md` oder einem Runbook landen.
+
+## Definition von "Niveau"
+
+Ein Agent gilt nicht schon deshalb als stark, weil er fuer einen Bereich zustaendig ist. Mentor bewertet Niveau ueber Quellenfrische, Runbook-Qualitaet, Ausfuehrungsqualitaet, Risikoerkennung, Uebergabequalitaet und Fehlerlernen. Die niedrigste stabile Dimension bestimmt das Agenten-Level.
 
 ## Grenzen
 

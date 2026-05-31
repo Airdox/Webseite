@@ -1,0 +1,5 @@
+{
+  "schema": "airdox.social-post-ledger.v1",
+  "note": "Manual source of truth for confirmed live social posts. The automation merges this with generated social package manifests.",
+  "posts": []
+}

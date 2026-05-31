@@ -3,8 +3,10 @@ import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import dotenv from 'dotenv';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+dotenv.config({ path: join(root, '.env'), quiet: true });
 const args = process.argv.slice(2);
 
 const getArg = (name, fallback = '') => {
@@ -91,6 +93,22 @@ const run = (command, commandArgs) => {
   }
 };
 
+const readWindowsUserEnv = (key) => {
+  if (process.platform !== 'win32') return '';
+  const result = spawnSync('powershell', [
+    '-NoProfile',
+    '-Command',
+    `[Environment]::GetEnvironmentVariable('${key.replaceAll("'", "''")}','User')`,
+  ], {
+    cwd: root,
+    encoding: 'utf8',
+    shell: false,
+  });
+  return result.status === 0 ? String(result.stdout || '').trim() : '';
+};
+
+const getEnv = (key) => process.env[key] || readWindowsUserEnv(key);
+
 const setsModulePath = pathToFileURL(join(root, 'src', 'data', 'musicSets.js')).href;
 const { sets } = await import(setsModulePath);
 const availableSets = Array.isArray(sets) ? sets : [];
@@ -169,9 +187,9 @@ const hashtags = [
 ];
 
 const credentials = {
-  youtube: Boolean(process.env.YOUTUBE_CLIENT_ID && process.env.YOUTUBE_CLIENT_SECRET && process.env.YOUTUBE_REFRESH_TOKEN),
-  meta: Boolean(process.env.META_PAGE_ACCESS_TOKEN && process.env.FACEBOOK_PAGE_ID && process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID),
-  tiktok: Boolean(process.env.TIKTOK_CLIENT_KEY && process.env.TIKTOK_CLIENT_SECRET && process.env.TIKTOK_REFRESH_TOKEN),
+  youtube: Boolean(getEnv('YOUTUBE_CLIENT_ID') && getEnv('YOUTUBE_CLIENT_SECRET') && getEnv('YOUTUBE_REFRESH_TOKEN')),
+  meta: Boolean(getEnv('META_PAGE_ACCESS_TOKEN') && getEnv('FACEBOOK_PAGE_ID') && getEnv('INSTAGRAM_BUSINESS_ACCOUNT_ID')),
+  tiktok: Boolean(getEnv('TIKTOK_CLIENT_KEY') && getEnv('TIKTOK_CLIENT_SECRET') && getEnv('TIKTOK_REFRESH_TOKEN')),
 };
 
 const manifest = {

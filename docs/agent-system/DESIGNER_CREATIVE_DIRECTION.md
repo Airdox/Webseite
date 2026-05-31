@@ -77,6 +77,52 @@ Fuer relevante Reels liefert Designer mindestens drei Creative-Richtungen:
 
 Manni darf eine Rohidee liefern. Designer muss daraus eine eigenstaendige visuelle Loesung machen und darf nicht nur den Text setzen.
 
+## Proaktive Portfolio-Pflicht
+
+Designer darf nicht erst nach expliziter Nachfrage anfangen, Design-Optionen zu sammeln. Sobald ein Set, Hook oder Kampagnenanker bekannt ist, muss Designer automatisch eine kleine Auswahlmappe vorbereiten:
+
+- mindestens 3, ideal 5 visuelle Richtungen,
+- klare Empfehlung je Richtung: `ja`, `vielleicht`, `naechste Woche` oder `verwerfen`,
+- genutzte Quellen und Referenzordner,
+- konkrete Motion-Idee und First-Frame-Idee,
+- bekannte Risiken, vor allem Lesbarkeit, Safe-Area, generische Typo oder schwacher AIRDOX-Fokus,
+- naechster Prototyp als kurzer Still-/5s-Test, nicht sofort als 60s-Finalrender.
+
+Fuer AIRDOX-Schriftzuege gilt besonders:
+
+- `AIRDOX` muss ein zentrales visuelles Element sein, nicht nur ein normales Wort in einer Standardschrift.
+- Der Schriftzug darf geometrisch, modular, fragmentiert, stencilartig, blockhaft oder graffiti-inspiriert entstehen.
+- Wenn KI fuer Graffiti-/Letterform-Ideen genutzt wird, zaehlt das nur als Ideation. Finale Buchstaben muessen gegen Lesbarkeit und AIRDOX-Erkennbarkeit kuratiert werden.
+- Verworfene Richtungen werden aktiv ausgeschlossen und duerfen nicht als Vorlage wieder auftauchen.
+
+Der automatische Portfolio-Output liegt unter:
+
+- `docs/agent-system/latest-designer-portfolio.md`
+- `docs/agent-system/latest-designer-portfolio.json`
+- `docs/agent-system/designer-portfolio-output/`
+
+Dieser Portfolio-Schritt ist Vorbedingung fuer groessere Social-Renderings. Manni darf daraus Plattform-Copy und Posting-Pakete ableiten, aber keine externe Nutzung ohne persoenliches Nutzer-OK.
+
+## Daumenkino Watch-Zone
+
+Der Daumenkino-Ideenbestand ist Designer-Primärgebiet. Aenderungen in diesen Pfaden muessen Designer sofort wecken:
+
+- `scratch/daumenkino-contact/`
+- `scratch/daumenkino-contact-sheet.jpg`
+- `public/brand-assets/daumenkino/`
+- `docs/agent-system/social-auto-output/daumenkino-preview/`
+- `scripts/render-daumenkino*.mjs`
+- `scripts/photoshop-export-daumenkino*.jsx`
+- `scripts/photoshop-export-portrait-cutout.jsx`
+
+Pflichtreaktion:
+
+- neue oder geaenderte Referenzen sichten,
+- brauchbare Letterforms, Texturen, Portrait-/Maskenquellen und No-Go-Beispiele markieren,
+- Portfolio oder Prototypen aktualisieren,
+- bei Freistellern und Masken Photoshop-JSX statt grober Node-Bildoperation bevorzugen,
+- dem Orchestrator melden, ob daraus ein neuer Designauftrag, eine Korrektur oder nur Archivwissen entsteht.
+
 ## Qualitaets-Score
 
 Vor Handoff bewertet Designer jedes Social-Asset mit 0 bis 2 Punkten:

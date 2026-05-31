@@ -9,6 +9,7 @@
     "Manni",
     "Designer",
     "Mentor",
+    "Deep Research",
     "Audience Intelligence",
     "Refactor",
     "Repository"
@@ -96,6 +97,38 @@
       ]
     },
     {
+      "id": "mentor-knowledge-improvement-review",
+      "title": "Translate NotebookLM agent-school research into AIRDOX knowledge tasks",
+      "owner": "Mentor",
+      "execution": "manual",
+      "manualProtocol": "Review docs/agent-system/research/MENTOR_NOTEBOOKLM_RESULT_AGENT_SCHOOLS_2026-05-27.md and docs/agent-system/mentor-knowledge-improvement-tasks.json. Convert accepted findings into at least one concrete AIRDOX artifact: agent runbook, gate/test, training scenario, Decision Log rule, wiki entry, or scorecard criterion. Keep Guardian as reviewer for privacy, external-action, and governance rules.",
+      "trigger": {
+        "events": [
+          "manual_background",
+          "monthly_learning_review",
+          "incident_review",
+          "research_import"
+        ],
+        "statuses": [
+          "planning",
+          "deep",
+          "needs_learning",
+          "monthly"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "agent_knowledge_improvement",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/research/MENTOR_NOTEBOOKLM_RESULT_AGENT_SCHOOLS_2026-05-27.md",
+        "docs/agent-system/mentor-knowledge-improvement-tasks.json",
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
       "id": "audience-intelligence-cycle",
       "title": "Audience intelligence and growth signal review",
       "owner": "Audience Intelligence",
@@ -129,6 +162,40 @@
       "outputs": [
         "docs/agent-system/latest-audience-intelligence.json",
         "docs/agent-system/latest-audience-intelligence.md"
+      ]
+    },
+    {
+      "id": "website-profitability-review",
+      "title": "Website profitability and funnel review",
+      "owner": "Audience Intelligence",
+      "execution": "script",
+      "script": "website:profitability:write",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "weekly_growth_review",
+          "release_candidate",
+          "pr_campaign_request"
+        ],
+        "statuses": [
+          "standard",
+          "weekly",
+          "planning",
+          "ci",
+          "deep"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "website_profitability",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-website-profitability.json",
+        "docs/agent-system/latest-website-profitability.md"
       ]
     },
     {
@@ -322,6 +389,40 @@
       ]
     },
     {
+      "id": "designer-social-portfolio",
+      "title": "Generate proactive social design portfolio",
+      "owner": "Designer",
+      "execution": "script",
+      "script": "designer:portfolio",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "weekly_growth_review",
+          "manual_background",
+          "new_set_detected",
+          "pr_campaign_request"
+        ],
+        "statuses": [
+          "standard",
+          "weekly",
+          "planning",
+          "drafting"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "social_media_corporate_design",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-designer-portfolio.json",
+        "docs/agent-system/latest-designer-portfolio.md",
+        "docs/agent-system/designer-portfolio-output/*/*.svg"
+      ]
+    },
+    {
       "id": "designer-daily-visual-quality",
       "title": "Daily website visual quality inspection",
       "owner": "Designer",
@@ -408,7 +509,7 @@
     },
     {
       "id": "manni-reel-factory",
-      "title": "Generate reel queue and weekly social plan",
+      "title": "Generate promotion queue and weekly social plan",
       "owner": "Manni",
       "execution": "script",
       "script": "manni:reels:generate",
@@ -437,6 +538,42 @@
         "docs/agent-system/manni-reel-queue.json",
         "docs/agent-system/manni-reel-weekly-plan.md",
         "docs/agent-system/manni-reel-draft-pack.md"
+      ]
+    },
+    {
+      "id": "social-auto-preview-pack",
+      "title": "Render automated social preview package",
+      "owner": "Manni",
+      "execution": "script",
+      "script": "social:auto",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "weekly_growth_review",
+          "manual_background",
+          "new_set_detected",
+          "pr_campaign_request"
+        ],
+        "statuses": [
+          "drafting",
+          "weekly",
+          "planning",
+          "preview"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "social_media",
+      "outputVisibility": "external_draft",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/social-auto-output/*/manifest.json",
+        "docs/agent-system/social-auto-output/*/captions.json",
+        "docs/agent-system/social-auto-output/*/upload-copy-paste.md",
+        "docs/agent-system/social-auto-output/*/*.mp4",
+        "docs/agent-system/social-auto-output/*/*-preview.png"
       ]
     },
     {
@@ -474,7 +611,7 @@
       "title": "Create external-ready social drafts",
       "owner": "Designer",
       "execution": "manual",
-      "manualProtocol": "Create poster, reel, caption, thumbnail, and platform-copy drafts from Manni's queue. Draft creation is allowed and encouraged; keep all assets unpublished until personal user OK is logged.",
+      "manualProtocol": "Create or refine poster, reel, story, thumbnail, caption, hashtag, landing-URL, and platform-copy drafts from Manni's queue and social-auto-output packages. For every selected item produce a user-preview-ready bundle with MP4/PNG path, final caption, hashtags, target platform, proposed timing, landing URL, KPI goal, and risk note. Draft creation is allowed and encouraged; keep all assets unpublished until personal user OK is logged.",
       "trigger": {
         "events": [
           "weekly_growth_review",
@@ -495,7 +632,9 @@
       "enabled": true,
       "outputs": [
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md"
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "docs/agent-system/social-auto-output/*",
+        "docs/agent-system/manni-reel-draft-pack.md"
       ]
     },
     {
@@ -709,7 +848,7 @@
       "title": "Execute approved PR and social reach operations",
       "owner": "Manni",
       "execution": "manual",
-      "manualProtocol": "After explicit personal user confirmation is logged, execute or commission only the approved operations exactly as previewed. Allowed operations include posting approved Instagram/Facebook Reels or Stories, publishing approved Shorts/TikTok variants, replying/commenting with approved copy, sending approved collab/tag/repost requests, placing approved community posts, or activating approved newsletter/website bridges. Boost tests, paid spend, or budget activation require a separate explicit approval and must stay skipped when the operation approval state is rejected or pending. Record platform, action type, timestamp, URL or campaign ID, asset IDs, spend, first KPI checkpoint, and any platform response in DECISION_LOG.",
+      "manualProtocol": "After explicit personal user confirmation is logged, execute or commission only the approved operations exactly as previewed. Allowed organic operations include posting approved Instagram/Facebook Reels or Stories, publishing approved TikTok videos, publishing approved YouTube Shorts, replying/commenting with approved copy, sending approved collab/tag/repost requests, placing approved community posts, or activating approved newsletter/website bridges. If OAuth/API credentials exist, publish the approved asset directly to the approved channels and keep caption, hashtags, asset, timing, and landing URL identical to the preview package. If credentials are missing, produce a platform-ready upload package for Meta Business Suite, TikTok Studio, or YouTube Studio. Boost tests, paid spend, or budget activation require a separate explicit approval and must stay skipped when the operation approval state is rejected or pending. Record platform, action type, timestamp, URL or campaign ID, asset IDs, spend, first KPI checkpoint, and any platform response in DECISION_LOG.",
       "trigger": {
         "events": [
           "manual_publish_request",
@@ -737,7 +876,7 @@
       "title": "Personal approval gate before live social posting",
       "owner": "Manni",
       "execution": "manual",
-      "manualProtocol": "Drafts may be created before approval. Before any external posting or paid activation goes live, get explicit personal user OK and log date, job ID, platforms, asset IDs, and approved copy in DECISION_LOG.",
+      "manualProtocol": "Drafts may be created before approval. Before any external posting goes live, get explicit personal user OK and log date, job ID, platforms, asset IDs, approved copy, hashtags, landing URL, and posting time in DECISION_LOG. Only the user may approve posts. Standard organic cadence is three approved posts per week, initially Tuesday 17:00, Wednesday 16:00, and Thursday 18:00 Europe/Berlin, with Friday 16:00 as a replacement slot. During a new-set launch week, Manni may prepare up to one approved post per day between 16:00 and 18:00 Europe/Berlin, but each live post still needs explicit approval. Paid boosts, ads, or budget activation are currently out of scope and must not be planned as standard operations.",
       "trigger": {
         "events": [
           "winner_detected",
@@ -758,6 +897,39 @@
       "enabled": true,
       "outputs": [
         "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
+      "id": "youtube-publish-audit",
+      "title": "Audit YouTube uploads after publish and incident reports",
+      "owner": "Guardian",
+      "execution": "script",
+      "script": "social:youtube:audit",
+      "scriptArgs": [
+        "--write"
+      ],
+      "trigger": {
+        "events": [
+          "manual_publish_request",
+          "post_publish_review",
+          "incident_review",
+          "scheduled_background"
+        ],
+        "statuses": [
+          "external_live",
+          "incident",
+          "standard"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "youtube_publish_quality",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-youtube-publish-audit.json",
+        "docs/agent-system/latest-youtube-publish-audit.md"
       ]
     },
     {
@@ -789,6 +961,40 @@
       ]
     },
     {
+      "id": "notebooklm-deep-research-brief",
+      "title": "NotebookLM deep research -> agent brief + mandatory task queue",
+      "owner": "Deep Research",
+      "execution": "script",
+      "script": "agent:notebooklm:brief",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "pr_campaign_request",
+          "needs_learning"
+        ],
+        "statuses": [
+          "standard",
+          "deep",
+          "weekly",
+          "planning",
+          "drafting"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "research",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-notebooklm-brief.json",
+        "docs/agent-system/latest-notebooklm-brief.md",
+        "docs/agent-system/latest-agent-task-queue.json"
+      ]
+    },
+    {
       "id": "agent-routing-review",
       "title": "Route changed files to responsible agents",
       "owner": "Master Controller",
@@ -817,6 +1023,109 @@
       ]
     },
     {
+      "id": "agent-quality-chain",
+      "title": "Convert changed code into test and validation obligations",
+      "owner": "Guardian",
+      "execution": "script",
+      "script": "agent:quality-chain:write",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "pr_review",
+          "release_candidate",
+          "new_set_detected"
+        ],
+        "statuses": [
+          "standard",
+          "deep",
+          "ci",
+          "planning",
+          "drafting"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "quality_chain",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-agent-quality-chain.json",
+        "docs/agent-system/latest-agent-quality-chain.md"
+      ]
+    },
+    {
+      "id": "agent-dependency-radar",
+      "title": "Report agent handoffs, blockers, and user touchpoints",
+      "owner": "Master Controller",
+      "execution": "script",
+      "script": "agent:dependencies:write",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "weekly_growth_review",
+          "pr_campaign_request",
+          "new_set_detected"
+        ],
+        "statuses": [
+          "standard",
+          "weekly",
+          "planning",
+          "drafting",
+          "deep"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "agent_orchestration",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-agent-dependency-radar.json",
+        "docs/agent-system/latest-agent-dependency-radar.md"
+      ]
+    },
+    {
+      "id": "agent-system-health",
+      "title": "Generate agent architecture diagram and automation health report",
+      "owner": "Master Controller",
+      "execution": "script",
+      "script": "agent:system:health",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "pr_review",
+          "release_candidate",
+          "architecture_drift"
+        ],
+        "statuses": [
+          "standard",
+          "deep",
+          "ci",
+          "planning",
+          "high_complexity"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "agent_orchestration",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-agent-system-health.json",
+        "docs/agent-system/latest-agent-system-health.md",
+        "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md"
+      ]
+    },
+    {
       "id": "learning-gap-update",
       "title": "Learning gap and runbook update",
       "owner": "Mentor",
@@ -838,6 +1147,68 @@
       "outputs": [
         "airdoX_wiki/wiki/local-11-feedback-loops.md",
         "airdoX_wiki/wiki/log.md"
+      ]
+    },
+    {
+      "id": "refactor-website-opportunities",
+      "title": "Refactor website opportunities",
+      "owner": "Refactor",
+      "execution": "script",
+      "script": "refactor:website:opportunities",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "website_change",
+          "architecture_drift"
+        ],
+        "statuses": [
+          "standard",
+          "deep",
+          "high_complexity"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "website_stability",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-refactor-website-opportunities.json",
+        "docs/agent-system/latest-refactor-website-opportunities.md"
+      ]
+    },
+    {
+      "id": "website-stability-refactor-execution",
+      "title": "Website stability refactor execution",
+      "owner": "Refactor",
+      "execution": "manual",
+      "manualProtocol": "Execute larger website refactors only with Master Controller approval, named affected user flows, before/after impact, rollback note, and mandatory gates: npm run quality:web, npm run guardian:risk, npm run agent:audit -- --strict. Availability, functionality and production safety outrank cleanup.",
+      "trigger": {
+        "events": [
+          "architecture_drift",
+          "availability_risk",
+          "functional_regression",
+          "performance_degradation"
+        ],
+        "statuses": [
+          "high_complexity",
+          "high_latency",
+          "stability_risk",
+          "release_blocker"
+        ]
+      },
+      "changeClass": "gravierend",
+      "requiresMasterApproval": true,
+      "domain": "website_stability",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/DECISION_LOG.md",
+        "docs/agent-system/latest-guardian-risk-summary.md",
+        "docs/agent-system/latest-refactor-website-opportunities.md"
       ]
     },
     {

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const useVinylAnimation = (analyserRef, currentTrack, isPlaying) => {
+const useVinylAnimation = (analyserRef, currentTrack, isPlaying, animationMode = 'billiard') => {
     const billiardStateRef = useRef({
         x: 0,
         y: 0,
@@ -9,7 +9,9 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying) => {
         maxX: 0,
         maxY: 0,
         trackKey: '',
-        lastTs: 0
+        startTs: 0,
+        lastTs: 0,
+        lastChaosTs: 0
     });
     const billiardRafRef = useRef(null);
     const animatedVinylRef = useRef(null);
@@ -20,11 +22,12 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying) => {
             if (!animatedVinylRef.current) return;
             animatedVinylRef.current.style.removeProperty('--vinyl-bounce-x');
             animatedVinylRef.current.style.removeProperty('--vinyl-bounce-y');
+            animatedVinylRef.current.style.removeProperty('--vinyl-billiard-size');
             animatedVinylRef.current.style.removeProperty('filter');
             animatedVinylRef.current = null;
         };
 
-        if (!isPlaying || !currentTrack?.id) {
+        if (!isPlaying || !currentTrack?.id || animationMode !== 'billiard') {
             clearAnimatedVinyl();
             return undefined;
         }
@@ -39,6 +42,32 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying) => {
         let disposed = false;
         const physics = billiardStateRef.current;
         const randomDirection = () => (Math.random() >= 0.5 ? 1 : -1);
+        const clampVelocity = (value) => {
+            const sign = value >= 0 ? 1 : -1;
+            const magnitude = Math.max(74, Math.min(238, Math.abs(value)));
+            return sign * magnitude;
+        };
+        const setVelocityFromAngle = (angle, speed) => {
+            physics.vx = clampVelocity(Math.cos(angle) * speed);
+            physics.vy = clampVelocity(Math.sin(angle) * speed);
+        };
+        const chooseChaoticAngle = (edge, energy) => {
+            const minExit = 0.24;
+            const maxExit = 1.33;
+            const exit = minExit + (Math.random() * (maxExit - minExit));
+            const audioBend = (energy - 0.35) * 0.55;
+            const timeBend = Math.sin(performance.now() * 0.0047) * 0.22;
+            const angle = Math.max(minExit, Math.min(maxExit, exit + audioBend + timeBend));
+
+            if (edge === 'left') return (Math.random() >= 0.5 ? angle : -angle);
+            if (edge === 'right') return Math.PI + (Math.random() >= 0.5 ? angle : -angle);
+            if (edge === 'top') return (Math.PI / 2) + (Math.random() >= 0.5 ? angle : -angle);
+            return (-Math.PI / 2) + (Math.random() >= 0.5 ? angle : -angle);
+        };
+        const bounceFromEdge = (edge, energy) => {
+            const speed = Math.max(130, Math.min(290, Math.hypot(physics.vx, physics.vy) * (0.9 + Math.random() * 0.34 + energy * 0.22)));
+            setVelocityFromAngle(chooseChaoticAngle(edge, energy), speed);
+        };
 
         const findCurrentVinyl = () => {
             const cards = document.querySelectorAll('.set-card[data-set-id]');
@@ -82,27 +111,47 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying) => {
             if (animatedVinylRef.current && animatedVinylRef.current !== vinyl) {
                 animatedVinylRef.current.style.removeProperty('--vinyl-bounce-x');
                 animatedVinylRef.current.style.removeProperty('--vinyl-bounce-y');
+                animatedVinylRef.current.style.removeProperty('--vinyl-billiard-size');
                 animatedVinylRef.current.style.removeProperty('filter');
             }
             animatedVinylRef.current = vinyl;
+
+            const trackKey = String(currentTrack?.id);
+            const isNewTrack = physics.trackKey !== trackKey;
+            if (isNewTrack) {
+                physics.trackKey = trackKey;
+                physics.startTs = timestamp;
+                physics.vx = 140 * randomDirection();
+                physics.vy = 118 * randomDirection();
+                physics.lastTs = timestamp;
+            }
+
+            const elapsedSec = Math.max(0, (timestamp - (physics.startTs || timestamp)) / 1000);
+            const cycleProgress = (elapsedSec % 20) / 20;
+            const triangularProgress = cycleProgress < 0.5
+                ? cycleProgress * 2
+                : (1 - cycleProgress) * 2;
+            const easedGrowth = 0.5 - (Math.cos(triangularProgress * Math.PI) / 2);
+            const pulseSize = Math.sin(elapsedSec * 1.45) * 3;
+            const targetSize = Math.max(18, Math.min(82, 18 + (easedGrowth * 58) + pulseSize));
+            vinyl.style.setProperty('--vinyl-billiard-size', `${targetSize.toFixed(2)}%`);
 
             const coverRect = cover.getBoundingClientRect();
             const vinylRect = vinyl.getBoundingClientRect();
             const maxX = Math.max(0, coverRect.width - vinylRect.width);
             const maxY = Math.max(0, coverRect.height - vinylRect.height);
-            const trackKey = String(currentTrack?.id);
 
-            const hasViewportChange = Math.abs(physics.maxX - maxX) > 0.5 || Math.abs(physics.maxY - maxY) > 0.5;
-            if (physics.trackKey !== trackKey || hasViewportChange) {
-                physics.trackKey = trackKey;
-                physics.maxX = maxX;
-                physics.maxY = maxY;
+            const hasInitialBounds = physics.maxX > 0 || physics.maxY > 0;
+            const boundsChanged = Math.abs(physics.maxX - maxX) > 0.5 || Math.abs(physics.maxY - maxY) > 0.5;
+            if (isNewTrack || !hasInitialBounds) {
                 physics.x = maxX / 2;
                 physics.y = maxY / 2;
-                physics.vx = 140 * randomDirection();
-                physics.vy = 118 * randomDirection();
-                physics.lastTs = timestamp;
+            } else if (boundsChanged) {
+                physics.x = Math.max(0, Math.min(maxX, physics.x));
+                physics.y = Math.max(0, Math.min(maxY, physics.y));
             }
+            physics.maxX = maxX;
+            physics.maxY = maxY;
 
             if (!physics.lastTs) {
                 physics.lastTs = timestamp;
@@ -112,23 +161,29 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying) => {
 
             const energy = readAudioEnergy();
             const speedFactor = 0.85 + (energy * 1.7);
+            if (timestamp - (physics.lastChaosTs || 0) > 850) {
+                const drift = (Math.random() - 0.5) * (22 + energy * 34);
+                physics.vx = clampVelocity(physics.vx + drift);
+                physics.vy = clampVelocity(physics.vy - (drift * (0.35 + Math.random() * 0.5)));
+                physics.lastChaosTs = timestamp;
+            }
             physics.x += physics.vx * speedFactor * deltaSec;
             physics.y += physics.vy * speedFactor * deltaSec;
 
             if (physics.x <= 0) {
                 physics.x = 0;
-                physics.vx = Math.abs(physics.vx);
+                bounceFromEdge('left', energy);
             } else if (physics.x >= maxX) {
                 physics.x = maxX;
-                physics.vx = -Math.abs(physics.vx);
+                bounceFromEdge('right', energy);
             }
 
             if (physics.y <= 0) {
                 physics.y = 0;
-                physics.vy = Math.abs(physics.vy);
+                bounceFromEdge('top', energy);
             } else if (physics.y >= maxY) {
                 physics.y = maxY;
-                physics.vy = -Math.abs(physics.vy);
+                bounceFromEdge('bottom', energy);
             }
 
             const offsetX = physics.x - (maxX / 2);
@@ -156,7 +211,7 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying) => {
             physics.lastTs = 0;
             clearAnimatedVinyl();
         };
-    }, [analyserRef, currentTrack?.id, isPlaying]);
+    }, [analyserRef, currentTrack?.id, isPlaying, animationMode]);
 };
 
 export default useVinylAnimation;

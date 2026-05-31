@@ -33,10 +33,31 @@
       "paths": [
         "src/**/*.css",
         "public/assets/**",
+        "public/brand-assets/**",
+        "docs/agent-system/latest-designer-portfolio.*",
+        "docs/agent-system/designer-portfolio-output/**",
         "docs/agent-system/proof/**"
       ],
       "recommendedGates": [
         "npm run designer:visual:check -- --strict"
+      ]
+    },
+    {
+      "id": "daumenkino-reference-system",
+      "agent": "Designer",
+      "role": "primary",
+      "paths": [
+        "scratch/daumenkino-contact/**",
+        "scratch/daumenkino-contact-sheet.jpg",
+        "public/brand-assets/daumenkino/**",
+        "docs/agent-system/social-auto-output/daumenkino-preview/**",
+        "scripts/render-daumenkino*.mjs",
+        "scripts/photoshop-export-daumenkino*.jsx",
+        "scripts/photoshop-export-portrait-cutout.jsx"
+      ],
+      "recommendedGates": [
+        "npm run designer:portfolio",
+        "npm run agent:quality-chain:write"
       ]
     },
     {
@@ -101,7 +122,9 @@
         "src/components/VIPSection.jsx",
         "src/components/EPKSection.jsx",
         "docs/agent-system/MANNI_*.md",
+        "docs/agent-system/SOCIAL_PROMOTION_*.md",
         "docs/agent-system/manni-*",
+        "docs/agent-system/social-auto-output/**",
         "scripts/manni-*.mjs",
         "scripts/social-*.mjs"
       ],
@@ -110,18 +133,39 @@
       ]
     },
     {
+      "id": "youtube-publish-quality",
+      "agent": "Guardian",
+      "role": "primary",
+      "paths": [
+        "scripts/social-youtube-publish.mjs",
+        "scripts/youtube-publish-audit.mjs",
+        "scripts/verify-youtube-playback.mjs",
+        "docs/agent-system/latest-youtube-publish-audit.*",
+        "docs/agent-system/social-auto-output/**/manifest.json"
+      ],
+      "recommendedGates": [
+        "npm run social:youtube:audit -- --write",
+        "npm run agent:jobs:validate"
+      ]
+    },
+    {
       "id": "audience-intelligence",
       "agent": "Audience Intelligence",
       "role": "review",
       "paths": [
         "scripts/audience-intelligence-agent.mjs",
+        "scripts/website-profitability-report.mjs",
         "docs/agent-system/latest-audience-intelligence.*",
+        "docs/agent-system/latest-website-profitability.*",
+        "docs/agent-system/website-profitability-model.json",
+        "docs/agent-system/audience-signal-taxonomy.json",
         "docs/agent-system/MANNI_*.md",
         "docs/agent-system/manni-*",
         "src/data/musicSets.js"
       ],
       "recommendedGates": [
         "npm run audience:intelligence",
+        "npm run website:profitability",
         "npm run agent:jobs:validate -- --strict-warnings"
       ]
     },
@@ -138,16 +182,37 @@
       ]
     },
     {
+      "id": "notebooklm-deep-research",
+      "agent": "Deep Research",
+      "role": "primary",
+      "paths": [
+        "docs/agent-system/research/**",
+        "docs/agent-system/latest-notebooklm-brief.*",
+        "docs/agent-system/latest-agent-task-queue.json"
+      ],
+      "recommendedGates": [
+        "npm run agent:notebooklm:brief",
+        "npm run agent:jobs:validate -- --strict-warnings"
+      ]
+    },
+    {
       "id": "refactor-architecture",
       "agent": "Refactor",
-      "role": "review",
+      "role": "implementation_support",
       "paths": [
+        "src/components/**/*.jsx",
+        "src/contexts/**/*.jsx",
+        "src/utils/**/*.js",
+        "src/lib/**/*.js",
+        "src/server/**/*.js",
         "src/**/*.js",
         "src/**/*.jsx",
         "desktop/**/*.mjs",
         "scripts/**/*.mjs"
       ],
       "recommendedGates": [
+        "npm run refactor:website:opportunities",
+        "npm run guardian:risk",
         "npm run test -- --run",
         "npm run build"
       ]

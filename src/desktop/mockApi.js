@@ -26,12 +26,65 @@ const defaultSets = sets.map(set => ({
 }));
 
 const defaultTables = {
-  track_stats: [],
-  analytics_logs: [],
-  bookings: [],
-  subscribers: [],
-  users: [],
-  sessions: [],
+  track_stats: defaultSets.slice(0, 4).map((set, index) => ({
+    id: set.id,
+    plays: [42, 27, 19, 11][index] || 0,
+    likes: [8, 5, 3, 1][index] || 0,
+    dislikes: 0,
+    last_played_at: index === 0 ? '2026-05-20T18:00:00.000Z' : null,
+  })),
+  analytics_logs: [
+    {
+      id: 1,
+      event_type: 'play',
+      item_id: defaultSets[0]?.id || 'recording_2026_05_01',
+      session_id: 'mock-session-1',
+      country: 'DE',
+      city: 'Berlin',
+      region: 'BE',
+      device_type: 'desktop',
+      browser: 'Chrome',
+      os: 'Windows',
+      referrer: 'direct',
+      created_at: '2026-05-20T18:00:00.000Z',
+    },
+  ],
+  bookings: [
+    {
+      id: 1,
+      name: 'Club Reset',
+      email: 'booking@club-reset.example',
+      event: 'Peak Slot',
+      message: 'AIRDOX booking request from preview data.',
+      created_at: '2026-05-18T20:00:00.000Z',
+    },
+  ],
+  subscribers: [
+    {
+      id: 1,
+      email: 'vip@airdox.info',
+      status: 'active',
+      created_at: '2026-05-18T12:00:00.000Z',
+    },
+  ],
+  users: [
+    {
+      id: 1,
+      username: 'manni',
+      email: 'manni@airdox.info',
+      created_at: '2026-05-18T12:30:00.000Z',
+    },
+  ],
+  sessions: [
+    {
+      id: 'mock-session-1',
+      user_id: 1,
+      username: 'manni',
+      email: 'manni@airdox.info',
+      created_at: '2026-05-18T12:45:00.000Z',
+      expires_at: '2026-05-23T12:45:00.000Z',
+    },
+  ],
 };
 
 // Clear stale mock cache so we always see reality
@@ -484,6 +537,39 @@ export const mockFlightDeckApi = {
   },
   async revealPath() {
     return true;
+  },
+  async openDesignStudio() {
+    if (typeof window !== 'undefined') {
+      window.open('/desktop.html?view=design-studio', 'airdox-design-studio', 'width=1800,height=1080');
+    }
+    return true;
+  },
+  async renderDesign(payload = {}) {
+    const style = payload.style || 'flicker';
+    const outputSlug = payload.outputSlug || `daumenkino_${style}`;
+    const base = `D:\\webseeite-main\\release\\${outputSlug}`;
+    return {
+      ok: true,
+      outputs: {
+        gifPath: `${base}.gif`,
+        mp4Path: `${base}.mp4`,
+        manifestPath: `${base}.manifest.json`,
+        handoffPath: `${base}.handoff.md`,
+        photoshopFramePath: `${base}.photoshop-frame.png`,
+        photoshopScriptPath: `${base}.photoshop-setup.jsx`,
+        outputDir: 'D:\\webseeite-main\\release',
+        photoshopAvailable: payload.mode === '5050',
+        photoshopAction: payload.photoshopAction || 'script_and_launch',
+        bgSource: payload.bgSource || 'cover',
+        customBgPath: payload.customBgPath || '',
+      },
+    };
+  },
+  async getDesignPreview() {
+    return null;
+  },
+  onDesignLog() {
+    return () => {};
   },
   async getAnalyticsData() {
     return buildMockAnalytics([]);

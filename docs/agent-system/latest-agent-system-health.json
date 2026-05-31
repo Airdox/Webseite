@@ -1,0 +1,100 @@
+{
+  "generatedAt": "2026-05-31T16:30:32.983Z",
+  "controller": "Master Controller",
+  "job": "agent-system-health",
+  "summary": {
+    "ok": false,
+    "jobCount": 42,
+    "scriptJobCount": 22,
+    "manualJobCount": 20,
+    "externalLiveJobCount": 5,
+    "reportCount": 5,
+    "staleReportCount": 1,
+    "alertCount": 2
+  },
+  "automation": {
+    "npmBackgroundScript": true,
+    "healthScript": true,
+    "workflowFiles": [
+      {
+        "path": ".github/workflows/agent-background-monitor.yml",
+        "exists": true
+      },
+      {
+        "path": ".github/workflows/agent-job-dispatch.yml",
+        "exists": true
+      }
+    ],
+    "windowsTaskInstaller": true
+  },
+  "reports": [
+    {
+      "id": "background-cycle",
+      "path": "docs/agent-system/latest-background-cycle.json",
+      "generatedAt": "2026-05-28T19:45:39.484Z",
+      "warnAfterHours": 12,
+      "failAfterHours": 30,
+      "ageHours": 68.75,
+      "status": "stale"
+    },
+    {
+      "id": "job-run",
+      "path": "docs/agent-system/latest-job-run.json",
+      "generatedAt": "2026-05-31T16:29:26.272Z",
+      "warnAfterHours": 12,
+      "failAfterHours": 30,
+      "ageHours": 0.02,
+      "status": "fresh"
+    },
+    {
+      "id": "audit",
+      "path": "docs/agent-system/latest-audit.json",
+      "generatedAt": "2026-05-31T16:29:27.768Z",
+      "warnAfterHours": 24,
+      "failAfterHours": 72,
+      "ageHours": 0.02,
+      "status": "fresh"
+    },
+    {
+      "id": "dependency-radar",
+      "path": "docs/agent-system/latest-agent-dependency-radar.json",
+      "generatedAt": "2026-05-31T16:30:32.491Z",
+      "warnAfterHours": 12,
+      "failAfterHours": 30,
+      "ageHours": 0,
+      "status": "fresh"
+    },
+    {
+      "id": "task-queue",
+      "path": "docs/agent-system/latest-agent-task-queue.json",
+      "generatedAt": "2026-05-24T04:52:19.782Z",
+      "warnAfterHours": 168,
+      "failAfterHours": 336,
+      "ageHours": 179.64,
+      "status": "aging"
+    }
+  ],
+  "catalog": {
+    "readable": true,
+    "missingScripts": []
+  },
+  "routing": {
+    "readable": true,
+    "ruleCount": 13
+  },
+  "diagram": "flowchart TD\n  User[User Auftrag / Freigabe] --> MC[Master Controller]\n  MC --> Catalog[Job Catalog]\n  MC --> Router[Routing Rules]\n  Router --> Wakeup[Workbench Wakeup]\n  Wakeup --> Webbie\n  Wakeup --> Winnie\n  Wakeup --> Guardian\n  Wakeup --> Manni\n  Wakeup --> Designer\n  Wakeup --> Mentor\n  Wakeup --> Research[Deep Research]\n  Wakeup --> Repository\n  Catalog --> Runner[Agent Job Runner]\n  Runner --> Reports[latest-*.json/md]\n  Reports --> Radar[Dependency Radar]\n  Radar --> Queue[Task Queue]\n  Queue --> MC\n  Guardian --> Gates[Quality Gates]\n  Manni --> Drafts[External Drafts]\n  Drafts --> Approval[Personal User OK]\n  Approval --> Live[External Live Action]\n  Live -. blocked without OK .-> Approval\n  Scheduler[GitHub Schedule / Windows Task] --> Background[Background Cycle]\n  Background --> Runner\n  Background --> Health[System Health]\n  Health --> MC",
+  "alerts": [
+    {
+      "severity": "action",
+      "id": "background-cycle-stale",
+      "message": "background-cycle is stale (68.75h old).",
+      "nextAction": "Run npm run agents:background:deep and inspect failed steps."
+    },
+    {
+      "severity": "watch",
+      "id": "task-queue-aging",
+      "message": "task-queue is aging (179.64h old).",
+      "nextAction": "Let the next scheduled background cycle refresh it."
+    }
+  ]
+}

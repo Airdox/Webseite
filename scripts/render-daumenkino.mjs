@@ -1,372 +1,811 @@
 import fs from 'node:fs/promises';
-import { exec } from 'node:child_process';
+import { execFile } from 'node:child_process';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
-const WORKSPACE_DIR = 'D:\\webseeite-main';
+const WORKSPACE_DIR = process.cwd();
 const TEMP_DIR = path.join(WORKSPACE_DIR, 'scripts', 'temp_frames');
-let OUTPUT_GIF_PATH = '';
-let OUTPUT_MP4_PATH = '';
 
-// Generates custom HTML/CSS content for a specific frame index
-function getFrameHtml(frameIndex, style = 'flicker', setId = 'LIVE SET MAY 2026') {
-  const word = "AIRDOX";
-  
-  // Letter-by-letter build-up logic (creating a dynamic frame-by-frame story)
-  // Frame 0: A -> Frame 1: AI -> Frame 2: AIR -> Frame 3: AIRD -> Frame 4: AIRDO -> Frame 5-7: AIRDOX (assembled & glitched)
-  let visibleLength = 6;
-  if (frameIndex === 0) visibleLength = 1;
-  else if (frameIndex === 1) visibleLength = 2;
-  else if (frameIndex === 2) visibleLength = 3;
-  else if (frameIndex === 3) visibleLength = 4;
-  else if (frameIndex === 4) visibleLength = 5;
-  else visibleLength = 6;
-  
-  const currentText = word.substring(0, visibleLength);
+const DEFAULT_CONTROLS = {
+  energy: 80,
+  motion: 70,
+  glitch: 60,
+  typography: 70,
+  colorShift: 60,
+  grain: 30,
+  scanlines: 40,
+  depth: 50,
+  cameraPush: 40,
+  waveform: 60,
+  strobe: 50,
+  density: 60,
+};
 
-  const isKickFrame = (frameIndex === 0 || frameIndex === 4);
-  const isSnareFrame = (frameIndex === 2 || frameIndex === 6);
-  
-  let bg = '#050608';
-  let textColor = '#f5f8ff';
-  let scale = 1.0;
-  let skew = 0;
-  let rotation = 0;
-  let textBlur = 0;
-  let invertFilter = 'none';
-  let barHeight = 0;
-  let barTop = 0;
-  let chromaticSplit = 'none';
-  let activeFont = 'Permanent Marker';
-  let sprayOpacity = 0.05;
+const FORMAT_SIZE = {
+  square: { width: 800, height: 800 },
+  reel: { width: 720, height: 1280 },
+  story: { width: 720, height: 1280 },
+};
 
-  if (style === 'flicker') {
-    activeFont = 'Permanent Marker';
-    // Strobo contrast alternation
-    if (isKickFrame) {
-      bg = '#ffffff';
-      textColor = '#050608';
-      scale = 1.45;
-      skew = 22;
-      rotation = -8;
-      invertFilter = 'invert(100%)';
-      sprayOpacity = 0.5;
-    } else if (isSnareFrame) {
-      bg = '#00f0ff'; // Cyan kick flash
-      textColor = '#050608';
-      scale = 1.3;
-      skew = -18;
-      rotation = 6;
-      sprayOpacity = 0.4;
-    } else {
-      // In-between build frames
-      bg = '#050608';
-      textColor = '#f5f8ff';
-      scale = 0.95 + (frameIndex * 0.05);
-      skew = frameIndex % 2 === 0 ? 12 : -12;
-      rotation = frameIndex % 2 === 0 ? 3 : -3;
-    }
-  } else if (style === 'glitch') {
-    activeFont = 'Sedgwick Ave Display';
-    bg = '#070913';
-    textColor = '#ffffff';
-    scale = 1.1 + (Math.sin(frameIndex) * 0.15);
-    skew = (frameIndex * 11) % 35 - 17;
-    rotation = (frameIndex * 5) % 15 - 7;
-    textBlur = frameIndex % 3 === 0 ? 5 : 0;
-    
-    // Chromatic Aberration Shadows (extreme graffiti displacement)
-    chromaticSplit = `${frameIndex * 12}px 0 rgba(255, 0, 170, 0.95), -${frameIndex * 12}px 0 rgba(0, 240, 255, 0.95)`;
-    
-    // Flashing overlay bars
-    if (frameIndex % 2 === 0) {
-      barHeight = 90;
-      barTop = 100 + (frameIndex * 100);
-      sprayOpacity = 0.35;
-    }
+const SCORE_KEYS = {
+  motionEnergy: ['energy', 'motion', 'strobe'],
+  audioLink: ['waveform', 'energy'],
+  firstFrame: ['typography', 'colorShift', 'density'],
+  surprise: ['glitch', 'depth', 'cameraPush'],
+};
+
+const GRAFFITI_STYLE_LABELS = {
+  wildstyle: 'Wildstyle',
+  throwup: 'Throw-Up',
+  chrome_3d: 'Chrome 3D',
+  stencil: 'Stencil',
+  marker_tag: 'Marker Tag',
+  drip_paint: 'Drip Paint',
+};
+
+const clamp = (value, min = 0, max = 100) => Math.max(min, Math.min(max, Number(value) || 0));
+const norm = (value) => clamp(value) / 100;
+const slugify = (value) => String(value || 'design')
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '_')
+  .replace(/^_+|_+$/g, '')
+  .slice(0, 64) || 'design';
+
+function parsePayload() {
+  const fallbackStyle = process.argv[2] || 'flicker';
+  if (!process.argv[3]) {
+    return {
+      style: fallbackStyle,
+      fps: 12,
+      format: 'square',
+      seed: 2482,
+      setId: 'LIVE SET MAY 2026',
+      markText: 'AIRDOX',
+      markStyle: 'graffiti',
+      photoshopAction: 'script_and_launch',
+      graffitiStyles: ['wildstyle', 'throwup', 'chrome_3d'],
+      controls: DEFAULT_CONTROLS,
+    };
   }
+
+  try {
+    const raw = Buffer.from(process.argv[3], 'base64').toString('utf8');
+    const payload = JSON.parse(raw);
+    return {
+      ...payload,
+      style: payload.style || fallbackStyle,
+      fps: clamp(payload.fps || 12, 8, 24),
+      format: payload.format || 'square',
+      seed: payload.seed || 2482,
+      setId: payload.setId || 'LIVE SET MAY 2026',
+      markText: payload.markText || 'AIRDOX',
+      markStyle: payload.markStyle || 'graffiti',
+      photoshopAction: payload.photoshopAction || 'script_and_launch',
+      graffitiStyles: Array.isArray(payload.graffitiStyles) && payload.graffitiStyles.length
+        ? payload.graffitiStyles
+        : ['wildstyle', 'throwup', 'chrome_3d'],
+      outputSlug: slugify(payload.outputSlug || `${payload.presetId || payload.style || fallbackStyle}_${payload.markText || 'mark'}`),
+      controls: {
+        ...DEFAULT_CONTROLS,
+        ...(payload.controls || {}),
+      },
+    };
+  } catch (error) {
+    console.warn(`[WARN] Payload konnte nicht gelesen werden: ${error.message}`);
+    return {
+      style: fallbackStyle,
+      fps: 12,
+      format: 'square',
+      seed: 2482,
+      setId: 'LIVE SET MAY 2026',
+      markText: 'AIRDOX',
+      markStyle: 'graffiti',
+      photoshopAction: 'script_and_launch',
+      graffitiStyles: ['wildstyle', 'throwup', 'chrome_3d'],
+      controls: DEFAULT_CONTROLS,
+    };
+  }
+}
+
+function getStyleName(style) {
+  return {
+    flicker: 'Beat-Flicker Type Drop',
+    glitch: 'RGB Glitch Signal',
+    liquid: 'Liquid Parallax',
+    neon: 'Neon Depth Scan',
+    daumenkino: 'Daumenkino Idea Lab',
+  }[style] || style;
+}
+
+function averageControl(controls, keys) {
+  return Math.round(keys.reduce((sum, key) => sum + clamp(controls[key]), 0) / keys.length);
+}
+
+function getScore(controls) {
+  const motionEnergy = averageControl(controls, SCORE_KEYS.motionEnergy);
+  const audioLink = averageControl(controls, SCORE_KEYS.audioLink);
+  const firstFrame = averageControl(controls, SCORE_KEYS.firstFrame);
+  const surprise = averageControl(controls, SCORE_KEYS.surprise);
+  const total = Math.round((motionEnergy + audioLink + firstFrame + surprise) / 4);
+  return { motionEnergy, audioLink, firstFrame, surprise, total };
+}
+
+function buildHandoffNotes(options, score) {
+  const notes = [];
+  if (options.controls.typography >= 70) notes.push('Kinetic Type ist stark genug fuer einen stoppenden First Frame.');
+  if (options.controls.waveform >= 60) notes.push('Waveform ist sichtbar mit Beat-Energie gekoppelt.');
+  if (options.controls.depth >= 70) notes.push('Parallax-Tiefe erzeugt eine klare Vorder-/Hintergrundstaffelung.');
+  if (options.controls.glitch >= 70) notes.push('Glitch-Bursts sind dominant; vor Posting auf Lesbarkeit pruefen.');
+  if (score.total < 65) notes.push('Score unter 65: als Draft behandeln und vor Upload nacharbeiten.');
+  return notes.length ? notes : ['Ausgewogene Variante, bereit fuer Designer-Review und Manni-Handoff.'];
+}
+
+function getGraffitiPrompt(styleId, markText, controls) {
+  const label = GRAFFITI_STYLE_LABELS[styleId] || styleId;
+  const base = `${label} fuer "${markText || 'AIRDOX'}"`;
+  const shared = `Energy ${controls.energy}, Glitch ${controls.glitch}, Depth ${controls.depth}, Typography ${controls.typography}.`;
+  return {
+    wildstyle: `${base}: verschachtelte Buchstaben, Pfeile, Cutbacks, Cyan/Lime Highlights, lesbar trotz Komplexitaet. ${shared}`,
+    throwup: `${base}: runde Bubble-Letter, dicke Outline, schnelle Fill-Flaechen, hoher Kontrast. ${shared}`,
+    chrome_3d: `${base}: metallischer Chrome-Fill, harte 3D-Extrusion, dunkle Schattenkante, Club-Poster-Look. ${shared}`,
+    stencil: `${base}: Schablonenformen, harte Negativraeume, Plakat-Kante, sauberer First Frame. ${shared}`,
+    marker_tag: `${base}: roher Markerzug, trockene Kanten, schnelle Handbewegung, bewusst unperfekt. ${shared}`,
+    drip_paint: `${base}: nasse Farbe, Tropfen, Overspray, kontrollierte Spruehnebel-Kante. ${shared}`,
+  }[styleId] || `${base}: Graffiti-Variante. ${shared}`;
+}
+
+function buildPhotoshopVariantScript(options, score, handoffPath) {
+  const mark = String(options.markText || 'AIRDOX').replace(/"/g, '\\"').slice(0, 30);
+  const styles = options.graffitiStyles || ['wildstyle', 'throwup', 'chrome_3d'];
+  const lines = [
+    'var variantRoot = doc.layerSets.add();',
+    'variantRoot.name = "Graffiti Variants - Script Generated";',
+  ];
+
+  styles.forEach((styleId, index) => {
+    const label = GRAFFITI_STYLE_LABELS[styleId] || styleId;
+    const prompt = getGraffitiPrompt(styleId, mark, options.controls).replace(/"/g, '\\"');
+    const y = 120 + index * 82;
+    const size = styleId === 'marker_tag' ? 58 : styleId === 'stencil' ? 64 : 74;
+    const fill = styleId === 'chrome_3d' ? '210,220,225' : styleId === 'throwup' ? '154,223,107' : styleId === 'drip_paint' ? '0,240,255' : '245,248,255';
+    const shadow = styleId === 'chrome_3d' ? '40,46,54' : styleId === 'stencil' ? '5,6,8' : '255,0,170';
+    lines.push(
+      `var group${index} = variantRoot.layerSets.add();`,
+      `group${index}.name = ${JSON.stringify(`${String(index + 1).padStart(2, '0')} ${label} - ${mark}`)};`,
+      `var shadow${index} = group${index}.artLayers.add();`,
+      `shadow${index}.kind = LayerKind.TEXT;`,
+      `shadow${index}.name = ${JSON.stringify(`${label} shadow/depth`)};`,
+      `shadow${index}.textItem.contents = ${JSON.stringify(mark)};`,
+      `shadow${index}.textItem.size = ${size};`,
+      `shadow${index}.textItem.position = [${72 + index * 10}, ${y + 14}];`,
+      `var shadowColor${index} = new SolidColor(); shadowColor${index}.rgb.red = ${shadow.split(',')[0]}; shadowColor${index}.rgb.green = ${shadow.split(',')[1]}; shadowColor${index}.rgb.blue = ${shadow.split(',')[2]};`,
+      `shadow${index}.textItem.color = shadowColor${index};`,
+      `var main${index} = group${index}.artLayers.add();`,
+      `main${index}.kind = LayerKind.TEXT;`,
+      `main${index}.name = ${JSON.stringify(`${label} main letters`)};`,
+      `main${index}.textItem.contents = ${JSON.stringify(mark)};`,
+      `main${index}.textItem.size = ${size};`,
+      `main${index}.textItem.position = [64, ${y}];`,
+      `var mainColor${index} = new SolidColor(); mainColor${index}.rgb.red = ${fill.split(',')[0]}; mainColor${index}.rgb.green = ${fill.split(',')[1]}; mainColor${index}.rgb.blue = ${fill.split(',')[2]};`,
+      `main${index}.textItem.color = mainColor${index};`,
+      `var note${index} = group${index}.artLayers.add();`,
+      `note${index}.kind = LayerKind.TEXT;`,
+      `note${index}.name = ${JSON.stringify(`${label} Auftrag / Prompt`)};`,
+      `note${index}.textItem.contents = ${JSON.stringify(prompt)};`,
+      `note${index}.textItem.size = 18;`,
+      `note${index}.textItem.position = [64, ${y + 54}];`,
+      `note${index}.opacity = 74;`,
+      `group${index}.visible = ${index === 0 ? 'true' : 'false'};`,
+    );
+  });
+
+  lines.push(
+    'var controlLayer = variantRoot.artLayers.add();',
+    'controlLayer.kind = LayerKind.TEXT;',
+    'controlLayer.name = "README - Varianten togglen";',
+    `controlLayer.textItem.contents = ${JSON.stringify([
+      'Diese Gruppen wurden vom AIRDOX Designer-Agenten erzeugt.',
+      `Score ${score.total}/100`,
+      'Pro Gruppe liegt ein eigener Graffiti-Auftrag mit Text-, Schatten- und Prompt-Ebene.',
+      'Sichtbarkeit der Varianten-Gruppen togglen, beste Richtung ausarbeiten, dann final exportieren.',
+      `Handoff: ${handoffPath}`,
+    ].join('\r'))};`,
+    'controlLayer.textItem.size = 20;',
+    'controlLayer.textItem.position = [36, 36];',
+  );
+
+  return lines;
+}
+
+function buildBars(controls, frameIndex) {
+  const amount = 8 + Math.round(norm(controls.waveform) * 18);
+  return Array.from({ length: amount }).map((_, index) => {
+    const pulse = Math.sin((frameIndex + 1) * (index + 2) * 0.72);
+    const height = 14 + Math.round((0.5 + pulse * 0.5) * (28 + controls.energy * 0.72));
+    return `<span style="height:${height}px"></span>`;
+  }).join('');
+}
+
+function getGraffitiLogoSvg({ visibleLength, color, rgb, glitch, density, style }) {
+  const letters = [
+    {
+      key: 'A',
+      shapes: [
+        '<path d="M18 132 L64 16 L108 132 L82 126 L73 101 L49 104 L39 132 Z" />',
+        '<path d="M54 79 L68 78 L61 48 Z" class="cut" />',
+        '<path d="M24 130 L9 152 L48 137 Z" class="slash" />',
+      ],
+    },
+    {
+      key: 'I',
+      shapes: [
+        '<path d="M126 28 L184 16 L178 44 L161 45 L151 112 L176 108 L170 134 L108 145 L115 116 L132 115 L142 49 L119 53 Z" />',
+        '<path d="M137 21 L188 2 L176 19 Z" class="slash" />',
+      ],
+    },
+    {
+      key: 'R',
+      shapes: [
+        '<path d="M202 133 L214 20 L268 14 Q307 18 300 54 Q296 78 266 89 L302 135 L264 130 L239 95 L234 137 Z" />',
+        '<path d="M241 42 L237 70 L260 68 Q277 65 279 53 Q281 39 262 38 Z" class="cut" />',
+        '<path d="M273 83 L315 78 L292 100 Z" class="slash" />',
+      ],
+    },
+    {
+      key: 'D',
+      shapes: [
+        '<path d="M318 134 L326 19 L383 16 Q442 21 439 72 Q435 127 377 136 Z" />',
+        '<path d="M357 43 L352 108 L378 105 Q405 101 407 73 Q410 43 382 40 Z" class="cut" />',
+      ],
+    },
+    {
+      key: 'O',
+      shapes: [
+        '<path d="M461 130 Q424 112 431 67 Q438 21 486 15 Q533 9 548 48 Q562 89 531 118 Q501 145 461 130 Z" />',
+        '<path d="M471 100 Q455 90 459 68 Q462 45 487 41 Q512 38 520 57 Q529 80 511 96 Q493 112 471 100 Z" class="cut" />',
+      ],
+    },
+    {
+      key: 'X',
+      shapes: [
+        '<path d="M548 134 L587 72 L562 23 L598 18 L612 48 L638 13 L678 18 L628 76 L662 136 L624 132 L604 99 L580 139 Z" />',
+        '<path d="M548 43 L526 24 L568 30 Z" class="slash" />',
+        '<path d="M650 127 L694 151 L636 141 Z" class="slash" />',
+      ],
+    },
+  ];
+  const visibleLetters = letters.slice(0, visibleLength);
+  const spread = Math.round(2 + density * 0.12);
+  const jitter = Math.round(glitch * 8);
+  const stroke = style === 'daumenkino' ? 7 : 5;
+
+  return `<svg class="graffiti-logo" viewBox="0 0 700 170" role="img" aria-label="AIRDOX graffiti mark">
+    <defs>
+      <filter id="roughen">
+        <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="${spread}" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="${spread}" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="paint-shadow">
+        <feDropShadow dx="${rgb * 0.18}" dy="0" stdDeviation="${1 + glitch * 2}" flood-color="#00f0ff" flood-opacity="0.72"/>
+        <feDropShadow dx="${rgb * -0.18}" dy="0" stdDeviation="${1 + glitch * 2}" flood-color="#ff00aa" flood-opacity="0.58"/>
+        <feDropShadow dx="0" dy="${4 + density * 0.05}" stdDeviation="2" flood-color="#000000" flood-opacity="0.65"/>
+      </filter>
+    </defs>
+    <g class="graffiti-shadow" transform="translate(${jitter}, 5)">${visibleLetters.map((letter) => `<g>${letter.shapes.join('')}</g>`).join('')}</g>
+    <g class="graffiti-main" filter="url(#paint-shadow) url(#roughen)" style="--logo-color:${color}; --logo-stroke:${stroke}px;">
+      ${visibleLetters.map((letter, index) => {
+        const y = index % 2 === 0 ? -2 : 4;
+        const r = (index - 2) * 1.6;
+        return `<g transform="translate(0 ${y}) rotate(${r} ${70 + index * 105} 85)">${letter.shapes.join('')}</g>`;
+      }).join('')}
+    </g>
+  </svg>`;
+}
+
+function getFrameHtml(frameIndex, options) {
+  const { style, controls, seed, setId, format, markStyle, markText } = options;
+  const size = FORMAT_SIZE[format] || FORMAT_SIZE.square;
+  const word = 'AIRDOX';
+  const visibleLength = style === 'flicker'
+    ? Math.min(word.length, Math.max(1, frameIndex + 1))
+    : word.length;
+  const beat = frameIndex === 0 || frameIndex === 4;
+  const energy = norm(controls.energy);
+  const motion = norm(controls.motion);
+  const glitch = norm(controls.glitch);
+  const colorShift = norm(controls.colorShift);
+  const strobe = norm(controls.strobe);
+  const depth = norm(controls.depth);
+  const typography = norm(controls.typography);
+  const density = norm(controls.density);
+  const scanlines = norm(controls.scanlines);
+  const grain = norm(controls.grain);
+  const cameraPush = norm(controls.cameraPush);
+  const kickScale = beat ? 1 + (energy * 0.42) : 1 + (motion * 0.08 * Math.sin(frameIndex));
+  const typeScale = 0.9 + (typography * 0.34) + (beat ? energy * 0.18 : 0);
+  const skew = Math.round((frameIndex % 2 === 0 ? 1 : -1) * (8 + glitch * 28));
+  const rotate = Math.round(Math.sin(frameIndex + seed) * (4 + motion * 10));
+  const rgb = Math.round(4 + colorShift * 34 + glitch * frameIndex * 3);
+  const flash = beat && strobe > 0.35;
+  const bg = flash && style === 'flicker' ? '#f5f8ff' : '#050608';
+  const fg = flash && style === 'flicker' ? '#050608' : '#f5f8ff';
+  const hoodieOpacity = style === 'daumenkino' ? 0.56 + depth * 0.28 : 0;
+  const polkaOpacity = style === 'daumenkino' ? 0.16 + density * 0.28 : 0.04 + density * 0.1;
+  const frameLabel = setId.replace(/[-_]/g, ' ').slice(0, 26).toUpperCase();
+  const safeMarkText = String(markText || 'AIRDOX').slice(0, 18).toUpperCase();
+  const logo = markStyle === 'graffiti' ? getGraffitiLogoSvg({
+    visibleLength,
+    color: fg,
+    rgb,
+    glitch,
+    density: controls.density,
+    style,
+  }) : '';
 
   return `<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Frame ${frameIndex}</title>
+  <title>AIRDOX Design Frame ${frameIndex}</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Sedgwick+Ave+Display&family=Space+Grotesk:wght@700&display=swap');
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      width: 800px;
-      height: 800px;
-      background-color: ${bg};
-      color: ${textColor};
-      font-family: 'Space Grotesk', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+      width: ${size.width}px;
+      height: ${size.height}px;
       overflow: hidden;
-      filter: ${invertFilter};
+      background: ${bg};
+      color: ${fg};
+      font-family: "Space Grotesk", Arial, sans-serif;
+      display: grid;
+      place-items: center;
+      position: relative;
     }
 
-    /* Scanline Grid simulation */
-    .scanlines {
+    body::before {
+      content: "";
+      position: absolute;
+      inset: -16%;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(0,240,255,${0.1 + colorShift * 0.22}), transparent 34%),
+        radial-gradient(circle at 48% 42%, rgba(154,223,107,${0.07 + energy * 0.18}), transparent 28%),
+        repeating-radial-gradient(circle at 50% 42%, rgba(245,248,255,${polkaOpacity}) 0 7px, transparent 8px 34px);
+      transform: scale(${1 + depth * 0.24 + cameraPush * frameIndex * 0.012}) rotate(${frameIndex * (2 + motion * 8)}deg);
+      filter: saturate(${1 + colorShift * 1.7}) contrast(${1 + density * 0.55});
+      opacity: ${style === 'liquid' ? 0.7 : 1};
+    }
+
+    body::after {
+      content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        rgba(18, 16, 16, 0) 50%, 
-        rgba(0, 0, 0, 0.35) 50%
-      ), linear-gradient(
-        90deg, 
-        rgba(255, 0, 0, 0.08), 
-        rgba(0, 255, 0, 0.03), 
-        rgba(0, 0, 255, 0.08)
-      );
-      background-size: 100% 6px, 8px 100%;
+      background:
+        linear-gradient(rgba(245,248,255,${scanlines * 0.13}) 50%, rgba(5,6,8,0) 50%),
+        radial-gradient(circle, transparent 0 62%, rgba(0,0,0,0.58) 100%);
+      background-size: 100% ${Math.max(3, Math.round(10 - scanlines * 6))}px, 100% 100%;
+      opacity: ${0.24 + scanlines * 0.56};
       pointer-events: none;
+      mix-blend-mode: screen;
+      z-index: 8;
+    }
+
+    .stage {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: grid;
+      place-items: center;
+      transform: scale(${kickScale});
+    }
+
+    .spray {
+      position: absolute;
+      width: ${Math.round(size.width * (0.58 + depth * 0.42))}px;
+      height: ${Math.round(size.width * (0.58 + depth * 0.42))}px;
+      border-radius: 50%;
+      background: conic-gradient(from ${frameIndex * 28}deg, rgba(0,240,255,0.8), rgba(255,0,170,0.45), rgba(154,223,107,0.65), rgba(0,240,255,0.8));
+      filter: blur(${26 + grain * 45}px);
+      opacity: ${0.08 + colorShift * 0.28 + energy * 0.12};
+      transform: translate(${Math.sin(frameIndex + seed) * 52 * motion}px, ${Math.cos(frameIndex) * 42 * motion}px);
+      z-index: 1;
+    }
+
+    .hoodie {
+      position: absolute;
+      width: ${Math.round(size.width * 0.34)}px;
+      height: ${Math.round(size.height * 0.44)}px;
+      bottom: ${Math.round(size.height * 0.18)}px;
+      left: 50%;
+      transform: translateX(-50%) scale(${1 + cameraPush * frameIndex * 0.018});
+      opacity: ${hoodieOpacity};
+      z-index: 2;
+      filter: grayscale(1) contrast(${1.2 + density}) drop-shadow(${rgb}px 0 rgba(0,240,255,0.45)) drop-shadow(-${rgb}px 0 rgba(255,0,170,0.36));
+    }
+
+    .hoodie::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 42% 42% 28% 28%;
+      background:
+        radial-gradient(circle at 42% 24%, #d6d6d6 0 5%, transparent 6%),
+        radial-gradient(circle at 58% 24%, #d6d6d6 0 4%, transparent 5%),
+        radial-gradient(ellipse at 50% 18%, #111 0 22%, transparent 23%),
+        linear-gradient(180deg, #2d3338 0 26%, #11161a 27% 100%);
+      clip-path: polygon(33% 2%, 66% 2%, 78% 22%, 74% 100%, 25% 100%, 21% 22%);
+    }
+
+    .waveform {
+      position: absolute;
+      left: ${format === 'square' ? '7%' : '8%'};
+      right: ${format === 'square' ? '7%' : '8%'};
+      bottom: ${format === 'square' ? '13%' : '19%'};
+      min-height: 82px;
+      display: flex;
+      align-items: end;
+      justify-content: center;
+      gap: ${Math.max(4, Math.round(12 - density * 7))}px;
+      opacity: ${0.2 + norm(controls.waveform) * 0.78};
       z-index: 5;
     }
 
-    /* Spray Paint Splatters in background */
-    .spray-paint {
-      position: absolute;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0, 240, 255, 0.65) 0%, rgba(255, 0, 170, 0.25) 50%, transparent 70%);
-      filter: blur(60px);
-      opacity: ${sprayOpacity};
-      pointer-events: none;
-      z-index: 1;
-      transform: translate(${Math.sin(frameIndex) * 100}px, ${Math.cos(frameIndex) * 100}px) scale(${scale});
-      transition: all 0.05s;
+    .waveform span {
+      width: ${Math.max(3, Math.round(10 - density * 5))}px;
+      border-radius: 999px 999px 2px 2px;
+      background: linear-gradient(180deg, #00f0ff, #9adf6b);
+      box-shadow: 0 0 18px rgba(0,240,255,0.4);
     }
 
-    /* Glitch text container */
-    .glitch-wrapper {
-      transform: scale(${scale}) skewX(${skew}deg) rotate(${rotation}deg);
-      transition: all 0.05s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 3;
-    }
-
-    .glitch-text {
-      font-family: '${activeFont}', cursive;
-      font-size: 150px; /* Massive size boost */
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 15px;
-      text-shadow: ${chromaticSplit};
-      filter: blur(${textBlur}px);
+    .type {
+      position: relative;
+      z-index: 6;
+      display: grid;
+      place-items: center;
+      gap: 18px;
       text-align: center;
-      line-height: 1.0;
-      white-space: nowrap;
+      transform: scale(${typeScale}) skewX(${skew}deg) rotate(${rotate}deg);
+      filter: drop-shadow(${rgb}px 0 rgba(0,240,255,${0.24 + glitch * 0.46})) drop-shadow(-${rgb}px 0 rgba(255,0,170,${0.18 + glitch * 0.42}));
     }
 
-    .glitch-subtitle {
-      font-family: 'Permanent Marker', cursive;
-      font-size: 32px;
-      letter-spacing: 4px;
-      color: #9adf6b;
-      margin-top: 30px;
+    .graffiti-logo {
+      width: ${format === 'square' ? '112%' : '124%'};
+      max-width: none;
+      overflow: visible;
+    }
+
+    .text-mark {
+      font-size: ${markStyle === 'minimal' ? '76px' : '118px'};
+      line-height: 0.9;
+      font-weight: ${markStyle === 'minimal' ? 700 : 800};
+      letter-spacing: ${markStyle === 'minimal' ? '0.08em' : '0'};
+      color: ${fg};
       text-transform: uppercase;
-      transform: rotate(-3deg);
-      text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      border: ${markStyle === 'block' ? `6px solid ${fg}` : '0'};
+      padding: ${markStyle === 'block' ? '14px 22px' : '0'};
+      background: ${markStyle === 'block' ? 'rgba(5,6,8,0.22)' : 'transparent'};
+      box-shadow: ${markStyle === 'block' ? `12px 12px 0 rgba(154,223,107,${0.25 + colorShift * 0.35})` : 'none'};
     }
 
-    /* Horizontal visual flash bar */
-    .glitch-bar {
+    .graffiti-main path {
+      fill: var(--logo-color);
+      stroke: rgba(5, 6, 8, 0.96);
+      stroke-width: var(--logo-stroke);
+      stroke-linejoin: round;
+      paint-order: stroke fill;
+    }
+
+    .graffiti-main .cut {
+      fill: #050608;
+      stroke: rgba(245,248,255,0.18);
+      stroke-width: 2px;
+    }
+
+    .graffiti-main .slash {
+      fill: #9adf6b;
+      stroke: rgba(5, 6, 8, 0.9);
+      stroke-width: 4px;
+    }
+
+    .graffiti-shadow path {
+      fill: rgba(0, 240, 255, 0.18);
+      stroke: rgba(255, 0, 170, 0.2);
+      stroke-width: 7px;
+    }
+
+    .type span {
+      max-width: 78%;
+      font-size: ${Math.round(14 + typography * 18)}px;
+      font-weight: 800;
+      letter-spacing: 0;
+      color: #9adf6b;
+      text-transform: uppercase;
+      text-shadow: 0 3px 18px rgba(0,0,0,0.68);
+    }
+
+    .glitch-slice {
       position: absolute;
       left: 0;
-      width: 100%;
-      height: ${barHeight}px;
-      top: ${barTop}px;
-      background: rgba(0, 240, 255, 0.25);
-      box-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
-      pointer-events: none;
+      right: 0;
+      top: ${Math.round((14 + frameIndex * 9) % 76)}%;
+      height: ${Math.round(18 + glitch * 90)}px;
+      background: rgba(0,240,255,${glitch * 0.28});
+      transform: translateX(${Math.sin(frameIndex) * glitch * 90}px);
+      box-shadow: 0 0 28px rgba(0,240,255,0.42);
+      opacity: ${glitch > 0.2 ? 1 : 0};
       z-index: 4;
     }
 
-    /* Framing brackets for retro visualizer look */
-    .brackets {
+    .data {
       position: absolute;
-      width: 740px;
-      height: 740px;
-      border: 4px dashed rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      pointer-events: none;
-      z-index: 2;
+      left: ${format === 'square' ? '34px' : '42px'};
+      right: ${format === 'square' ? '34px' : '42px'};
+      top: ${format === 'square' ? '28px' : '52px'};
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      color: rgba(245,248,255,0.64);
+      z-index: 7;
     }
 
-    .bracket-corner {
+    .safe {
       position: absolute;
-      width: 50px;
-      height: 50px;
-      border-color: ${style === 'flicker' ? textColor : '#00f0ff'};
-      border-style: solid;
-      border-width: 0;
-    }
-
-    .top-left { top: 30px; left: 30px; border-top-width: 6px; border-left-width: 6px; }
-    .top-right { top: 30px; right: 30px; border-top-width: 6px; border-right-width: 6px; }
-    .bottom-left { bottom: 30px; left: 30px; border-bottom-width: 6px; border-left-width: 6px; }
-    .bracket-corner.bottom-right { bottom: 30px; right: 30px; border-bottom-width: 6px; border-right-width: 6px; }
-
-    /* Realistic, organic shattered glass styling */
-    .glass-cracks {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 6;
+      inset: ${format === 'square' ? '30px' : '92px 42px 146px'};
+      border: 1px solid rgba(154,223,107,0.18);
+      border-radius: 18px;
+      z-index: 9;
+      opacity: ${format === 'square' ? 0.18 : 0.42};
     }
   </style>
 </head>
 <body>
-
-  <div class="scanlines"></div>
-  <div class="spray-paint"></div>
-  <div class="brackets"></div>
-  <div class="bracket-corner top-left"></div>
-  <div class="bracket-corner top-right"></div>
-  <div class="bracket-corner bottom-left"></div>
-  <div class="bracket-corner bottom-right"></div>
-
-  ${barHeight > 0 ? `<div class="glitch-bar"></div>` : ''}
-
-  <!-- STYLE-SPECIFIC RENDERING: DRAFT B FEATURES ORGANIC PHONE CRACKS, DRAFT A IS PURE TEXT -->
-  ${style === 'glitch' ? `
-    <!-- Frame 4: Impact happens at bottom-left corner (80, 720) -->
-    ${frameIndex === 4 ? `
-    <svg class="glass-cracks" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-      <!-- Jagged, lightning-like primary fractures shooting across the screen -->
-      <path d="M 80 720 L 150 630 L 120 540 L 240 460 L 320 380 L 290 260 L 480 180 L 650 120" stroke="#00f0ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="drop-shadow(0 0 8px rgba(0, 240, 255, 0.9))" />
-      <path d="M 80 720 L 220 680 L 340 640 L 480 610 L 620 530 L 780 490" stroke="#00f0ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="drop-shadow(0 0 6px rgba(0, 240, 255, 0.8))" />
-      <!-- Impact point dense fracture lines -->
-      <path d="M 80 720 L 95 650 L 130 590 M 80 720 L 140 700 M 80 720 L 50 660" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none" />
-      <path d="M 60 700 Q 80 670 110 690 Q 120 720 100 740 Z" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.8" />
-    </svg>
-    ` : ''}
-
-    <!-- Frame 5: Cracks spread further and add concentric shatter rings -->
-    ${frameIndex === 5 ? `
-    <svg class="glass-cracks" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-      <!-- Jagged primary fractures widen and turn magenta -->
-      <path d="M 80 720 L 150 630 L 120 540 L 240 460 L 320 380 L 290 260 L 480 180 L 650 120" stroke="#ff00aa" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="drop-shadow(0 0 12px rgba(255, 0, 170, 0.95))" />
-      <path d="M 80 720 L 220 680 L 340 640 L 480 610 L 620 530 L 780 490" stroke="#ff00aa" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="drop-shadow(0 0 10px rgba(255, 0, 170, 0.9))" />
-      <!-- New branch fracture -->
-      <path d="M 80 720 L 90 520 L 180 420 L 140 280 L 260 180 L 210 60" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.85" />
-      <!-- Dynamic Concentric Ring Cracks (Shockwaves from impact site) -->
-      <path d="M 40 680 Q 80 600 170 630 Q 200 720 130 770" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.8" />
-      <path d="M 20 640 Q 90 530 240 570 Q 290 710 180 790" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.6" />
-    </svg>
-    ` : ''}
-
-    <!-- Frame 6: Extreme phone shatter, complete chaotic glass breakup -->
-    ${frameIndex === 6 ? `
-    <svg class="glass-cracks" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 80 720 L 150 630 L 120 540 L 240 460 L 320 380 L 290 260 L 480 180 L 650 120" stroke="#00f0ff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="drop-shadow(0 0 16px rgba(0, 240, 255, 0.95))" />
-      <path d="M 80 720 L 220 680 L 340 640 L 480 610 L 620 530 L 780 490" stroke="#ff00aa" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="drop-shadow(0 0 14px rgba(255, 0, 170, 0.9))" />
-      <path d="M 80 720 L 90 520 L 180 420 L 140 280 L 260 180 L 210 60" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="drop-shadow(0 0 8px #fff)" />
-      <!-- Giant concentric shockwave rings -->
-      <path d="M 40 680 Q 80 600 170 630 Q 200 720 130 770" stroke="#ffffff" stroke-width="3" fill="none" opacity="0.9" />
-      <path d="M 20 640 Q 90 530 240 570 Q 290 710 180 790" stroke="#00f0ff" stroke-width="2.5" fill="none" opacity="0.8" />
-      <path d="M 0 580 Q 100 440 330 490 Q 380 700 220 800" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.6" />
-    </svg>
-    ` : ''}
-  ` : ''}
-
-  <div class="glitch-wrapper">
-    <div class="glitch-text">${currentText}</div>
-    <div class="glitch-subtitle">MAY 2026 #2</div>
+  <div class="stage">
+    <div class="spray"></div>
+    <div class="hoodie"></div>
+    <div class="glitch-slice"></div>
+    <div class="waveform">${buildBars(controls, frameIndex)}</div>
+    <div class="type">
+      ${markStyle === 'none' ? '' : (markStyle === 'graffiti' ? logo : `<strong class="text-mark">${safeMarkText}</strong>`)}
+      <span>${frameLabel}</span>
+    </div>
+    <div class="data">
+      <span>SEED ${seed}</span>
+      <span>${getStyleName(style).toUpperCase()}</span>
+      <span>FRAME ${String(frameIndex + 1).padStart(2, '0')}</span>
+    </div>
+    <div class="safe"></div>
   </div>
-
 </body>
-</html>
-`;
+</html>`;
 }
 
-// Executes a shell command and returns stdout
-function runCmd(command) {
+function runCmd(file, args) {
   return new Promise((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => {
-      if (error) reject(error);
-      else resolve(stdout.trim());
+    execFile(file, args, (error, stdout, stderr) => {
+      if (error) {
+        error.message = `${error.message}\n${stderr}`;
+        reject(error);
+        return;
+      }
+      resolve(stdout.trim());
     });
   });
 }
 
 async function main() {
-  const style = process.argv[2] || 'flicker';
-  OUTPUT_GIF_PATH = path.join(WORKSPACE_DIR, 'release', `daumenkino_${style}.gif`);
-  OUTPUT_MP4_PATH = path.join(WORKSPACE_DIR, 'release', `daumenkino_${style}.mp4`);
+  const options = parsePayload();
+  const size = FORMAT_SIZE[options.format] || FORMAT_SIZE.square;
+  const outputBase = options.outputSlug || slugify(`${options.presetId || options.style}_${options.markText || 'mark'}`);
+  const outputGifPath = path.join(WORKSPACE_DIR, 'release', `${outputBase}.gif`);
+  const outputMp4Path = path.join(WORKSPACE_DIR, 'release', `${outputBase}.mp4`);
+  const manifestPath = path.join(WORKSPACE_DIR, 'release', `${outputBase}.manifest.json`);
+  const handoffPath = path.join(WORKSPACE_DIR, 'release', `${outputBase}.handoff.md`);
+  const photoshopFramePath = path.join(WORKSPACE_DIR, 'release', `${outputBase}.photoshop-frame.png`);
+  const photoshopScriptPath = path.join(WORKSPACE_DIR, 'release', `${outputBase}.photoshop-setup.jsx`);
 
-  console.log(`=== AIRDOX Daumenkino Generator ===`);
-  console.log(`Stil: ${style === 'flicker' ? 'Beat-Flicker Strobo (knallt rein!)' : 'RGB Glitch Loop (beatgesteuert hammer!)'}`);
+  console.log('=== AIRDOX Daumenkino Generator ===');
+  console.log(`Stil: ${getStyleName(options.style)}`);
+  console.log(`Format: ${options.format} ${size.width}x${size.height}, FPS: ${options.fps}`);
+  console.log(`Controls: energy=${options.controls.energy}, motion=${options.controls.motion}, glitch=${options.controls.glitch}, type=${options.controls.typography}`);
 
-  // Create temporary directory
   await fs.mkdir(TEMP_DIR, { recursive: true });
 
-  console.log('1. Generiere 8 beat-synchrone HTML-Einzel-Frames...');
-  for (let i = 0; i < 8; i++) {
-    const html = getFrameHtml(i, style);
-    await fs.writeFile(path.join(TEMP_DIR, `frame_${i}.html`), html, 'utf8');
+  console.log('1. Generiere 8 parametrisierte HTML-Einzel-Frames...');
+  for (let index = 0; index < 8; index += 1) {
+    const html = getFrameHtml(index, options);
+    await fs.writeFile(path.join(TEMP_DIR, `frame_${index}.html`), html, 'utf8');
   }
 
-  console.log('2. Starte Headless-Chromium und fotografiere Frames in 800x800px...');
+  console.log(`2. Starte Headless-Chromium und fotografiere Frames in ${size.width}x${size.height}px...`);
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
-  await page.setViewportSize({ width: 800, height: 800 });
+  await page.setViewportSize(size);
 
-  for (let i = 0; i < 8; i++) {
-    const frameHtmlPath = path.join(TEMP_DIR, `frame_${i}.html`);
+  for (let index = 0; index < 8; index += 1) {
+    const frameHtmlPath = path.join(TEMP_DIR, `frame_${index}.html`);
     await page.goto(`file://${frameHtmlPath}`);
     await page.evaluate(() => document.fonts.ready);
     await page.screenshot({
-      path: path.join(TEMP_DIR, `frame_${i}.png`),
-      type: 'png'
+      path: path.join(TEMP_DIR, `frame_${index}.png`),
+      type: 'png',
     });
-    process.stdout.write(`   [Frame ${i}/7] fotografiert.\n`);
+    process.stdout.write(`   [Frame ${index}/7] fotografiert.\n`);
   }
   await browser.close();
 
   console.log('3. Kompiliere GIF & MP4 via FFmpeg...');
-  
-  // Clean up old output
-  try { await fs.unlink(OUTPUT_GIF_PATH); } catch {}
-  try { await fs.unlink(OUTPUT_MP4_PATH); } catch {}
 
-  // FFmpeg command to compile 12 FPS loopable animated GIF
-  const gifCmd = `ffmpeg -y -framerate 12 -i "${path.join(TEMP_DIR, 'frame_%d.png')}" -vf "scale=800:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" "${OUTPUT_GIF_PATH}"`;
-  // FFmpeg command to compile 12 FPS loopable H.264 MP4
-  const mp4Cmd = `ffmpeg -y -framerate 12 -i "${path.join(TEMP_DIR, 'frame_%d.png')}" -c:v libx264 -pix_fmt yuv420p -vf "scale=800:800" "${OUTPUT_MP4_PATH}"`;
+  try { await fs.unlink(outputGifPath); } catch {}
+  try { await fs.unlink(outputMp4Path); } catch {}
+  try { await fs.unlink(manifestPath); } catch {}
+  try { await fs.unlink(handoffPath); } catch {}
+  try { await fs.unlink(photoshopFramePath); } catch {}
+  try { await fs.unlink(photoshopScriptPath); } catch {}
 
-  console.log('   Kompiliere GIF...');
-  await runCmd(gifCmd);
-  console.log('   Kompiliere MP4...');
-  await runCmd(mp4Cmd);
+  const framePattern = path.join(TEMP_DIR, 'frame_%d.png');
+  await runCmd('ffmpeg', [
+    '-y',
+    '-framerate',
+    String(options.fps),
+    '-i',
+    framePattern,
+    '-vf',
+    `scale=${size.width}:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse`,
+    outputGifPath,
+  ]);
+  console.log('   GIF kompiliert.');
 
-  // Cleanup temp files
+  await runCmd('ffmpeg', [
+    '-y',
+    '-framerate',
+    String(options.fps),
+    '-i',
+    framePattern,
+    '-c:v',
+    'libx264',
+    '-pix_fmt',
+    'yuv420p',
+    '-vf',
+    `scale=${size.width}:${size.height}`,
+    outputMp4Path,
+  ]);
+  console.log('   MP4 kompiliert.');
+
+  await fs.copyFile(path.join(TEMP_DIR, 'frame_0.png'), photoshopFramePath);
+
+  const [gifStat, mp4Stat] = await Promise.all([fs.stat(outputGifPath), fs.stat(outputMp4Path)]);
+  const score = getScore(options.controls);
+  const manifest = {
+    createdAt: new Date().toISOString(),
+    agent: 'Designer',
+    packageId: `${outputBase}-${Date.now()}`,
+    setId: options.setId,
+    presetId: options.presetId || '',
+    style: options.style,
+    styleLabel: getStyleName(options.style),
+    markText: options.markText,
+    markStyle: options.markStyle,
+    photoshopAction: options.photoshopAction || 'script_and_launch',
+    graffitiStyles: options.graffitiStyles || [],
+    mode: options.mode || 'auto',
+    format: options.format,
+    size,
+    fps: options.fps,
+    seed: options.seed,
+    controls: options.controls,
+    score,
+    prompt: options.prompt || '',
+    handoffNotes: buildHandoffNotes(options, score),
+    files: {
+      gif: outputGifPath,
+      mp4: outputMp4Path,
+      manifest: manifestPath,
+      handoff: handoffPath,
+      photoshopFrame: photoshopFramePath,
+      photoshopScript: options.photoshopAction === 'prompt_only' ? '' : photoshopScriptPath,
+    },
+    fileSizes: {
+      gifBytes: gifStat.size,
+      mp4Bytes: mp4Stat.size,
+    },
+  };
+
+  await fs.writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+  if (options.photoshopAction !== 'prompt_only') {
+    await fs.writeFile(photoshopScriptPath, [
+    '#target photoshop',
+    'app.displayDialogs = DialogModes.NO;',
+    `var sourceFile = new File(${JSON.stringify(photoshopFramePath.replace(/\\/g, '/'))});`,
+    `var handoffFile = new File(${JSON.stringify(handoffPath.replace(/\\/g, '/'))});`,
+    'var doc = app.open(sourceFile);',
+    `doc.info.title = ${JSON.stringify(`AIRDOX ${manifest.styleLabel} - ${manifest.setId}`)};`,
+    `doc.info.caption = ${JSON.stringify((options.prompt || '').slice(0, 1800))};`,
+    `doc.guides.add(Direction.VERTICAL, UnitValue(${Math.round(size.width * 0.08)}, "px"));`,
+    `doc.guides.add(Direction.VERTICAL, UnitValue(${Math.round(size.width * 0.92)}, "px"));`,
+    `doc.guides.add(Direction.HORIZONTAL, UnitValue(${Math.round(size.height * 0.08)}, "px"));`,
+    `doc.guides.add(Direction.HORIZONTAL, UnitValue(${Math.round(size.height * 0.92)}, "px"));`,
+    'var textLayer = doc.artLayers.add();',
+    'textLayer.kind = LayerKind.TEXT;',
+    'textLayer.name = "Designer Notes";',
+    `textLayer.textItem.contents = ${JSON.stringify([
+      'Designer Finish',
+      `Score ${score.total}/100`,
+      'Refine crop, typography, contrast, safe area.',
+      `Handoff: ${handoffPath}`,
+    ].join('\\r'))};`,
+    'textLayer.textItem.size = 22;',
+    'textLayer.textItem.position = [36, 52];',
+    ...buildPhotoshopVariantScript(options, score, handoffPath),
+    'doc.activeLayer = textLayer;',
+  ].join('\n'), 'utf8');
+  }
+  await fs.writeFile(handoffPath, [
+    `# AIRDOX Designer Handoff - ${manifest.styleLabel}`,
+    '',
+    `Set: ${manifest.setId}`,
+    `Format: ${manifest.format} ${size.width}x${size.height}, ${manifest.fps} FPS`,
+    `Score: ${score.total}/100`,
+    '',
+    '## Dateien',
+    `- GIF: ${outputGifPath}`,
+    `- MP4: ${outputMp4Path}`,
+    `- Manifest: ${manifestPath}`,
+    `- Photoshop Frame: ${photoshopFramePath}`,
+    `- Photoshop Setup JSX: ${options.photoshopAction === 'prompt_only' ? 'nicht erzeugt (Prompt-only)' : photoshopScriptPath}`,
+    '',
+    '## Notizen',
+    ...manifest.handoffNotes.map((note) => `- ${note}`),
+    '',
+    '## Photoshop Script Import',
+    'Primaerer Weg: Photoshop ueber das JSX-Skript starten. Das Skript oeffnet den Hero-Frame, setzt Metadaten, Safe-Area-Guides, eine Designer-Notiz und Graffiti-Varianten-Gruppen.',
+    '',
+    `Aktion: ${options.photoshopAction}`,
+    `Skript: ${options.photoshopAction === 'prompt_only' ? 'nicht erzeugt' : photoshopScriptPath}`,
+    `Graffiti-Styles: ${(options.graffitiStyles || []).map((entry) => GRAFFITI_STYLE_LABELS[entry] || entry).join(', ') || 'Standard'}`,
+    '',
+    '## Graffiti-Auftraege',
+    ...(options.graffitiStyles || []).map((entry) => `- ${getGraffitiPrompt(entry, options.markText, options.controls)}`),
+    '',
+    '## Prompt Vorlage',
+    'Falls der Skriptimport nicht genutzt werden soll, diese Vorlage manuell in Photoshop/Generative Fill/Design-Briefing verwenden:',
+    '',
+    [
+      `AIRDOX ${manifest.styleLabel} fuer ${manifest.setId}.`,
+      `Format ${manifest.format} ${size.width}x${size.height}, ${manifest.fps} FPS, Seed ${manifest.seed}.`,
+      `Look: Motion ${options.controls.motion}, Energy ${options.controls.energy}, Glitch ${options.controls.glitch}, Typography ${options.controls.typography}, Depth ${options.controls.depth}, Waveform ${options.controls.waveform}.`,
+      `Marke: ${options.markStyle === 'none' ? 'keine feste Marke' : `${options.markText} als ${options.markStyle}`}.`,
+      'Ziel: professionelles Club-Social-Asset mit starkem First Frame, lesbarer AIRDOX-Typo, sauberer Safe Area und exportfaehigem Loop-Handoff.',
+    ].join(' '),
+    '',
+    '## Brief',
+    manifest.prompt || '(kein Brief uebergeben)',
+    '',
+  ].join('\n'), 'utf8');
+  console.log(`   Manifest geschrieben: ${manifestPath}`);
+  console.log(`   Handoff geschrieben: ${handoffPath}`);
+  console.log(`   Photoshop-Handoff geschrieben: ${photoshopFramePath}`);
+  if (options.photoshopAction !== 'prompt_only') console.log(`   Photoshop-JSX geschrieben: ${photoshopScriptPath}`);
+
   try {
     const files = await fs.readdir(TEMP_DIR);
-    for (const file of files) {
-      await fs.unlink(path.join(TEMP_DIR, file));
-    }
+    await Promise.all(files.map((file) => fs.unlink(path.join(TEMP_DIR, file))));
     await fs.rmdir(TEMP_DIR);
   } catch {}
 
-  console.log('\n🎉 DAUMENKINO RENDER SUCCESSFUL!');
-  console.log(`🎠 Loopable GIF: ${OUTPUT_GIF_PATH}`);
-  console.log(`🎬 Loopable MP4: ${OUTPUT_MP4_PATH}`);
+  console.log('');
+  console.log('DAUMENKINO RENDER SUCCESSFUL');
+  console.log(`Loopable GIF: ${outputGifPath}`);
+  console.log(`Loopable MP4: ${outputMp4Path}`);
+  console.log(`Manifest: ${manifestPath}`);
+  console.log(`Handoff: ${handoffPath}`);
+  console.log(`Photoshop Frame: ${photoshopFramePath}`);
+  console.log(`Photoshop JSX: ${options.photoshopAction === 'prompt_only' ? 'nicht erzeugt' : photoshopScriptPath}`);
 }
 
-main().catch(console.error);
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

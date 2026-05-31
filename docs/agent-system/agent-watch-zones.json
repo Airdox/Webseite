@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "controller": "Master Controller",
+  "rule": "Agents watch their zones, but internal work starts only after Orchestrator ordering. External live actions always require personal user approval.",
+  "zones": [
+    {
+      "id": "daumenkino-reference-system",
+      "primaryAgent": "Designer",
+      "reviewAgents": [
+        "Manni",
+        "Guardian"
+      ],
+      "paths": [
+        "scratch/daumenkino-contact/**",
+        "scratch/daumenkino-contact-sheet.jpg",
+        "public/brand-assets/daumenkino/**",
+        "docs/agent-system/social-auto-output/daumenkino-preview/**",
+        "scripts/render-daumenkino*.mjs",
+        "scripts/photoshop-export-daumenkino*.jsx",
+        "scripts/photoshop-export-portrait-cutout.jsx"
+      ],
+      "wakeAction": "Designer must inspect new references, update style/letterform candidates, and request Orchestrator approval for prototype work."
+    },
+    {
+      "id": "social-promotion-pipeline",
+      "primaryAgent": "Manni",
+      "reviewAgents": [
+        "Designer",
+        "Audience Intelligence",
+        "Guardian"
+      ],
+      "paths": [
+        "docs/agent-system/SOCIAL_*.md",
+        "docs/agent-system/manni-*",
+        "docs/agent-system/social-auto-output/**",
+        "scripts/social-*.mjs"
+      ],
+      "wakeAction": "Manni prepares campaign/draft intent; Designer and Guardian review before user preview."
+    },
+    {
+      "id": "website-experience",
+      "primaryAgent": "Webbie",
+      "reviewAgents": [
+        "Designer",
+        "Guardian",
+        "Audience Intelligence"
+      ],
+      "paths": [
+        "src/components/**",
+        "src/styles/**",
+        "src/App.jsx",
+        "src/data/musicSets.js",
+        "public/assets/**"
+      ],
+      "wakeAction": "Webbie owns behavior and UX; Guardian requires tests/build, Designer reviews visible design impact."
+    },
+    {
+      "id": "flightdeck-desktop",
+      "primaryAgent": "Winnie",
+      "reviewAgents": [
+        "Designer",
+        "Guardian"
+      ],
+      "paths": [
+        "desktop/**",
+        "src/desktop/**",
+        "desktop.html",
+        "scripts/desktop-*.ps1",
+        "scripts/build-win-installer.ps1",
+        "scripts/install-win-tool.ps1"
+      ],
+      "wakeAction": "Winnie owns local workflow and UI; Guardian requires logic/E2E proof for changed entry points."
+    },
+    {
+      "id": "quality-and-orchestration",
+      "primaryAgent": "Guardian",
+      "reviewAgents": [
+        "Master Controller",
+        "Repository",
+        "Mentor"
+      ],
+      "paths": [
+        "docs/agent-system/job-catalog.json",
+        "docs/agent-system/agent-routing-rules.json",
+        "docs/agent-system/agent-watch-zones.json",
+        "scripts/agent-*.mjs",
+        "scripts/*quality*.mjs",
+        "package.json",
+        "vitest.config.js",
+        "playwright.config.js"
+      ],
+      "wakeAction": "Guardian validates job specs, gates, and test obligations; Master Controller resolves conflicts."
+    },
+    {
+      "id": "knowledge-and-learning",
+      "primaryAgent": "Mentor",
+      "reviewAgents": [
+        "Master Controller"
+      ],
+      "paths": [
+        "airdoX_wiki/**",
+        "docs/agent-system/DECISION_LOG.md",
+        "docs/agent-system/OPERATING_MODEL.md",
+        "docs/agent-system/ORCHESTRATION_WORKFLOW.md",
+        "docs/agent-system/*SUMMARY*.md"
+      ],
+      "wakeAction": "Mentor converts repeated failures and accepted rules into durable wiki/runbook knowledge."
+    }
+  ]
+}

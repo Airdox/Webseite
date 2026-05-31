@@ -13,6 +13,7 @@ export default defineConfig([
     'node_modules',
     'playwright-report',
     'release',
+    'scripts/photoshop-export-*.jsx',
     'test-results',
   ]),
   {

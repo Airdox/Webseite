@@ -4,6 +4,7 @@ import {
   insertOrReplaceSet,
   parseDateHint,
   parseTracklistText,
+  resolveUniqueSetDraftIdentity,
   serializeSetsModule,
 } from '../lib/setManifest.js';
 
@@ -311,6 +312,20 @@ describe('setManifest helpers', () => {
       file: 'recording_2026_05_02-3.mp3',
       titleNeedsReview: false,
     });
+  });
+
+  it('keeps a manually edited title when resolving a generated import identity', () => {
+    const resolved = resolveUniqueSetDraftIdentity({
+      id: 'recording_2026_05_24',
+      generatedBaseId: 'recording_2026_05_24',
+      generatedBaseTitle: 'AIRDOX SET',
+      title: '...immer wieder Pfingsten!!!',
+      file: 'recording_2026_05_24.mp3',
+      isNew: true,
+    });
+
+    expect(resolved.title).toBe('...immer wieder Pfingsten!!!');
+    expect(resolved.generatedBaseTitle).toBe('...immer wieder Pfingsten!!!');
   });
 
   it('uses default vinyl cover when no custom cover is provided', () => {

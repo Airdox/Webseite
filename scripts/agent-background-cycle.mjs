@@ -41,7 +41,11 @@ const steps = [
 ];
 
 const jobStatus = runDeep ? 'deep' : 'standard';
-steps.push(runNpmStep('agent-jobs-run', 'agent:jobs:run', ['--', '--event=scheduled_background', `--status=${jobStatus}`]));
+steps.push(runNpmStep('agent-routing-review', 'agent:route:write'));
+steps.push(runNpmStep('agent-quality-chain', 'agent:quality-chain:write'));
+steps.push(runNpmStep('agent-jobs-run', 'agent:jobs:run', ['--', '--event=scheduled_background', `--status=${jobStatus}`, '--continue-on-error']));
+steps.push(runNpmStep('agent-dependency-radar', 'agent:dependencies:write'));
+steps.push(runNpmStep('agent-system-health', 'agent:system:health'));
 
 const failed = steps.filter((step) => !step.ok);
 const summary = {

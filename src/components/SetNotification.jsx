@@ -1,12 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { sets } from '../data/musicSets';
 import './SetNotification.css';
-import { t } from '../utils/i18n';
+import { getCurrentLocale, t } from '../utils/i18n';
 import { buildSetAnchorId, buildSetHash, scrollToSetAnchor } from '../lib/set-links';
+
+const DE_MONTH_TOKEN_MAP = {
+    MAY: 'MAI',
+    OCT: 'OKT',
+    DEC: 'DEZ'
+};
+
+const formatSetDateLabel = (rawDate = '') => {
+    const value = String(rawDate || '').trim();
+    if (!value || getCurrentLocale() !== 'de') return value;
+
+    const parts = value.split(/\s+/);
+    const firstToken = parts[0]?.replace('.', '').toUpperCase();
+    if (DE_MONTH_TOKEN_MAP[firstToken]) {
+        parts[0] = DE_MONTH_TOKEN_MAP[firstToken];
+        return parts.join(' ');
+    }
+    return value;
+};
 
 const SetNotification = () => {
     const [visible, setVisible] = useState(false);
     const latestSet = sets.find(s => s.isNew) || sets[0];
+    const dateLabel = formatSetDateLabel(latestSet.date);
 
     useEffect(() => {
         const showTimer = setTimeout(() => setVisible(true), 2000);
@@ -41,7 +61,7 @@ const SetNotification = () => {
                     <div className="set-info">
                         <div className="set-badge">{t('notification.badge')}</div>
                         <div className="set-title">{latestSet.title}</div>
-                        <div className="set-date">{latestSet.date}</div>
+                        <div className="set-date">{dateLabel}</div>
                     </div>
                 </button>
                 <button type="button" className="set-close" onClick={() => setVisible(false)} aria-label={t('notification.close')}>×</button>

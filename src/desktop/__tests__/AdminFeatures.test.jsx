@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import AdvancedAnalyticsTab from '../components/AdvancedAnalyticsTab';
 import AdvancedSettingsTab from '../components/AdvancedSettingsTab';
@@ -105,6 +105,25 @@ describe('Advanced Analytics Tab', () => {
       filters: expect.objectContaining({ country: 'DE', eventType: 'play' }),
     }));
   });
+
+  it('applies date presets and exports the analytics report action', () => {
+    const onRefresh = vi.fn();
+    const onExport = vi.fn();
+    const { getByRole, getAllByRole } = render(
+      <AdvancedAnalyticsTab {...defaultProps} onRefresh={onRefresh} onExport={onExport} />,
+    );
+
+    fireEvent.click(getByRole('button', { name: /^Alles$/i }));
+    fireEvent.change(getAllByRole('combobox')[1], { target: { value: 'mobile' } });
+    fireEvent.click(getAllByRole('button', { name: /Filter anwenden/i })[0]);
+    fireEvent.click(getByRole('button', { name: /Bericht/i }));
+
+    expect(onRefresh).toHaveBeenCalledWith(expect.objectContaining({
+      startDate: '2000-01-01',
+      filters: expect.objectContaining({ deviceType: 'mobile' }),
+    }));
+    expect(onExport).toHaveBeenCalledWith('analytics-report');
+  });
 });
 
 describe('Advanced Settings Tab', () => {
@@ -142,14 +161,38 @@ describe('Advanced Settings Tab', () => {
     expect(getByText(/Core Automation/)).toBeTruthy();
   });
 
-  it('calls onSave when save button is clicked', async () => {
+  it('enables save after a setting changes and submits the full updated settings payload', async () => {
     const onSave = vi.fn();
-    const { getByRole } = render(
+    const { getByLabelText, getByRole } = render(
       <AdvancedSettingsTab {...defaultProps} onSave={onSave} />,
     );
     const saveBtn = getByRole('button', { name: /Speichern/ });
+    expect(saveBtn).toBeDisabled();
+
+    fireEvent.change(getByLabelText(/Deploy Strategy/i), { target: { value: 'manual' } });
+    expect(saveBtn).not.toBeDisabled();
+
     fireEvent.click(saveBtn);
-    // Note: should call after detecting changes
+    expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
+      deployStrategy: 'manual',
+      workspaceRoot: '/home/user/workspace',
+      buildCommand: 'npm run build',
+    }));
+    await waitFor(() => expect(saveBtn).toBeDisabled());
+  });
+
+  it('calls reset and restores local dirty state controls', () => {
+    const onReset = vi.fn();
+    const { getByLabelText, getByRole } = render(
+      <AdvancedSettingsTab {...defaultProps} onReset={onReset} />,
+    );
+
+    fireEvent.change(getByLabelText(/Theme/i), { target: { value: 'light' } });
+    expect(getByRole('button', { name: /Speichern/ })).not.toBeDisabled();
+
+    fireEvent.click(getByRole('button', { name: /Zurücksetzen/ }));
+    expect(onReset).toHaveBeenCalledTimes(1);
+    expect(getByRole('button', { name: /Speichern/ })).toBeDisabled();
   });
 });
 
@@ -267,6 +310,20 @@ describe('System Monitor Tab', () => {
     const refreshBtn = getByRole('button', { name: /Aktualisieren/ });
     fireEvent.click(refreshBtn);
     expect(onRefresh).toHaveBeenCalled();
+  });
+
+  it('calls cache cleanup and optimization commands', () => {
+    const onClearCache = vi.fn();
+    const onOptimize = vi.fn();
+    const { getByRole } = render(
+      <SystemMonitorTab {...defaultProps} onClearCache={onClearCache} onOptimize={onOptimize} />,
+    );
+
+    fireEvent.click(getByRole('button', { name: /Cache löschen/ }));
+    fireEvent.click(getByRole('button', { name: /Optimieren/ }));
+
+    expect(onClearCache).toHaveBeenCalledTimes(1);
+    expect(onOptimize).toHaveBeenCalledTimes(1);
   });
 
   it('shows warnings when system is under stress', () => {

@@ -242,6 +242,33 @@ describe('MusicSection Synchronisation', () => {
         });
     }, 15000);
 
+    it('schaltet den mobilen Vinyl-Animationsmodus zuverlässig um', async () => {
+        const { container } = render(
+            <AudioProvider>
+                <MusicSection />
+            </AudioProvider>
+        );
+
+        await waitFor(() => {
+            expect(container.querySelector('.set-card[data-set-id="test-set-1"]')).toBeTruthy();
+        });
+        const card = container.querySelector('.set-card[data-set-id="test-set-1"]');
+        const modeSwitch = await screen.findByRole('switch', { name: /music.animation.label/i });
+
+        expect(card).toHaveAttribute('data-animation-mode', 'billiard');
+        expect(modeSwitch).toHaveAttribute('aria-checked', 'true');
+
+        fireEvent.click(modeSwitch);
+
+        expect(card).toHaveAttribute('data-animation-mode', 'trainer');
+        expect(modeSwitch).toHaveAttribute('aria-checked', 'false');
+
+        fireEvent.click(modeSwitch);
+
+        expect(card).toHaveAttribute('data-animation-mode', 'billiard');
+        expect(modeSwitch).toHaveAttribute('aria-checked', 'true');
+    });
+
     it('tracks the canonical share event when a set link is copied', async () => {
         Object.defineProperty(navigator, 'clipboard', {
             configurable: true,

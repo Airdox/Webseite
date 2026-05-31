@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "currency": "EUR",
+  "privacyMode": "consented-aggregate",
+  "measurementWindowDays": 30,
+  "eventValues": {
+    "contact_submit": 250,
+    "booking_click": 75,
+    "newsletter_signup": 12,
+    "epk_download": 35,
+    "set_complete": 5,
+    "share_click": 3,
+    "copy_link": 3,
+    "return_visit": 2,
+    "set_play": 1.5,
+    "tracklist_open": 1,
+    "external_social_click": 1,
+    "route_view": 0.05
+  },
+  "monthlyCosts": {
+    "hosting": 0,
+    "tools": 0,
+    "paidMedia": 0,
+    "manualProduction": 0
+  },
+  "agentCostRates": {
+    "Webbie": 0,
+    "Manni": 0,
+    "Designer": 0,
+    "Audience Intelligence": 0,
+    "Guardian": 0,
+    "Master Controller": 0
+  },
+  "conversionTargets": {
+    "bookingIntentRate": 0.02,
+    "newsletterRate": 0.04,
+    "engagedPlayRate": 0.12,
+    "contactRate": 0.005
+  },
+  "notes": [
+    "Values are planning weights until real booking revenue, costs, and campaign exports are entered.",
+    "Do not store personal data in profitability reports; aggregate events only.",
+    "Set costs above zero before using ROI as a real business decision metric."
+  ]
+}

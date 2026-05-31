@@ -3,9 +3,9 @@ import { useAudio } from '../contexts/AudioContext';
 import { sets } from '../data/musicSets';
 import { partitionSetsByAccess } from '../lib/set-access';
 import { t } from '../utils/i18n';
+import { buildApiUrl, readApiJson } from '../utils/apiResponse';
 import './VIPSection.css';
 
-const API_BASE = (import.meta.env.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
 const { vipSets } = partitionSetsByAccess(sets);
 
 const parseTrackTimeToSeconds = (value = '') => {
@@ -58,12 +58,12 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
     const validateToken = async (token) => {
         setValidatingSession(true);
         try {
-            const response = await fetch(`${API_BASE}/api/auth`, {
+            const response = await fetch(buildApiUrl('/api/auth'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: 'validate', token }),
             });
-            const result = await response.json();
+            const result = await readApiJson(response);
 
             if (response.ok && result.ok) {
                 setUser(result.user);

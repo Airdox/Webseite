@@ -20,6 +20,7 @@ Mentor sorgt dafür, dass wiederkehrende Fehler nicht nur repariert, sondern in 
 - Ein Fehler gilt erst als verarbeitet, wenn es einen reproduzierbaren Check oder eine dokumentierte Ausnahme gibt.
 - Manuelle Entscheidungen müssen Datum, Auslöser, Agent, Risiko und erwartete Folgeprüfung nennen.
 - Lokale Wiki-Einträge sind hilfreich, aber versionierte Runbooks haben Vorrang für CI und Review.
+- Agenten-Niveau wird nach dem tiefen Level-Up-Plan bewertet: `docs/agent-system/MENTOR_AGENT_LEVEL_UP_PLAN_2026-05-27.md`.
 
 ## Typische Auslöser
 

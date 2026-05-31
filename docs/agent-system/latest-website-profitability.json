@@ -1,0 +1,69 @@
+{
+  "generatedAt": "2026-05-31T16:29:33.537Z",
+  "agent": "audience-intelligence",
+  "model": {
+    "currency": "EUR",
+    "measurementWindowDays": 30,
+    "privacyMode": "consented-aggregate"
+  },
+  "summary": {
+    "eventSource": null,
+    "totalRawEvents": 0,
+    "totalConsentedEvents": 0,
+    "rejectedEvents": 0,
+    "privacyRejectedEvents": 0,
+    "estimatedGrossValue": 0,
+    "totalCost": 0,
+    "estimatedNetValue": 0,
+    "roi": null,
+    "profitabilityStatus": "no_measurement_data",
+    "funnel": {
+      "routeViews": 0,
+      "setPlays": 0,
+      "newsletterSignups": 0,
+      "bookingClicks": 0,
+      "contactSubmits": 0
+    },
+    "conversionRates": {
+      "engagedPlayRate": 0,
+      "newsletterRate": 0,
+      "bookingIntentRate": 0,
+      "contactRate": 0
+    },
+    "valueByEvent": [],
+    "valueByRoute": [],
+    "valueByCampaign": [],
+    "supportedEvents": [
+      "contact_submit",
+      "booking_click",
+      "newsletter_signup",
+      "epk_download",
+      "set_complete",
+      "share_click",
+      "copy_link",
+      "return_visit",
+      "set_play",
+      "video_play",
+      "tracklist_open",
+      "deep_scroll",
+      "external_social_click",
+      "cta_view",
+      "section_view",
+      "route_view"
+    ]
+  },
+  "recommendations": [
+    {
+      "priority": "high",
+      "owner": "Webbie",
+      "title": "Enable consented website event export",
+      "action": "Verify route_view, set_play, newsletter_signup, booking_click, contact_submit, and epk_download reach the audience event store."
+    },
+    {
+      "priority": "high",
+      "owner": "Audience Intelligence",
+      "title": "Do not optimize ROI without data",
+      "action": "Keep the profitability status as no_measurement_data until at least one consented event source exists."
+    }
+  ]
+}

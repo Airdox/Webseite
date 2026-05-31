@@ -85,10 +85,10 @@ state.json
 docs/agent-system/social-auto-output/
 docs/agent-system/download.png
 .codex-devserver/
+.codex-remote-attachments/
 # Python cache
 __pycache__/
 *.py[cod]
 
 # Local idea directories
 daumenkino_idee/
-

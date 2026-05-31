@@ -13,6 +13,15 @@ import SetCard from './SetCard';
 import { parseTrackTimeToSeconds } from '../utils/timeUtils';
 
 const { publicSets } = partitionSetsByAccess(sets);
+const ANIMATION_MODE_STORAGE_KEY = 'airdox_set_animation_modes';
+
+const readAnimationModes = () => {
+    try {
+        return JSON.parse(localStorage.getItem(ANIMATION_MODE_STORAGE_KEY) || '{}');
+    } catch {
+        return {};
+    }
+};
 
 const MusicSection = () => {
     const {
@@ -25,6 +34,8 @@ const MusicSection = () => {
         seek,
         setPlaylist
     } = useAudio();
+    const [animationModes, setAnimationModes] = useState(readAnimationModes);
+    const activeAnimationMode = animationModes[currentTrack?.id] || 'billiard';
 
     // Globale Stats (von Datenbank) mit LocalStorage Fallback
     const [globalStats, setGlobalStats] = useState(() => {
@@ -42,7 +53,15 @@ const MusicSection = () => {
     const sectionRef = useRef(null);
     useRevealOnScroll(sectionRef, '.reveal, .reveal-scale');
 
-    useVinylAnimation(analyserRef, currentTrack, isPlaying);
+    useVinylAnimation(analyserRef, currentTrack, isPlaying, activeAnimationMode);
+
+    const handleAnimationModeChange = (setId, mode) => {
+        setAnimationModes((currentModes) => {
+            const nextModes = { ...currentModes, [setId]: mode };
+            localStorage.setItem(ANIMATION_MODE_STORAGE_KEY, JSON.stringify(nextModes));
+            return nextModes;
+        });
+    };
 
     // Sync bei Änderungen der globalen Stats (durch StatsSync oder andere Komponenten)
     useEffect(() => {
@@ -169,11 +188,13 @@ const MusicSection = () => {
                                 isSetPlaying={isSetPlaying}
                                 isSetCurrent={isSetCurrent}
                                 currentTime={currentTime}
+                                animationMode={animationModes[set.id] || 'billiard'}
                                 stats={stats}
                                 userVote={userVote}
                                 isLoggedIn={isLoggedIn}
                                 onPlayClick={handlePlayClick}
                                 onTrackClick={handleTrackClick}
+                                onAnimationModeChange={handleAnimationModeChange}
                                 onVote={handleVote}
                             />
                         );

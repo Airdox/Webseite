@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-label="Portrait + AIRDOX Light Gate">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#050608"/>
+      <stop offset="55%" stop-color="#0f141a"/>
+      <stop offset="100%" stop-color="#050608"/>
+    </linearGradient>
+    <pattern id="scan" width="1" height="8" patternUnits="userSpaceOnUse">
+      <rect width="1" height="1" fill="#f5f8ff" opacity="0.08"/>
+    </pattern>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#bg)"/>
+  <rect width="1080" height="1350" fill="url(#scan)"/>
+  <path d="M80 92 H1000 M80 1250 H1000 M80 92 V260 M1000 92 V260 M80 1080 V1250 M1000 1080 V1250" fill="none" stroke="#263241" stroke-width="2"/>
+  <text x="80" y="158" font-family="Arial, sans-serif" font-size="27" font-weight="900" fill="#ff3fc5">DESIGNER PORTFOLIO</text>
+  <text x="80" y="214" font-family="Arial, sans-serif" font-size="50" font-weight="900" fill="#f5f8ff">Portrait + AIRDOX Light Gate</text>
+  <text x="80" y="272" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#9aa6b2">SISSYGUT ALLES GUT / 00:03:50-00:04:50 im Set-Einstieg; weitere Hook-Kandidaten unten</text>
+  <rect x="80" y="360" width="920" height="410" fill="#050608" stroke="#263241" stroke-width="2"/>
+  <rect x="138" y="590" width="92" height="90" fill="#ff3fc5" opacity="1"/>
+    <rect x="156" y="556" width="74" height="24" fill="#050608" stroke="#ff3fc5" stroke-width="3"/>
+    <rect x="274" y="553" width="92" height="127" fill="#f5f8ff" opacity="0.9"/>
+    <rect x="292" y="519" width="74" height="24" fill="#050608" stroke="#ff3fc5" stroke-width="3"/>
+    <rect x="410" y="516" width="92" height="164" fill="#ff3fc5" opacity="1"/>
+    <rect x="428" y="482" width="74" height="24" fill="#050608" stroke="#ff3fc5" stroke-width="3"/>
+    <rect x="546" y="479" width="92" height="201" fill="#f5f8ff" opacity="0.9"/>
+    <rect x="564" y="445" width="74" height="24" fill="#050608" stroke="#ff3fc5" stroke-width="3"/>
+    <rect x="682" y="562" width="92" height="118" fill="#ff3fc5" opacity="1"/>
+    <rect x="700" y="528" width="74" height="24" fill="#050608" stroke="#ff3fc5" stroke-width="3"/>
+    <rect x="818" y="525" width="92" height="155" fill="#f5f8ff" opacity="0.9"/>
+    <rect x="836" y="491" width="74" height="24" fill="#050608" stroke="#ff3fc5" stroke-width="3"/>
+  <text x="540" y="728" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="88" font-weight="900" fill="#f5f8ff" opacity="0.18">AIRDOX BUILDS HERE</text>
+  <rect x="84" y="880" width="42" height="18" fill="#00f0ff" opacity="0.78" transform="rotate(-18 84 880)"/>
+    <rect x="155" y="923" width="55" height="18" fill="#ff00aa" opacity="0.78" transform="rotate(-7 155 923)"/>
+    <rect x="226" y="966" width="68" height="18" fill="#9adf6b" opacity="0.78" transform="rotate(4 226 966)"/>
+    <rect x="297" y="1009" width="81" height="18" fill="#00f0ff" opacity="0.78" transform="rotate(15 297 1009)"/>
+    <rect x="368" y="1052" width="94" height="18" fill="#ff00aa" opacity="0.78" transform="rotate(-10 368 1052)"/>
+    <rect x="439" y="1095" width="107" height="18" fill="#9adf6b" opacity="0.78" transform="rotate(1 439 1095)"/>
+    <rect x="510" y="888" width="120" height="18" fill="#00f0ff" opacity="0.78" transform="rotate(12 510 888)"/>
+    <rect x="581" y="931" width="133" height="18" fill="#ff00aa" opacity="0.78" transform="rotate(-13 581 931)"/>
+    <rect x="652" y="974" width="50" height="18" fill="#9adf6b" opacity="0.78" transform="rotate(-2 652 974)"/>
+    <rect x="723" y="1017" width="63" height="18" fill="#00f0ff" opacity="0.78" transform="rotate(9 723 1017)"/>
+    <rect x="794" y="1060" width="76" height="18" fill="#ff00aa" opacity="0.78" transform="rotate(-16 794 1060)"/>
+    <rect x="865" y="1103" width="89" height="18" fill="#9adf6b" opacity="0.78" transform="rotate(-5 865 1103)"/>
+    <rect x="936" y="896" width="102" height="18" fill="#00f0ff" opacity="0.78" transform="rotate(6 936 896)"/>
+    <rect x="107" y="939" width="115" height="18" fill="#ff00aa" opacity="0.78" transform="rotate(17 107 939)"/>
+  <rect x="80" y="1178" width="920" height="72" fill="#ff3fc5"/>
+  <text x="540" y="1225" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="900" fill="#050608">NAECHSTE WOCHE</text>
+</svg>

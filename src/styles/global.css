@@ -868,8 +868,8 @@ button {
     box-shadow: 0 0 16px rgba(0, 143, 163, 0.12);
 }
 
-:root[data-theme="light"] .gp-progress-track,
-:root[data-theme="light"] .gp-volume-slider {
+:root[data-theme="light"] .gp-progress-bar,
+:root[data-theme="light"] .gp-volume input[type="range"] {
     background: rgba(5, 45, 58, 0.12);
 }
 

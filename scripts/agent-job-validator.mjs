@@ -15,6 +15,7 @@ const allowedAgents = new Set([
   'Manni',
   'Designer',
   'Mentor',
+  'Deep Research',
   'Audience Intelligence',
   'Refactor',
   'Repository',

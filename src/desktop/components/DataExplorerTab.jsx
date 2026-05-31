@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Download, ExternalLink, KeyRound, RotateCcw, Search, Trash2 } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { Download, ExternalLink, KeyRound, RotateCcw, Search, Trash2, Filter } from 'lucide-react';
 import { TABLE_DEFINITIONS, TABLE_NAMES } from '../lib/tableDefinitions.js';
+import { partitionSetsByAccess } from '../../lib/set-access.js';
 
 const formatCell = (value) => {
   if (value === null || value === undefined || value === '') return 'n/a';
@@ -237,13 +238,15 @@ const GenericTable = ({ definition, rows, onDelete }) => (
 
 const DataExplorerTab = ({
   isElectron = false,
-  siteBaseUrl = '',
   tableName,
   setTableName,
   search,
   setSearch,
   rows,
   filteredRows,
+  queryText = '',
+  setQueryText = () => {},
+  queryResult = null,
   onRefresh,
   onExportJson,
   onExportCsv,
@@ -253,8 +256,41 @@ const DataExplorerTab = ({
   onCreateVipUser,
   onResetVipPassword,
   onRevokeSession,
+  onRunQuery = () => {},
+  sets = [],
 }) => {
   const definition = TABLE_DEFINITIONS[tableName];
+  const [filterMode, setFilterMode] = useState('all'); // 'all' or 'live'
+  const [queryFeedback, setQueryFeedback] = useState(null);
+
+  const { publicSets, publicIdSet } = useMemo(() => partitionSetsByAccess(sets), [sets]);
+  const publicSetRank = useMemo(() => new Map(
+    publicSets.map((set, index) => [set.id, index]),
+  ), [publicSets]);
+
+  const activeFilteredRows = useMemo(() => {
+    if (tableName !== 'track_stats' || filterMode === 'all') return filteredRows;
+    return filteredRows
+      .filter(row => publicIdSet.has(row.id))
+      .sort((left, right) => {
+        const leftRank = publicSetRank.get(left.id) ?? Number.MAX_SAFE_INTEGER;
+        const rightRank = publicSetRank.get(right.id) ?? Number.MAX_SAFE_INTEGER;
+        if (leftRank !== rightRank) return leftRank - rightRank;
+        return String(left.id).localeCompare(String(right.id));
+      });
+  }, [filteredRows, tableName, filterMode, publicIdSet, publicSetRank]);
+
+  const runReadonlyQuery = async () => {
+    if (!isElectron) {
+      setQueryFeedback({
+        tone: 'warn',
+        message: 'Read-only SQL braucht die Windows-App mit echter Datenbankverbindung. In der Browser-Vorschau werden keine Mock-SQL-Ergebnisse erzeugt.',
+      });
+      return;
+    }
+    setQueryFeedback(null);
+    await onRunQuery();
+  };
 
   return (
     <div className="fd-panel-stack">
@@ -278,24 +314,20 @@ const DataExplorerTab = ({
         <div className="fd-toolbar-actions">
           <button
             type="button"
-            className="fd-button secondary"
-            onClick={() => {
-              const base = siteBaseUrl || 'http://localhost:5173';
-              window.open(`${base}/?showAll=1#music`, '_blank', 'noopener');
-            }}
+            className={`fd-button ${filterMode === 'all' ? 'primary' : 'secondary'}`}
+            onClick={() => setFilterMode('all')}
+            disabled={tableName !== 'track_stats'}
           >
-            <ExternalLink size={16} />
+            <Filter size={16} />
             Alle Sets
           </button>
           <button
             type="button"
-            className="fd-button secondary"
-            onClick={() => {
-              const base = siteBaseUrl || 'http://localhost:5173';
-              window.open(`${base}/#music`, '_blank', 'noopener');
-            }}
+            className={`fd-button ${filterMode === 'live' ? 'primary' : 'secondary'}`}
+            onClick={() => setFilterMode('live')}
+            disabled={tableName !== 'track_stats'}
           >
-            <ExternalLink size={16} />
+            <Filter size={16} />
             Live (ohne VIP)
           </button>
         </div>
@@ -312,19 +344,19 @@ const DataExplorerTab = ({
       />
 
       {tableName === 'track_stats' && (
-        <TrackStatsEditor rows={filteredRows} onSave={onSaveTrackStats} onDelete={onDeleteRow} />
+        <TrackStatsEditor rows={activeFilteredRows} onSave={onSaveTrackStats} onDelete={onDeleteRow} />
       )}
 
       {tableName === 'subscribers' && (
-        <SubscriberEditor rows={filteredRows} onSave={onSaveSubscriber} onDelete={onDeleteRow} />
+        <SubscriberEditor rows={activeFilteredRows} onSave={onSaveSubscriber} onDelete={onDeleteRow} />
       )}
 
       {tableName === 'users' && (
-        <UserAdmin rows={filteredRows} onCreate={onCreateVipUser} onDelete={onDeleteRow} onResetPassword={onResetVipPassword} />
+        <UserAdmin rows={activeFilteredRows} onCreate={onCreateVipUser} onDelete={onDeleteRow} onResetPassword={onResetVipPassword} />
       )}
 
       {tableName === 'sessions' && (
-        <SessionsAdmin rows={filteredRows} onRevoke={onRevokeSession} />
+        <SessionsAdmin rows={activeFilteredRows} onRevoke={onRevokeSession} />
       )}
 
       {tableName !== 'track_stats' && tableName !== 'subscribers' && tableName !== 'users' && tableName !== 'sessions' && (
@@ -333,11 +365,45 @@ const DataExplorerTab = ({
             <h3>{definition.label}</h3>
             <span>{rows.length} Rows</span>
           </div>
-          <GenericTable definition={definition} rows={filteredRows} onDelete={tableName === 'bookings' ? onDeleteRow : null} />
+          <GenericTable definition={definition} rows={activeFilteredRows} onDelete={tableName === 'bookings' ? onDeleteRow : null} />
         </section>
       )}
 
-
+      <section className="fd-surface">
+        <div className="fd-section-head">
+          <h3>Read-only SQL</h3>
+          <span>{isElectron ? 'Windows DB' : 'Browser blockiert'}</span>
+        </div>
+        <label className="fd-field-group single">
+          SQL Query
+          <textarea
+            value={queryText}
+            onChange={(event) => setQueryText(event.target.value)}
+            rows={4}
+            spellCheck="false"
+          />
+        </label>
+        <div className="fd-toolbar-actions">
+          <button type="button" className="fd-button" onClick={runReadonlyQuery}>
+            <ExternalLink size={16} />
+            Run Query
+          </button>
+        </div>
+        {queryFeedback && (
+          <div className={`fd-inline-alert ${queryFeedback.tone}`}>
+            {queryFeedback.message}
+          </div>
+        )}
+        {queryResult && (
+          <div className="fd-query-result">
+            <div className="fd-section-head">
+              <h3>Query Result</h3>
+              <span>{Array.isArray(queryResult.rows) ? queryResult.rows.length : 0} Rows</span>
+            </div>
+            <pre>{JSON.stringify(queryResult, null, 2)}</pre>
+          </div>
+        )}
+      </section>
     </div>
   );
 };

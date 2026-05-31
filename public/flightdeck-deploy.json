@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-05-24T21:46:15.050Z",
+  "source": "AIRDOX manual deploy",
+  "setId": "manual-current-workspace",
+  "setTitle": "Current AIRDOX workspace deploy",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "hash": "27c803e667aff9c805fbdd4e631845433dfccf1dc13e0b0dcf8fbbf87392efe8",
+    "fileCount": 124
+  }
+}

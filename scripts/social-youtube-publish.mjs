@@ -17,7 +17,7 @@ import { pathToFileURL } from 'node:url';
 import dotenv from 'dotenv';
 
 const root = resolve(new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:\/)/, '$1'));
-dotenv.config({ path: join(root, '.env'), quiet: true });
+dotenv.config({ path: join(root, '.env'), quiet: true, override: true });
 
 const args = process.argv.slice(2);
 const outputRoot = join(root, 'docs', 'agent-system', 'social-auto-output');
@@ -37,6 +37,9 @@ const hasFlag = (name) => args.includes(name);
 const explicitSetId = getArg('--set-id');
 const explicitVideo = getArg('--video');
 const explicitAudioPath = getArg('--audio-path');
+const explicitTitle = getArg('--title');
+const explicitDescription = getArg('--description');
+const explicitDescriptionFile = getArg('--description-file');
 const uploadMode = getArg('--mode', 'full-set').toLowerCase();
 const privacyStatus = getArg('--privacy', 'unlisted');
 const categoryId = getArg('--category', '10');
@@ -47,6 +50,7 @@ const forceRender = hasFlag('--force-render');
 const renderOnly = hasFlag('--render-only');
 const validateOnly = hasFlag('--validate-only');
 const skipRender = hasFlag('--skip-render');
+const allowUnapprovedThumbnail = hasFlag('--allow-unapproved-thumbnail');
 const publicOnlyVideoId = getArg('--set-public-video-id');
 const noRender = dryRun || validateOnly || skipRender;
 const shouldUpload = !dryRun && !renderOnly && !validateOnly;
@@ -222,6 +226,10 @@ const loadManifest = () => {
 };
 
 const loadSet = async (manifest) => {
+  if (explicitSetId && manifest?.set?.id === explicitSetId) {
+    return manifest.set;
+  }
+
   const setsModulePath = pathToFileURL(join(root, 'src', 'data', 'musicSets.js')).href;
   const { sets } = await import(setsModulePath);
   const availableSets = Array.isArray(sets) ? sets : [];
@@ -304,6 +312,16 @@ const resolveCoverPath = (set, manifest) => {
   return coverPath;
 };
 
+const assertFullSetThumbnailApproved = (set, manifest) => {
+  if (uploadMode !== 'full-set' || !shouldUpload || allowUnapprovedThumbnail) return;
+  const approved = manifest?.set?.youtubeThumbnailApproved === true
+    || manifest?.youtubeThumbnailApproved === true
+    || set?.youtubeThumbnailApproved === true;
+  if (!approved) {
+    fail('Full-set YouTube upload blocked: manifest is missing youtubeThumbnailApproved=true. Show the exact thumbnail/poster preview to the user and record approval before upload, or pass --allow-unapproved-thumbnail for an explicit emergency override.');
+  }
+};
+
 const packageDirForSet = (set, packageDir) => {
   const dir = packageDir || join(outputRoot, slugify(set.id || set.title));
   mkdirSync(dir, { recursive: true });
@@ -339,6 +357,10 @@ const fontArg = () => {
 };
 
 const buildPosterFilter = (set) => {
+  if (set.useCoverAsPoster === true) {
+    return '[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,setsar=1,format=yuv420p[vout]';
+  }
+
   const title = ffText(String(set.title || 'AIRDOX LIVE SET').toUpperCase());
   const date = ffText(String(set.date || set.publishedAt || '').toUpperCase());
   const font = fontArg();
@@ -480,11 +502,14 @@ const validateShortVideo = (videoPath) => {
 };
 
 const buildMetadata = (set, manifest) => {
-  const title = uploadMode === 'short'
+  const title = explicitTitle || (uploadMode === 'short'
     ? (manifest?.captions?.youtubeShorts || `${set.title || 'AIRDOX'} | AIRDOX.INFO`)
-    : `${set.title || 'AIRDOX LIVE SET'} | FULL SET | AIRDOX.INFO`;
+    : `${set.title || 'AIRDOX LIVE SET'} | FULL SET | AIRDOX.INFO`);
   const landingUrl = manifest?.set?.landingUrl || `https://airdox.info/#set-${set.id}`;
-  const description = [
+  const baseDescription = explicitDescriptionFile
+    ? readFileSync(resolve(root, explicitDescriptionFile), 'utf8').trim()
+    : explicitDescription;
+  const description = baseDescription || [
     uploadMode === 'short'
       ? (manifest?.captions?.youtubeShorts || '')
       : `${set.title || 'AIRDOX LIVE SET'} - Full set upload`,
@@ -572,6 +597,9 @@ const uploadResumable = async ({ accessToken, uploadUrl, videoPath }) => {
   const chunkSize = chunkMb * 1024 * 1024;
   const fd = openSync(videoPath, 'r');
   let offset = 0;
+  const maxRetries = 5;
+  const transientDelayMs = 5000;
+  const transientCodes = new Set(['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', 'EAI_AGAIN', 'ENETRESET']);
   try {
     while (offset < size) {
       const length = Math.min(chunkSize, size - offset);
@@ -580,16 +608,30 @@ const uploadResumable = async ({ accessToken, uploadUrl, videoPath }) => {
       const start = offset;
       const end = offset + bytesRead - 1;
       const body = bytesRead === length ? buffer : buffer.subarray(0, bytesRead);
-      const response = await fetch(uploadUrl, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Length': String(bytesRead),
-          'Content-Type': 'video/mp4',
-          'Content-Range': `bytes ${start}-${end}/${size}`,
-        },
-        body,
-      });
+      let response = null;
+      for (let attempt = 1; attempt <= maxRetries; attempt += 1) {
+        try {
+          response = await fetch(uploadUrl, {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Length': String(bytesRead),
+              'Content-Type': 'video/mp4',
+              'Content-Range': `bytes ${start}-${end}/${size}`,
+            },
+            body,
+          });
+          break;
+        } catch (error) {
+          const code = error?.cause?.code || error?.code || '';
+          const canRetry = attempt < maxRetries && (!code || transientCodes.has(code));
+          if (!canRetry) throw error;
+          process.stderr.write(`[upload] retry ${attempt}/${maxRetries - 1} after ${code || error.name || 'fetch-error'}\n`);
+          await new Promise((resolveDelay) => {
+            setTimeout(resolveDelay, transientDelayMs * attempt);
+          });
+        }
+      }
       if (response.status === 308) {
         const range = response.headers.get('range');
         offset = range ? Number(range.split('-').pop()) + 1 : end + 1;
@@ -624,6 +666,7 @@ const runPipeline = async () => {
 
   const { manifest, packageDir } = loadManifest();
   const set = await loadSet(manifest);
+  assertFullSetThumbnailApproved(set, manifest);
   const selectedPackageDir = packageDirForSet(set, packageDir);
   const metadata = buildMetadata(set, manifest);
 
@@ -634,7 +677,7 @@ const runPipeline = async () => {
   let rendered = false;
 
   if (uploadMode === 'short') {
-    if (!manifest) fail('Short uploads require an existing social manifest.');
+    if (!manifest && !explicitVideo) fail('Short uploads require an existing social manifest or --video=<file>.');
     videoPath = getShortVideoPath(manifest);
     validation = validateShortVideo(videoPath);
     if (!validation.ok) fail(`Short video failed validation: ${validation.reason}`);

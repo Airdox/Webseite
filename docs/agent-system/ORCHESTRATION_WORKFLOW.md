@@ -24,6 +24,75 @@ Durchgaengiger Ablauf von Orchestrierung bis Job-Ausfuehrung mit klarer Gate-Log
 6. Hintergrundautomation ruft den Ablauf periodisch auf:
    - `npm run agents:background:deep`
    - Workflow: `.github/workflows/agent-background-monitor.yml`
+   - Lokal unter Windows: `npm run agents:background:task`
+
+## Systemdiagramm
+
+Die lebende Architektur wird maschinell erzeugt:
+
+```powershell
+npm run agent:system:health
+```
+
+Der Befehl schreibt:
+
+- `docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md`
+- `docs/agent-system/latest-agent-system-health.md`
+- `docs/agent-system/latest-agent-system-health.json`
+
+```mermaid
+flowchart TD
+  User[User Auftrag / Freigabe] --> MC[Master Controller]
+  MC --> Catalog[Job Catalog]
+  MC --> Router[Routing Rules]
+  Router --> Wakeup[Workbench Wakeup]
+  Wakeup --> Agents[Domain Agents]
+  Catalog --> Runner[Agent Job Runner]
+  Runner --> Reports[latest Reports]
+  Reports --> Radar[Dependency Radar]
+  Radar --> Queue[Task Queue]
+  Queue --> MC
+  Scheduler[GitHub Schedule / Windows Task] --> Background[Background Cycle]
+  Background --> Runner
+  Background --> Health[System Health]
+  Health --> MC
+  Agents --> Gates[Quality and Approval Gates]
+  Gates --> Drafts[Internal Planning / External Drafts]
+  Drafts --> Approval[Personal User OK]
+  Approval --> Live[External Live Action]
+```
+
+## Harte Automation
+
+Der Background-Cycle ist nicht mehr nur ein Runner-Aufruf. Er fuehrt in jedem Lauf diese Kette aus:
+
+1. `agent:jobs:validate`
+2. `agent:route:write`
+3. `agent:quality-chain:write`
+4. `agent:jobs:run -- --event=scheduled_background --status=<standard|deep>`
+5. `agent:dependencies:write`
+6. `agent:system:health`
+
+Wenn ein Schritt fehlschlaegt, bleibt der Fehler im `latest-background-cycle.json` sichtbar. Externe Live-Jobs bleiben trotz Automation blockiert, bis eine persoenliche Nutzerfreigabe uebergeben wurde.
+
+Workbench-Wakeup:
+
+- `agent-watch-zones.json` definiert stabile Beobachtungsbereiche mit Primary- und Review-Agenten.
+- `agent-routing-review` schreibt, welche Agenten durch aktuelle Workbench-Aenderungen betroffen sind.
+- `agent-quality-chain` schreibt, welche Test-, Proof- oder Validierungspflichten aus geaendertem Code entstehen.
+- `notebooklm-deep-research-brief` schreibt verwertbare Research-Ergebnisse als `latest-notebooklm-brief.*` und Pflichtaufgaben als `latest-agent-task-queue.json`.
+- `agent-dependency-radar` schreibt danach, wer auf wen wartet, welche Blocker bestehen und wann der Nutzer gezielt angesprochen werden muss.
+- Nicht betroffene Agenten bleiben ohne Aktion. Betroffene Agenten duerfen interne Planungs- und Draft-Artefakte vorbereiten, aber keine Live-Aktion ohne Gate ausfuehren.
+- Designer muss bei Social-Kampagnen proaktiv ein Portfolio vorbereiten (`designer-social-portfolio`), bevor ein finaler Render oder Upload-Entwurf erwartet wird.
+- Research gilt erst als verarbeitet, wenn daraus konkrete Folgearbeit mit Owner und Acceptance-Kriterium entstanden ist.
+
+Orchestrator Request Gate:
+
+- Agenten duerfen interne Arbeit nicht eigenmaechtig breit starten.
+- Jeder Agent stellt beim Master Controller einen Arbeitsantrag mit Ziel, Output, betroffenen Dateien und Gates.
+- Master Controller ordnet an, verweigert oder reiht ein.
+- Testweise interne Drafts und Prototypen duerfen nach Orchestrator-Anordnung automatisiert laufen.
+- Extern/Live bleibt immer persoenlich freigabepflichtig.
 
 Manni Social Execution:
 

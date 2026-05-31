@@ -38,7 +38,7 @@ export const DEFAULT_FLIGHT_DECK_SETTINGS = {
   buildCommand: 'npm run build',
   deployCommand: 'npm run deploy',
   gitCommitTemplate: 'feat(flightdeck): publish {{id}}',
-  photoshopPath: 'D:\\ps\\Photoshop.exe',
+  photoshopPath: 'C:\\Users\\p_kro\\OneDrive\\Desktop\\ps',
   defaultDesignStyle: 'flicker',
 };
 
@@ -198,11 +198,15 @@ export const resolveUniqueSetDraftIdentity = (draft = {}, {
     ? generatedBaseId
     : normalizedDraftId;
   const id = buildUniqueSetId(baseId, { existingSets, reservedSetIds });
+  const draftTitle = String(draft.title || '').trim();
+  const generatedBaseTitle = String(draft.generatedBaseTitle || '').trim();
+  const titleWasEdited = generatedBaseTitle
+    && stripNumberedTitleSuffix(draftTitle) !== stripNumberedTitleSuffix(generatedBaseTitle);
   const baseTitle = String(
-    draft.generatedBaseTitle
+    (titleWasEdited ? draftTitle : generatedBaseTitle)
       || (generatedBaseId && isIdInFamily(id, generatedBaseId)
-        ? stripNumberedTitleSuffix(draft.title)
-        : draft.title)
+        ? stripNumberedTitleSuffix(draftTitle)
+        : draftTitle)
       || '',
   ).trim();
   const title = buildUniqueSetTitle(baseTitle, {

@@ -1,0 +1,735 @@
+{
+  "generatedAt": "2026-05-27T03:38:49.618Z",
+  "mode": "recent-uploads",
+  "expectedTitle": null,
+  "videoIds": [
+    "S7IeXvo250E",
+    "QPgg9s4quiA",
+    "LG-6D2Twbck",
+    "kpZvJcuIzZ0",
+    "iKKDjcEQs_I",
+    "znAIzLRtbAo",
+    "IcI5-pQt7E4",
+    "SRtxETdHPKQ",
+    "oc7I6Z9R2Ko",
+    "bkUfeDrMWlY",
+    "cmEj2MNLRDM",
+    "negp3p95viY",
+    "Q1fogCTFoig",
+    "KGn66haTtCc",
+    "iZyESB1y-Ts",
+    "M1Vx6slTNIQ",
+    "lwYTvk7GAQ4",
+    "Kh_v4DhuqhM",
+    "KiRL6TGWa4Q"
+  ],
+  "videos": [
+    {
+      "id": "S7IeXvo250E",
+      "title": "...immer wieder Pfingsten!!! | Full Set auf YouTube #Shorts",
+      "publishedAt": "2026-05-26T02:55:27Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/S7IeXvo250E/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/S7IeXvo250E/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/S7IeXvo250E/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/S7IeXvo250E/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/S7IeXvo250E/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "QPgg9s4quiA",
+      "title": "...immer wieder Pfingsten!!! | FULL SET | AIRDOX.INFO",
+      "publishedAt": "2026-05-24T23:30:34Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/QPgg9s4quiA/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/QPgg9s4quiA/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/QPgg9s4quiA/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/QPgg9s4quiA/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/QPgg9s4quiA/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "LG-6D2Twbck",
+      "title": "...immer wieder Pfingsten!!! | FULL SET | AIRDOX.INFO",
+      "publishedAt": "2026-05-24T15:08:55Z",
+      "privacyStatus": "private",
+      "uploadStatus": "uploaded",
+      "processingStatus": "processing",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i9.ytimg.com/vi/LG-6D2Twbck/default.jpg?sqp=COTM2dAG&rs=AOn4CLBK9kXM-xXcNmREwirg458AN1cmFg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i9.ytimg.com/vi/LG-6D2Twbck/mqdefault.jpg?sqp=COTM2dAG&rs=AOn4CLB37_ZJjvg9UJ3BY3xAgR4KUisajA",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i9.ytimg.com/vi/LG-6D2Twbck/hqdefault.jpg?sqp=COTM2dAG&rs=AOn4CLB0axR0DXac5GtWCOk_nYU60E7AAA",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i9.ytimg.com/vi/LG-6D2Twbck/sddefault.jpg?sqp=COTM2dAG&rs=AOn4CLDY7r7G2GYejQsRgjnklmQxDY-dwg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i9.ytimg.com/vi/LG-6D2Twbck/maxresdefault.jpg?sqp=COTM2dAG&rs=AOn4CLA_F6uksdo6uQ0mtGPVzZJDeWb6wQ",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "kpZvJcuIzZ0",
+      "title": "SISSYGUT ALLES GUT | AIRDOX.INFO",
+      "publishedAt": "2026-05-23T22:03:27Z",
+      "privacyStatus": "private",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i9.ytimg.com/vi/kpZvJcuIzZ0/default.jpg?sqp=COTM2dAG&rs=AOn4CLCdcCM6iZkofE_nM_gg8-76Gg80QA",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i9.ytimg.com/vi/kpZvJcuIzZ0/mqdefault.jpg?sqp=COTM2dAG&rs=AOn4CLCP4l2wONsuo6JGBwLAFqWZUoTFeQ",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i9.ytimg.com/vi/kpZvJcuIzZ0/hqdefault.jpg?sqp=COTM2dAG&rs=AOn4CLCl2Xak6VlgGhtFRwMjzo3SIaU4dg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i9.ytimg.com/vi/kpZvJcuIzZ0/sddefault.jpg?sqp=COTM2dAG&rs=AOn4CLAqZaaId_TwcPhPOeLhehws8ygpwQ",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i9.ytimg.com/vi/kpZvJcuIzZ0/maxresdefault.jpg?sqp=COTM2dAG&rs=AOn4CLC-1CWiiDMs3gwBwVQyQ1geNCZQKQ",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "iKKDjcEQs_I",
+      "title": "Airdox_LIVE SET MAY 2026 #2 | RENE BOURGEOIS - FACE2FACE WITH MY DEMON (ORIGINAL | www.AIRDOX.INFO",
+      "publishedAt": "2026-05-15T07:00:27Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/iKKDjcEQs_I/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/iKKDjcEQs_I/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/iKKDjcEQs_I/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/iKKDjcEQs_I/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/iKKDjcEQs_I/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "znAIzLRtbAo",
+      "title": "LIVE SET MAY 2026 #2 | FULL SET | AIRDOX.INFO",
+      "publishedAt": "2026-05-14T02:11:50Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/znAIzLRtbAo/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/znAIzLRtbAo/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/znAIzLRtbAo/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/znAIzLRtbAo/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/znAIzLRtbAo/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "IcI5-pQt7E4",
+      "title": "Airdox_LIVE SET MAY 2026 #2 | RENE BOURGEOIS - FACE2FACE WITH MY DEMON (ORIGINAL | www.AIRDOX.INFO",
+      "publishedAt": "2026-05-13T21:39:34Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/IcI5-pQt7E4/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/IcI5-pQt7E4/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/IcI5-pQt7E4/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/IcI5-pQt7E4/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/IcI5-pQt7E4/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "SRtxETdHPKQ",
+      "title": "FIFA 21_20210409040757",
+      "publishedAt": "2021-04-09T02:21:52Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/SRtxETdHPKQ/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/SRtxETdHPKQ/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/SRtxETdHPKQ/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/SRtxETdHPKQ/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/SRtxETdHPKQ/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "oc7I6Z9R2Ko",
+      "title": "FIFA 21_20210319054748",
+      "publishedAt": "2021-03-19T04:49:51Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/oc7I6Z9R2Ko/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/oc7I6Z9R2Ko/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/oc7I6Z9R2Ko/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/oc7I6Z9R2Ko/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/oc7I6Z9R2Ko/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "bkUfeDrMWlY",
+      "title": "FIFA 21_20210319030953",
+      "publishedAt": "2021-03-19T02:11:24Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/bkUfeDrMWlY/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/bkUfeDrMWlY/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/bkUfeDrMWlY/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/bkUfeDrMWlY/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/bkUfeDrMWlY/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "cmEj2MNLRDM",
+      "title": "FIFA 21_Nicer Shit",
+      "publishedAt": "2021-01-31T20:34:18Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/cmEj2MNLRDM/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/cmEj2MNLRDM/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/cmEj2MNLRDM/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/cmEj2MNLRDM/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/cmEj2MNLRDM/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "negp3p95viY",
+      "title": "FIFA 21_Kann man mal so machen",
+      "publishedAt": "2021-01-31T20:26:05Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/negp3p95viY/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/negp3p95viY/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/negp3p95viY/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/negp3p95viY/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/negp3p95viY/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "Q1fogCTFoig",
+      "title": "FIFA 21_Freekick Bruno Fernandes",
+      "publishedAt": "2021-01-31T20:23:19Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/Q1fogCTFoig/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/Q1fogCTFoig/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/Q1fogCTFoig/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/Q1fogCTFoig/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/Q1fogCTFoig/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "KGn66haTtCc",
+      "title": "FIFA 21_90 min bei 4:3 Rückstand scripting sein Vater",
+      "publishedAt": "2021-01-31T20:19:32Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/KGn66haTtCc/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/KGn66haTtCc/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/KGn66haTtCc/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/KGn66haTtCc/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/KGn66haTtCc/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "iZyESB1y-Ts",
+      "title": "FIFA 21 Freistoss Eisern Robben",
+      "publishedAt": "2021-01-19T12:05:16Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/iZyESB1y-Ts/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/iZyESB1y-Ts/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/iZyESB1y-Ts/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/iZyESB1y-Ts/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/iZyESB1y-Ts/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "M1Vx6slTNIQ",
+      "title": "FIFA 21 Beckham Freistoss",
+      "publishedAt": "2021-01-02T22:50:59Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/M1Vx6slTNIQ/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/M1Vx6slTNIQ/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/M1Vx6slTNIQ/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/M1Vx6slTNIQ/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/M1Vx6slTNIQ/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "lwYTvk7GAQ4",
+      "title": "FIFA 21 Goal Scorpion Kick Airdox82",
+      "publishedAt": "2020-12-06T04:45:39Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/lwYTvk7GAQ4/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/lwYTvk7GAQ4/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/lwYTvk7GAQ4/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/lwYTvk7GAQ4/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/lwYTvk7GAQ4/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "Kh_v4DhuqhM",
+      "title": "FIFA 20 Das koriosiste Tor Was ist das EA",
+      "publishedAt": "2020-04-27T20:24:53Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/Kh_v4DhuqhM/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/Kh_v4DhuqhM/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/Kh_v4DhuqhM/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/Kh_v4DhuqhM/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/Kh_v4DhuqhM/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "KiRL6TGWa4Q",
+      "title": "FIFA 19_20190301064735",
+      "publishedAt": "2019-03-01T06:19:42Z",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "processingFailureReason": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/KiRL6TGWa4Q/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/KiRL6TGWa4Q/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/KiRL6TGWa4Q/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/KiRL6TGWa4Q/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/KiRL6TGWa4Q/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "severity": "medium",
+      "videoId": "LG-6D2Twbck",
+      "message": "Upload status is uploaded."
+    },
+    {
+      "severity": "medium",
+      "videoIds": [
+        "QPgg9s4quiA",
+        "LG-6D2Twbck"
+      ],
+      "message": "Duplicate YouTube title detected: ...immer wieder Pfingsten!!! | FULL SET | AIRDOX.INFO"
+    },
+    {
+      "severity": "medium",
+      "videoIds": [
+        "iKKDjcEQs_I",
+        "IcI5-pQt7E4"
+      ],
+      "message": "Duplicate YouTube title detected: Airdox_LIVE SET MAY 2026 #2 | RENE BOURGEOIS - FACE2FACE WITH MY DEMON (ORIGINAL | www.AIRDOX.INFO"
+    }
+  ]
+}

@@ -394,14 +394,39 @@
     left: 0;
     width: 100%;
     height: 100vh;
+    height: 100dvh;
     background: var(--mobile-menu-bg);
     z-index: 999;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     opacity: 0;
     visibility: hidden;
     transition: all var(--duration-slow) var(--ease-out);
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: calc(var(--nav-height) + 16px) var(--space-4) 28px;
+    overscroll-behavior: contain;
+}
+
+.mobile-menu::before {
+    content: '';
+    position: absolute;
+    inset: -18%;
+    background:
+        radial-gradient(circle at 18% 22%, rgba(0, 245, 255, 0.18), transparent 30%),
+        radial-gradient(circle at 80% 72%, rgba(255, 0, 170, 0.16), transparent 32%),
+        linear-gradient(120deg, transparent 20%, rgba(0, 245, 255, 0.09), transparent 58%);
+    opacity: 0.8;
+    transform: translate3d(-4%, 0, 0) scale(1.04);
+    animation: mobileMenuDrift 8s var(--ease-smooth) infinite alternate;
+    pointer-events: none;
+}
+
+.mobile-menu-content,
+.mobile-menu-footer {
+    position: relative;
+    z-index: 1;
 }
 
 .mobile-menu.open {
@@ -409,11 +434,25 @@
     visibility: visible;
 }
 
+@keyframes mobileMenuDrift {
+    from {
+        transform: translate3d(-4%, 0, 0) scale(1.04);
+        filter: saturate(1);
+    }
+
+    to {
+        transform: translate3d(4%, -3%, 0) scale(1.1);
+        filter: saturate(1.22);
+    }
+}
+
 .mobile-menu-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--space-6);
+    width: min(100%, 420px);
+    margin: auto 0;
 }
 
 .mobile-nav-link {
@@ -450,13 +489,35 @@
 }
 
 .mobile-menu-footer {
-    margin-top: var(--space-12);
+    margin-top: var(--space-8);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--space-6);
     opacity: 0;
     animation: fadeInUp 0.6s 0.5s var(--ease-out) forwards;
+}
+
+@media (max-height: 720px) {
+    .mobile-menu {
+        align-items: flex-start;
+        padding-top: calc(var(--nav-height) + 8px);
+        padding-bottom: 20px;
+    }
+
+    .mobile-menu-content {
+        gap: var(--space-4);
+        margin: 0;
+    }
+
+    .mobile-link-text {
+        font-size: var(--text-3xl);
+    }
+
+    .mobile-menu-footer {
+        margin-top: var(--space-6);
+        gap: var(--space-4);
+    }
 }
 
 .mobile-menu.open .mobile-menu-footer {

@@ -32,10 +32,12 @@ const SetCard = ({
     isSetPlaying,
     isSetCurrent,
     currentTime,
+    animationMode = 'billiard',
     stats,
     userVote,
     onPlayClick,
     onTrackClick,
+    onAnimationModeChange,
     onVote
 }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
@@ -165,12 +167,19 @@ const SetCard = ({
             onPlayClick(set);
         }
     };
+    const isTrainerMode = animationMode === 'trainer';
+
+    const handleAnimationModeToggle = (event) => {
+        event.stopPropagation();
+        onAnimationModeChange?.(set.id, isTrainerMode ? 'billiard' : 'trainer');
+    };
 
     return (
         <div
             id={buildSetAnchorId(set.id)}
             className={`set-card premium-card reveal-scale stagger-${Math.min(index + 1, 6)} ${isSetCurrent ? 'active' : ''} ${set.isChristmasGift ? 'christmas-highlight' : ''}`}
             data-set-id={set.id}
+            data-animation-mode={animationMode}
         >
             <div
                 className="set-cover"
@@ -181,13 +190,13 @@ const SetCard = ({
                 aria-label={`${isSetPlaying ? t('music.pause') : t('music.play')} ${set.title}`}
             >
                 <div
-                    className="cover-vinyl"
+                    className={`cover-vinyl ${isSetPlaying && isTrainerMode ? 'trainer-vinyl' : ''}`}
                     style={{
                         '--vinyl-color': set.vinylColor || 'var(--neon-cyan)',
                         '--vinyl-index': index
                     }}
                 >
-                    <div className={`mini-vinyl ${isSetPlaying ? 'active-disc spinning-disc' : ''}`}>
+                    <div className={`mini-vinyl ${isSetPlaying ? 'active-disc' : ''} ${isSetPlaying && isTrainerMode ? 'spinning-disc' : ''}`}>
                         {isSetPlaying ? (
                             <img
                                 src={set.isChristmasGift ? "/assets/santa_vinyl.png" : (set.cover || "/assets/airdox-vinyl.jpg")}
@@ -243,6 +252,28 @@ const SetCard = ({
                             <span className="set-duration">{set.duration}</span>
                         </>
                     )}
+                </div>
+
+                <div
+                    className="animation-mode-control"
+                    onClick={(event) => event.stopPropagation()}
+                    onPointerDown={(event) => event.stopPropagation()}
+                >
+                    <span className="animation-mode-label">{t('music.animation.trainer')}</span>
+                    <button
+                        type="button"
+                        className={`animation-mode-slider ${isTrainerMode ? 'trainer-selected' : 'billiard-selected'}`}
+                        onClick={handleAnimationModeToggle}
+                        role="switch"
+                        aria-checked={!isTrainerMode}
+                        aria-label={t('music.animation.label')}
+                    >
+                        <span className="sr-only">{t('music.animation.label')}</span>
+                        <span className="animation-mode-track" aria-hidden="true">
+                            <span className="animation-mode-thumb" />
+                        </span>
+                    </button>
+                    <span className="animation-mode-label">{t('music.animation.billiard')}</span>
                 </div>
 
                 <div className="set-actions">

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
 import { statsSync } from '../utils/stats-sync';
 import { audienceEvents } from '../utils/audienceSignals';
+import { getRuntimeApiBase } from '../utils/apiResponse';
 // jsmediatags removed
 
 const isDev = import.meta.env?.DEV;
@@ -15,7 +16,6 @@ const devWarn = (...args) => {
 const AUDIO_BASE = '/api/audio';
 const AUDIO_MAX_PARTS = 25;
 const AUDIO_API_BASE = (import.meta.env?.VITE_AUDIO_API_BASE || '').replace(/\/+$/, '');
-const PRODUCTION_API_BASE = (import.meta.env?.VITE_PUBLIC_SITE_URL || 'https://airdox-webseite.beuth62.workers.dev').replace(/\/+$/, '');
 
 const getAuthToken = () => {
     try {
@@ -35,12 +35,7 @@ const resolveAudioSrc = (src) => {
     return `${base}${AUDIO_BASE}/${encodedFilename}`;
 };
 const isAbsoluteUrl = (url) => /^https?:\/\//i.test(url);
-const isLocalHttpRuntime = () => {
-    if (typeof window === 'undefined') return false;
-    return window.location.protocol.startsWith('http')
-        && ['localhost', '127.0.0.1'].includes(window.location.hostname);
-};
-const getAudioApiBase = () => AUDIO_API_BASE || (isLocalHttpRuntime() ? PRODUCTION_API_BASE : '');
+const getAudioApiBase = () => getRuntimeApiBase(AUDIO_API_BASE, { useProductionForMobile: false });
 const encodeAudioSrc = (src) => {
     if (!src) return src;
     try {

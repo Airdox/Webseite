@@ -19,7 +19,7 @@
 }
 
 .set-notification-content {
-    background: rgba(26, 26, 26, 0.95);
+    background: rgba(8, 12, 15, 0.95);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(0, 245, 255, 0.3);
     border-radius: 8px;
@@ -29,6 +29,7 @@
     gap: 1rem;
     box-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
     min-width: 300px;
+    color: #ffffff;
 }
 
 .set-notification-main {
@@ -53,6 +54,8 @@
 .set-notification .set-info {
     flex: 1;
     min-width: 0;
+    padding: 0;
+    background: transparent;
 }
 
 .set-notification .set-badge {
@@ -67,7 +70,7 @@
     font-family: var(--font-heading);
     font-size: 1rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #ffffff;
     margin-bottom: 0.25rem;
     transition: color 0.25s ease;
 }
@@ -75,7 +78,7 @@
 .set-notification .set-date {
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.72);
 }
 
 .set-close {
@@ -97,8 +100,37 @@
     color: var(--bg-dark);
 }
 
+:root[data-theme="light"] .set-notification-content {
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(5, 45, 58, 0.16);
+    box-shadow: 0 18px 48px rgba(12, 42, 56, 0.18);
+    color: #071015;
+}
+
+:root[data-theme="light"] .set-notification .set-badge {
+    color: #006f80;
+}
+
+:root[data-theme="light"] .set-notification .set-title {
+    color: #071015;
+}
+
+:root[data-theme="light"] .set-notification .set-date,
+:root[data-theme="light"] .set-close {
+    color: rgba(7, 16, 21, 0.72);
+}
+
+:root[data-theme="light"] .set-close {
+    background: rgba(5, 45, 58, 0.08);
+}
+
+:root[data-theme="light"] .set-close:hover {
+    background: #006f80;
+    color: #ffffff;
+}
+
 .cookie-banner-visible .set-notification {
-    display: none;
+    bottom: calc(var(--cookie-banner-height, 220px) + 1rem);
 }
 
 @media (max-width: 768px) {
@@ -110,5 +142,9 @@
 
     .set-notification-content {
         min-width: auto;
+    }
+
+    .cookie-banner-visible .set-notification {
+        bottom: calc(var(--cookie-banner-height, 220px) + 0.75rem);
     }
 }

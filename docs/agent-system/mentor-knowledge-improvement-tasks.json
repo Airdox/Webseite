@@ -1,0 +1,100 @@
+{
+  "generatedAt": "2026-05-27T00:00:00.000+02:00",
+  "owner": "Mentor",
+  "source": {
+    "type": "manual_deep_research_brief",
+    "path": "docs/agent-system/research/MENTOR_NOTEBOOKLM_DEEP_RESEARCH_AGENT_SCHOOLS_2026-05-27.md",
+    "notebooklmStatus": "deep_research_completed",
+    "notebookId": "658d9fda-63cf-4353-8d19-6ada790f8232",
+    "researchTaskId": "0ac2fb64-48cf-47c4-b6dd-dc92cabe8713",
+    "resultPath": "docs/agent-system/research/MENTOR_NOTEBOOKLM_RESULT_AGENT_SCHOOLS_2026-05-27.md"
+  },
+  "purpose": "Improve AIRDOX agents through curated knowledge, NotebookLM research, agentic memory rules, RAG architecture, training scenarios and evaluation rubrics.",
+  "tasks": [
+    {
+      "id": "mentor-knowledge-taxonomy",
+      "owner": "Mentor",
+      "title": "Define agent knowledge taxonomy",
+      "acceptance": "Semantic, episodic, procedural, evaluative and governance knowledge types are defined and mapped to each AIRDOX agent.",
+      "priority": 1,
+      "benefit": "Stops knowledge from becoming generic notes and makes it actionable per agent."
+    },
+    {
+      "id": "mentor-source-map",
+      "owner": "Mentor",
+      "title": "Build role-based source map",
+      "acceptance": "Each core agent has at least five primary or high-quality sources with purpose, freshness date, risk and usage rule.",
+      "priority": 1,
+      "benefit": "Improves source quality and reduces outdated assumptions."
+    },
+    {
+      "id": "mentor-agent-academy-curriculum",
+      "owner": "Mentor",
+      "title": "Create Agentenschule curriculum",
+      "acceptance": "Every core agent has L1-L4 learning goals plus one basic task, one failure task and one cross-agent scenario.",
+      "priority": 1,
+      "benefit": "Turns education into repeatable training instead of passive documentation."
+    },
+    {
+      "id": "mentor-memory-rules",
+      "owner": "Mentor",
+      "reviewer": "Guardian",
+      "title": "Define memory governance rules",
+      "acceptance": "Rules cover what may enter memory, what must be excluded, provenance, deletion, privacy and approval gates.",
+      "priority": 1,
+      "benefit": "Allows real knowledge improvement without unsafe or unverified memory growth."
+    },
+    {
+      "id": "mentor-rag-blueprint",
+      "owner": "Mentor",
+      "reviewer": "Repository",
+      "title": "Design AIRDOX RAG and knowledge-base blueprint",
+      "acceptance": "Blueprint names source folders, NotebookLM sources, wiki role, retrieval boundaries, update cadence and review gates.",
+      "priority": 2,
+      "benefit": "Creates a practical architecture for shared agent knowledge."
+    },
+    {
+      "id": "mentor-evaluation-rubric",
+      "owner": "Mentor",
+      "reviewer": "Guardian",
+      "title": "Create agent knowledge evaluation rubric",
+      "acceptance": "Rubric evaluates knowledge use, citation grounding, tool choice, policy adherence, handoff quality and error learning.",
+      "priority": 2,
+      "benefit": "Makes intellectual improvement measurable."
+    },
+    {
+      "id": "mentor-postmortem-bank",
+      "owner": "Mentor",
+      "title": "Create postmortem and lessons-learned bank",
+      "acceptance": "Recurring issues from Decision Log and latest reports are converted into owner, failure class, follow-up check and status.",
+      "priority": 2,
+      "benefit": "Converts mistakes into durable learning material."
+    },
+    {
+      "id": "mentor-notebooklm-import-cycle",
+      "owner": "Mentor",
+      "reviewer": "Deep Research",
+      "title": "Translate NotebookLM research into project rules",
+      "acceptance": "NotebookLM findings produce at least one updated runbook, gate, training task or decision-log entry.",
+      "priority": 2,
+      "benefit": "Prevents research from ending as unused summaries."
+    },
+    {
+      "id": "mentor-knowledge-scorecard",
+      "owner": "Mentor",
+      "title": "Build knowledge improvement scorecard",
+      "acceptance": "Each agent shows source freshness, knowledge depth, open learning gaps, next training item and weakest dimension.",
+      "priority": 3,
+      "benefit": "Makes progress visible over time."
+    },
+    {
+      "id": "mentor-training-simulation-pack",
+      "owner": "Mentor",
+      "reviewer": "Master Controller",
+      "title": "Create monthly cross-agent training simulations",
+      "acceptance": "At least five scenarios cover funnel measurement, live-publish approval, desktop UI, risky refactor and stale source handling.",
+      "priority": 3,
+      "benefit": "Improves decision quality in complex handoffs."
+    }
+  ]
+}

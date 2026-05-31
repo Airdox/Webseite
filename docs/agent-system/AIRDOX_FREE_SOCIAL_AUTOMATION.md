@@ -1,81 +1,96 @@
-# AIRDOX Free Social Automation
+# AIRDOX Kostenfreie Social-Automation
 
-Goal: one low-cost workflow for a small Berlin underground techno DJ.
+Ziel: ein kostenarmer Workflow fuer einen kleinen Berliner Underground-Techno-DJ.
 
-## Command
+## Befehl
 
-Run this after a new set is added to `src/data/musicSets.js` and the audio is available through the website API:
+Ausfuehren, nachdem ein neues Set in `src/data/musicSets.js` eingetragen wurde und die Audiodatei ueber die Website-API erreichbar ist:
 
 ```powershell
 npm run social:auto
 ```
 
-One-command social package plus YouTube full-set publish (unlisted):
+Ein-Befehl-Ablauf fuer Social-Paket plus YouTube-Full-Set-Verarbeitung als `unlisted`:
 
 ```powershell
 npm run social:run
 ```
 
-The command:
+Der Befehl:
 
-- selects the newest `isNew` set from `src/data/musicSets.js`
-- uses the website audio stream as source of truth
-- finds a usable hook moment, preferring a Rene Bourgeois marker when present
-- renders 15s, 30s, and 59s vertical social assets
-- renders the YouTube full-set video from a local audio source, not R2
-- writes captions, hashtags, and a manifest
-- checks whether official OAuth credentials are present
-- never reads browser cookies or session tokens
+- waehlt das neueste `isNew`-Set aus `src/data/musicSets.js`
+- nutzt den Website-Audiostream als Quelle der Wahrheit
+- findet einen brauchbaren Hook-Moment und bevorzugt vorhandene Rene-Bourgeois-Marker
+- rendert vertikale Social-Assets mit 15s, 30s und 59s
+- rendert das YouTube-Full-Set-Video aus einer lokalen Audioquelle, nicht aus R2
+- schreibt Captions, Hashtags und ein Manifest
+- prueft, ob offizielle OAuth-Zugangsdaten vorhanden sind
+- liest niemals Browser-Cookies oder Session-Tokens
 
-## Output
+## Ausgabe
 
-Files are written to:
+Dateien werden hier geschrieben:
 
 ```text
 docs/agent-system/social-auto-output/<set-id>/
 ```
 
-Each run creates:
+Jeder Lauf erzeugt:
 
 - `manifest.json`
 - `captions.json`
 - `upload-copy-paste.md`
-- one MP4 per social duration
-- one preview PNG per MP4
-- one audio-check WAV per MP4
+- eine MP4 pro Social-Dauer
+- eine Vorschau-PNG pro MP4
+- eine Audio-Pruef-WAV pro MP4
 
-## Dry Run
+## Social Post Ledger
 
-Use this when you only want metadata and captions:
+Das Ledger nach Paketerstellung, manueller Veroeffentlichung oder API-Upload-Pruefung verwenden:
+
+```powershell
+npm run social:ledger:write
+```
+
+Der Befehl scannt `docs/agent-system/social-auto-output/**/manifest.json`, fuehrt bestaetigte Live-Post-Eintraege aus `docs/agent-system/social-post-ledger.json` zusammen und schreibt:
+
+- `docs/agent-system/latest-social-post-ledger.json`
+- `docs/agent-system/latest-social-post-ledger.md`
+
+Bestaetigte Live-Posts gehoeren in `docs/agent-system/social-post-ledger.json` mit `packageId`, `platform`, `status`, `liveUrl`, `postedAt`, `asset` und `caption`. Das ist die Quelle der Wahrheit fuer "was wurde tatsaechlich gepostet?", bis jede Plattform funktionierenden Lese-/Schreibzugriff per API hat.
+
+## Trockenlauf
+
+Verwenden, wenn nur Metadaten und Captions erzeugt werden sollen:
 
 ```powershell
 npm run social:auto:dry
 ```
 
-Use this when you want to prove the YouTube full-set source mapping without rendering or uploading:
+Verwenden, wenn die YouTube-Full-Set-Quellenzuordnung ohne Rendering oder Upload geprueft werden soll:
 
 ```powershell
 npm run social:youtube:dry -- --set-id=recording_2026_05_07-2
 ```
 
-## YouTube Full-Set Pipeline
+## YouTube-Full-Set-Pipeline
 
-YouTube full-set upload is intentionally separate from the social clips:
+Der YouTube-Full-Set-Upload ist bewusst von den Social-Clips getrennt:
 
 ```text
 resolve-source -> render-youtube-video -> validate-video -> upload-youtube
 ```
 
-Rules:
+Regeln:
 
-- Full-set source audio must be local. Set `AIRDOX_LOCAL_AUDIO_DIR` or pass `--audio-path=<file>`.
-- `recording_2026_05_07-2` maps to `D:\Neuer Ordner (2)\140-Airdox\Unknown Album(3)\01 REC-2026-05-07.mp3`.
-- R2 and the website stream are not used as the YouTube full-set source.
-- Rendering writes `*.tmp.mp4`, validates with `ffprobe`, then atomically renames to `*-full-set-youtube.mp4`.
-- Encoding is YouTube-ready MP4: H.264, AAC, 1080p, `yuv420p`, 48 kHz audio, and fast-start metadata.
-- Upload uses YouTube's resumable upload protocol, so large videos are not loaded into memory in one piece.
+- Die Full-Set-Quellaudio muss lokal vorliegen. `AIRDOX_LOCAL_AUDIO_DIR` setzen oder `--audio-path=<file>` uebergeben.
+- `recording_2026_05_07-2` verweist auf `D:\Neuer Ordner (2)\140-Airdox\Unknown Album(3)\01 REC-2026-05-07.mp3`.
+- R2 und der Website-Stream werden nicht als YouTube-Full-Set-Quelle genutzt.
+- Das Rendering schreibt `*.tmp.mp4`, validiert mit `ffprobe` und benennt danach atomar in `*-full-set-youtube.mp4` um.
+- Das Encoding ist YouTube-taugliches MP4: H.264, AAC, 1080p, `yuv420p`, 48-kHz-Audio und Fast-Start-Metadaten.
+- Der Upload nutzt YouTubes fortsetzbares Upload-Protokoll, damit grosse Videos nicht komplett in den Speicher geladen werden.
 
-Useful commands:
+Nuetzliche Befehle:
 
 ```powershell
 npm run social:youtube:dry -- --set-id=recording_2026_05_07-2
@@ -85,7 +100,7 @@ npm run social:youtube:validate -- --set-id=recording_2026_05_07-2
 npm run social:youtube:publish -- --set-id=recording_2026_05_07-2 --privacy=unlisted
 ```
 
-## Optional Arguments
+## Optionale Argumente
 
 ```powershell
 npm run social:auto -- --set-id=recording_2026_05_07-2
@@ -93,9 +108,9 @@ npm run social:auto -- --start=00:17:58
 npm run social:auto -- --durations=15,30,59
 ```
 
-## Publishing Gate
+## Publishing-Gate
 
-The workflow is free by default. Automatic publishing only turns on after official OAuth/API tokens are available in the environment:
+Der Workflow ist standardmaessig kostenfrei. Automatisches Publishing wird erst aktiviert, wenn offizielle OAuth-/API-Tokens in der Umgebung vorhanden sind:
 
 ```text
 YOUTUBE_CLIENT_ID
@@ -111,13 +126,44 @@ TIKTOK_CLIENT_SECRET
 TIKTOK_REFRESH_TOKEN
 ```
 
-Until then, the package is publish-ready but platform upload remains manual.
+Bis dahin ist das Paket veroeffentlichungsbereit, der Plattform-Upload bleibt aber manuell.
 
-## Current Practical Path
+## Meta Business Suite Kopier-/Einfuegepaket
 
-1. Use `npm run social:auto` to create the package automatically.
-2. Use `npm run social:youtube:dry` and `npm run social:youtube:render:test` to verify source mapping and visual encoding.
-3. Use `npm run social:youtube:publish -- --privacy=unlisted` when YouTube OAuth variables are configured and you want automatic upload.
-YouTube behavior: default is full-set upload with branded AIRDOX visual. Use `npm run social:youtube:publish:short -- --privacy=unlisted` only when you explicitly want the short-form reel upload.
-4. Upload manually to Instagram/Facebook/TikTok while Meta/TikTok API access is blocked.
-5. Add Meta and TikTok later through official app/OAuth flows.
+Fuer Meta-Arbeit ohne Budget ist die Standardausgabe ein manuelles Upload-Paket, kein direktes API-Publishing. Jeder freigegebene Meta-Draft soll enthalten:
+
+- Zielplattformen: Instagram, Facebook, Threads, wenn sinnvoll
+- finaler MP4- oder PNG-Pfad
+- finale Caption je Plattform
+- Hashtags und optionaler Text fuer den ersten Kommentar
+- Landing-URL
+- vorgeschlagener Posting-Zeitpunkt in Europe/Berlin
+- KPI-Ziel
+- Risiko-Notiz
+- Nutzerfreigabezeile
+- Eintragsvorlage fuer `social-post-ledger.json` mit Live-URL nach dem Posting
+
+Erlaubter Standardablauf:
+
+```text
+social:auto -> Designer-Pruefung -> Manni/Guardian-Risiko-Notiz -> Nutzer-OK -> manuelle Planung in Meta Business Suite -> Ledger-Aktualisierung
+```
+
+Im kostenfreien Hobby-Workflow blockiert:
+
+- Browser-Automation gegen Meta-Websites
+- gespeicherte Login-Cookies oder Session-Tokens
+- Scraping hinter Login
+- automatische Likes/Follows, kalte Massen-DMs
+- bezahlte Boosts oder Ads ohne separate ausdrueckliche Budgetfreigabe
+
+Offizielles Meta-Graph-API-Publishing bleibt optional und startet erst, wenn das Setup in `docs/agent-system/META_GRAPH_PUBLISHING_SETUP.md` abgeschlossen ist.
+
+## Aktueller Praxispfad
+
+1. `npm run social:auto` verwenden, um das Paket automatisch zu erstellen.
+2. `npm run social:youtube:dry` und `npm run social:youtube:render:test` verwenden, um Quellenzuordnung und visuelles Encoding zu pruefen.
+3. `npm run social:youtube:publish -- --privacy=unlisted` verwenden, wenn YouTube-OAuth-Variablen konfiguriert sind und automatischer Upload gewuenscht ist.
+YouTube-Verhalten: Standard ist Full-Set-Upload mit gebrandetem AIRDOX-Visual. `npm run social:youtube:publish:short -- --privacy=unlisted` nur verwenden, wenn explizit ein Short-Form-Reel-Upload gewuenscht ist.
+4. Manuell zu Instagram/Facebook/TikTok hochladen, solange Meta-/TikTok-API-Zugriff blockiert ist.
+5. Meta und TikTok spaeter ueber offizielle App-/OAuth-Flows ergaenzen.

@@ -2,6 +2,26 @@
 
 Dieses Log speichert strategische Entscheidungen des Multi-Agenten-Systems. Kurze Eintraege sind beabsichtigt: Datum, Kontext, Entscheidung, Risiko, Recheck.
 
+## 2026-05-27 - Refactor muss Website-Stabilitaet aktiv verbessern
+
+Kontext:
+- Nutzerhinweis: Refactor wirkt passiv und soll die Seite real besser machen.
+- Prioritaet: Erreichbarkeit, Stabilitaet und Funktionalitaet muessen jederzeit erhalten bleiben.
+
+Entscheidung:
+- Neuer Standardjob `refactor-website-opportunities` laeuft im Background-Cycle und erzeugt konkrete Website-Verbesserungsauftraege.
+- Neuer gravierender Auftrag `website-stability-refactor-execution` erlaubt groessere Website-Refactors nur mit Impact, Rollback-Hinweis, Tests, Build, Guardian-Risiko und Proof fuer betroffene Flows.
+- Refactor-Routing wechselt von reinem Review zu `implementation_support` fuer Website-Service-Dateien.
+
+Risiko:
+- Breite Umbauten koennen Erreichbarkeit oder Nutzerflows verschlechtern, wenn sie ohne Gates laufen.
+- Zu kleine Refactor-Schritte koennen echte Stabilitaetsprobleme nur markieren, aber noch nicht beheben.
+
+Recheck:
+- `npm run refactor:website:opportunities`
+- `npm run agent:jobs:validate`
+- `npm run agent:jobs:run -- --event=scheduled_background --status=standard --continue-on-error`
+
 ## 2026-05-13 - Manni Manual Platform Handoff ohne Boost
 
 Kontext:

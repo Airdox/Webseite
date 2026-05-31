@@ -1,0 +1,162 @@
+{
+  "generatedAt": "2026-05-24T04:52:19.782Z",
+  "source": {
+    "notebookId": "81268d43-e9b3-4554-859d-ff4f05ab9719"
+  },
+  "mandatory": true,
+  "tasks": [
+    {
+      "owner": "Manni",
+      "title": "Meta Business Suite Kopier-/Einfuegepaket standardisieren",
+      "acceptance": "Jedes social-auto-output Paket enthaelt Instagram-, Facebook- und Threads-Text, Hashtags, Landing-URL, vorgeschlagenen Termin Europe/Berlin, KPI-Ziel, Risikozeile und Ledger-Vorlage fuer manuelle Meta-Business-Suite-Veroeffentlichung.",
+      "priority": 1
+    },
+    {
+      "owner": "Designer",
+      "title": "Meta-Draft-Asset-Pruefgate",
+      "acceptance": "Platform-ready Drafts markieren sichtbares Asset, Safe-Area, Hook-Frame, AIRDOX-CD-Konformitaet und final verwendbare MP4/PNG-Datei vor Nutzerfreigabe.",
+      "priority": 1
+    },
+    {
+      "owner": "Guardian",
+      "title": "Risiko-Check fuer kostenfreie Social-Automation",
+      "acceptance": "Checkliste blockiert Browserautomatisierung, Login-Cookies, Scraping, automatische Likes/Follows, kalte Massen-DMs, parallele Dritttools und Paid-Spend ohne separates OK.",
+      "priority": 1
+    },
+    {
+      "owner": "Audience Intelligence",
+      "title": "Manuelle Meta-KPI-Felder im Ledger",
+      "acceptance": "Social Ledger akzeptiert minimale manuelle KPI-Felder fuer Plattform, URL, Zeit, Asset, Caption-ID, Reichweite, Aufrufe/Plays, Speicherungen/Teilungen, Follows, Link-Klicks und qualitative Kommentar-Notiz.",
+      "priority": 2
+    },
+    {
+      "owner": "Orchestrator",
+      "title": "Setup Electron IPC Bridge",
+      "acceptance": "Stabile Übertragung von Frame-Daten Renderer->Main etabliert [2, 15].",
+      "priority": 1
+    },
+    {
+      "owner": "Renderer",
+      "title": "OffscreenCanvas Render-Loop",
+      "acceptance": "Frame-Extraction als ArrayBuffer ohne Memory-Leaks funktional [2, 11, 40].",
+      "priority": 1
+    },
+    {
+      "owner": "Designer",
+      "title": "React Flow Mapping UI",
+      "acceptance": "Interaktives Routing von Audio-Nodes zu Effekt-Parametern möglich [1, 3, 41].",
+      "priority": 1
+    },
+    {
+      "owner": "Quality",
+      "title": "Signal-Glättungs-Logik",
+      "acceptance": "Asymmetrische Envelope-Filter für weiche Onsets implementiert [7, 8].",
+      "priority": 2
+    },
+    {
+      "owner": "Research",
+      "title": "4D Noise Algorithmus",
+      "acceptance": "Mathematisch verifizierte nahtlose Loop-Generierung aktiv [10, 29].",
+      "priority": 2
+    },
+    {
+      "owner": "Publisher",
+      "title": "FFmpeg Muxing Pipeline",
+      "acceptance": "Automatisierte Profile für MP4/WebM inkl. Audio-Fades bereit [15, 26].",
+      "priority": 2
+    },
+    {
+      "owner": "Designer",
+      "title": "Daumenkino-Look Presets",
+      "acceptance": "Systematik für Graffiti- und Lettering-Effekte in Nodes integriert [History].",
+      "priority": 2
+    },
+    {
+      "owner": "Quality",
+      "title": "React Flow Performance-Audit",
+      "acceptance": "UI bleibt bei 60 FPS trotz hoher Node-Dichte (memo/deferredValue) [42, 43].",
+      "priority": 1
+    },
+    {
+      "owner": "Orchestrator",
+      "title": "Seed- & Remix-Zustandsverwaltung",
+      "acceptance": "Persistente Speicherung und Branching von Design-Seeds aktiv [6, 14].",
+      "priority": 2
+    },
+    {
+      "owner": "Renderer",
+      "title": "Safe-Area Overlay System",
+      "acceptance": "Visualisierung der Reel-UI-Grenzen im Preview-Canvas integriert [History].",
+      "priority": 3
+    },
+    {
+      "owner": "Research",
+      "title": "Stem-Separation Evaluation",
+      "acceptance": "Analyse zur KI-basierten Trennung von Musikspuren abgeschlossen [4, 43].",
+      "priority": 3
+    },
+    {
+      "owner": "Publisher",
+      "title": "4K Upscaling Integration",
+      "acceptance": "Automatisierter Workflow für hochauflösende Final-Exports bereit [44, 45].",
+      "priority": 3
+    }
+  ],
+  "prototypes": [
+    {
+      "name": "Bass-Lettering-Pulse",
+      "goal": "Rhythmischer Logo-Drop für Reels.",
+      "look": "Graffiti-Lettern vibrieren synchron zur Kick-Drum.",
+      "toolchain": "Web Audio FFT, OffscreenCanvas, FFmpeg [2, 8].",
+      "steps": [
+        "Bass-Energie (50-175Hz) isolieren und glätten [4, 8].",
+        "Skalierungswert an Daumenkino-Lettering-Node binden [3, 8].",
+        "Roh-Frames via IPC an FFmpeg-Backend zum Muxing streamen [2, 15]."
+      ]
+    },
+    {
+      "name": "Morphing Logo Reveal",
+      "goal": "Cinematic Brand Intro.",
+      "look": "Abstrakte Partikel verschmelzen am Ende zum scharfen Logo.",
+      "toolchain": "Runway Gen-3 Alpha, First-and-Last-Frame Workflow [5, 23].",
+      "steps": [
+        "Abstraktes Startbild und Logo-Endbild als Keyframes definieren [5, 24].",
+        "Motion-Prompt für 'Verschmelzung' auf Audio-Climax timen [23, 25].",
+        "Video-Fade-Out am Sequenzende automatisieren [26, 27]."
+      ]
+    },
+    {
+      "name": "Seamless Mood Loop",
+      "goal": "Endloser Hintergrund für Musik-Sets.",
+      "look": "Fließende organische Noise-Formen ohne sichtbare Schnittkante.",
+      "toolchain": "4D Simplex Noise, WebGL Shader [10, 28].",
+      "steps": [
+        "Zeitvariable kreisförmig auf 3. und 4. Noise-Dimension mappen [10, 29].",
+        "Mitten-Frequenzen steuern die Shader-Farb-Rotation [4, 8].",
+        "Export als nahtloses transparentes WebM via VP9-Codec [16, 30]."
+      ]
+    },
+    {
+      "name": "Transient Glitch Reel",
+      "goal": "High-Energy Performance Hook.",
+      "look": "RGB-Aberration und Grit reagieren auf Snares und Transienten.",
+      "toolchain": "lil-gui, Meyda.js, FFmpeg-Piping [15, 31, 32].",
+      "steps": [
+        "Zero-Crossing Rate (ZCR) zur Steuerung der Grit-Intensität nutzen [33, 34].",
+        "Onset-Detection für automatische Szenenwechsel einsetzen [25, 34].",
+        "Echtzeit-Feinabstimmung der Schwellenwerte via Tweakpane [31, 35]."
+      ]
+    },
+    {
+      "name": "Consistent Hoodie-Loop",
+      "goal": "Identitätsstabiler Social-Post.",
+      "look": "Figur im Hoodie transformiert sich, bleibt aber strukturell stabil.",
+      "toolchain": "Luma Ray3, Character Reference System [21, 36].",
+      "steps": [
+        "Referenzbild der Hoodie-Figur als Anker laden [21, 37].",
+        "Adhere-Stärke am Slider für maximale Bewegungstreue fixieren [21, 38].",
+        "Background-Swap durch prompt-basierte Umgebungstransformation [21, 39]."
+      ]
+    }
+  ]
+}

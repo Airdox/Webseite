@@ -301,7 +301,7 @@ const AdvancedSettingsTab = ({
               label="Photoshop Pfad (Exe)"
               value={localSettings.photoshopPath}
               onChange={(v) => handleChange('photoshopPath', v)}
-              placeholder="D:\ps\Photoshop.exe"
+              placeholder="C:\Users\p_kro\OneDrive\Desktop\ps"
             />
             <SelectSetting
               label="Standard Render-Stil"

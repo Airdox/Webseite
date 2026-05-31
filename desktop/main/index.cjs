@@ -18,6 +18,7 @@ const DEV_DESKTOP_URL = process.env.VITE_DEV_SERVER_URL || 'http://127.0.0.1:417
 const PACKAGED_DESKTOP_URL = 'app://flightdeck/desktop.html';
 
 let mainWindow = null;
+let designStudioWindow = null;
 let servicesPromise = null;
 
 const getServices = async () => {
@@ -260,7 +261,42 @@ const createWindow = async () => {
   }
 };
 
+const createDesignStudioWindow = async () => {
+  if (designStudioWindow && !designStudioWindow.isDestroyed()) {
+    designStudioWindow.focus();
+    return true;
+  }
+
+  const preloadPath = path.join(__dirname, 'preload.cjs');
+  designStudioWindow = new BrowserWindow({
+    width: 1920,
+    height: 1120,
+    minWidth: 1440,
+    minHeight: 900,
+    backgroundColor: '#050608',
+    title: 'AIRDOX Design Studio',
+    webPreferences: {
+      preload: preloadPath,
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: false,
+    },
+  });
+
+  designStudioWindow.on('closed', () => {
+    designStudioWindow = null;
+  });
+
+  const studioUrl = app.isPackaged
+    ? `${PACKAGED_DESKTOP_URL}?view=design-studio`
+    : `${DEV_DESKTOP_URL}?view=design-studio`;
+  await designStudioWindow.loadURL(studioUrl);
+  return true;
+};
+
 ipcMain.handle('flightdeck:get-state', getAppState);
+
+ipcMain.handle('flightdeck:open-design-studio', createDesignStudioWindow);
 
 ipcMain.handle('flightdeck:get-settings', async () => {
   const { loadSettings } = await getServices();
@@ -408,11 +444,52 @@ ipcMain.handle('flightdeck:reveal-path', async (_event, payload) => {
   return true;
 });
 
+const resolvePhotoshopExecutable = async (configuredPath = '') => {
+  const candidates = [];
+  const addCandidate = (value) => {
+    const candidate = String(value || '').trim().replace(/^"|"$/g, '');
+    if (candidate && !candidates.includes(candidate)) candidates.push(candidate);
+  };
+
+  addCandidate(configuredPath);
+  if (configuredPath && !path.extname(configuredPath)) {
+    addCandidate(path.join(configuredPath, 'Photoshop.exe'));
+    addCandidate(path.join(configuredPath, 'Adobe Photoshop 2020 Portable.exe'));
+  }
+  addCandidate('C:\\Users\\p_kro\\OneDrive\\Desktop\\ps\\Adobe Photoshop 2020 Portable.exe');
+  addCandidate('C:\\Users\\p_kro\\OneDrive\\Desktop\\ps\\Photoshop.exe');
+  addCandidate('C:\\Program Files\\Adobe\\Adobe Photoshop 2020\\Photoshop.exe');
+  addCandidate('C:\\Program Files\\Adobe\\Adobe Photoshop 2024\\Photoshop.exe');
+  addCandidate('C:\\Program Files\\Adobe\\Adobe Photoshop 2025\\Photoshop.exe');
+  addCandidate('C:\\Program Files\\Adobe\\Adobe Photoshop 2026\\Photoshop.exe');
+
+  for (const candidate of candidates) {
+    const found = await fs.access(candidate).then(() => true).catch(() => false);
+    if (found) return { found: true, path: candidate, candidates };
+  }
+
+  return { found: false, path: candidates[0] || '', candidates };
+};
+
 ipcMain.handle('flightdeck:render-design', async (_event, payload) => {
   const { spawn } = require('node:child_process');
   const style = payload?.style || 'flicker';
   const mode = payload?.mode || 'auto';
+  const photoshopAction = payload?.photoshopAction || 'script_and_launch';
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
+  const releaseDir = path.join(workspaceRoot, 'release');
+  const outputBase = String(payload?.outputSlug || `daumenkino_${style}`).replace(/[^a-z0-9_-]/gi, '_');
+  const outputPaths = {
+    gifPath: path.join(releaseDir, `${outputBase}.gif`),
+    mp4Path: path.join(releaseDir, `${outputBase}.mp4`),
+    manifestPath: path.join(releaseDir, `${outputBase}.manifest.json`),
+    handoffPath: path.join(releaseDir, `${outputBase}.handoff.md`),
+    photoshopFramePath: path.join(releaseDir, `${outputBase}.photoshop-frame.png`),
+    photoshopScriptPath: path.join(releaseDir, `${outputBase}.photoshop-setup.jsx`),
+    outputDir: releaseDir,
+  };
+  let photoshopPath = '';
+  let photoshopAvailable = false;
   
   const sendLog = (message, type = 'info') => {
     mainWindow?.webContents.send('flightdeck:design-log', {
@@ -422,34 +499,64 @@ ipcMain.handle('flightdeck:render-design', async (_event, payload) => {
     });
   };
 
-  sendLog(`[AGENT] Starte kreativen Design-Agenten (Stil: ${style === 'flicker' ? 'Beat-Flicker Strobo' : 'RGB Glitch Loop'})...`, 'info');
-
-  if (mode === '5050') {
-    const { loadSettings } = await getServices();
-    const settings = await loadSettings(getUserDataPath());
-    const psPath = settings.photoshopPath || 'D:\\ps\\Adobe Photoshop 2020 Portable.exe';
-    
-    sendLog(`[🤝 SYMBIOSE] Prüfe Photoshop-Pfad: "${psPath}"...`, 'info');
-    
-    // Check if photoshop executable exists
-    const exists = await fs.access(psPath).then(() => true).catch(() => false);
-    if (exists) {
-      sendLog(`[🤝 SYMBIOSE] Photoshop gefunden! Starte Applikation...`, 'success');
-      spawn(psPath, [], { detached: true, stdio: 'ignore' }).unref();
-      sendLog(`[🤝 SYMBIOSE] Photoshop geöffnet. Warte auf Pinselstriche des Users und STRG+S...`, 'warning');
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      sendLog(`[WATCHER] Speicher-Event erkannt! Photoshop-PSD erfolgreich ausgelesen.`, 'success');
-    } else {
-      sendLog(`[🤝 SYMBIOSE] Warnung: Photoshop unter "${psPath}" nicht gefunden. Fallback auf autonomen Modus.`, 'warning');
-    }
+  const { readSets } = await getServices();
+  const setsList = await readSets(workspaceRoot).catch(() => []);
+  const currentSet = setsList.find((entry) => entry.id === payload.setId) || setsList[0];
+  const vinylColor = currentSet?.vinylColor || '#00f0ff';
+  
+  let resolvedBgPath = '';
+  const bgSource = payload.bgSource || 'cover';
+  if (bgSource === 'cover' && currentSet?.cover) {
+    const rel = String(currentSet.cover).replace(/^\//, '');
+    resolvedBgPath = path.join(workspaceRoot, 'public', rel);
+  } else if (bgSource === 'vinyl') {
+    resolvedBgPath = path.join(workspaceRoot, 'public', 'assets', 'airdox-vinyl.jpg');
+  } else if (bgSource === 'music_area') {
+    resolvedBgPath = path.join(workspaceRoot, 'docs', 'agent-system', 'proof', 'designer-visual-quality', 'desktop-music.png');
+  } else if (bgSource === 'flight_deck') {
+    resolvedBgPath = path.join(workspaceRoot, 'docs', 'proof', 'agent-system-desktop.png');
+  } else if (bgSource === 'custom' && payload.customBgPath) {
+    resolvedBgPath = payload.customBgPath;
   }
 
+  sendLog(`[AGENT] Starte Design-Agenten (${payload?.presetId || style}, ${payload?.fps || 12} FPS)...`, 'info');
+  if (payload?.controls) {
+    sendLog(`[PARAMETER] Motion ${payload.controls.motion ?? '-'} / Glitch ${payload.controls.glitch ?? '-'} / Type ${payload.controls.typography ?? '-'}`, 'help');
+  }
+  sendLog(`[HINTERGRUND] Quelle: ${bgSource} -> Pfad: "${resolvedBgPath || 'keiner'}"`, 'help');
+  sendLog(`[FARBE] Theme: ${vinylColor}`, 'help');
+ 
+  if (mode === '5050' && photoshopAction !== 'prompt_only') {
+    const { loadSettings } = await getServices();
+    const settings = await loadSettings(getUserDataPath());
+    const configuredPhotoshopPath = settings.photoshopPath || 'C:\\Users\\p_kro\\OneDrive\\Desktop\\ps';
+    
+    sendLog(`[PHOTOSHOP] Pruefe Photoshop-Pfad: "${configuredPhotoshopPath}"...`, 'info');
+    
+    const resolvedPhotoshop = await resolvePhotoshopExecutable(configuredPhotoshopPath);
+    photoshopPath = resolvedPhotoshop.path;
+    photoshopAvailable = resolvedPhotoshop.found;
+    if (photoshopAvailable) {
+      sendLog(`[PHOTOSHOP] Gefunden: "${photoshopPath}". Der Agent baut zuerst das Handoff, danach startet das JSX-Skript.`, 'success');
+    } else {
+      sendLog(`[PHOTOSHOP] Nicht gefunden. Geprueft: ${resolvedPhotoshop.candidates.join(' | ')}`, 'warning');
+    }
+  } else if (mode === '5050') {
+    sendLog('[PHOTOSHOP] Prompt-only: Es wird kein Photoshop-Start versucht, nur Handoff/Prompt/Manifest.', 'help');
+  }
+ 
   return new Promise((resolve) => {
     const scriptPath = path.join(workspaceRoot, 'scripts', 'render-daumenkino.mjs');
-    
+    const encodedPayload = Buffer.from(JSON.stringify({
+      ...payload,
+      style,
+      vinylColor,
+      bgPath: resolvedBgPath,
+    }), 'utf8').toString('base64');
+ 
     sendLog(`[AGENT] Starte Playwright und FFmpeg-Pipeline...`, 'info');
-    
-    const child = spawn('node', [scriptPath, style], {
+ 
+    const child = spawn('node', [scriptPath, style, encodedPayload], {
       cwd: workspaceRoot,
       shell: true,
       env: { ...process.env }
@@ -482,10 +589,21 @@ ipcMain.handle('flightdeck:render-design', async (_event, payload) => {
 
     child.on('close', (code) => {
       if (code === 0) {
-        sendLog(`🎉 Kreativ-Prozess erfolgreich abgeschlossen!`, 'success');
-        resolve({ ok: true });
+        sendLog(`Kreativ-Prozess erfolgreich abgeschlossen.`, 'success');
+        sendLog(`[TRANSFER] GIF, MP4, Manifest und Handoff liegen in ${releaseDir}.`, 'success');
+        if (mode === '5050' && photoshopAction === 'script_and_launch' && photoshopAvailable) {
+          try {
+            spawn(photoshopPath, ['-r', outputPaths.photoshopScriptPath], { detached: true, stdio: 'ignore' }).unref();
+            sendLog(`[PHOTOSHOP] Setup-Skript an Photoshop uebergeben: ${outputPaths.photoshopScriptPath}`, 'success');
+          } catch (error) {
+            sendLog(`[PHOTOSHOP] Uebergabe fehlgeschlagen: ${error.message}`, 'warning');
+          }
+        } else if (mode === '5050' && photoshopAction === 'script_only') {
+          sendLog(`[PHOTOSHOP] JSX erzeugt, Photoshop bewusst nicht gestartet: ${outputPaths.photoshopScriptPath}`, 'success');
+        }
+        resolve({ ok: true, outputs: { ...outputPaths, photoshopAvailable, photoshopAction } });
       } else {
-        sendLog(`❌ Pipeline abgebrochen mit Exit-Code ${code}.`, 'warning');
+        sendLog(`Pipeline abgebrochen mit Exit-Code ${code}.`, 'warning');
         resolve({ ok: false, error: `Exit code ${code}` });
       }
     });
@@ -495,7 +613,7 @@ ipcMain.handle('flightdeck:render-design', async (_event, payload) => {
 ipcMain.handle('flightdeck:get-design-preview', async (_event, payload) => {
   const style = payload?.style || 'flicker';
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
-  const filePath = path.join(workspaceRoot, 'release', `daumenkino_${style}.gif`);
+  const filePath = payload?.gifPath || path.join(workspaceRoot, 'release', `daumenkino_${style}.gif`);
   try {
     const data = await fs.readFile(filePath);
     return `data:image/gif;base64,${data.toString('base64')}`;

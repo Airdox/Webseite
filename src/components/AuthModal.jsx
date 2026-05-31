@@ -2,29 +2,14 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import TurnstileCaptcha from './TurnstileCaptcha';
 import './AuthModal.css';
 import { t } from '../utils/i18n';
+import {
+    buildApiUrl,
+    readApiJson,
+    resolveApiBaseUrl,
+    resolveApiOrigin,
+} from '../utils/apiResponse';
 
-const API_BASE = (import.meta.env.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
-
-const resolveApiOrigin = () => {
-    if (typeof window === 'undefined') return '';
-    if (!API_BASE) return window.location.origin;
-    try {
-        return new URL(API_BASE, window.location.origin).origin;
-    } catch {
-        return window.location.origin;
-    }
-};
-
-const resolveApiBaseUrl = () => {
-    if (typeof window === 'undefined') return '';
-    if (!API_BASE) return window.location.origin;
-    try {
-        return new URL(API_BASE, window.location.origin).toString();
-    } catch {
-        return window.location.origin;
-    }
-};
 
 const SocialProviderIcon = ({ provider }) => {
     if (provider === 'google') {
@@ -126,11 +111,11 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
 
         const loadOAuthConfig = async () => {
             try {
-                const response = await fetch(`${API_BASE}/api/oauth/config`, {
+                const response = await fetch(buildApiUrl('/api/oauth/config'), {
                     method: 'GET',
                     signal: controller.signal,
                 });
-                const data = await response.json().catch(() => ({}));
+                const data = await readApiJson(response);
                 if (!disposed && response.ok && Array.isArray(data.providers)) {
                     setOauthProviders(data.providers.filter((provider) => provider === 'google' || provider === 'facebook'));
                 }
@@ -290,7 +275,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                 }
             }
 
-            const endpoint = mode === 'login' ? `${API_BASE}/api/login` : `${API_BASE}/api/register`;
+            const endpoint = buildApiUrl(mode === 'login' ? '/api/login' : '/api/register');
             const payload = mode === 'login' 
                 ? { email, password } 
                 : { email, password, username, captchaToken };
@@ -301,10 +286,10 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                 body: JSON.stringify(payload),
             });
 
-            const data = await response.json();
+            const data = await readApiJson(response);
 
             if (!response.ok) {
-                throw new Error(data.error || t('auth.genericError'));
+                throw new Error(data.error || data.message || t('auth.genericError'));
             }
 
             if (mode === 'login') {

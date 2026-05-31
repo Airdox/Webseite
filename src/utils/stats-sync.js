@@ -1,3 +1,5 @@
+import { buildRuntimeApiUrl } from './apiResponse';
+
 const STORAGE_KEY = 'airdox_offline_queue';
 const GLOBAL_STATS_KEY = 'airdox_global_stats';
 
@@ -5,24 +7,11 @@ const isDev = import.meta.env?.DEV;
 const devLog = (...args) => isDev && console.log('[StatsSync]', ...args);
 const devWarn = (...args) => isDev && console.warn('[StatsSync]', ...args);
 
-// Configuration from environment or defaults
-const PRODUCTION_URL = (import.meta.env?.VITE_PUBLIC_SITE_URL || 'https://airdox-webseite.beuth62.workers.dev').replace(/\/+$/, '');
 const STATS_API_BASE = (import.meta.env?.VITE_STATS_API_BASE || '').replace(/\/+$/, '');
 const STATS_API_FALLBACK = (import.meta.env?.VITE_STATS_API_FALLBACK || '').replace(/\/+$/, '');
 
-const buildStatsUrl = (base) => (base ? `${base}/api/stats` : '/api/stats');
-const isMobileRuntime = () => {
-    if (typeof window === 'undefined') return false;
-    return window.location.protocol === 'file:' || (window.location.hostname === 'localhost' && !!window.Capacitor);
-};
-const isLocalHttpRuntime = () => {
-    if (typeof window === 'undefined') return false;
-    if (import.meta.env?.MODE === 'test') return false;
-    return window.location.protocol.startsWith('http')
-        && ['localhost', '127.0.0.1'].includes(window.location.hostname);
-};
-const getPrimaryStatsUrl = () => buildStatsUrl(STATS_API_BASE || ((isMobileRuntime() || isLocalHttpRuntime()) ? PRODUCTION_URL : ''));
-const getFallbackStatsUrl = () => (STATS_API_FALLBACK ? buildStatsUrl(STATS_API_FALLBACK) : null);
+const getPrimaryStatsUrl = () => buildRuntimeApiUrl('/api/stats', STATS_API_BASE);
+const getFallbackStatsUrl = () => (STATS_API_FALLBACK ? buildRuntimeApiUrl('/api/stats', STATS_API_FALLBACK) : null);
 
 // Helper to get device/browser/os info
 const getMetadata = () => {

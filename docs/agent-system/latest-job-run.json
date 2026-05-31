@@ -1,33 +1,180 @@
 {
-  "generatedAt": "2026-05-13T16:37:43.227Z",
+  "generatedAt": "2026-05-31T16:29:26.272Z",
   "controller": "Master Controller",
-  "event": "manual_publish_request",
-  "status": "approved",
+  "event": "scheduled_background",
+  "status": "deep",
   "summary": {
-    "selectedJobCount": 3,
-    "executedJobCount": 0,
-    "manualJobCount": 2,
-    "skippedJobCount": 1,
-    "failedJobCount": 0
+    "selectedJobCount": 15,
+    "executedJobCount": 14,
+    "manualJobCount": 0,
+    "skippedJobCount": 0,
+    "failedJobCount": 1
   },
   "jobs": [
     {
-      "id": "designer-reel-cd-review",
+      "id": "repository-hygiene-monitor",
+      "owner": "Repository",
+      "result": "executed",
+      "detail": "ok (repository:monitor:write)",
+      "startedAt": "2026-05-31T16:29:26.276Z",
+      "endedAt": "2026-05-31T16:29:27.228Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run repository:monitor:write --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "agent-audit-cycle",
+      "owner": "Guardian",
+      "result": "executed",
+      "detail": "ok (agent:audit:write)",
+      "startedAt": "2026-05-31T16:29:27.228Z",
+      "endedAt": "2026-05-31T16:29:29.522Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:audit:write --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "mentor-agent-currency",
+      "owner": "Mentor",
+      "result": "executed",
+      "detail": "ok (mentor:currency:write)",
+      "startedAt": "2026-05-31T16:29:29.522Z",
+      "endedAt": "2026-05-31T16:29:32.471Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run mentor:currency:write --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "audience-intelligence-cycle",
+      "owner": "Audience Intelligence",
+      "result": "executed",
+      "detail": "ok (audience:intelligence:write)",
+      "startedAt": "2026-05-31T16:29:32.471Z",
+      "endedAt": "2026-05-31T16:29:33.023Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run audience:intelligence:write --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "website-profitability-review",
+      "owner": "Audience Intelligence",
+      "result": "executed",
+      "detail": "ok (website:profitability:write)",
+      "startedAt": "2026-05-31T16:29:33.023Z",
+      "endedAt": "2026-05-31T16:29:33.598Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run website:profitability:write --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "windows-tool-healthcheck",
+      "owner": "Winnie",
+      "result": "failed",
+      "detail": "exit 1 (desktop:test:logic)",
+      "startedAt": "2026-05-31T16:29:33.598Z",
+      "endedAt": "2026-05-31T16:30:10.467Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run desktop:test:logic --",
+      "exitCode": 1,
+      "error": ""
+    },
+    {
+      "id": "designer-pdf-draft-build",
       "owner": "Designer",
-      "result": "manual",
-      "detail": "Inspect every Manni reel/story/social output before external use and revise it against AIRDOX corporate design. Match the website visual language: dark base, neon cyan, pink accent, clear grid/edge system, high-contrast typography, uppercase AIRDOX signal, platform safe areas, and no internal approval/draft text in the visible asset. Produce or reference final MP4/PNG assets and mark only Designer-approved versions as usable for Meta Business Suite upload. When a pattern repeats, create a reusable template specification for other agents with purpose, editable fields, safe-area rules, brand-token mapping, export target, and handoff rules."
+      "result": "executed",
+      "detail": "ok (brand:epk)",
+      "startedAt": "2026-05-31T16:30:10.467Z",
+      "endedAt": "2026-05-31T16:30:11.163Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run brand:epk --",
+      "exitCode": 0,
+      "error": ""
     },
     {
-      "id": "pr-campaign-live-publish",
+      "id": "manni-reel-factory",
       "owner": "Manni",
-      "result": "skipped",
-      "detail": "Personal user approval required before live/external output."
+      "result": "executed",
+      "detail": "ok (manni:reels:generate)",
+      "startedAt": "2026-05-31T16:30:11.164Z",
+      "endedAt": "2026-05-31T16:30:11.921Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run manni:reels:generate --",
+      "exitCode": 0,
+      "error": ""
     },
     {
-      "id": "pr-social-reach-ops-execute",
-      "owner": "Manni",
-      "result": "manual",
-      "detail": "After explicit personal user confirmation is logged, execute or commission only the approved operations exactly as previewed. Allowed operations include posting approved Instagram/Facebook Reels or Stories, publishing approved Shorts/TikTok variants, replying/commenting with approved copy, sending approved collab/tag/repost requests, placing approved community posts, or activating approved newsletter/website bridges. Boost tests, paid spend, or budget activation require a separate explicit approval and must stay skipped when the operation approval state is rejected or pending. Record platform, action type, timestamp, URL or campaign ID, asset IDs, spend, first KPI checkpoint, and any platform response in DECISION_LOG."
+      "id": "guardian-risk-summary",
+      "owner": "Guardian",
+      "result": "executed",
+      "detail": "ok (guardian:risk:write)",
+      "startedAt": "2026-05-31T16:30:11.921Z",
+      "endedAt": "2026-05-31T16:30:14.267Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run guardian:risk:write --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "notebooklm-deep-research-brief",
+      "owner": "Deep Research",
+      "result": "executed",
+      "detail": "ok (agent:notebooklm:brief)",
+      "startedAt": "2026-05-31T16:30:14.267Z",
+      "endedAt": "2026-05-31T16:30:14.910Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:notebooklm:brief --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "agent-routing-review",
+      "owner": "Master Controller",
+      "result": "executed",
+      "detail": "ok (agent:route:write)",
+      "startedAt": "2026-05-31T16:30:14.910Z",
+      "endedAt": "2026-05-31T16:30:15.732Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:route:write --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "agent-quality-chain",
+      "owner": "Guardian",
+      "result": "executed",
+      "detail": "ok (agent:quality-chain:write)",
+      "startedAt": "2026-05-31T16:30:15.732Z",
+      "endedAt": "2026-05-31T16:30:30.266Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:quality-chain:write --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "agent-dependency-radar",
+      "owner": "Master Controller",
+      "result": "executed",
+      "detail": "ok (agent:dependencies:write)",
+      "startedAt": "2026-05-31T16:30:30.266Z",
+      "endedAt": "2026-05-31T16:30:30.813Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:dependencies:write --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "agent-system-health",
+      "owner": "Master Controller",
+      "result": "executed",
+      "detail": "ok (agent:system:health)",
+      "startedAt": "2026-05-31T16:30:30.813Z",
+      "endedAt": "2026-05-31T16:30:31.344Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run agent:system:health --",
+      "exitCode": 0,
+      "error": ""
+    },
+    {
+      "id": "refactor-website-opportunities",
+      "owner": "Refactor",
+      "result": "executed",
+      "detail": "ok (refactor:website:opportunities)",
+      "startedAt": "2026-05-31T16:30:31.344Z",
+      "endedAt": "2026-05-31T16:30:31.991Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js run refactor:website:opportunities --",
+      "exitCode": 0,
+      "error": ""
     }
   ]
 }

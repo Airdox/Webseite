@@ -4,35 +4,34 @@ on:
   workflow_dispatch:
     inputs:
       event:
-        description: "Job trigger event (e.g. manual_background, windows_tool_review)"
+        description: "Job trigger event"
         required: true
-        type: string
         default: "manual_background"
       status:
-        description: "Job trigger status (e.g. standard, deep, morning_review)"
+        description: "Job trigger status"
         required: true
-        type: string
         default: "standard"
       approved:
-        description: "Comma-separated approved major job ids"
+        description: "Comma-separated Master Controller approvals for gravierend jobs"
         required: false
-        type: string
         default: ""
       user_approved:
-        description: "Comma-separated personally user-approved external live social job ids"
+        description: "Comma-separated personal user approvals for external_live jobs"
         required: false
-        type: string
         default: ""
+
+permissions:
+  contents: read
 
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 20
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -41,18 +40,25 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Validate job catalog
+      - name: Validate catalog
         run: npm run agent:jobs:validate -- --strict-warnings
 
-      - name: Run selected agent jobs
-        run: npm run agent:jobs:run -- --event=${{ inputs.event }} --status=${{ inputs.status }} --approved=${{ inputs.approved }} --user-approved=${{ inputs.user_approved }}
+      - name: Run selected jobs
+        run: npm run agent:jobs:run -- --event="${{ inputs.event }}" --status="${{ inputs.status }}" --approved="${{ inputs.approved }}" --user-approved="${{ inputs.user_approved }}"
 
-      - name: Upload job run reports
+      - name: Generate system health
+        if: always()
+        run: npm run agent:system:health
+
+      - name: Upload dispatch reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: agent-job-run-report
+          name: agent-dispatch-reports
           path: |
-            docs/agent-system/job-catalog.json
             docs/agent-system/latest-job-run.json
             docs/agent-system/latest-job-run.md
+            docs/agent-system/latest-agent-system-health.json
+            docs/agent-system/latest-agent-system-health.md
+            docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
+          if-no-files-found: warn

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './BookingSection.css';
 import { t } from '../utils/i18n';
-import { readApiError } from '../utils/apiResponse';
+import { buildApiUrl, readApiError } from '../utils/apiResponse';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { audienceEvents } from '../utils/audienceSignals';
 
@@ -81,7 +81,7 @@ const BookingSection = () => {
         const payload = Object.fromEntries(data.entries());
 
         try {
-            const response = await fetch('/api/booking', {
+            const response = await fetch(buildApiUrl('/api/booking'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

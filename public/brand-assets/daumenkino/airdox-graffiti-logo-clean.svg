@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 170" role="img" aria-label="AIRDOX graffiti logo">
+  <defs>
+    <filter id="paintShadow">
+      <feDropShadow dx="4" dy="0" stdDeviation="2" flood-color="#00f0ff" flood-opacity="0.45"/>
+      <feDropShadow dx="-4" dy="0" stdDeviation="2" flood-color="#ff00aa" flood-opacity="0.38"/>
+      <feDropShadow dx="0" dy="5" stdDeviation="2" flood-color="#000000" flood-opacity="0.65"/>
+    </filter>
+  </defs>
+  <g filter="url(#paintShadow)" fill="#f5f8ff" stroke="#050608" stroke-width="7" stroke-linejoin="round" paint-order="stroke fill">
+    <g transform="translate(0 -2) rotate(-3 70 85)">
+      <path d="M18 132 L64 16 L108 132 L82 126 L73 101 L49 104 L39 132 Z"/>
+      <path d="M54 79 L68 78 L61 48 Z" fill="#050608" stroke="#f5f8ff" stroke-width="2"/>
+      <path d="M24 130 L9 152 L48 137 Z" fill="#9adf6b"/>
+    </g>
+    <g transform="translate(0 4) rotate(-1.8 175 85)">
+      <path d="M126 28 L184 16 L178 44 L161 45 L151 112 L176 108 L170 134 L108 145 L115 116 L132 115 L142 49 L119 53 Z"/>
+      <path d="M137 21 L188 2 L176 19 Z" fill="#9adf6b"/>
+    </g>
+    <g transform="translate(0 -2) rotate(-0.4 280 85)">
+      <path d="M202 133 L214 20 L268 14 Q307 18 300 54 Q296 78 266 89 L302 135 L264 130 L239 95 L234 137 Z"/>
+      <path d="M241 42 L237 70 L260 68 Q277 65 279 53 Q281 39 262 38 Z" fill="#050608" stroke="#f5f8ff" stroke-width="2"/>
+      <path d="M273 83 L315 78 L292 100 Z" fill="#9adf6b"/>
+    </g>
+    <g transform="translate(0 4) rotate(0.8 385 85)">
+      <path d="M318 134 L326 19 L383 16 Q442 21 439 72 Q435 127 377 136 Z"/>
+      <path d="M357 43 L352 108 L378 105 Q405 101 407 73 Q410 43 382 40 Z" fill="#050608" stroke="#f5f8ff" stroke-width="2"/>
+    </g>
+    <g transform="translate(0 -2) rotate(2.2 490 85)">
+      <path d="M461 130 Q424 112 431 67 Q438 21 486 15 Q533 9 548 48 Q562 89 531 118 Q501 145 461 130 Z"/>
+      <path d="M471 100 Q455 90 459 68 Q462 45 487 41 Q512 38 520 57 Q529 80 511 96 Q493 112 471 100 Z" fill="#050608" stroke="#f5f8ff" stroke-width="2"/>
+    </g>
+    <g transform="translate(0 4) rotate(3.6 595 85)">
+      <path d="M548 134 L587 72 L562 23 L598 18 L612 48 L638 13 L678 18 L628 76 L662 136 L624 132 L604 99 L580 139 Z"/>
+      <path d="M548 43 L526 24 L568 30 Z" fill="#9adf6b"/>
+      <path d="M650 127 L694 151 L636 141 Z" fill="#9adf6b"/>
+    </g>
+  </g>
+</svg>
