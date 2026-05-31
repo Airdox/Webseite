@@ -13,7 +13,7 @@ page.on('console', (message) => {
   if (message.type() === 'error') console.error('BROWSER_ERROR:', message.text());
 });
 
-await page.goto(url, { waitUntil: 'networkidle' });
+await page.goto(url, { waitUntil: 'domcontentloaded' });
 await page.locator('#music').scrollIntoViewIfNeeded();
 
 const card = page.locator('.set-card[data-set-id]').first();
