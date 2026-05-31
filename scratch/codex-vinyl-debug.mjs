@@ -7,6 +7,7 @@ const page = await browser.newPage({
   isMobile: true,
   hasTouch: true,
 });
+await page.emulateMedia({ reducedMotion: process.argv[3] === 'reduce' ? 'reduce' : 'no-preference' });
 
 page.on('console', (message) => {
   if (message.type() === 'error') console.error('BROWSER_ERROR:', message.text());

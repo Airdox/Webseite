@@ -15,6 +15,7 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying, animationMode =
     });
     const billiardRafRef = useRef(null);
     const animatedVinylRef = useRef(null);
+    const animatedDiscRef = useRef(null);
     const frequencyBufferRef = useRef(null);
 
     useEffect(() => {
@@ -27,17 +28,25 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying, animationMode =
             animatedVinylRef.current = null;
         };
 
-        if (!isPlaying || !currentTrack?.id || animationMode !== 'billiard') {
+        const clearAnimatedDisc = () => {
+            if (!animatedDiscRef.current) return;
+            animatedDiscRef.current.style.removeProperty('transform');
+            animatedDiscRef.current = null;
+        };
+
+        const clearAnimatedElements = () => {
             clearAnimatedVinyl();
+            clearAnimatedDisc();
+        };
+
+        if (!isPlaying || !currentTrack?.id) {
+            clearAnimatedElements();
             return undefined;
         }
 
         const prefersReducedMotion = window.matchMedia
             && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) {
-            clearAnimatedVinyl();
-            return undefined;
-        }
+        const motionScale = prefersReducedMotion ? 0.45 : 1;
 
         let disposed = false;
         const physics = billiardStateRef.current;
@@ -75,8 +84,9 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying, animationMode =
                 if (card.dataset.setId !== String(currentTrack?.id)) continue;
                 const cover = card.querySelector('.set-cover');
                 const vinyl = card.querySelector('.cover-vinyl');
-                if (!cover || !vinyl) return null;
-                return { cover, vinyl };
+                const disc = card.querySelector('.mini-vinyl');
+                if (!cover || !vinyl || !disc) return null;
+                return { cover, vinyl, disc };
             }
             return null;
         };
@@ -97,6 +107,48 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying, animationMode =
             }
             return sum / (binsToRead * 255);
         };
+
+        if (animationMode === 'trainer') {
+            clearAnimatedVinyl();
+            const animateTrainer = (timestamp) => {
+                if (disposed) return;
+
+                const activeElements = findCurrentVinyl();
+                if (!activeElements) {
+                    billiardRafRef.current = requestAnimationFrame(animateTrainer);
+                    return;
+                }
+
+                const { disc } = activeElements;
+                if (animatedDiscRef.current && animatedDiscRef.current !== disc) {
+                    animatedDiscRef.current.style.removeProperty('transform');
+                }
+                animatedDiscRef.current = disc;
+
+                const energy = readAudioEnergy();
+                const rotation = (timestamp * (0.12 + energy * 0.18) * motionScale) % 360;
+                disc.style.transform = `rotate(${rotation.toFixed(2)}deg)`;
+                billiardRafRef.current = requestAnimationFrame(animateTrainer);
+            };
+
+            billiardRafRef.current = requestAnimationFrame(animateTrainer);
+
+            return () => {
+                disposed = true;
+                if (billiardRafRef.current) {
+                    cancelAnimationFrame(billiardRafRef.current);
+                    billiardRafRef.current = null;
+                }
+                clearAnimatedDisc();
+            };
+        }
+
+        if (animationMode !== 'billiard') {
+            clearAnimatedElements();
+            return undefined;
+        }
+
+        clearAnimatedDisc();
 
         const animate = (timestamp) => {
             if (disposed) return;
@@ -160,7 +212,7 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying, animationMode =
             physics.lastTs = timestamp;
 
             const energy = readAudioEnergy();
-            const speedFactor = 0.85 + (energy * 1.7);
+            const speedFactor = (0.85 + (energy * 1.7)) * motionScale;
             if (timestamp - (physics.lastChaosTs || 0) > 850) {
                 const drift = (Math.random() - 0.5) * (22 + energy * 34);
                 physics.vx = clampVelocity(physics.vx + drift);
