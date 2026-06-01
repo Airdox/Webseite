@@ -33,6 +33,7 @@ def upload_video_to_tiktok(video_path, description, cookies_file, headless=True)
         
         videos_to_upload = [
             {
+                'path': video_path,
                 'video': video_path,
                 'description': description,
                 'comment': True,
