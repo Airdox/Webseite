@@ -3,6 +3,10 @@ name: TikTok Video Upload (Inoffiziell)
 on:
   workflow_dispatch:
     inputs:
+      video_url:
+        description: 'Direkte URL zum Video (optional, überschreibt Video-Pfad)'
+        required: false
+        default: ''
       video_path:
         description: 'Pfad zum Video im Repository (z.B. public/video.mp4)'
         required: true
@@ -37,6 +41,7 @@ jobs:
 
       - name: Video hochladen
         env:
+          VIDEO_URL: ${{ github.event.inputs.video_url }}
           VIDEO_FILE: ${{ github.event.inputs.video_path }}
           VIDEO_DESCRIPTION: ${{ github.event.inputs.description }}
           COOKIES_FILE: ${{ github.workspace }}/cookies.txt
