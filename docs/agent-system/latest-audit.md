@@ -1,16 +1,16 @@
 # AIRDOX Agent Audit
 
-Generated: 2026-06-01T01:45:50.666Z
+Generated: 2026-06-01T07:45:48.259Z
 Repository: D:\webseeite-main
 Controller: Master Controller
 
 ## Summary
 
-- Average score: 94/100
+- Average score: 95/100
 - Gate status: pass
 - Test files: 26
 - CSS files: 21
-- Uncommitted paths: 84
+- Uncommitted paths: 6
 
 ## Agent Scores
 
@@ -23,7 +23,7 @@ Controller: Master Controller
 | Designer | 100/100 | Visual Design, Creative Direction und Social-Asset-Qualitaet. |
 | Mentor | 100/100 | Wissensspeicherung, Lernschleifen, Prozessverbesserung und Agenten-Weiterentwicklung. |
 | Refactor | 92/100 | Systemoptimierung, Verschlankung, Architekturqualitaet und technische Effizienz. |
-| Repository | 92/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
+| Repository | 100/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
 
 ## Webbie
 
@@ -70,7 +70,7 @@ Next actions:
 - PASS: Ausreichende Testdateien - 26 Test-/Spec-Dateien gefunden.
 - PASS: Worker/API-Testsignale - Server-/API-Code ist vorhanden; dedizierte Testsignale werden geprueft.
 - PASS: Web-CI-Gate vorhanden - Warnung, wenn GitHub Actions kein Web-Lint/Test/Build-Gate enthaelt.
-- WARN: Arbeitsbaum sauber - 84 uncommitted Pfade gefunden; vor Releases klaeren.
+- WARN: Arbeitsbaum sauber - 6 uncommitted Pfade gefunden; vor Releases klaeren.
 - PASS: Env-Beispiel vorhanden - .env.example ist fuer sichere Konfiguration vorhanden.
 
 Next actions:
@@ -153,7 +153,7 @@ Next actions:
 - PASS: Branching-Hinweise vorhanden - Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist.
 - PASS: Commit-Konvention dokumentiert - Warnung, wenn Commit-Typen nicht klar festgelegt sind.
 - PASS: Change-Tracking vorhanden - Warnung, wenn Entscheidungen oder Audit-Historie fehlen.
-- WARN: Arbeitsbaum releasebereit - 84 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
+- PASS: Arbeitsbaum releasebereit - 6 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
 - PASS: Einziges Deployment-Target - Nur Cloudflare (wrangler.jsonc) als Deployment-Target vorhanden.
 - PASS: Gefaehrdete Artefaktordner ignoriert - Warnung, wenn Build-/Wrangler-/Release-Artefakte nicht sauber ignoriert werden.
 

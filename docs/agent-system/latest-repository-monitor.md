@@ -1,6 +1,6 @@
 # AIRDOX Repository Monitor
 
-Generated: 2026-06-01T01:45:49.790Z
+Generated: 2026-06-01T07:45:46.895Z
 Agent: Repository
 Repository: D:\webseeite-main
 Branch: main
@@ -10,8 +10,8 @@ Branch: main
 - Checks: 6
 - Failures: 0
 - Warnings: 2
-- Uncommitted paths: 84
-- Unexpected uncommitted paths: 81
+- Uncommitted paths: 4
+- Unexpected uncommitted paths: 4
 - Baseline uncommitted paths: 80
 - Tracked generated artifacts (review): 0
 
@@ -21,94 +21,17 @@ Branch: main
 | --- | --- | --- |
 | branch-naming | PASS | Aktueller Branch: main |
 | required-governance-files | PASS | Gefundene Governance-Dateien: 3/3 |
-| working-tree-cleanliness-total | WARN | 84 uncommitted Pfade insgesamt. |
-| working-tree-cleanliness | WARN | 81 unerwartete uncommitted Pfade (84 gesamt, 80 baseline) |
+| working-tree-cleanliness-total | WARN | 4 uncommitted Pfade insgesamt. |
+| working-tree-cleanliness | WARN | 4 unerwartete uncommitted Pfade (4 gesamt, 80 baseline) |
 | tracked-generated-artifacts | PASS | 0 potentiell generierte Artefaktpfade sind versioniert. |
 | root-html-duplication | PASS | 0 zusaetzliche Root-HTML-Dateien erkannt. |
 
 ## Unexpected Dirty Paths
 
-- M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
-- M docs/agent-system/latest-agent-currency.json
-- M docs/agent-system/latest-agent-currency.md
-- M docs/agent-system/latest-agent-dependency-radar.json
-- M docs/agent-system/latest-agent-dependency-radar.md
 - M docs/agent-system/latest-agent-quality-chain.json
 - M docs/agent-system/latest-agent-quality-chain.md
 - M docs/agent-system/latest-agent-routing.json
 - M docs/agent-system/latest-agent-routing.md
-- M docs/agent-system/latest-agent-system-health.json
-- M docs/agent-system/latest-agent-system-health.md
-- M docs/agent-system/latest-audience-intelligence.json
-- M docs/agent-system/latest-audience-intelligence.md
-- M docs/agent-system/latest-audit.json
-- M docs/agent-system/latest-audit.md
-- M docs/agent-system/latest-background-cycle.json
-- M docs/agent-system/latest-guardian-risk-summary.json
-- M docs/agent-system/latest-guardian-risk-summary.md
-- M docs/agent-system/latest-job-run.json
-- M docs/agent-system/latest-job-run.md
-- M docs/agent-system/latest-notebooklm-brief.json
-- M docs/agent-system/latest-notebooklm-brief.md
-- M docs/agent-system/latest-refactor-website-opportunities.json
-- M docs/agent-system/latest-refactor-website-opportunities.md
-- M docs/agent-system/latest-repository-monitor.json
-- M docs/agent-system/latest-repository-monitor.md
-- M docs/agent-system/latest-website-profitability.json
-- M docs/agent-system/latest-website-profitability.md
-- M docs/agent-system/manni-reel-draft-pack.md
-- M docs/agent-system/manni-reel-queue.json
-- M docs/agent-system/manni-reel-weekly-plan.md
-- M index.html
-- M package-lock.json
-- M public/manifest.json
-- M src/components/Footer.jsx
-- M src/desktop/DesktopApp.jsx
-- M src/hooks/useVinylAnimation.js
-- M src/server/worker.js
-- ?? public/_redirects
-- ?? public/privacy-policy.html
-- ?? public/privacy-policy/
-- ?? public/terms-of-service.html
-- ?? public/terms-of-service/
-- ?? scratch/baerdox_reel_frames/
-- ?? scratch/baerdox_reel_preview_frames/
-- ?? scratch/chrome-focus-check.png
-- ?? scratch/photoshop-smoke-test.done
-- ?? scratch/photoshop-smoke-test.js
-- ?? scratch/photoshop-smoke-test.jsx
-- ?? scratch/reference_contact.jpg
-- ?? scratch/reference_frames/
-- ?? scratch/tiktok-after-delete.png
-- ?? scratch/tiktok-after-icon.png
-- ?? scratch/tiktok-after-privacy-context-check.png
-- ?? scratch/tiktok-after-urls.png
-- ?? scratch/tiktok-after-urls2.png
-- ?? scratch/tiktok-bookmarklet.txt
-- ?? scratch/tiktok-context-menu-chrome.png
-- ?? scratch/tiktok-context-menu.png
-- ?? scratch/tiktok-drag-replace-privacy-check.png
-- ?? scratch/tiktok-drag-replace-privacy.png
-- ?? scratch/tiktok-focus-taskbar.png
-- ?? scratch/tiktok-focused-replaced.png
-- ?? scratch/tiktok-form-screen.png
-- ?? scratch/tiktok-invalid-bookmarklet.txt
-- ?? scratch/tiktok-native-privacy.png
-- ?? scratch/tiktok-privacy-backspace.png
-- ?? scratch/tiktok-privacy-focused.png
-- ?? scratch/tiktok-privacy-pasted.png
-- ?? scratch/tiktok-reviewtext-bookmarklet.txt
-- ?? scratch/tiktok-set-airdox-fields.txt
-- ?? scratch/tiktok-top.png
-- ?? scratch/tiktok-type-x.png
-- ?? scratch/tiktok-urls-corrected.png
-- ?? scratch/tiktok-validity-bookmarklet.txt
-- ?? scripts/create-airdox-photoshop-overlay-source.mjs
-- ?? scripts/create_baerdox_reel.py
-- ?? scripts/make-airdox-reference-video.ps1
-- ?? scripts/photoshop/
-- ?? scripts/render-airdox-photoshop-video.ps1
-- ?? scripts/render-airdox-reference-style-video.mjs
 
 ## Dirty Baseline Paths
 
@@ -195,106 +118,25 @@ Branch: main
 
 ## All Dirty Paths
 
-- M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
-- M docs/agent-system/latest-agent-currency.json
-- M docs/agent-system/latest-agent-currency.md
-- M docs/agent-system/latest-agent-dependency-radar.json
-- M docs/agent-system/latest-agent-dependency-radar.md
 - M docs/agent-system/latest-agent-quality-chain.json
 - M docs/agent-system/latest-agent-quality-chain.md
 - M docs/agent-system/latest-agent-routing.json
 - M docs/agent-system/latest-agent-routing.md
-- M docs/agent-system/latest-agent-system-health.json
-- M docs/agent-system/latest-agent-system-health.md
-- M docs/agent-system/latest-audience-intelligence.json
-- M docs/agent-system/latest-audience-intelligence.md
-- M docs/agent-system/latest-audit.json
-- M docs/agent-system/latest-audit.md
-- M docs/agent-system/latest-background-cycle.json
-- M docs/agent-system/latest-guardian-risk-summary.json
-- M docs/agent-system/latest-guardian-risk-summary.md
-- M docs/agent-system/latest-job-run.json
-- M docs/agent-system/latest-job-run.md
-- M docs/agent-system/latest-notebooklm-brief.json
-- M docs/agent-system/latest-notebooklm-brief.md
-- M docs/agent-system/latest-refactor-website-opportunities.json
-- M docs/agent-system/latest-refactor-website-opportunities.md
-- M docs/agent-system/latest-repository-monitor.json
-- M docs/agent-system/latest-repository-monitor.md
-- M docs/agent-system/latest-website-profitability.json
-- M docs/agent-system/latest-website-profitability.md
-- M docs/agent-system/manni-reel-draft-pack.md
-- M docs/agent-system/manni-reel-queue.json
-- M docs/agent-system/manni-reel-weekly-plan.md
-- M en/index.html
-- M index.html
-- M package-lock.json
-- M package.json
-- M public/manifest.json
-- M public/sitemap.xml
-- M src/components/Footer.jsx
-- M src/desktop/DesktopApp.jsx
-- M src/hooks/useVinylAnimation.js
-- M src/server/worker.js
-- ?? public/_redirects
-- ?? public/privacy-policy.html
-- ?? public/privacy-policy/
-- ?? public/terms-of-service.html
-- ?? public/terms-of-service/
-- ?? scratch/baerdox_reel_frames/
-- ?? scratch/baerdox_reel_preview_frames/
-- ?? scratch/chrome-focus-check.png
-- ?? scratch/photoshop-smoke-test.done
-- ?? scratch/photoshop-smoke-test.js
-- ?? scratch/photoshop-smoke-test.jsx
-- ?? scratch/reference_contact.jpg
-- ?? scratch/reference_frames/
-- ?? scratch/tiktok-after-delete.png
-- ?? scratch/tiktok-after-icon.png
-- ?? scratch/tiktok-after-privacy-context-check.png
-- ?? scratch/tiktok-after-urls.png
-- ?? scratch/tiktok-after-urls2.png
-- ?? scratch/tiktok-bookmarklet.txt
-- ?? scratch/tiktok-context-menu-chrome.png
-- ?? scratch/tiktok-context-menu.png
-- ?? scratch/tiktok-drag-replace-privacy-check.png
-- ?? scratch/tiktok-drag-replace-privacy.png
-- ?? scratch/tiktok-focus-taskbar.png
-- ?? scratch/tiktok-focused-replaced.png
-- ?? scratch/tiktok-form-screen.png
-- ?? scratch/tiktok-invalid-bookmarklet.txt
-- ?? scratch/tiktok-native-privacy.png
-- ?? scratch/tiktok-privacy-backspace.png
-- ?? scratch/tiktok-privacy-focused.png
-- ?? scratch/tiktok-privacy-pasted.png
-- ?? scratch/tiktok-reviewtext-bookmarklet.txt
-- ?? scratch/tiktok-set-airdox-fields.txt
-- ?? scratch/tiktok-top.png
-- ?? scratch/tiktok-type-x.png
-- ?? scratch/tiktok-urls-corrected.png
-- ?? scratch/tiktok-validity-bookmarklet.txt
-- ?? scripts/create-airdox-photoshop-overlay-source.mjs
-- ?? scripts/create_baerdox_reel.py
-- ?? scripts/make-airdox-reference-video.ps1
-- ?? scripts/photoshop/
-- ?? scripts/render-airdox-photoshop-video.ps1
-- ?? scripts/render-airdox-reference-style-video.mjs
 
 ## Tracked Generated Artifacts
 
-- build/icon.ico
-- build/icon.png
+- none
 
 ## Recent Commits
 
+- 92e6f31 feat: add CustomTkinter TikTok GUI with progress bar, build script, and official agent skill
+- 14d02c3 fix: add 'path' key to video dict in upload_tiktok.py for compatibility with tiktok-uploader library
+- c167ead chore: add video_url input to TikTok upload workflow to align with python script
+- 7e5b174 feat: import TikTok upload script and workflow from qa-setup branch
+- 62b5573 chore: clean up repo, update agent reports, add privacy/terms pages, expand .gitignore for scratch/
 - 60b67e2 chore: daily autopush 2026-05-31 20:06 +02:00
 - a14f60b chore: daily autopush 2026-05-31 20:05 +02:00
 - 91fe814 chore: daily autopush 2026-05-31 20:04 +02:00
 - d4488e0 chore: daily autopush 2026-05-31 20:04 +02:00
 - d494daf chore-daily-autopush-2026-05-31
-- fea0734 feat(flightdeck): publish recording_2026_05_24
-- cb4058b chore: clean up web infrastructure, refactor components, integrate Design Agent, and update audits
-- 438103d fix(desktop): import real sets instead of mock, clear stale localstorage cache, fix date filter 'Alles'
-- c18db77 fix(desktop): remove fake SQL screens and mock data completely
-- 5df7ce8 chore: clean up repository and structure files
 

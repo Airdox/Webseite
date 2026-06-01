@@ -1,6 +1,6 @@
 # Manni Reel Weekly Plan
 
-Generated: 2026-06-01T01:46:53.021Z
+Generated: 2026-06-01T07:57:09.256Z
 Scenario: A - Organischer Engine-Aufbau
 Items: 12
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T01:45:51.452Z",
+  "generatedAt": "2026-06-01T07:45:50.135Z",
   "owner": "Mentor",
   "purpose": "Agent source currency and continuous learning check",
   "maxRunbookAgeDays": 45,
@@ -19,14 +19,14 @@
         {
           "filePath": "docs/agent-system/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
-          "ageDays": 15,
+          "ageDays": 0,
           "committedAt": "2026-05-16T15:27:57+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/agent-system/OPERATING_MODEL.md",
           "exists": true,
-          "ageDays": 5,
+          "ageDays": 0,
           "committedAt": "2026-05-31T19:58:02+02:00",
           "fresh": true
         }
@@ -48,7 +48,7 @@
           "url": "https://web.dev/articles",
           "ok": true,
           "status": 200,
-          "finalUrl": "https://web.dev/discover?hl=es-419"
+          "finalUrl": "https://web.dev/discover"
         },
         {
           "url": "https://developer.mozilla.org/en-US/docs/Web",
@@ -71,14 +71,14 @@
         {
           "filePath": "docs/agent-system/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
-          "ageDays": 15,
+          "ageDays": 0,
           "committedAt": "2026-05-16T15:27:57+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/brand/AIRDOX_CORPORATE_DESIGN.md",
           "exists": true,
-          "ageDays": 15,
+          "ageDays": 0,
           "committedAt": "2026-05-17T05:17:12+02:00",
           "fresh": true
         }
@@ -117,14 +117,14 @@
         {
           "filePath": "docs/WINDOWS_FLIGHTDECK.md",
           "exists": true,
-          "ageDays": 15,
+          "ageDays": 0,
           "committedAt": "2026-05-03T04:19:02+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/FLIGHT_DECK_TUTORIAL.md",
           "exists": true,
-          "ageDays": 15,
+          "ageDays": 0,
           "committedAt": "2026-05-03T04:19:02+02:00",
           "fresh": true
         }
@@ -163,14 +163,14 @@
         {
           "filePath": "docs/agent-system/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
-          "ageDays": 5,
+          "ageDays": 0,
           "committedAt": "2026-05-31T19:58:02+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/agent-system/REPOSITORY_GOVERNANCE.md",
           "exists": true,
-          "ageDays": 15,
+          "ageDays": 0,
           "committedAt": "2026-05-02T11:27:04+02:00",
           "fresh": true
         }
@@ -215,14 +215,14 @@
         {
           "filePath": "docs/agent-system/MANNI_GROWTH_PLAYBOOK.md",
           "exists": true,
-          "ageDays": 15,
+          "ageDays": 0,
           "committedAt": "2026-05-13T18:13:57+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/agent-system/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
-          "ageDays": 5,
+          "ageDays": 0,
           "committedAt": "2026-05-31T19:58:02+02:00",
           "fresh": true
         }
@@ -232,7 +232,7 @@
           "url": "https://ads.tiktok.com/business/creativecenter/",
           "ok": true,
           "status": 200,
-          "finalUrl": "https://ads.tiktok.com/creative/creativeCenter?rid=qana59fxkuq"
+          "finalUrl": "https://ads.tiktok.com/creative/creativeCenter?rid=t79xmrxt43"
         },
         {
           "url": "https://creators.instagram.com/",
@@ -261,7 +261,7 @@
         {
           "filePath": "docs/agent-system/REPOSITORY_GOVERNANCE.md",
           "exists": true,
-          "ageDays": 15,
+          "ageDays": 0,
           "committedAt": "2026-05-02T11:27:04+02:00",
           "fresh": true
         }
@@ -302,7 +302,7 @@
         {
           "filePath": "docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md",
           "exists": true,
-          "ageDays": 5,
+          "ageDays": 0,
           "committedAt": "2026-05-31T19:58:02+02:00",
           "fresh": true
         }
@@ -318,7 +318,7 @@
           "url": "https://web.dev/articles/fast",
           "ok": true,
           "status": 200,
-          "finalUrl": "https://web.dev/explore/fast?hl=it"
+          "finalUrl": "https://web.dev/explore/fast?hl=pt-br"
         },
         {
           "url": "https://nodejs.org/en/learn/diagnostics",
@@ -342,14 +342,14 @@
         {
           "filePath": "docs/agent-system/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
-          "ageDays": 5,
+          "ageDays": 0,
           "committedAt": "2026-05-31T19:58:02+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/agent-system/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
-          "ageDays": 5,
+          "ageDays": 0,
           "committedAt": "2026-05-31T19:58:02+02:00",
           "fresh": true
         }

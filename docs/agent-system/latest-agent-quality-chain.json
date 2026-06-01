@@ -1,94 +1,31 @@
 {
-  "generatedAt": "2026-06-01T01:46:57.680Z",
+  "generatedAt": "2026-06-01T07:57:14.519Z",
   "controller": "Master Controller",
   "job": "agent-quality-chain",
   "purpose": "Turn changed code into explicit test, validation, and owner follow-up obligations.",
-  "changedFileCount": 84,
+  "changedFileCount": 21,
   "changedFiles": [
-    "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md",
     "docs/agent-system/latest-agent-currency.json",
     "docs/agent-system/latest-agent-currency.md",
-    "docs/agent-system/latest-agent-dependency-radar.json",
-    "docs/agent-system/latest-agent-dependency-radar.md",
     "docs/agent-system/latest-agent-quality-chain.json",
     "docs/agent-system/latest-agent-quality-chain.md",
     "docs/agent-system/latest-agent-routing.json",
     "docs/agent-system/latest-agent-routing.md",
-    "docs/agent-system/latest-agent-system-health.json",
-    "docs/agent-system/latest-agent-system-health.md",
     "docs/agent-system/latest-audience-intelligence.json",
     "docs/agent-system/latest-audience-intelligence.md",
     "docs/agent-system/latest-audit.json",
     "docs/agent-system/latest-audit.md",
-    "docs/agent-system/latest-background-cycle.json",
     "docs/agent-system/latest-guardian-risk-summary.json",
     "docs/agent-system/latest-guardian-risk-summary.md",
-    "docs/agent-system/latest-job-run.json",
-    "docs/agent-system/latest-job-run.md",
     "docs/agent-system/latest-notebooklm-brief.json",
     "docs/agent-system/latest-notebooklm-brief.md",
-    "docs/agent-system/latest-refactor-website-opportunities.json",
-    "docs/agent-system/latest-refactor-website-opportunities.md",
     "docs/agent-system/latest-repository-monitor.json",
     "docs/agent-system/latest-repository-monitor.md",
     "docs/agent-system/latest-website-profitability.json",
     "docs/agent-system/latest-website-profitability.md",
     "docs/agent-system/manni-reel-draft-pack.md",
     "docs/agent-system/manni-reel-queue.json",
-    "docs/agent-system/manni-reel-weekly-plan.md",
-    "en/index.html",
-    "index.html",
-    "package-lock.json",
-    "package.json",
-    "public/manifest.json",
-    "public/sitemap.xml",
-    "src/components/Footer.jsx",
-    "src/desktop/DesktopApp.jsx",
-    "src/hooks/useVinylAnimation.js",
-    "src/server/worker.js",
-    "public/_redirects",
-    "public/privacy-policy.html",
-    "public/privacy-policy/",
-    "public/terms-of-service.html",
-    "public/terms-of-service/",
-    "scratch/baerdox_reel_frames/",
-    "scratch/baerdox_reel_preview_frames/",
-    "scratch/chrome-focus-check.png",
-    "scratch/photoshop-smoke-test.done",
-    "scratch/photoshop-smoke-test.js",
-    "scratch/photoshop-smoke-test.jsx",
-    "scratch/reference_contact.jpg",
-    "scratch/reference_frames/",
-    "scratch/tiktok-after-delete.png",
-    "scratch/tiktok-after-icon.png",
-    "scratch/tiktok-after-privacy-context-check.png",
-    "scratch/tiktok-after-urls.png",
-    "scratch/tiktok-after-urls2.png",
-    "scratch/tiktok-bookmarklet.txt",
-    "scratch/tiktok-context-menu-chrome.png",
-    "scratch/tiktok-context-menu.png",
-    "scratch/tiktok-drag-replace-privacy-check.png",
-    "scratch/tiktok-drag-replace-privacy.png",
-    "scratch/tiktok-focus-taskbar.png",
-    "scratch/tiktok-focused-replaced.png",
-    "scratch/tiktok-form-screen.png",
-    "scratch/tiktok-invalid-bookmarklet.txt",
-    "scratch/tiktok-native-privacy.png",
-    "scratch/tiktok-privacy-backspace.png",
-    "scratch/tiktok-privacy-focused.png",
-    "scratch/tiktok-privacy-pasted.png",
-    "scratch/tiktok-reviewtext-bookmarklet.txt",
-    "scratch/tiktok-set-airdox-fields.txt",
-    "scratch/tiktok-top.png",
-    "scratch/tiktok-type-x.png",
-    "scratch/tiktok-urls-corrected.png",
-    "scratch/tiktok-validity-bookmarklet.txt",
-    "scripts/create-airdox-photoshop-overlay-source.mjs",
-    "scripts/create_baerdox_reel.py",
-    "scripts/make-airdox-reference-video.ps1",
-    "scripts/photoshop/",
-    "scripts/render-airdox-photoshop-video.ps1",
-    "scripts/render-airdox-reference-style-video.mjs"
+    "docs/agent-system/manni-reel-weekly-plan.md"
   ],
   "routingAssignments": [
     {
@@ -119,56 +56,6 @@
       ]
     },
     {
-      "agent": "Guardian",
-      "role": "review",
-      "files": [
-        "package-lock.json",
-        "package.json",
-        "scratch/baerdox_reel_frames/",
-        "scratch/baerdox_reel_preview_frames/",
-        "scratch/chrome-focus-check.png",
-        "scratch/photoshop-smoke-test.done",
-        "scratch/photoshop-smoke-test.js",
-        "scratch/photoshop-smoke-test.jsx",
-        "scratch/reference_contact.jpg",
-        "scratch/reference_frames/",
-        "scratch/tiktok-after-delete.png",
-        "scratch/tiktok-after-icon.png",
-        "scratch/tiktok-after-privacy-context-check.png",
-        "scratch/tiktok-after-urls.png",
-        "scratch/tiktok-after-urls2.png",
-        "scratch/tiktok-bookmarklet.txt",
-        "scratch/tiktok-context-menu-chrome.png",
-        "scratch/tiktok-context-menu.png",
-        "scratch/tiktok-drag-replace-privacy-check.png",
-        "scratch/tiktok-drag-replace-privacy.png",
-        "scratch/tiktok-focus-taskbar.png",
-        "scratch/tiktok-focused-replaced.png",
-        "scratch/tiktok-form-screen.png",
-        "scratch/tiktok-invalid-bookmarklet.txt",
-        "scratch/tiktok-native-privacy.png",
-        "scratch/tiktok-privacy-backspace.png",
-        "scratch/tiktok-privacy-focused.png",
-        "scratch/tiktok-privacy-pasted.png",
-        "scratch/tiktok-reviewtext-bookmarklet.txt",
-        "scratch/tiktok-set-airdox-fields.txt",
-        "scratch/tiktok-top.png",
-        "scratch/tiktok-type-x.png",
-        "scratch/tiktok-urls-corrected.png",
-        "scratch/tiktok-validity-bookmarklet.txt",
-        "scripts/create-airdox-photoshop-overlay-source.mjs",
-        "scripts/create_baerdox_reel.py",
-        "scripts/make-airdox-reference-video.ps1",
-        "scripts/photoshop/",
-        "scripts/render-airdox-photoshop-video.ps1",
-        "scripts/render-airdox-reference-style-video.mjs",
-        "src/server/worker.js"
-      ],
-      "rules": [
-        "quality-security"
-      ]
-    },
-    {
       "agent": "Manni",
       "role": "primary",
       "files": [
@@ -181,72 +68,23 @@
       ]
     },
     {
-      "agent": "Master Controller",
-      "role": "review",
-      "files": [
-        "scratch/baerdox_reel_frames/",
-        "scratch/baerdox_reel_preview_frames/",
-        "scratch/chrome-focus-check.png",
-        "scratch/photoshop-smoke-test.done",
-        "scratch/photoshop-smoke-test.js",
-        "scratch/photoshop-smoke-test.jsx",
-        "scratch/reference_contact.jpg",
-        "scratch/reference_frames/",
-        "scratch/tiktok-after-delete.png",
-        "scratch/tiktok-after-icon.png",
-        "scratch/tiktok-after-privacy-context-check.png",
-        "scratch/tiktok-after-urls.png",
-        "scratch/tiktok-after-urls2.png",
-        "scratch/tiktok-bookmarklet.txt",
-        "scratch/tiktok-context-menu-chrome.png",
-        "scratch/tiktok-context-menu.png",
-        "scratch/tiktok-drag-replace-privacy-check.png",
-        "scratch/tiktok-drag-replace-privacy.png",
-        "scratch/tiktok-focus-taskbar.png",
-        "scratch/tiktok-focused-replaced.png",
-        "scratch/tiktok-form-screen.png",
-        "scratch/tiktok-invalid-bookmarklet.txt",
-        "scratch/tiktok-native-privacy.png",
-        "scratch/tiktok-privacy-backspace.png",
-        "scratch/tiktok-privacy-focused.png",
-        "scratch/tiktok-privacy-pasted.png",
-        "scratch/tiktok-reviewtext-bookmarklet.txt",
-        "scratch/tiktok-set-airdox-fields.txt",
-        "scratch/tiktok-top.png",
-        "scratch/tiktok-type-x.png",
-        "scratch/tiktok-urls-corrected.png",
-        "scratch/tiktok-validity-bookmarklet.txt"
-      ],
-      "rules": []
-    },
-    {
       "agent": "Mentor",
       "role": "review",
       "files": [
-        "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md",
         "docs/agent-system/latest-agent-currency.json",
         "docs/agent-system/latest-agent-currency.md",
-        "docs/agent-system/latest-agent-dependency-radar.json",
-        "docs/agent-system/latest-agent-dependency-radar.md",
         "docs/agent-system/latest-agent-quality-chain.json",
         "docs/agent-system/latest-agent-quality-chain.md",
         "docs/agent-system/latest-agent-routing.json",
         "docs/agent-system/latest-agent-routing.md",
-        "docs/agent-system/latest-agent-system-health.json",
-        "docs/agent-system/latest-agent-system-health.md",
         "docs/agent-system/latest-audience-intelligence.json",
         "docs/agent-system/latest-audience-intelligence.md",
         "docs/agent-system/latest-audit.json",
         "docs/agent-system/latest-audit.md",
-        "docs/agent-system/latest-background-cycle.json",
         "docs/agent-system/latest-guardian-risk-summary.json",
         "docs/agent-system/latest-guardian-risk-summary.md",
-        "docs/agent-system/latest-job-run.json",
-        "docs/agent-system/latest-job-run.md",
         "docs/agent-system/latest-notebooklm-brief.json",
         "docs/agent-system/latest-notebooklm-brief.md",
-        "docs/agent-system/latest-refactor-website-opportunities.json",
-        "docs/agent-system/latest-refactor-website-opportunities.md",
         "docs/agent-system/latest-repository-monitor.json",
         "docs/agent-system/latest-repository-monitor.md",
         "docs/agent-system/latest-website-profitability.json",
@@ -258,124 +96,10 @@
       "rules": [
         "learning-documentation"
       ]
-    },
-    {
-      "agent": "Refactor",
-      "role": "implementation_support",
-      "files": [
-        "src/components/Footer.jsx",
-        "src/desktop/DesktopApp.jsx",
-        "src/hooks/useVinylAnimation.js",
-        "src/server/worker.js"
-      ],
-      "rules": [
-        "refactor-architecture"
-      ]
-    },
-    {
-      "agent": "Webbie",
-      "role": "primary",
-      "files": [
-        "en/index.html",
-        "index.html",
-        "public/_redirects",
-        "public/manifest.json",
-        "public/privacy-policy.html",
-        "public/privacy-policy/",
-        "public/sitemap.xml",
-        "public/terms-of-service.html",
-        "public/terms-of-service/",
-        "src/components/Footer.jsx"
-      ],
-      "rules": [
-        "website-experience"
-      ]
-    },
-    {
-      "agent": "Winnie",
-      "role": "primary",
-      "files": [
-        "package.json",
-        "src/desktop/DesktopApp.jsx"
-      ],
-      "rules": [
-        "desktop-flightdeck"
-      ]
     }
   ],
   "testFiles": [],
   "obligations": [
-    {
-      "id": "website-ui-quality-chain",
-      "owner": "Webbie",
-      "qaAgent": "Guardian",
-      "designAgent": "Designer",
-      "status": "tests_required",
-      "scope": [
-        "src/components/Footer.jsx"
-      ],
-      "reason": "Website/UI files changed; user-facing behavior must not rely on manual inspection only.",
-      "requiredGates": [
-        "npm run lint",
-        "npm run test -- --run",
-        "npm run build"
-      ],
-      "requiredFollowUp": "Guardian must ask Webbie for tests or add focused tests before release-ready status.",
-      "userTouchpoint": "Only ask user if expected behavior or content is ambiguous.",
-      "expectedNearbyTests": [
-        "src/components/__tests__",
-        "src/__tests__",
-        "e2e"
-      ]
-    },
-    {
-      "id": "desktop-ui-quality-chain",
-      "owner": "Winnie",
-      "qaAgent": "Guardian",
-      "designAgent": "Designer",
-      "status": "tests_required",
-      "scope": [
-        "src/desktop/DesktopApp.jsx"
-      ],
-      "reason": "Desktop/Flight Deck UI changed; logic tests and, for visible changes, E2E proof must follow.",
-      "requiredGates": [
-        "npm run desktop:test:logic",
-        "npm run desktop:test:e2e"
-      ],
-      "requiredFollowUp": "Guardian must ask Winnie for focused Desktop tests before release-ready status.",
-      "userTouchpoint": "Only ask user if workflow intent or acceptance criteria are unclear.",
-      "expectedNearbyTests": [
-        "src/desktop/__tests__/DesktopApp.test.jsx",
-        "src/desktop/__tests__/DesktopControls.test.jsx",
-        "e2e/desktop-flightdeck.spec.js"
-      ]
-    },
-    {
-      "id": "script-api-quality-chain",
-      "owner": "Guardian",
-      "qaAgent": "Guardian",
-      "designAgent": "",
-      "status": "validation_required",
-      "scope": [
-        "src/server/worker.js",
-        "scripts/create-airdox-photoshop-overlay-source.mjs",
-        "scripts/make-airdox-reference-video.ps1",
-        "scripts/render-airdox-photoshop-video.ps1",
-        "scripts/render-airdox-reference-style-video.mjs"
-      ],
-      "reason": "Scripts/server/desktop main logic changed; command validation or tests must prove behavior.",
-      "requiredGates": [
-        "npm run agent:jobs:validate",
-        "npm run agent:audit -- --strict"
-      ],
-      "requiredFollowUp": "Guardian must run or request the narrow command that proves the changed script path.",
-      "userTouchpoint": "Only ask user for credentials or live-system approval if a validation needs external access.",
-      "expectedNearbyTests": [
-        "scripts",
-        "src/desktop/__tests__",
-        "docs/agent-system/latest-job-run.md"
-      ]
-    },
     {
       "id": "user-facing-change-watch",
       "owner": "Master Controller",
@@ -383,30 +107,18 @@
       "designAgent": "Designer",
       "status": "watch",
       "scope": [
-        "docs/agent-system/latest-agent-currency.json",
-        "docs/agent-system/latest-agent-currency.md",
-        "docs/agent-system/latest-agent-dependency-radar.json",
-        "docs/agent-system/latest-agent-dependency-radar.md",
         "docs/agent-system/latest-agent-quality-chain.json",
         "docs/agent-system/latest-agent-quality-chain.md",
         "docs/agent-system/latest-agent-routing.json",
         "docs/agent-system/latest-agent-routing.md",
-        "docs/agent-system/latest-agent-system-health.json",
-        "docs/agent-system/latest-background-cycle.json",
+        "docs/agent-system/latest-audit.json",
+        "docs/agent-system/latest-audit.md",
         "docs/agent-system/latest-guardian-risk-summary.json",
         "docs/agent-system/latest-guardian-risk-summary.md",
-        "docs/agent-system/latest-job-run.json",
-        "docs/agent-system/latest-refactor-website-opportunities.json",
-        "docs/agent-system/latest-refactor-website-opportunities.md",
         "docs/agent-system/latest-repository-monitor.json",
         "docs/agent-system/latest-repository-monitor.md",
         "docs/agent-system/latest-website-profitability.json",
-        "docs/agent-system/latest-website-profitability.md",
-        "public/manifest.json",
-        "src/desktop/DesktopApp.jsx",
-        "src/server/worker.js",
-        "scratch/tiktok-context-menu-chrome.png",
-        "scratch/tiktok-context-menu.png"
+        "docs/agent-system/latest-website-profitability.md"
       ],
       "reason": "A menu, navigation, tab, section, button, modal, or visible feature may have changed.",
       "requiredGates": [
@@ -415,35 +127,10 @@
       ],
       "requiredFollowUp": "Responsible primary agent must confirm tests exist for the new entry point and failure path.",
       "userTouchpoint": "Ask user for acceptance only after a working preview or clear behavior summary exists.",
-      "expectedNearbyTests": [
-        "src/desktop/__tests__/DesktopApp.test.jsx",
-        "src/desktop/__tests__/DesktopControls.test.jsx",
-        "e2e/desktop-flightdeck.spec.js"
-      ]
+      "expectedNearbyTests": []
     }
   ],
   "alerts": [
-    {
-      "id": "website-ui-quality-chain",
-      "owner": "Webbie",
-      "qaAgent": "Guardian",
-      "severity": "action",
-      "message": "Guardian must ask Webbie for tests or add focused tests before release-ready status."
-    },
-    {
-      "id": "desktop-ui-quality-chain",
-      "owner": "Winnie",
-      "qaAgent": "Guardian",
-      "severity": "action",
-      "message": "Guardian must ask Winnie for focused Desktop tests before release-ready status."
-    },
-    {
-      "id": "script-api-quality-chain",
-      "owner": "Guardian",
-      "qaAgent": "Guardian",
-      "severity": "info",
-      "message": "Guardian must run or request the narrow command that proves the changed script path."
-    },
     {
       "id": "user-facing-change-watch",
       "owner": "Master Controller",
