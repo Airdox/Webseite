@@ -1,7 +1,7 @@
 {
-    "name": "AIRDOX - Berlin Techno",
+    "name": "AIRDOX",
     "short_name": "AIRDOX",
-    "description": "Official AIRDOX DJ App - Berlin Techno Sets, Events & Downloads",
+    "description": "Official AIRDOX website for music sets, booking, and approved social publishing.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#0a0a0f",

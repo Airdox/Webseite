@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-31T16:30:31.833Z",
+  "generatedAt": "2026-06-01T01:47:06.862Z",
   "controller": "Master Controller",
   "agent": "Refactor",
   "job": "refactor-website-opportunities",
@@ -56,6 +56,17 @@
       "validation": "Run the nearest component/unit test plus npm run build."
     },
     {
+      "id": "large-file-src-server-worker-js",
+      "priority": "medium",
+      "area": "maintainability",
+      "files": [
+        "src/server/worker.js"
+      ],
+      "evidence": "762 lines / 29302 bytes.",
+      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
+      "validation": "Run the nearest component/unit test plus npm run build."
+    },
+    {
       "id": "large-file-src-utils-i18n-js",
       "priority": "medium",
       "area": "maintainability",
@@ -63,17 +74,6 @@
         "src/utils/i18n.js"
       ],
       "evidence": "468 lines / 25968 bytes.",
-      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
-      "validation": "Run the nearest component/unit test plus npm run build."
-    },
-    {
-      "id": "large-file-src-server-worker-js",
-      "priority": "medium",
-      "area": "maintainability",
-      "files": [
-        "src/server/worker.js"
-      ],
-      "evidence": "685 lines / 24935 bytes.",
       "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
       "validation": "Run the nearest component/unit test plus npm run build."
     },
@@ -111,17 +111,6 @@
       "validation": "Run the nearest component/unit test plus npm run build."
     },
     {
-      "id": "large-file-src-components-setcard-jsx",
-      "priority": "medium",
-      "area": "maintainability",
-      "files": [
-        "src/components/SetCard.jsx"
-      ],
-      "evidence": "384 lines / 16744 bytes.",
-      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
-      "validation": "Run the nearest component/unit test plus npm run build."
-    },
-    {
       "id": "large-file-src-components-bookingsection-jsx",
       "priority": "medium",
       "area": "maintainability",
@@ -129,6 +118,17 @@
         "src/components/BookingSection.jsx"
       ],
       "evidence": "282 lines / 16558 bytes.",
+      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
+      "validation": "Run the nearest component/unit test plus npm run build."
+    },
+    {
+      "id": "large-file-src-components-setcard-jsx",
+      "priority": "medium",
+      "area": "maintainability",
+      "files": [
+        "src/components/SetCard.jsx"
+      ],
+      "evidence": "380 lines / 16436 bytes.",
       "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
       "validation": "Run the nearest component/unit test plus npm run build."
     },

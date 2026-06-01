@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-05-31T16:30:32.491Z",
+  "generatedAt": "2026-06-01T01:47:07.421Z",
   "controller": "Master Controller",
   "job": "agent-dependency-radar",
   "purpose": "Keep AIRDOX agents interlocked: every output should name the next waiting agent, dependency, and user touchpoint.",
   "summary": {
-    "handoffCount": 22,
-    "alertCount": 16,
-    "lastJobRun": "2026-05-31T16:29:26.272Z",
-    "changedFileCount": 153,
+    "handoffCount": 18,
+    "alertCount": 12,
+    "lastJobRun": "2026-06-01T01:45:49.093Z",
+    "changedFileCount": 84,
     "qualityObligationCount": 4
   },
   "handoffs": [
@@ -16,7 +16,7 @@
       "from": "Workbench",
       "to": "Audience Intelligence",
       "status": "watch",
-      "waitsFor": "9 changed file(s) matched audience-intelligence.",
+      "waitsFor": "7 changed file(s) matched audience-intelligence.",
       "nextAction": "Sondieren, ob aus docs/agent-system/latest-audience-intelligence.json, docs/agent-system/latest-audience-intelligence.md, docs/agent-system/latest-website-profitability.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
@@ -25,35 +25,8 @@
       "from": "Workbench",
       "to": "Deep Research",
       "status": "watch",
-      "waitsFor": "4 changed file(s) matched notebooklm-deep-research.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/latest-agent-task-queue.json, docs/agent-system/latest-notebooklm-brief.json, docs/agent-system/latest-notebooklm-brief.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-designer-primary",
-      "from": "Workbench",
-      "to": "Designer",
-      "status": "watch",
-      "waitsFor": "10 changed file(s) matched daumenkino-reference-system.",
-      "nextAction": "Sondieren, ob aus public/brand-assets/daumenkino/, scratch/daumenkino-contact-sheet.jpg, scratch/daumenkino-contact/ eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-designer-review",
-      "from": "Workbench",
-      "to": "Designer",
-      "status": "watch",
-      "waitsFor": "19 changed file(s) matched desktop-experience-design, visual-quality.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/designer-portfolio-output/, docs/agent-system/latest-designer-portfolio.json, docs/agent-system/latest-designer-portfolio.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-guardian-primary",
-      "from": "Workbench",
-      "to": "Guardian",
-      "status": "watch",
-      "waitsFor": "4 changed file(s) matched youtube-publish-quality.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/latest-youtube-publish-audit.json, docs/agent-system/latest-youtube-publish-audit.md, scripts/social-youtube-publish.mjs eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "2 changed file(s) matched notebooklm-deep-research.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/latest-notebooklm-brief.json, docs/agent-system/latest-notebooklm-brief.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -61,8 +34,8 @@
       "from": "Workbench",
       "to": "Guardian",
       "status": "watch",
-      "waitsFor": "44 changed file(s) matched quality-security.",
-      "nextAction": "Sondieren, ob aus .codex-remote-attachments/, .env.example, .github/workflows/agent-background-monitor.yml eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "41 changed file(s) matched quality-security.",
+      "nextAction": "Sondieren, ob aus package-lock.json, package.json, scratch/baerdox_reel_frames/ eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -70,8 +43,8 @@
       "from": "Workbench",
       "to": "Manni",
       "status": "watch",
-      "waitsFor": "14 changed file(s) matched growth-conversion.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/SOCIAL_PROMOTION_AUTOMATION_CONCEPT.md, docs/agent-system/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "3 changed file(s) matched growth-conversion.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json, docs/agent-system/manni-reel-weekly-plan.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -79,8 +52,8 @@
       "from": "Workbench",
       "to": "Master Controller",
       "status": "watch",
-      "waitsFor": "12 changed file(s) matched default routing.",
-      "nextAction": "Sondieren, ob aus .codex-remote-attachments/, .env.example, META-CAPTION.txt eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "32 changed file(s) matched default routing.",
+      "nextAction": "Sondieren, ob aus scratch/baerdox_reel_frames/, scratch/baerdox_reel_preview_frames/, scratch/chrome-focus-check.png eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -88,8 +61,8 @@
       "from": "Workbench",
       "to": "Mentor",
       "status": "watch",
-      "waitsFor": "68 changed file(s) matched learning-documentation.",
-      "nextAction": "Sondieren, ob aus docs/WINDOWS_FLIGHTDECK_TEST_MATRIX.md, docs/agent-system/AGENT_CONTINUOUS_LEARNING.md, docs/agent-system/AGENT_RESPONSIBILITY_MATRIX.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "31 changed file(s) matched learning-documentation.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md, docs/agent-system/latest-agent-currency.json, docs/agent-system/latest-agent-currency.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -97,17 +70,8 @@
       "from": "Workbench",
       "to": "Refactor",
       "status": "watch",
-      "waitsFor": "27 changed file(s) matched refactor-architecture.",
-      "nextAction": "Sondieren, ob aus desktop/main/services/pipeline.mjs, src/components/AuthModal.jsx, src/components/BookingSection.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-repository-review",
-      "from": "Workbench",
-      "to": "Repository",
-      "status": "watch",
-      "waitsFor": "2 changed file(s) matched repository-governance.",
-      "nextAction": "Sondieren, ob aus .github/workflows/agent-background-monitor.yml, .github/workflows/agent-job-dispatch.yml eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "4 changed file(s) matched refactor-architecture.",
+      "nextAction": "Sondieren, ob aus src/components/Footer.jsx, src/desktop/DesktopApp.jsx, src/hooks/useVinylAnimation.js eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -115,8 +79,8 @@
       "from": "Workbench",
       "to": "Webbie",
       "status": "watch",
-      "waitsFor": "16 changed file(s) matched website-experience.",
-      "nextAction": "Sondieren, ob aus public/brand-assets/daumenkino/, public/brand-assets/tiktok/, public/flightdeck-deploy.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "10 changed file(s) matched website-experience.",
+      "nextAction": "Sondieren, ob aus en/index.html, index.html, public/_redirects eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -124,8 +88,8 @@
       "from": "Workbench",
       "to": "Winnie",
       "status": "watch",
-      "waitsFor": "18 changed file(s) matched desktop-flightdeck.",
-      "nextAction": "Sondieren, ob aus desktop/main/index.cjs, desktop/main/preload.cjs, desktop/main/services/pipeline.mjs eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "2 changed file(s) matched desktop-flightdeck.",
+      "nextAction": "Sondieren, ob aus package.json, src/desktop/DesktopApp.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -177,25 +141,25 @@
       "id": "quality-chain-website-ui-quality-chain",
       "from": "Webbie",
       "to": "Guardian",
-      "status": "test_changes_present",
+      "status": "tests_required",
       "waitsFor": "Website/UI files changed; user-facing behavior must not rely on manual inspection only.",
-      "nextAction": "Guardian must verify that changed tests cover the changed UI path.",
+      "nextAction": "Guardian must ask Webbie for tests or add focused tests before release-ready status.",
       "userTouchpoint": "Only ask user if expected behavior or content is ambiguous."
     },
     {
       "id": "quality-chain-desktop-ui-quality-chain",
       "from": "Winnie",
       "to": "Guardian",
-      "status": "test_changes_present",
+      "status": "tests_required",
       "waitsFor": "Desktop/Flight Deck UI changed; logic tests and, for visible changes, E2E proof must follow.",
-      "nextAction": "Guardian must verify that Desktop tests cover the changed tab/menu/control behavior.",
+      "nextAction": "Guardian must ask Winnie for focused Desktop tests before release-ready status.",
       "userTouchpoint": "Only ask user if workflow intent or acceptance criteria are unclear."
     },
     {
       "id": "quality-chain-script-api-quality-chain",
       "from": "Guardian",
       "to": "Guardian",
-      "status": "test_changes_present",
+      "status": "validation_required",
       "waitsFor": "Scripts/server/desktop main logic changed; command validation or tests must prove behavior.",
       "nextAction": "Guardian must run or request the narrow command that proves the changed script path.",
       "userTouchpoint": "Only ask user for credentials or live-system approval if a validation needs external access."
@@ -214,92 +178,64 @@
     {
       "id": "workbench-change-audience-intelligence-review",
       "severity": "info",
-      "message": "Audience Intelligence waits for: 9 changed file(s) matched audience-intelligence.",
+      "message": "Audience Intelligence waits for: 7 changed file(s) matched audience-intelligence.",
       "nextAction": "Sondieren, ob aus docs/agent-system/latest-audience-intelligence.json, docs/agent-system/latest-audience-intelligence.md, docs/agent-system/latest-website-profitability.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-deep-research-primary",
       "severity": "info",
-      "message": "Deep Research waits for: 4 changed file(s) matched notebooklm-deep-research.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/latest-agent-task-queue.json, docs/agent-system/latest-notebooklm-brief.json, docs/agent-system/latest-notebooklm-brief.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-designer-primary",
-      "severity": "info",
-      "message": "Designer waits for: 10 changed file(s) matched daumenkino-reference-system.",
-      "nextAction": "Sondieren, ob aus public/brand-assets/daumenkino/, scratch/daumenkino-contact-sheet.jpg, scratch/daumenkino-contact/ eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-designer-review",
-      "severity": "info",
-      "message": "Designer waits for: 19 changed file(s) matched desktop-experience-design, visual-quality.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/designer-portfolio-output/, docs/agent-system/latest-designer-portfolio.json, docs/agent-system/latest-designer-portfolio.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-guardian-primary",
-      "severity": "info",
-      "message": "Guardian waits for: 4 changed file(s) matched youtube-publish-quality.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/latest-youtube-publish-audit.json, docs/agent-system/latest-youtube-publish-audit.md, scripts/social-youtube-publish.mjs eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Deep Research waits for: 2 changed file(s) matched notebooklm-deep-research.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/latest-notebooklm-brief.json, docs/agent-system/latest-notebooklm-brief.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-guardian-review",
       "severity": "info",
-      "message": "Guardian waits for: 44 changed file(s) matched quality-security.",
-      "nextAction": "Sondieren, ob aus .codex-remote-attachments/, .env.example, .github/workflows/agent-background-monitor.yml eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Guardian waits for: 41 changed file(s) matched quality-security.",
+      "nextAction": "Sondieren, ob aus package-lock.json, package.json, scratch/baerdox_reel_frames/ eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-manni-primary",
       "severity": "info",
-      "message": "Manni waits for: 14 changed file(s) matched growth-conversion.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/SOCIAL_PROMOTION_AUTOMATION_CONCEPT.md, docs/agent-system/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Manni waits for: 3 changed file(s) matched growth-conversion.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json, docs/agent-system/manni-reel-weekly-plan.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-master-controller-review",
       "severity": "info",
-      "message": "Master Controller waits for: 12 changed file(s) matched default routing.",
-      "nextAction": "Sondieren, ob aus .codex-remote-attachments/, .env.example, META-CAPTION.txt eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Master Controller waits for: 32 changed file(s) matched default routing.",
+      "nextAction": "Sondieren, ob aus scratch/baerdox_reel_frames/, scratch/baerdox_reel_preview_frames/, scratch/chrome-focus-check.png eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-mentor-review",
       "severity": "info",
-      "message": "Mentor waits for: 68 changed file(s) matched learning-documentation.",
-      "nextAction": "Sondieren, ob aus docs/WINDOWS_FLIGHTDECK_TEST_MATRIX.md, docs/agent-system/AGENT_CONTINUOUS_LEARNING.md, docs/agent-system/AGENT_RESPONSIBILITY_MATRIX.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Mentor waits for: 31 changed file(s) matched learning-documentation.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md, docs/agent-system/latest-agent-currency.json, docs/agent-system/latest-agent-currency.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-refactor-implementation_support",
       "severity": "info",
-      "message": "Refactor waits for: 27 changed file(s) matched refactor-architecture.",
-      "nextAction": "Sondieren, ob aus desktop/main/services/pipeline.mjs, src/components/AuthModal.jsx, src/components/BookingSection.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-repository-review",
-      "severity": "info",
-      "message": "Repository waits for: 2 changed file(s) matched repository-governance.",
-      "nextAction": "Sondieren, ob aus .github/workflows/agent-background-monitor.yml, .github/workflows/agent-job-dispatch.yml eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Refactor waits for: 4 changed file(s) matched refactor-architecture.",
+      "nextAction": "Sondieren, ob aus src/components/Footer.jsx, src/desktop/DesktopApp.jsx, src/hooks/useVinylAnimation.js eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-webbie-primary",
       "severity": "info",
-      "message": "Webbie waits for: 16 changed file(s) matched website-experience.",
-      "nextAction": "Sondieren, ob aus public/brand-assets/daumenkino/, public/brand-assets/tiktok/, public/flightdeck-deploy.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Webbie waits for: 10 changed file(s) matched website-experience.",
+      "nextAction": "Sondieren, ob aus en/index.html, index.html, public/_redirects eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-winnie-primary",
       "severity": "info",
-      "message": "Winnie waits for: 18 changed file(s) matched desktop-flightdeck.",
-      "nextAction": "Sondieren, ob aus desktop/main/index.cjs, desktop/main/preload.cjs, desktop/main/services/pipeline.mjs eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Winnie waits for: 2 changed file(s) matched desktop-flightdeck.",
+      "nextAction": "Sondieren, ob aus package.json, src/desktop/DesktopApp.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {

@@ -1,6 +1,6 @@
 # AIRDOX Repository Monitor
 
-Generated: 2026-05-31T16:29:26.795Z
+Generated: 2026-06-01T01:45:49.790Z
 Agent: Repository
 Repository: D:\webseeite-main
 Branch: main
@@ -10,8 +10,8 @@ Branch: main
 - Checks: 6
 - Failures: 0
 - Warnings: 2
-- Uncommitted paths: 153
-- Unexpected uncommitted paths: 147
+- Uncommitted paths: 84
+- Unexpected uncommitted paths: 81
 - Baseline uncommitted paths: 80
 - Tracked generated artifacts (review): 0
 
@@ -21,160 +21,94 @@ Branch: main
 | --- | --- | --- |
 | branch-naming | PASS | Aktueller Branch: main |
 | required-governance-files | PASS | Gefundene Governance-Dateien: 3/3 |
-| working-tree-cleanliness-total | WARN | 153 uncommitted Pfade insgesamt. |
-| working-tree-cleanliness | WARN | 147 unerwartete uncommitted Pfade (153 gesamt, 80 baseline) |
+| working-tree-cleanliness-total | WARN | 84 uncommitted Pfade insgesamt. |
+| working-tree-cleanliness | WARN | 81 unerwartete uncommitted Pfade (84 gesamt, 80 baseline) |
 | tracked-generated-artifacts | PASS | 0 potentiell generierte Artefaktpfade sind versioniert. |
 | root-html-duplication | PASS | 0 zusaetzliche Root-HTML-Dateien erkannt. |
 
 ## Unexpected Dirty Paths
 
-- M .github/workflows/agent-background-monitor.yml
-- M .github/workflows/agent-job-dispatch.yml
-- M desktop/main/index.cjs
-- M desktop/main/preload.cjs
-- M desktop/main/services/pipeline.mjs
-- M docs/agent-system/AGENT_CONTINUOUS_LEARNING.md
-- M docs/agent-system/AIRDOX_FREE_SOCIAL_AUTOMATION.md
-- M docs/agent-system/DECISION_LOG.md
-- M docs/agent-system/DESIGNER_CREATIVE_DIRECTION.md
-- M docs/agent-system/MENTOR_LEARNING_LOOPS.md
-- M docs/agent-system/OPERATING_MODEL.md
-- M docs/agent-system/ORCHESTRATION_WORKFLOW.md
-- M docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md
-- M docs/agent-system/SUPERAGENT_ASSIGNMENTS.md
-- M docs/agent-system/agent-routing-rules.json
-- M docs/agent-system/job-catalog.json
+- M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - M docs/agent-system/latest-agent-currency.json
 - M docs/agent-system/latest-agent-currency.md
+- M docs/agent-system/latest-agent-dependency-radar.json
+- M docs/agent-system/latest-agent-dependency-radar.md
+- M docs/agent-system/latest-agent-quality-chain.json
+- M docs/agent-system/latest-agent-quality-chain.md
+- M docs/agent-system/latest-agent-routing.json
+- M docs/agent-system/latest-agent-routing.md
+- M docs/agent-system/latest-agent-system-health.json
+- M docs/agent-system/latest-agent-system-health.md
 - M docs/agent-system/latest-audience-intelligence.json
 - M docs/agent-system/latest-audience-intelligence.md
 - M docs/agent-system/latest-audit.json
 - M docs/agent-system/latest-audit.md
 - M docs/agent-system/latest-background-cycle.json
-- M docs/agent-system/latest-designer-visual-quality.json
-- M docs/agent-system/latest-designer-visual-quality.md
+- M docs/agent-system/latest-guardian-risk-summary.json
+- M docs/agent-system/latest-guardian-risk-summary.md
 - M docs/agent-system/latest-job-run.json
 - M docs/agent-system/latest-job-run.md
+- M docs/agent-system/latest-notebooklm-brief.json
+- M docs/agent-system/latest-notebooklm-brief.md
+- M docs/agent-system/latest-refactor-website-opportunities.json
+- M docs/agent-system/latest-refactor-website-opportunities.md
 - M docs/agent-system/latest-repository-monitor.json
 - M docs/agent-system/latest-repository-monitor.md
+- M docs/agent-system/latest-website-profitability.json
+- M docs/agent-system/latest-website-profitability.md
 - M docs/agent-system/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
 - M docs/agent-system/manni-reel-weekly-plan.md
-- M e2e/desktop-flightdeck.spec.js
+- M index.html
 - M package-lock.json
-- M scripts/agent-background-cycle.mjs
-- M scripts/agent-job-validator.mjs
-- M scripts/render-daumenkino.mjs
-- M scripts/social-auto-publisher.mjs
-- M scripts/social-youtube-publish.mjs
-- M src/components/AuthModal.jsx
-- M src/components/BookingSection.jsx
-- M src/components/GlobalPlayer.css
-- M src/components/MusicSection.css
-- M src/components/MusicSection.jsx
-- M src/components/Navigation.css
-- M src/components/Newsletter.jsx
-- M src/components/SetCard.jsx
-- M src/components/SetNotification.css
-- M src/components/SetNotification.jsx
-- M src/components/VIPSection.jsx
-- M src/contexts/AudioContext.jsx
+- M public/manifest.json
+- M src/components/Footer.jsx
 - M src/desktop/DesktopApp.jsx
-- M src/desktop/__tests__/setManifest.test.js
-- M src/desktop/components/AdvancedSettingsTab.jsx
-- M src/desktop/components/DataExplorerTab.jsx
-- M src/desktop/components/DesignAgentTab.jsx
-- M src/desktop/desktop.css
-- M src/desktop/lib/setManifest.js
 - M src/hooks/useVinylAnimation.js
-- M src/styles/global.css
-- M src/utils/__tests__/apiResponse.test.js
-- M src/utils/apiResponse.js
-- M src/utils/i18n.js
-- M src/utils/stats-sync.js
-- ?? .codex-remote-attachments/
-- ?? META-CAPTION.txt
-- ?? META-UPLOAD.mp4
-- ?? Screen_Recording_20260504_051552_Facebook.mp4
-- ?? docs/WINDOWS_FLIGHTDECK_TEST_MATRIX.md
-- ?? docs/agent-system/AGENT_RESPONSIBILITY_MATRIX.md
-- ?? docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
-- ?? docs/agent-system/MENTOR_AGENT_LEVEL_UP_PLAN_2026-05-27.md
-- ?? docs/agent-system/META_BUSINESS_SUITE_COPY_PASTE_PACK_TEMPLATE.md
-- ?? docs/agent-system/META_GRAPH_PUBLISHING_SETUP.md
-- ?? docs/agent-system/ORCHESTRATOR_RESULT_BOARD_2026-05-24.md
-- ?? docs/agent-system/RELEASE_PREP_2026-05-23.md
-- ?? docs/agent-system/SOCIAL_POSTING_PACK_2026-05-23.md
-- ?? docs/agent-system/SOCIAL_PROMOTION_AUTOMATION_CONCEPT.md
-- ?? docs/agent-system/agent-watch-zones.json
-- ?? docs/agent-system/chat-summary-2026-05-24.md
-- ?? docs/agent-system/designer-portfolio-output/
-- ?? docs/agent-system/latest-agent-dependency-radar.json
-- ?? docs/agent-system/latest-agent-dependency-radar.md
-- ?? docs/agent-system/latest-agent-quality-chain.json
-- ?? docs/agent-system/latest-agent-quality-chain.md
-- ?? docs/agent-system/latest-agent-routing.json
-- ?? docs/agent-system/latest-agent-routing.md
-- ?? docs/agent-system/latest-agent-system-health.json
-- ?? docs/agent-system/latest-agent-system-health.md
-- ?? docs/agent-system/latest-agent-task-queue.json
-- ?? docs/agent-system/latest-designer-portfolio.json
-- ?? docs/agent-system/latest-designer-portfolio.md
-- ?? docs/agent-system/latest-guardian-risk-summary.json
-- ?? docs/agent-system/latest-guardian-risk-summary.md
-- ?? docs/agent-system/latest-notebooklm-brief.json
-- ?? docs/agent-system/latest-notebooklm-brief.md
-- ?? docs/agent-system/latest-refactor-website-opportunities.json
-- ?? docs/agent-system/latest-refactor-website-opportunities.md
-- ?? docs/agent-system/latest-social-post-ledger.json
-- ?? docs/agent-system/latest-social-post-ledger.md
-- ?? docs/agent-system/latest-website-profitability.json
-- ?? docs/agent-system/latest-website-profitability.md
-- ?? docs/agent-system/latest-youtube-publish-audit.json
-- ?? docs/agent-system/latest-youtube-publish-audit.md
-- ?? docs/agent-system/marketing-draft-requests.json
-- ?? docs/agent-system/mentor-knowledge-improvement-tasks.json
-- ?? docs/agent-system/research/
-- ?? docs/agent-system/social-post-ledger.json
-- ?? docs/agent-system/website-profitability-model.json
-- ?? public/brand-assets/daumenkino/
-- ?? public/brand-assets/tiktok/
-- ?? public/flightdeck-deploy.json
-- ?? public/social/
-- ?? scratch/daumenkino-contact-sheet.jpg
-- ?? scratch/daumenkino-contact/
-- ?? scratch/design-agent-photoshop-script-proof.png
-- ?? scratch/design-agent-screen.png
-- ?? scratch/design-studio-layout-proof.png
-- ?? scratch/youtube-list-thumbnails.mjs
-- ?? scratch/youtube-set-thumbnail.mjs
-- ?? scratch/youtube-video-status.mjs
-- ?? scripts/agent-dependency-radar.mjs
-- ?? scripts/agent-notebooklm-brief.mjs
-- ?? scripts/agent-quality-chain.mjs
-- ?? scripts/agent-system-health.mjs
-- ?? scripts/designer-portfolio-generator.mjs
-- ?? scripts/fix-missing-play-dates.mjs
-- ?? scripts/photoshop-export-daumenkino-logo-cutout.jsx
-- ?? scripts/photoshop-export-portrait-cutout.jsx
-- ?? scripts/refactor-website-opportunities.mjs
-- ?? scripts/register-agent-background-task.ps1
-- ?? scripts/render-daumenkino-design-prototypes.mjs
-- ?? scripts/render-daumenkino-five-drafts.mjs
-- ?? scripts/render-daumenkino-logo-idea-pack.mjs
-- ?? scripts/render-daumenkino-mixed-preview.mjs
-- ?? scripts/social-meta-oauth-init.mjs
-- ?? scripts/social-meta-publish.mjs
-- ?? scripts/social-post-ledger.mjs
-- ?? scripts/social-tiktok-check.mjs
-- ?? scripts/social-tiktok-oauth-init.mjs
-- ?? scripts/website-profitability-report.mjs
-- ?? scripts/youtube-publish-audit.mjs
-- ?? src/desktop/__tests__/DesktopControls.test.jsx
-- ?? src/desktop/components/DesignExportPhase.jsx
-- ?? src/desktop/components/DesignSetupPhase.jsx
-- ?? src/desktop/components/DesignStudioPhase.jsx
-- ?? src/desktop/components/designConstants.js
+- M src/server/worker.js
+- ?? public/_redirects
+- ?? public/privacy-policy.html
+- ?? public/privacy-policy/
+- ?? public/terms-of-service.html
+- ?? public/terms-of-service/
+- ?? scratch/baerdox_reel_frames/
+- ?? scratch/baerdox_reel_preview_frames/
+- ?? scratch/chrome-focus-check.png
+- ?? scratch/photoshop-smoke-test.done
+- ?? scratch/photoshop-smoke-test.js
+- ?? scratch/photoshop-smoke-test.jsx
+- ?? scratch/reference_contact.jpg
+- ?? scratch/reference_frames/
+- ?? scratch/tiktok-after-delete.png
+- ?? scratch/tiktok-after-icon.png
+- ?? scratch/tiktok-after-privacy-context-check.png
+- ?? scratch/tiktok-after-urls.png
+- ?? scratch/tiktok-after-urls2.png
+- ?? scratch/tiktok-bookmarklet.txt
+- ?? scratch/tiktok-context-menu-chrome.png
+- ?? scratch/tiktok-context-menu.png
+- ?? scratch/tiktok-drag-replace-privacy-check.png
+- ?? scratch/tiktok-drag-replace-privacy.png
+- ?? scratch/tiktok-focus-taskbar.png
+- ?? scratch/tiktok-focused-replaced.png
+- ?? scratch/tiktok-form-screen.png
+- ?? scratch/tiktok-invalid-bookmarklet.txt
+- ?? scratch/tiktok-native-privacy.png
+- ?? scratch/tiktok-privacy-backspace.png
+- ?? scratch/tiktok-privacy-focused.png
+- ?? scratch/tiktok-privacy-pasted.png
+- ?? scratch/tiktok-reviewtext-bookmarklet.txt
+- ?? scratch/tiktok-set-airdox-fields.txt
+- ?? scratch/tiktok-top.png
+- ?? scratch/tiktok-type-x.png
+- ?? scratch/tiktok-urls-corrected.png
+- ?? scratch/tiktok-validity-bookmarklet.txt
+- ?? scripts/create-airdox-photoshop-overlay-source.mjs
+- ?? scripts/create_baerdox_reel.py
+- ?? scripts/make-airdox-reference-video.ps1
+- ?? scripts/photoshop/
+- ?? scripts/render-airdox-photoshop-video.ps1
+- ?? scripts/render-airdox-reference-style-video.mjs
 
 ## Dirty Baseline Paths
 
@@ -261,159 +195,90 @@ Branch: main
 
 ## All Dirty Paths
 
-- M .env.example
-- M .github/workflows/agent-background-monitor.yml
-- M .github/workflows/agent-job-dispatch.yml
-- M desktop/main/index.cjs
-- M desktop/main/preload.cjs
-- M desktop/main/services/pipeline.mjs
-- M docs/agent-system/AGENT_CONTINUOUS_LEARNING.md
-- M docs/agent-system/AIRDOX_FREE_SOCIAL_AUTOMATION.md
-- M docs/agent-system/DECISION_LOG.md
-- M docs/agent-system/DESIGNER_CREATIVE_DIRECTION.md
-- M docs/agent-system/MENTOR_LEARNING_LOOPS.md
-- M docs/agent-system/OPERATING_MODEL.md
-- M docs/agent-system/ORCHESTRATION_WORKFLOW.md
-- M docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md
-- M docs/agent-system/SUPERAGENT_ASSIGNMENTS.md
-- M docs/agent-system/agent-routing-rules.json
-- M docs/agent-system/job-catalog.json
+- M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - M docs/agent-system/latest-agent-currency.json
 - M docs/agent-system/latest-agent-currency.md
+- M docs/agent-system/latest-agent-dependency-radar.json
+- M docs/agent-system/latest-agent-dependency-radar.md
+- M docs/agent-system/latest-agent-quality-chain.json
+- M docs/agent-system/latest-agent-quality-chain.md
+- M docs/agent-system/latest-agent-routing.json
+- M docs/agent-system/latest-agent-routing.md
+- M docs/agent-system/latest-agent-system-health.json
+- M docs/agent-system/latest-agent-system-health.md
 - M docs/agent-system/latest-audience-intelligence.json
 - M docs/agent-system/latest-audience-intelligence.md
 - M docs/agent-system/latest-audit.json
 - M docs/agent-system/latest-audit.md
 - M docs/agent-system/latest-background-cycle.json
-- M docs/agent-system/latest-designer-visual-quality.json
-- M docs/agent-system/latest-designer-visual-quality.md
+- M docs/agent-system/latest-guardian-risk-summary.json
+- M docs/agent-system/latest-guardian-risk-summary.md
 - M docs/agent-system/latest-job-run.json
 - M docs/agent-system/latest-job-run.md
+- M docs/agent-system/latest-notebooklm-brief.json
+- M docs/agent-system/latest-notebooklm-brief.md
+- M docs/agent-system/latest-refactor-website-opportunities.json
+- M docs/agent-system/latest-refactor-website-opportunities.md
 - M docs/agent-system/latest-repository-monitor.json
 - M docs/agent-system/latest-repository-monitor.md
+- M docs/agent-system/latest-website-profitability.json
+- M docs/agent-system/latest-website-profitability.md
 - M docs/agent-system/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
 - M docs/agent-system/manni-reel-weekly-plan.md
-- M e2e/desktop-flightdeck.spec.js
-- M eslint.config.js
+- M en/index.html
+- M index.html
 - M package-lock.json
 - M package.json
-- M scripts/agent-background-cycle.mjs
-- M scripts/agent-job-validator.mjs
-- M scripts/render-daumenkino.mjs
-- M scripts/social-auto-publisher.mjs
-- M scripts/social-youtube-publish.mjs
-- M src/components/AuthModal.jsx
-- M src/components/BookingSection.jsx
-- M src/components/GlobalPlayer.css
-- M src/components/MusicSection.css
-- M src/components/MusicSection.jsx
-- M src/components/Navigation.css
-- M src/components/Newsletter.jsx
-- M src/components/SetCard.jsx
-- M src/components/SetNotification.css
-- M src/components/SetNotification.jsx
-- M src/components/VIPSection.jsx
-- M src/contexts/AudioContext.jsx
+- M public/manifest.json
+- M public/sitemap.xml
+- M src/components/Footer.jsx
 - M src/desktop/DesktopApp.jsx
-- M src/desktop/__tests__/AdminFeatures.test.jsx
-- M src/desktop/__tests__/setManifest.test.js
-- M src/desktop/components/AdvancedSettingsTab.jsx
-- M src/desktop/components/DataExplorerTab.jsx
-- M src/desktop/components/DesignAgentTab.jsx
-- M src/desktop/desktop.css
-- M src/desktop/lib/setManifest.js
-- M src/desktop/mockApi.js
 - M src/hooks/useVinylAnimation.js
-- M src/styles/global.css
-- M src/utils/__tests__/apiResponse.test.js
-- M src/utils/apiResponse.js
-- M src/utils/i18n.js
-- M src/utils/stats-sync.js
-- M vitest.config.js
-- ?? .codex-remote-attachments/
-- ?? META-CAPTION.txt
-- ?? META-UPLOAD.mp4
-- ?? Screen_Recording_20260504_051552_Facebook.mp4
-- ?? docs/WINDOWS_FLIGHTDECK_TEST_MATRIX.md
-- ?? docs/agent-system/AGENT_RESPONSIBILITY_MATRIX.md
-- ?? docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
-- ?? docs/agent-system/MENTOR_AGENT_LEVEL_UP_PLAN_2026-05-27.md
-- ?? docs/agent-system/META_BUSINESS_SUITE_COPY_PASTE_PACK_TEMPLATE.md
-- ?? docs/agent-system/META_GRAPH_PUBLISHING_SETUP.md
-- ?? docs/agent-system/ORCHESTRATOR_RESULT_BOARD_2026-05-24.md
-- ?? docs/agent-system/RELEASE_PREP_2026-05-23.md
-- ?? docs/agent-system/SOCIAL_POSTING_PACK_2026-05-23.md
-- ?? docs/agent-system/SOCIAL_PROMOTION_AUTOMATION_CONCEPT.md
-- ?? docs/agent-system/agent-watch-zones.json
-- ?? docs/agent-system/chat-summary-2026-05-24.md
-- ?? docs/agent-system/designer-portfolio-output/
-- ?? docs/agent-system/latest-agent-dependency-radar.json
-- ?? docs/agent-system/latest-agent-dependency-radar.md
-- ?? docs/agent-system/latest-agent-quality-chain.json
-- ?? docs/agent-system/latest-agent-quality-chain.md
-- ?? docs/agent-system/latest-agent-routing.json
-- ?? docs/agent-system/latest-agent-routing.md
-- ?? docs/agent-system/latest-agent-system-health.json
-- ?? docs/agent-system/latest-agent-system-health.md
-- ?? docs/agent-system/latest-agent-task-queue.json
-- ?? docs/agent-system/latest-designer-portfolio.json
-- ?? docs/agent-system/latest-designer-portfolio.md
-- ?? docs/agent-system/latest-guardian-risk-summary.json
-- ?? docs/agent-system/latest-guardian-risk-summary.md
-- ?? docs/agent-system/latest-notebooklm-brief.json
-- ?? docs/agent-system/latest-notebooklm-brief.md
-- ?? docs/agent-system/latest-refactor-website-opportunities.json
-- ?? docs/agent-system/latest-refactor-website-opportunities.md
-- ?? docs/agent-system/latest-social-post-ledger.json
-- ?? docs/agent-system/latest-social-post-ledger.md
-- ?? docs/agent-system/latest-website-profitability.json
-- ?? docs/agent-system/latest-website-profitability.md
-- ?? docs/agent-system/latest-youtube-publish-audit.json
-- ?? docs/agent-system/latest-youtube-publish-audit.md
-- ?? docs/agent-system/marketing-draft-requests.json
-- ?? docs/agent-system/mentor-knowledge-improvement-tasks.json
-- ?? docs/agent-system/research/
-- ?? docs/agent-system/social-post-ledger.json
-- ?? docs/agent-system/website-profitability-model.json
-- ?? public/brand-assets/daumenkino/
-- ?? public/brand-assets/tiktok/
-- ?? public/flightdeck-deploy.json
-- ?? public/social/
-- ?? scratch/daumenkino-contact-sheet.jpg
-- ?? scratch/daumenkino-contact/
-- ?? scratch/design-agent-photoshop-script-proof.png
-- ?? scratch/design-agent-screen.png
-- ?? scratch/design-studio-layout-proof.png
-- ?? scratch/youtube-list-thumbnails.mjs
-- ?? scratch/youtube-set-thumbnail.mjs
-- ?? scratch/youtube-video-status.mjs
-- ?? scripts/agent-dependency-radar.mjs
-- ?? scripts/agent-notebooklm-brief.mjs
-- ?? scripts/agent-quality-chain.mjs
-- ?? scripts/agent-system-health.mjs
-- ?? scripts/designer-portfolio-generator.mjs
-- ?? scripts/fix-missing-play-dates.mjs
-- ?? scripts/photoshop-export-daumenkino-logo-cutout.jsx
-- ?? scripts/photoshop-export-portrait-cutout.jsx
-- ?? scripts/refactor-website-opportunities.mjs
-- ?? scripts/register-agent-background-task.ps1
-- ?? scripts/render-daumenkino-design-prototypes.mjs
-- ?? scripts/render-daumenkino-five-drafts.mjs
-- ?? scripts/render-daumenkino-logo-idea-pack.mjs
-- ?? scripts/render-daumenkino-mixed-preview.mjs
-- ?? scripts/social-meta-oauth-init.mjs
-- ?? scripts/social-meta-publish.mjs
-- ?? scripts/social-post-ledger.mjs
-- ?? scripts/social-tiktok-check.mjs
-- ?? scripts/social-tiktok-oauth-init.mjs
-- ?? scripts/website-profitability-report.mjs
-- ?? scripts/youtube-publish-audit.mjs
-- ?? src/desktop/__tests__/DesktopControls.test.jsx
-- ?? src/desktop/components/DesignExportPhase.jsx
-- ?? src/desktop/components/DesignSetupPhase.jsx
-- ?? src/desktop/components/DesignStudioPhase.jsx
-- ?? src/desktop/components/designConstants.js
+- M src/server/worker.js
+- ?? public/_redirects
+- ?? public/privacy-policy.html
+- ?? public/privacy-policy/
+- ?? public/terms-of-service.html
+- ?? public/terms-of-service/
+- ?? scratch/baerdox_reel_frames/
+- ?? scratch/baerdox_reel_preview_frames/
+- ?? scratch/chrome-focus-check.png
+- ?? scratch/photoshop-smoke-test.done
+- ?? scratch/photoshop-smoke-test.js
+- ?? scratch/photoshop-smoke-test.jsx
+- ?? scratch/reference_contact.jpg
+- ?? scratch/reference_frames/
+- ?? scratch/tiktok-after-delete.png
+- ?? scratch/tiktok-after-icon.png
+- ?? scratch/tiktok-after-privacy-context-check.png
+- ?? scratch/tiktok-after-urls.png
+- ?? scratch/tiktok-after-urls2.png
+- ?? scratch/tiktok-bookmarklet.txt
+- ?? scratch/tiktok-context-menu-chrome.png
+- ?? scratch/tiktok-context-menu.png
+- ?? scratch/tiktok-drag-replace-privacy-check.png
+- ?? scratch/tiktok-drag-replace-privacy.png
+- ?? scratch/tiktok-focus-taskbar.png
+- ?? scratch/tiktok-focused-replaced.png
+- ?? scratch/tiktok-form-screen.png
+- ?? scratch/tiktok-invalid-bookmarklet.txt
+- ?? scratch/tiktok-native-privacy.png
+- ?? scratch/tiktok-privacy-backspace.png
+- ?? scratch/tiktok-privacy-focused.png
+- ?? scratch/tiktok-privacy-pasted.png
+- ?? scratch/tiktok-reviewtext-bookmarklet.txt
+- ?? scratch/tiktok-set-airdox-fields.txt
+- ?? scratch/tiktok-top.png
+- ?? scratch/tiktok-type-x.png
+- ?? scratch/tiktok-urls-corrected.png
+- ?? scratch/tiktok-validity-bookmarklet.txt
+- ?? scripts/create-airdox-photoshop-overlay-source.mjs
+- ?? scripts/create_baerdox_reel.py
+- ?? scripts/make-airdox-reference-video.ps1
+- ?? scripts/photoshop/
+- ?? scripts/render-airdox-photoshop-video.ps1
+- ?? scripts/render-airdox-reference-style-video.mjs
 
 ## Tracked Generated Artifacts
 
@@ -422,14 +287,14 @@ Branch: main
 
 ## Recent Commits
 
+- 60b67e2 chore: daily autopush 2026-05-31 20:06 +02:00
+- a14f60b chore: daily autopush 2026-05-31 20:05 +02:00
+- 91fe814 chore: daily autopush 2026-05-31 20:04 +02:00
+- d4488e0 chore: daily autopush 2026-05-31 20:04 +02:00
+- d494daf chore-daily-autopush-2026-05-31
 - fea0734 feat(flightdeck): publish recording_2026_05_24
 - cb4058b chore: clean up web infrastructure, refactor components, integrate Design Agent, and update audits
 - 438103d fix(desktop): import real sets instead of mock, clear stale localstorage cache, fix date filter 'Alles'
 - c18db77 fix(desktop): remove fake SQL screens and mock data completely
 - 5df7ce8 chore: clean up repository and structure files
-- 995eb5a chore: add brand asset preview gallery
-- 05a7ece chore: refresh designer visual quality report
-- a398c17 feat: add brand asset generator
-- 230ec6d chore: refresh audience intelligence report
-- 8997083 feat: wire audience signals into user journeys
 

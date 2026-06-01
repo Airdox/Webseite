@@ -28,6 +28,11 @@ const Footer = () => {
         { name: 'Email', url: 'mailto:airdox82@gmail.com' },
     ];
 
+    const legalLinks = [
+        { name: 'Privacy Policy', url: '/privacy-policy' },
+        { name: 'Terms of Service', url: '/terms-of-service' },
+    ];
+
     return (
         <footer className="footer" ref={footerRef}>
             <div className="footer-glow"></div>
@@ -78,6 +83,14 @@ const Footer = () => {
                         </p>
                         <p className="footer-credit">
                             {t('footer.madeWith')} <span className="heart">♥</span> {t('footer.inBerlin')} <span className="version-tag">v0.1.2</span>
+                        </p>
+                        <p className="footer-credit">
+                            {legalLinks.map((link, index) => (
+                                <React.Fragment key={link.url}>
+                                    {index > 0 ? ' · ' : ''}
+                                    <a href={link.url}>{link.name}</a>
+                                </React.Fragment>
+                            ))}
                         </p>
                     </div>
                 </div>

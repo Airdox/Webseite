@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-31T16:29:27.768Z",
+  "generatedAt": "2026-06-01T01:45:50.666Z",
   "repository": "D:\\webseeite-main",
   "controller": {
     "name": "Master Controller",
@@ -7,7 +7,7 @@
   },
   "summary": {
     "averageScore": 94,
-    "dirtyPathCount": 153,
+    "dirtyPathCount": 84,
     "testFileCount": 26,
     "cssFileCount": 21
   },
@@ -214,7 +214,7 @@
           "label": "Arbeitsbaum sauber",
           "status": "warn",
           "weight": 1.5,
-          "detail": "153 uncommitted Pfade gefunden; vor Releases klaeren."
+          "detail": "84 uncommitted Pfade gefunden; vor Releases klaeren."
         },
         {
           "label": "Env-Beispiel vorhanden",
@@ -459,7 +459,7 @@
           "label": "Grosse JSX-Dateien begrenzt",
           "status": "warn",
           "weight": 1.5,
-          "detail": "src/desktop/DesktopApp.jsx hat 1715 Zeilen."
+          "detail": "src/desktop/DesktopApp.jsx hat 1708 Zeilen."
         },
         {
           "label": "Desktop Services modularisiert",
@@ -532,7 +532,7 @@
           "label": "Arbeitsbaum releasebereit",
           "status": "warn",
           "weight": 1.5,
-          "detail": "153 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+          "detail": "84 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
         },
         {
           "label": "Einziges Deployment-Target",

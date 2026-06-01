@@ -1,6 +1,6 @@
 # AIRDOX Agent Audit
 
-Generated: 2026-05-31T16:29:27.768Z
+Generated: 2026-06-01T01:45:50.666Z
 Repository: D:\webseeite-main
 Controller: Master Controller
 
@@ -10,7 +10,7 @@ Controller: Master Controller
 - Gate status: pass
 - Test files: 26
 - CSS files: 21
-- Uncommitted paths: 153
+- Uncommitted paths: 84
 
 ## Agent Scores
 
@@ -70,7 +70,7 @@ Next actions:
 - PASS: Ausreichende Testdateien - 26 Test-/Spec-Dateien gefunden.
 - PASS: Worker/API-Testsignale - Server-/API-Code ist vorhanden; dedizierte Testsignale werden geprueft.
 - PASS: Web-CI-Gate vorhanden - Warnung, wenn GitHub Actions kein Web-Lint/Test/Build-Gate enthaelt.
-- WARN: Arbeitsbaum sauber - 153 uncommitted Pfade gefunden; vor Releases klaeren.
+- WARN: Arbeitsbaum sauber - 84 uncommitted Pfade gefunden; vor Releases klaeren.
 - PASS: Env-Beispiel vorhanden - .env.example ist fuer sichere Konfiguration vorhanden.
 
 Next actions:
@@ -135,7 +135,7 @@ Next actions:
 - PASS: Quality-Skripte vorhanden - Web- und Desktop-Quality-Gates sind in package.json abrufbar.
 - PASS: Generierte Ordner aus Lint ausgeschlossen - Warnung, wenn generierte Build-/Wrangler-Artefakte vom Lint erfasst werden.
 - PASS: Root-HTML-Duplikate reduziert - Keine Root-HTML-Kopien neben den Vite-Einstiegen gefunden.
-- WARN: Grosse JSX-Dateien begrenzt - src/desktop/DesktopApp.jsx hat 1715 Zeilen.
+- WARN: Grosse JSX-Dateien begrenzt - src/desktop/DesktopApp.jsx hat 1708 Zeilen.
 - PASS: Desktop Services modularisiert - Desktop-Main-Logik ist in mehrere Services geschnitten.
 - PASS: Deployment-Ziel konsolidiert - Nur wrangler.jsonc als einziges Deployment-Target vorhanden.
 - PASS: Dependency-Footprint kontrolliert - 9 Runtime-Abhaengigkeiten gefunden.
@@ -153,7 +153,7 @@ Next actions:
 - PASS: Branching-Hinweise vorhanden - Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist.
 - PASS: Commit-Konvention dokumentiert - Warnung, wenn Commit-Typen nicht klar festgelegt sind.
 - PASS: Change-Tracking vorhanden - Warnung, wenn Entscheidungen oder Audit-Historie fehlen.
-- WARN: Arbeitsbaum releasebereit - 153 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
+- WARN: Arbeitsbaum releasebereit - 84 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
 - PASS: Einziges Deployment-Target - Nur Cloudflare (wrangler.jsonc) als Deployment-Target vorhanden.
 - PASS: Gefaehrdete Artefaktordner ignoriert - Warnung, wenn Build-/Wrangler-/Release-Artefakte nicht sauber ignoriert werden.
 

@@ -10,8 +10,7 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying, animationMode =
         maxY: 0,
         trackKey: '',
         startTs: 0,
-        lastTs: 0,
-        lastChaosTs: 0
+        lastTs: 0
     });
     const billiardRafRef = useRef(null);
     const animatedVinylRef = useRef(null);
@@ -50,32 +49,28 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying, animationMode =
 
         let disposed = false;
         const physics = billiardStateRef.current;
+        const wallRestitution = 1;
         const randomDirection = () => (Math.random() >= 0.5 ? 1 : -1);
-        const clampVelocity = (value) => {
-            const sign = value >= 0 ? 1 : -1;
-            const magnitude = Math.max(74, Math.min(238, Math.abs(value)));
-            return sign * magnitude;
-        };
-        const setVelocityFromAngle = (angle, speed) => {
-            physics.vx = clampVelocity(Math.cos(angle) * speed);
-            physics.vy = clampVelocity(Math.sin(angle) * speed);
-        };
-        const chooseChaoticAngle = (edge, energy) => {
-            const minExit = 0.24;
-            const maxExit = 1.33;
-            const exit = minExit + (Math.random() * (maxExit - minExit));
-            const audioBend = (energy - 0.35) * 0.55;
-            const timeBend = Math.sin(performance.now() * 0.0047) * 0.22;
-            const angle = Math.max(minExit, Math.min(maxExit, exit + audioBend + timeBend));
+        const reflectWithinBounds = (position, velocity, max) => {
+            if (max <= 0) return { position: 0, velocity };
 
-            if (edge === 'left') return (Math.random() >= 0.5 ? angle : -angle);
-            if (edge === 'right') return Math.PI + (Math.random() >= 0.5 ? angle : -angle);
-            if (edge === 'top') return (Math.PI / 2) + (Math.random() >= 0.5 ? angle : -angle);
-            return (-Math.PI / 2) + (Math.random() >= 0.5 ? angle : -angle);
-        };
-        const bounceFromEdge = (edge, energy) => {
-            const speed = Math.max(130, Math.min(290, Math.hypot(physics.vx, physics.vy) * (0.9 + Math.random() * 0.34 + energy * 0.22)));
-            setVelocityFromAngle(chooseChaoticAngle(edge, energy), speed);
+            let reflectedPosition = position;
+            let reflectedVelocity = velocity;
+
+            for (let i = 0; i < 4 && (reflectedPosition < 0 || reflectedPosition > max); i += 1) {
+                if (reflectedPosition < 0) {
+                    reflectedPosition = -reflectedPosition;
+                    reflectedVelocity = Math.abs(reflectedVelocity) * wallRestitution;
+                } else if (reflectedPosition > max) {
+                    reflectedPosition = max - (reflectedPosition - max);
+                    reflectedVelocity = -Math.abs(reflectedVelocity) * wallRestitution;
+                }
+            }
+
+            return {
+                position: Math.max(0, Math.min(max, reflectedPosition)),
+                velocity: reflectedVelocity
+            };
         };
 
         const findCurrentVinyl = () => {
@@ -173,8 +168,10 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying, animationMode =
             if (isNewTrack) {
                 physics.trackKey = trackKey;
                 physics.startTs = timestamp;
-                physics.vx = 140 * randomDirection();
-                physics.vy = 118 * randomDirection();
+                const launchAngle = 0.62;
+                const launchSpeed = 190;
+                physics.vx = Math.cos(launchAngle) * launchSpeed * randomDirection();
+                physics.vy = Math.sin(launchAngle) * launchSpeed * randomDirection();
                 physics.lastTs = timestamp;
             }
 
@@ -213,30 +210,15 @@ const useVinylAnimation = (analyserRef, currentTrack, isPlaying, animationMode =
 
             const energy = readAudioEnergy();
             const speedFactor = (0.85 + (energy * 1.7)) * motionScale;
-            if (timestamp - (physics.lastChaosTs || 0) > 850) {
-                const drift = (Math.random() - 0.5) * (22 + energy * 34);
-                physics.vx = clampVelocity(physics.vx + drift);
-                physics.vy = clampVelocity(physics.vy - (drift * (0.35 + Math.random() * 0.5)));
-                physics.lastChaosTs = timestamp;
-            }
             physics.x += physics.vx * speedFactor * deltaSec;
             physics.y += physics.vy * speedFactor * deltaSec;
 
-            if (physics.x <= 0) {
-                physics.x = 0;
-                bounceFromEdge('left', energy);
-            } else if (physics.x >= maxX) {
-                physics.x = maxX;
-                bounceFromEdge('right', energy);
-            }
-
-            if (physics.y <= 0) {
-                physics.y = 0;
-                bounceFromEdge('top', energy);
-            } else if (physics.y >= maxY) {
-                physics.y = maxY;
-                bounceFromEdge('bottom', energy);
-            }
+            const reflectedX = reflectWithinBounds(physics.x, physics.vx, maxX);
+            const reflectedY = reflectWithinBounds(physics.y, physics.vy, maxY);
+            physics.x = reflectedX.position;
+            physics.y = reflectedY.position;
+            physics.vx = reflectedX.velocity;
+            physics.vy = reflectedY.velocity;
 
             const offsetX = physics.x - (maxX / 2);
             const offsetY = physics.y - (maxY / 2);

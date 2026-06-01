@@ -1,14 +1,14 @@
 # AIRDOX Agent System Health
 
-Generated: 2026-05-31T16:30:32.983Z
+Generated: 2026-06-01T01:47:08.553Z
 
 ## Summary
 
-- Status: ACTION_REQUIRED
+- Status: OK
 - Jobs: 42 (22 script, 20 manual)
 - External live jobs gated: 5
-- Stale reports: 1
-- Alerts: 2
+- Stale reports: 0
+- Alerts: 1
 
 ## Architecture
 
@@ -54,14 +54,13 @@ flowchart TD
 
 | Report | Status | Age h | Path |
 | --- | --- | ---: | --- |
-| background-cycle | stale | 68.75 | docs/agent-system/latest-background-cycle.json |
+| background-cycle | fresh | 6.02 | docs/agent-system/latest-background-cycle.json |
 | job-run | fresh | 0.02 | docs/agent-system/latest-job-run.json |
 | audit | fresh | 0.02 | docs/agent-system/latest-audit.json |
 | dependency-radar | fresh | 0 | docs/agent-system/latest-agent-dependency-radar.json |
-| task-queue | aging | 179.64 | docs/agent-system/latest-agent-task-queue.json |
+| task-queue | aging | 188.91 | docs/agent-system/latest-agent-task-queue.json |
 
 ## Alerts
 
-- action: background-cycle is stale (68.75h old). Next: Run npm run agents:background:deep and inspect failed steps.
-- watch: task-queue is aging (179.64h old). Next: Let the next scheduled background cycle refresh it.
+- watch: task-queue is aging (188.91h old). Next: Let the next scheduled background cycle refresh it.
 

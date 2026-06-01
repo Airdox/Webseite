@@ -1429,19 +1429,12 @@ const DesktopApp = () => {
 
     if (activeTab === 'design') {
       return (
-        <section className="fd-surface fd-design-launcher">
-          <div>
-            <span className="fd-eyebrow">Design Studio</span>
-            <h2>Große Vorschau im separaten Fenster</h2>
-            <p>
-              Der Design-Agent laeuft im eigenen Studio-Fenster, damit Vorschau und Regler gleichzeitig nutzbar bleiben.
-            </p>
-          </div>
-          <button type="button" className="fd-button" onClick={() => flightDeckApi.openDesignStudio?.()}>
-            <Palette size={16} />
-            Design Studio öffnen
-          </button>
-        </section>
+        <DesignAgentTab
+          sets={appState?.sets}
+          busy={busy}
+          flightDeckApi={flightDeckApi}
+          onOpenStudio={() => flightDeckApi.openDesignStudio?.()}
+        />
       );
     }
 

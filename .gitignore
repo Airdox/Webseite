@@ -69,10 +69,6 @@ output/playwright/
 # Local temporary debug artifacts
 tmp-*
 .tmp_liveinspect/
-scratch/live-*
-scratch/proof-*
-scratch/verify-*
-scratch/create-test-user.mjs
 docs/agent-system/proof/
 docs/agent-system/manni-reel-output/
 docs/proof/
@@ -81,6 +77,15 @@ public/campaign/**/*.png
 exports/
 .devserver.pid
 state.json
+
+# Scratch folder – screenshots, frames, render artefacts, bookmarklets (never commit)
+scratch/
+scripts/photoshop/
+scripts/create_baerdox_reel.py
+scripts/create-airdox-photoshop-overlay-source.mjs
+scripts/make-airdox-reference-video.ps1
+scripts/render-airdox-photoshop-video.ps1
+scripts/render-airdox-reference-style-video.mjs
 
 docs/agent-system/social-auto-output/
 docs/agent-system/download.png
