@@ -20,14 +20,18 @@ def download_video(url, output_path):
         print(f"Fehler beim Download: {str(e)}")
         return False
 
-def upload_video_to_tiktok(video_path, description, cookies_file, headless=True):
+def upload_video_to_tiktok(video_path, description, cookies_file, headless=True, progress_callback=None):
     """
     Lädt ein Video auf TikTok hoch.
     """
     try:
+        if progress_callback:
+            progress_callback(0.1, f"Starte Upload für: {os.path.basename(video_path)}")
         print(f"Starte Upload-Prozess für: {video_path}")
         print(f"Beschreibung: {description}")
         
+        if progress_callback:
+            progress_callback(0.3, "Initialisiere Browser-Uploader...")
         # Initialisiere den Uploader (Chrome wird benötigt)
         uploader = TikTokUploader(cookies=cookies_file, headless=headless, browser='chrome')
         
@@ -42,17 +46,25 @@ def upload_video_to_tiktok(video_path, description, cookies_file, headless=True)
             }
         ]
         
+        if progress_callback:
+            progress_callback(0.6, "Verbinde mit TikTok und lade Video hoch...")
         failed_videos = uploader.upload_videos(videos=videos_to_upload)
         
         if failed_videos:
             print("Fehler: Das Video konnte nicht hochgeladen werden.")
+            if progress_callback:
+                progress_callback(1.0, "Fehler: Upload fehlgeschlagen.")
             return False
         else:
             print("Erfolg: Video wurde erfolgreich hochgeladen.")
+            if progress_callback:
+                progress_callback(1.0, "Erfolg: Video hochgeladen!")
             return True
 
     except Exception as e:
         print(f"Ein unerwarteter Fehler ist aufgetreten: {str(e)}")
+        if progress_callback:
+            progress_callback(1.0, f"Fehler: {str(e)}")
         return False
 
 def get_input(prompt, default=None):
