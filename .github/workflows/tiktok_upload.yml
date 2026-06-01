@@ -1,0 +1,43 @@
+name: TikTok Video Upload (Inoffiziell)
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_path:
+        description: 'Pfad zum Video im Repository (z.B. public/video.mp4)'
+        required: true
+        default: 'public/video.mp4'
+      description:
+        description: 'Video Beschreibung'
+        required: true
+        default: 'Mein automatisierter Upload #tiktok #automation'
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Abhängigkeiten installieren
+        run: |
+          pip install tiktok-uploader
+          playwright install --with-deps chrome
+
+      - name: Cookies aus Secret erstellen
+        run: |
+          echo "${{ secrets.TIKTOK_COOKIES }}" > cookies.txt
+        shell: bash
+
+      - name: Video hochladen
+        env:
+          VIDEO_FILE: ${{ github.event.inputs.video_path }}
+          VIDEO_DESCRIPTION: ${{ github.event.inputs.description }}
+          COOKIES_FILE: ${{ github.workspace }}/cookies.txt
+        run: python scripts/upload_tiktok.py
