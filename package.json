@@ -48,6 +48,8 @@
     "social:youtube:oauth:init": "node scripts/social-youtube-oauth-init.mjs",
     "social:tiktok:oauth:init": "node scripts/social-tiktok-oauth-init.mjs",
     "social:tiktok:check": "node scripts/social-tiktok-check.mjs",
+    "social:tiktok:check:init": "node scripts/social-tiktok-check.mjs --init-only",
+    "social:tiktok:upload:inbox": "node scripts/social-tiktok-upload-inbox.mjs",
     "social:youtube:publish": "node scripts/social-youtube-publish.mjs",
     "social:youtube:audit": "node scripts/youtube-publish-audit.mjs",
     "social:youtube:publish:short": "node scripts/social-youtube-publish.mjs --mode=short",

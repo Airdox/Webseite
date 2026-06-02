@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T07:57:21.849Z",
+  "generatedAt": "2026-06-01T19:48:06.639Z",
   "controller": "Master Controller",
   "job": "agent-system-health",
   "summary": {
@@ -31,34 +31,34 @@
     {
       "id": "background-cycle",
       "path": "docs/agent-system/latest-background-cycle.json",
-      "generatedAt": "2026-06-01T01:45:38.428Z",
+      "generatedAt": "2026-06-01T14:48:04.843Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
-      "ageHours": 6.2,
+      "ageHours": 5,
       "status": "fresh"
     },
     {
       "id": "job-run",
       "path": "docs/agent-system/latest-job-run.json",
-      "generatedAt": "2026-06-01T07:45:45.904Z",
+      "generatedAt": "2026-06-01T19:45:46.774Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
-      "ageHours": 0.19,
+      "ageHours": 0.04,
       "status": "fresh"
     },
     {
       "id": "audit",
       "path": "docs/agent-system/latest-audit.json",
-      "generatedAt": "2026-06-01T07:45:48.259Z",
+      "generatedAt": "2026-06-01T19:45:48.770Z",
       "warnAfterHours": 24,
       "failAfterHours": 72,
-      "ageHours": 0.19,
+      "ageHours": 0.04,
       "status": "fresh"
     },
     {
       "id": "dependency-radar",
       "path": "docs/agent-system/latest-agent-dependency-radar.json",
-      "generatedAt": "2026-06-01T07:57:21.214Z",
+      "generatedAt": "2026-06-01T19:48:05.751Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
       "ageHours": 0,
@@ -70,7 +70,7 @@
       "generatedAt": "2026-05-24T04:52:19.782Z",
       "warnAfterHours": 168,
       "failAfterHours": 336,
-      "ageHours": 195.08,
+      "ageHours": 206.93,
       "status": "aging"
     }
   ],
@@ -87,7 +87,7 @@
     {
       "severity": "watch",
       "id": "task-queue-aging",
-      "message": "task-queue is aging (195.08h old).",
+      "message": "task-queue is aging (206.93h old).",
       "nextAction": "Let the next scheduled background cycle refresh it."
     }
   ]

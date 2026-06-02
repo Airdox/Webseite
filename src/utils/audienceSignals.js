@@ -22,6 +22,7 @@ function getSessionId() {
 function defaultConsentResolver() {
   try {
     const candidates = [
+      'airdox-analytics-enabled',
       'airdox_cookie_consent',
       'cookieConsent',
       'analyticsConsent'

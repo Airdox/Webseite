@@ -1,6 +1,6 @@
 # AIRDOX Agent System Health
 
-Generated: 2026-06-01T07:57:21.849Z
+Generated: 2026-06-01T19:48:06.639Z
 
 ## Summary
 
@@ -54,13 +54,13 @@ flowchart TD
 
 | Report | Status | Age h | Path |
 | --- | --- | ---: | --- |
-| background-cycle | fresh | 6.2 | docs/agent-system/latest-background-cycle.json |
-| job-run | fresh | 0.19 | docs/agent-system/latest-job-run.json |
-| audit | fresh | 0.19 | docs/agent-system/latest-audit.json |
+| background-cycle | fresh | 5 | docs/agent-system/latest-background-cycle.json |
+| job-run | fresh | 0.04 | docs/agent-system/latest-job-run.json |
+| audit | fresh | 0.04 | docs/agent-system/latest-audit.json |
 | dependency-radar | fresh | 0 | docs/agent-system/latest-agent-dependency-radar.json |
-| task-queue | aging | 195.08 | docs/agent-system/latest-agent-task-queue.json |
+| task-queue | aging | 206.93 | docs/agent-system/latest-agent-task-queue.json |
 
 ## Alerts
 
-- watch: task-queue is aging (195.08h old). Next: Let the next scheduled background cycle refresh it.
+- watch: task-queue is aging (206.93h old). Next: Let the next scheduled background cycle refresh it.
 

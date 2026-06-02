@@ -21,7 +21,6 @@ import {
   PHOTOSHOP_SCRIPT_OPTIONS,
   GRAFFITI_STYLE_OPTIONS,
   getScore,
-  getStyleName,
   makePrompt,
 } from './designConstants.js';
 
@@ -72,10 +71,6 @@ const DesignStudioPhase = ({ config, sets, onConfigChange, onBack, onRender, isR
   const [sidebarWidth, setSidebarWidth] = useState(480);
   const [isResizing, setIsResizing] = useState(false);
   const prevWidthRef = useRef(480);
-
-  const selectedPreset = useMemo(() => {
-    return { id: config.presetId, label: getStyleName(config.style) };
-  }, [config.presetId, config.style]);
 
   const patch = (updates) => onConfigChange({ ...config, ...updates });
 
@@ -567,6 +562,7 @@ const DesignStudioPhase = ({ config, sets, onConfigChange, onBack, onRender, isR
                   <div key={s.key} className="fd-compact-slider-item">
                     <span>{s.label}</span>
                     <input
+                      aria-label={s.label}
                       type="range"
                       min={s.min}
                       max={s.max}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy, useRef } from 'react';
 import { ToastProvider } from './contexts/ToastContext';
 import { AudioProvider } from './contexts/AudioContext';
 import Hero from './components/Hero';
@@ -22,6 +22,7 @@ import SetNotification from './components/SetNotification';
 import CookieBanner from './components/CookieBanner';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import AtmosphericBackground from './components/AtmosphericBackground';
+import { audienceEvents } from './utils/audienceSignals';
 import './styles/global.css';
 
 const THEME_STORAGE_KEY = 'airdox-theme-mode';
@@ -54,6 +55,7 @@ function App() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [authModal, setAuthModal] = useState({ isOpen: false, mode: 'login' });
   const [theme, setTheme] = useState(getInitialTheme);
+  const trackedSectionsRef = useRef(new Set());
 
   const openAuth = (mode = 'login') => setAuthModal({ isOpen: true, mode });
   const closeAuth = () => setAuthModal({ ...authModal, isOpen: false });
@@ -84,6 +86,62 @@ function App() {
     }, 200);
 
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const getRoute = () => `${window.location.pathname || '/'}${window.location.hash || ''}`;
+    const trackRouteView = (source = 'app_mount') => {
+      audienceEvents.routeView({
+        route: getRoute(),
+        contentType: 'page',
+        source,
+        value: 1
+      });
+    };
+    const handleRouteChange = () => trackRouteView('browser_navigation');
+    const handleConsentChange = () => window.setTimeout(() => trackRouteView('consent_change'), 0);
+
+    trackRouteView();
+    window.addEventListener('popstate', handleRouteChange);
+    window.addEventListener('hashchange', handleRouteChange);
+    window.addEventListener('analytics-consent-changed', handleConsentChange);
+
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener('hashchange', handleRouteChange);
+      window.removeEventListener('analytics-consent-changed', handleConsentChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!window.IntersectionObserver) return undefined;
+
+    const sectionIds = ['home', 'bio', 'music', 'vip', 'press', 'booking', 'newsletter'];
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || entry.intersectionRatio < 0.5) return;
+        const sectionId = entry.target.id;
+        if (!sectionId || trackedSectionsRef.current.has(sectionId)) return;
+
+        const tracked = audienceEvents.sectionView({
+          contentId: sectionId,
+          contentType: 'website_section',
+          source: 'viewport',
+          value: 1
+        });
+        if (tracked) {
+          trackedSectionsRef.current.add(sectionId);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: [0.5] });
+
+    sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean)
+      .forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
   }, []);
 
   // Globales Scroll Tracking

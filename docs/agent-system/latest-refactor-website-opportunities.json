@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T07:57:20.481Z",
+  "generatedAt": "2026-06-01T19:48:04.713Z",
   "controller": "Master Controller",
   "agent": "Refactor",
   "job": "refactor-website-opportunities",
@@ -51,7 +51,7 @@
       "files": [
         "src/lib/stats-logic.js"
       ],
-      "evidence": "980 lines / 36702 bytes.",
+      "evidence": "995 lines / 37499 bytes.",
       "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
       "validation": "Run the nearest component/unit test plus npm run build."
     },

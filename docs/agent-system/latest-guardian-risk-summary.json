@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-06-01T07:57:10.031Z",
-  "riskLevel": "low",
+  "generatedAt": "2026-06-01T19:47:49.421Z",
+  "riskLevel": "medium",
   "ok": true,
   "blockers": [],
-  "warnings": [],
-  "changedFileCount": 17,
-  "criticalFiles": [],
+  "warnings": [
+    "55 uncommitted paths are present; review scope before release.",
+    "13 critical-path files changed: package.json, scripts/agent-dependency-radar.mjs, scripts/agent-quality-chain.mjs, scripts/agent-routing-report.mjs, scripts/audience-intelligence-agent.mjs, scripts/social-tiktok-oauth-init.mjs, scripts/website-profitability-report.mjs, scripts/photoshop-daumenkino-clean-letter-masks.jsx, ...",
+    "Master Controller review is recommended by routing."
+  ],
+  "changedFileCount": 55,
+  "criticalFiles": [
+    "package.json",
+    "scripts/agent-dependency-radar.mjs",
+    "scripts/agent-quality-chain.mjs",
+    "scripts/agent-routing-report.mjs",
+    "scripts/audience-intelligence-agent.mjs",
+    "scripts/social-tiktok-oauth-init.mjs",
+    "scripts/website-profitability-report.mjs",
+    "scripts/photoshop-daumenkino-clean-letter-masks.jsx",
+    "scripts/photoshop-daumenkino-letter-layers.jsx",
+    "scripts/render-daumenkino-airdox-letterbeat.mjs",
+    "scripts/render-daumenkino-airdox-web-preview.mjs",
+    "scripts/render-daumenkino-gif-letterbeat.mjs",
+    "scripts/social-tiktok-upload-inbox.mjs"
+  ],
   "checks": {
     "jobValidation": {
       "ok": true,
@@ -13,18 +31,27 @@
     },
     "routing": {
       "ok": true,
-      "assignmentCount": 3,
+      "assignmentCount": 11,
       "recommendedGates": [
         "npm run agent:audit -- --strict",
         "npm run agent:jobs:validate -- --strict-warnings",
+        "npm run agent:notebooklm:brief",
+        "npm run agent:quality-chain:write",
         "npm run audience:intelligence",
         "npm run build",
+        "npm run designer:portfolio",
+        "npm run desktop:test:logic",
+        "npm run guardian:risk",
+        "npm run guardian:risk -- --strict",
+        "npm run lint",
+        "npm run refactor:website:opportunities",
+        "npm run test -- --run",
         "npm run website:profitability"
       ]
     },
     "latestAudit": {
       "available": true,
-      "score": 95
+      "score": 94
     }
   }
 }

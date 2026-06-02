@@ -86,6 +86,7 @@ const DesignSetupPhase = ({ config, sets, onConfigChange, onNext, onOpenStudio, 
             <span>{selectedSet?.title || config.setId}</span>
           </div>
           <label className="fd-field-group">
+            Musik-Set
             <select
               value={config.setId}
               onChange={(e) => patch({ setId: e.target.value })}

@@ -1,8 +1,8 @@
 # Latest Website Profitability
 
-Generated: 2026-06-01T07:56:08.810Z
+Generated: 2026-06-01T19:46:13.120Z
 Measurement window: 30 days
-Event source: none
+Event source: neon:analytics_logs
 Status: no_measurement_data
 
 ## Financial Estimate

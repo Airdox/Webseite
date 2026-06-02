@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-06-01T07:45:48.259Z",
+  "generatedAt": "2026-06-01T19:45:48.770Z",
   "repository": "D:\\webseeite-main",
   "controller": {
     "name": "Master Controller",
     "mission": "Priorisierung, Koordination, Release-Entscheidungen und Audit-Auswertung."
   },
   "summary": {
-    "averageScore": 95,
-    "dirtyPathCount": 6,
-    "testFileCount": 26,
+    "averageScore": 94,
+    "dirtyPathCount": 55,
+    "testFileCount": 27,
     "cssFileCount": 21
   },
   "gate": {
@@ -196,7 +196,7 @@
           "label": "Ausreichende Testdateien",
           "status": "pass",
           "weight": 1.5,
-          "detail": "26 Test-/Spec-Dateien gefunden."
+          "detail": "27 Test-/Spec-Dateien gefunden."
         },
         {
           "label": "Worker/API-Testsignale",
@@ -214,7 +214,7 @@
           "label": "Arbeitsbaum sauber",
           "status": "warn",
           "weight": 1.5,
-          "detail": "6 uncommitted Pfade gefunden; vor Releases klaeren."
+          "detail": "55 uncommitted Pfade gefunden; vor Releases klaeren."
         },
         {
           "label": "Env-Beispiel vorhanden",
@@ -490,7 +490,7 @@
       "id": "repository",
       "name": "Repository",
       "mission": "Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet.",
-      "score": 100,
+      "score": 92,
       "checks": [
         {
           "label": "Repository-Governance dokumentiert",
@@ -530,9 +530,9 @@
         },
         {
           "label": "Arbeitsbaum releasebereit",
-          "status": "pass",
+          "status": "warn",
           "weight": 1.5,
-          "detail": "6 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+          "detail": "55 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
         },
         {
           "label": "Einziges Deployment-Target",

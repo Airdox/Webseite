@@ -10,6 +10,7 @@ const reportJsonPath = join(outDir, 'latest-agent-quality-chain.json');
 const reportMdPath = join(outDir, 'latest-agent-quality-chain.md');
 
 const normalize = (value) => String(value || '').replaceAll('\\', '/').replace(/^\.\//, '');
+const isGeneratedAgentReport = (file) => /^docs\/agent-system\/latest-[^/]+\.(json|md)$/.test(file);
 
 const getChangedFiles = () => {
   try {
@@ -34,7 +35,7 @@ const readJson = (filePath, fallback = null) => {
   }
 };
 
-const changedFiles = getChangedFiles();
+const changedFiles = getChangedFiles().filter((file) => !isGeneratedAgentReport(file));
 const routing = readJson(join(outDir, 'latest-agent-routing.json'), {});
 const testFiles = changedFiles.filter((file) => (
   /(^|\/)(__tests__|tests|e2e)\//.test(file)

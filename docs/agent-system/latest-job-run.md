@@ -1,16 +1,16 @@
 # AIRDOX Agent Job Run
 
-Generated: 2026-06-01T07:45:45.904Z
+Generated: 2026-06-01T19:45:46.774Z
 Event: scheduled_background
 Status: deep
 
 ## Summary
 
 - Selected jobs: 15
-- Executed jobs: 14
+- Executed jobs: 15
 - Manual jobs: 0
 - Skipped jobs: 0
-- Failed jobs: 1
+- Failed jobs: 0
 
 ## Jobs
 
@@ -21,7 +21,7 @@ Status: deep
 | mentor-agent-currency | Mentor | EXECUTED | ok (mentor:currency:write) |
 | audience-intelligence-cycle | Audience Intelligence | EXECUTED | ok (audience:intelligence:write) |
 | website-profitability-review | Audience Intelligence | EXECUTED | ok (website:profitability:write) |
-| windows-tool-healthcheck | Winnie | FAILED | exit 1 (desktop:test:logic) |
+| windows-tool-healthcheck | Winnie | EXECUTED | ok (desktop:test:logic) |
 | designer-pdf-draft-build | Designer | EXECUTED | ok (brand:epk) |
 | manni-reel-factory | Manni | EXECUTED | ok (manni:reels:generate) |
 | guardian-risk-summary | Guardian | EXECUTED | ok (guardian:risk:write) |

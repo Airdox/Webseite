@@ -1,16 +1,16 @@
 # AIRDOX Agent Audit
 
-Generated: 2026-06-01T07:45:48.259Z
+Generated: 2026-06-01T19:45:48.770Z
 Repository: D:\webseeite-main
 Controller: Master Controller
 
 ## Summary
 
-- Average score: 95/100
+- Average score: 94/100
 - Gate status: pass
-- Test files: 26
+- Test files: 27
 - CSS files: 21
-- Uncommitted paths: 6
+- Uncommitted paths: 55
 
 ## Agent Scores
 
@@ -23,7 +23,7 @@ Controller: Master Controller
 | Designer | 100/100 | Visual Design, Creative Direction und Social-Asset-Qualitaet. |
 | Mentor | 100/100 | Wissensspeicherung, Lernschleifen, Prozessverbesserung und Agenten-Weiterentwicklung. |
 | Refactor | 92/100 | Systemoptimierung, Verschlankung, Architekturqualitaet und technische Effizienz. |
-| Repository | 100/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
+| Repository | 92/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
 
 ## Webbie
 
@@ -67,10 +67,10 @@ Next actions:
 - PASS: Standard Quality Scripts - Build, Lint, Unit- und E2E-Tests sind in package.json verankert.
 - PASS: Test Runner konfiguriert - Vitest und Playwright sind konfiguriert.
 - PASS: ESLint konfiguriert - ESLint Flat Config ist vorhanden.
-- PASS: Ausreichende Testdateien - 26 Test-/Spec-Dateien gefunden.
+- PASS: Ausreichende Testdateien - 27 Test-/Spec-Dateien gefunden.
 - PASS: Worker/API-Testsignale - Server-/API-Code ist vorhanden; dedizierte Testsignale werden geprueft.
 - PASS: Web-CI-Gate vorhanden - Warnung, wenn GitHub Actions kein Web-Lint/Test/Build-Gate enthaelt.
-- WARN: Arbeitsbaum sauber - 6 uncommitted Pfade gefunden; vor Releases klaeren.
+- WARN: Arbeitsbaum sauber - 55 uncommitted Pfade gefunden; vor Releases klaeren.
 - PASS: Env-Beispiel vorhanden - .env.example ist fuer sichere Konfiguration vorhanden.
 
 Next actions:
@@ -153,7 +153,7 @@ Next actions:
 - PASS: Branching-Hinweise vorhanden - Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist.
 - PASS: Commit-Konvention dokumentiert - Warnung, wenn Commit-Typen nicht klar festgelegt sind.
 - PASS: Change-Tracking vorhanden - Warnung, wenn Entscheidungen oder Audit-Historie fehlen.
-- PASS: Arbeitsbaum releasebereit - 6 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
+- WARN: Arbeitsbaum releasebereit - 55 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
 - PASS: Einziges Deployment-Target - Nur Cloudflare (wrangler.jsonc) als Deployment-Target vorhanden.
 - PASS: Gefaehrdete Artefaktordner ignoriert - Warnung, wenn Build-/Wrangler-/Release-Artefakte nicht sauber ignoriert werden.
 

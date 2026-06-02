@@ -15,6 +15,7 @@ const getArgValue = (name, fallback = '') => {
 };
 
 const normalize = (value) => String(value || '').replaceAll('\\', '/').replace(/^.\//, '');
+const isGeneratedAgentReport = (file) => /^docs\/agent-system\/latest-[^/]+\.(json|md)$/.test(file);
 const readJson = (filePath) => JSON.parse(readFileSync(join(root, filePath), 'utf8'));
 
 const globToRegExp = (pattern) => {
@@ -59,9 +60,12 @@ if (!existsSync(join(root, rulesPath))) {
   const unmatchedFiles = [];
 
   for (const filePath of files) {
-    const matchedRules = (config.rules || []).filter((rule) => (
-      (rule.paths || []).some((pattern) => globToRegExp(pattern).test(filePath))
-    ));
+    const matchedRules = (config.rules || []).filter((rule) => {
+      if (rule.id === 'learning-documentation' && isGeneratedAgentReport(filePath)) {
+        return false;
+      }
+      return (rule.paths || []).some((pattern) => globToRegExp(pattern).test(filePath));
+    });
 
     if (matchedRules.length === 0) {
       unmatchedFiles.push(filePath);

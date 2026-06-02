@@ -2,6 +2,8 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import 'dotenv/config';
+import { neon } from '@neondatabase/serverless';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
@@ -14,6 +16,24 @@ const mdOutPath = path.join(docsDir, 'latest-website-profitability.md');
 const DEFAULT_EVENT_PATHS = [
   path.join(rootDir, 'data', 'audience-events.jsonl'),
   path.join(rootDir, 'docs', 'agent-system', 'audience-events.jsonl')
+];
+
+const DATABASE_EVENT_TYPES = [
+  'route_view',
+  'section_view',
+  'cta_view',
+  'set_play',
+  'set_complete',
+  'video_play',
+  'tracklist_open',
+  'deep_scroll',
+  'share_click',
+  'copy_link',
+  'newsletter_signup',
+  'booking_click',
+  'contact_submit',
+  'epk_download',
+  'external_social_click'
 ];
 
 const BLOCKED_FIELDS = new Set([
@@ -55,6 +75,78 @@ async function readJsonl(filePath) {
     .map((line) => JSON.parse(line));
 }
 
+function getDatabaseUrl() {
+  return process.env.AUDIENCE_DATABASE_URL
+    || process.env.DATABASE_URL
+    || process.env.POSTGRES_URL
+    || process.env.NEON_DATABASE_URL
+    || '';
+}
+
+async function ensureAnalyticsLogAudienceColumns(sql) {
+  await sql`
+    ALTER TABLE analytics_logs
+    ADD COLUMN IF NOT EXISTS route TEXT NULL,
+    ADD COLUMN IF NOT EXISTS source TEXT NULL,
+    ADD COLUMN IF NOT EXISTS content_type TEXT NULL,
+    ADD COLUMN IF NOT EXISTS value DOUBLE PRECISION NULL;
+  `;
+}
+
+function mapAnalyticsLogRow(row) {
+  const referrer = String(row.referrer || '');
+  const isReferrerGroup = ['direct', 'social', 'search', 'referral', 'unknown'].includes(referrer);
+  const referrerGroup = ['direct', 'social', 'search', 'referral', 'unknown'].includes(referrer) ? referrer : 'unknown';
+  const storedRoute = String(row.route || '').trim();
+  const isRoute = referrer.startsWith('/');
+  const itemId = String(row.item_id || '').trim();
+  const contentType = String(row.content_type || '').trim();
+  const numericValue = Number(row.value);
+  return {
+    timestamp: row.created_at instanceof Date ? row.created_at.toISOString() : new Date(row.created_at).toISOString(),
+    sessionIdHash: row.session_id || null,
+    consent: { analytics: true },
+    type: row.event_type,
+    route: storedRoute || (isRoute ? referrer : row.event_type === 'route_view' ? itemId || '/' : 'unknown'),
+    contentId: row.event_type === 'route_view' ? undefined : itemId || undefined,
+    contentType: contentType || (itemId ? 'website_signal' : undefined),
+    campaign: !isReferrerGroup && !isRoute ? referrer || undefined : undefined,
+    referrerGroup: isReferrerGroup ? referrer : 'unknown',
+    deviceClass: row.device_type || 'unknown',
+    locale: row.os || 'unknown',
+    source: row.source || undefined,
+    value: Number.isFinite(numericValue) ? numericValue : 1
+  };
+}
+
+async function loadDatabaseEvents() {
+  const databaseUrl = getDatabaseUrl();
+  if (!databaseUrl) return null;
+
+  try {
+    const sql = neon(databaseUrl);
+    await ensureAnalyticsLogAudienceColumns(sql);
+    const rows = await sql`
+      SELECT event_type, item_id, session_id, device_type, os, referrer, created_at,
+             route, source, content_type, value
+      FROM analytics_logs
+      WHERE event_type = ANY(${DATABASE_EVENT_TYPES})
+      ORDER BY created_at DESC
+      LIMIT 10000
+    `;
+    return {
+      source: 'neon:analytics_logs',
+      events: rows.map(mapAnalyticsLogRow)
+    };
+  } catch (error) {
+    return {
+      source: 'neon:analytics_logs',
+      events: [],
+      error: String(error?.message || error)
+    };
+  }
+}
+
 async function loadEvents() {
   const explicitPath = process.env.AUDIENCE_EVENTS_FILE
     ? path.resolve(rootDir, process.env.AUDIENCE_EVENTS_FILE)
@@ -68,6 +160,8 @@ async function loadEvents() {
       };
     }
   }
+  const databaseEvents = await loadDatabaseEvents();
+  if (databaseEvents) return databaseEvents;
   return { source: null, events: [] };
 }
 

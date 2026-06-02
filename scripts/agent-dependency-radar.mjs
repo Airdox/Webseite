@@ -20,9 +20,14 @@ const exists = (relativePath) => existsSync(join(root, relativePath));
 
 const portfolio = readJson(join(outDir, 'latest-designer-portfolio.json'), {});
 const audience = readJson(join(outDir, 'latest-audience-intelligence.json'), {});
+const profitability = readJson(join(outDir, 'latest-website-profitability.json'), {});
 const jobRun = readJson(join(outDir, 'latest-job-run.json'), {});
 const routing = readJson(join(outDir, 'latest-agent-routing.json'), {});
 const qualityChain = readJson(join(outDir, 'latest-agent-quality-chain.json'), {});
+
+const audienceEventCount = Number(audience?.summary?.totalConsentedEvents || 0);
+const profitabilityStatus = String(profitability?.summary?.profitabilityStatus || '');
+const hasMeasurementData = audienceEventCount > 0 && profitabilityStatus !== 'no_measurement_data';
 
 const handoffs = [
   ...((Array.isArray(routing?.assignments) ? routing.assignments : []).map((assignment) => ({
@@ -62,10 +67,16 @@ const handoffs = [
     id: 'audience-to-manni-hook-priority',
     from: 'Audience Intelligence',
     to: 'Manni',
-    status: audience?.summary ? 'ready' : 'needs_refresh',
-    waitsFor: 'Latest audience signal, hook type priority, channel hypothesis.',
-    nextAction: 'Use audience signal to decide whether this batch optimizes completion, shares, follows, or website clicks.',
-    userTouchpoint: 'If KPI data is missing, ask user for platform screenshots or export before inventing performance claims.',
+    status: hasMeasurementData ? 'ready' : audience?.summary ? 'blocked_by_no_measurement_data' : 'needs_refresh',
+    waitsFor: hasMeasurementData
+      ? 'Latest audience signal, hook type priority, channel hypothesis.'
+      : 'Consented website events for route_view, set_play, newsletter_signup, booking_click, contact_submit, and epk_download.',
+    nextAction: hasMeasurementData
+      ? 'Use audience signal to decide whether this batch optimizes completion, shares, follows, or website clicks.'
+      : 'Webbie must verify consented event export before Manni treats hook priorities as data-backed.',
+    userTouchpoint: hasMeasurementData
+      ? 'If KPI data is missing, ask user for platform screenshots or export before inventing performance claims.'
+      : 'Do not ask for creative approval as data-backed; ask only for tracking credentials or explicit no-data prioritization.',
   },
   {
     id: 'designer-to-user-content-request',
@@ -97,10 +108,10 @@ const handoffs = [
 ];
 
 const alerts = handoffs
-  .filter((handoff) => ['blocked', 'needs_input', 'needs_refresh', 'watch', 'blocked_until_user_ok'].includes(handoff.status))
+  .filter((handoff) => ['blocked', 'blocked_by_no_measurement_data', 'needs_input', 'needs_refresh', 'watch', 'blocked_until_user_ok'].includes(handoff.status))
   .map((handoff) => ({
     id: handoff.id,
-    severity: handoff.status === 'blocked_until_user_ok' ? 'gate' : handoff.status === 'watch' ? 'info' : 'action',
+    severity: ['blocked_until_user_ok', 'blocked_by_no_measurement_data'].includes(handoff.status) ? 'gate' : handoff.status === 'watch' ? 'info' : 'action',
     message: `${handoff.to} waits for: ${handoff.waitsFor}`,
     nextAction: handoff.nextAction,
     userTouchpoint: handoff.userTouchpoint,

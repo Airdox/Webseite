@@ -23,7 +23,7 @@ const DesignExportPhase = ({ config, sets, renderResult, previewGif, logs, onBac
 
   // Auto-scroll logs to bottom when they update
   useEffect(() => {
-    if (logEndRef.current) {
+    if (logEndRef.current?.scrollIntoView) {
       logEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [logs]);
@@ -125,7 +125,7 @@ const DesignExportPhase = ({ config, sets, renderResult, previewGif, logs, onBac
                       <span>High-Quality Loop für Reels & Storys</span>
                     </div>
                   </div>
-                  <button type="button" className="fd-button secondary small" onClick={() => onReveal('mp4')}>
+                  <button type="button" className="fd-button secondary small" aria-label="MP4" onClick={() => onReveal('mp4')}>
                     Anzeigen
                   </button>
                 </div>
@@ -139,7 +139,7 @@ const DesignExportPhase = ({ config, sets, renderResult, previewGif, logs, onBac
                       <span>Optimierter Loop für Webseite & Banner</span>
                     </div>
                   </div>
-                  <button type="button" className="fd-button secondary small" onClick={() => onReveal('gif')}>
+                  <button type="button" className="fd-button secondary small" aria-label="GIF" onClick={() => onReveal('gif')}>
                     Anzeigen
                   </button>
                 </div>
@@ -184,7 +184,7 @@ const DesignExportPhase = ({ config, sets, renderResult, previewGif, logs, onBac
                             <span>Automatisches Layer- & Smartobjekt-Setup</span>
                           </div>
                         </div>
-                        <button type="button" className="fd-button secondary small" onClick={() => onReveal('script')}>
+                        <button type="button" className="fd-button secondary small" aria-label="JSX Script" onClick={() => onReveal('script')}>
                           Anzeigen
                         </button>
                       </div>

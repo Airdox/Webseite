@@ -477,23 +477,21 @@ describe('DesignAgentTab controls', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Glitch Type Drop/i }));
     fireEvent.change(screen.getByLabelText('Musik-Set'), { target: { value: 'set-b' } });
-    fireEvent.change(screen.getByLabelText('Render-Stil'), { target: { value: 'neon' } });
-    fireEvent.change(screen.getByLabelText(/^FPS/i), { target: { value: '20' } });
-    fireEvent.change(screen.getByLabelText('Seed'), { target: { value: '999' } });
-    fireEvent.click(screen.getByRole('button', { name: /Photoshop Script/i }));
     fireEvent.click(screen.getByRole('button', { name: /^Reel/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Zum Studio/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Photoshop Script/i }));
     fireEvent.change(screen.getByLabelText(/^Motion Strength/i), { target: { value: '61' } });
 
-    fireEvent.click(screen.getByRole('button', { name: /Variante rendern/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Pipeline ausführen/i }));
 
     await waitFor(() => expect(api.renderDesign).toHaveBeenCalledTimes(1));
     expect(api.renderDesign).toHaveBeenCalledWith(expect.objectContaining({
-      style: 'neon',
+      style: 'flicker',
       mode: '5050',
       presetId: 'glitch_type_drop',
       format: 'reel',
-      fps: 20,
-      seed: 999,
+      fps: 12,
+      seed: 2482,
       setId: 'set-b',
       photoshopAction: 'script_and_launch',
       graffitiStyles: ['wildstyle', 'throwup', 'chrome_3d'],

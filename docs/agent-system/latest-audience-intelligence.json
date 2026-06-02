@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T07:56:08.261Z",
+  "generatedAt": "2026-06-01T19:46:11.204Z",
   "agent": "audience-intelligence",
   "privacy": {
     "mode": "consented-aggregate",
@@ -17,7 +17,7 @@
     ]
   },
   "summary": {
-    "eventSource": null,
+    "eventSource": "neon:analytics_logs",
     "totalRawEvents": 0,
     "totalConsentedEvents": 0,
     "rejectedEvents": 0,

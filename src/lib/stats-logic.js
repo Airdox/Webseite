@@ -165,6 +165,14 @@ const ensureInitialized = async (sql) => {
                 );
             `;
 
+            await sql`
+                ALTER TABLE analytics_logs
+                ADD COLUMN IF NOT EXISTS route TEXT NULL,
+                ADD COLUMN IF NOT EXISTS source TEXT NULL,
+                ADD COLUMN IF NOT EXISTS content_type TEXT NULL,
+                ADD COLUMN IF NOT EXISTS value DOUBLE PRECISION NULL;
+            `;
+
             for (const [id, plays] of Object.entries(SEED_PLAYS)) {
                 await sql`
                     INSERT INTO track_stats (id, plays, likes, dislikes, last_played_at)
@@ -955,17 +963,24 @@ export const handleAudienceEventRequest = async ({ body, env }) => {
         const region = String(cf.region || 'Unknown').slice(0, 120);
         const device = String(body.deviceClass || 'Unknown').slice(0, 80);
         const referrer = String(body.referrerGroup || body.campaign || body.route || '').slice(0, 240) || null;
+        const route = String(body.route || '').slice(0, 240) || null;
+        const source = String(body.source || '').slice(0, 120) || null;
+        const contentType = String(body.contentType || '').slice(0, 120) || null;
+        const numericValue = Number(body.value);
+        const value = Number.isFinite(numericValue) ? numericValue : null;
 
         await sql`
             INSERT INTO analytics_logs (
                 event_type, item_id, session_id,
                 country, city, region,
-                device_type, browser, os, referrer
+                device_type, browser, os, referrer,
+                route, source, content_type, value
             )
             VALUES (
                 ${eventType}, ${itemId}, ${sessionId},
                 ${country}, ${city}, ${region},
-                ${device}, ${'Unknown'}, ${String(body.locale || 'Unknown').slice(0, 80)}, ${referrer}
+                ${device}, ${'Unknown'}, ${String(body.locale || 'Unknown').slice(0, 80)}, ${referrer},
+                ${route}, ${source}, ${contentType}, ${value}
             );
         `;
 
