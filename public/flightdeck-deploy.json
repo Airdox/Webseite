@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-05-24T21:46:15.050Z",
-  "source": "AIRDOX manual deploy",
-  "setId": "manual-current-workspace",
-  "setTitle": "Current AIRDOX workspace deploy",
+  "generatedAt": "2026-06-03T03:46:54.632Z",
+  "source": "AIRDOX Flight Deck",
+  "setId": "recording_2026_06_02",
+  "setTitle": "FOR THE HATERS",
   "fingerprint": {
     "algorithm": "sha256",
-    "hash": "27c803e667aff9c805fbdd4e631845433dfccf1dc13e0b0dcf8fbbf87392efe8",
-    "fileCount": 124
+    "hash": "613a559fbf439ca2e473a39f00afba49bbe84175a707d3b9284fb515f677be02",
+    "fileCount": 129
   }
 }
