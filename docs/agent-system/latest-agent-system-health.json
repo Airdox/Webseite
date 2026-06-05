@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-01T19:48:06.639Z",
+  "generatedAt": "2026-06-05T19:57:24.325Z",
   "controller": "Master Controller",
   "job": "agent-system-health",
   "summary": {
     "ok": true,
-    "jobCount": 42,
+    "jobCount": 44,
     "scriptJobCount": 22,
-    "manualJobCount": 20,
+    "manualJobCount": 22,
     "externalLiveJobCount": 5,
     "reportCount": 5,
     "staleReportCount": 0,
@@ -31,34 +31,34 @@
     {
       "id": "background-cycle",
       "path": "docs/agent-system/latest-background-cycle.json",
-      "generatedAt": "2026-06-01T14:48:04.843Z",
+      "generatedAt": "2026-06-05T13:45:39.500Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
-      "ageHours": 5,
+      "ageHours": 6.2,
       "status": "fresh"
     },
     {
       "id": "job-run",
       "path": "docs/agent-system/latest-job-run.json",
-      "generatedAt": "2026-06-01T19:45:46.774Z",
+      "generatedAt": "2026-06-05T19:45:50.875Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
-      "ageHours": 0.04,
+      "ageHours": 0.19,
       "status": "fresh"
     },
     {
       "id": "audit",
       "path": "docs/agent-system/latest-audit.json",
-      "generatedAt": "2026-06-01T19:45:48.770Z",
+      "generatedAt": "2026-06-05T19:45:52.548Z",
       "warnAfterHours": 24,
       "failAfterHours": 72,
-      "ageHours": 0.04,
+      "ageHours": 0.19,
       "status": "fresh"
     },
     {
       "id": "dependency-radar",
       "path": "docs/agent-system/latest-agent-dependency-radar.json",
-      "generatedAt": "2026-06-01T19:48:05.751Z",
+      "generatedAt": "2026-06-05T19:57:23.753Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
       "ageHours": 0,
@@ -70,7 +70,7 @@
       "generatedAt": "2026-05-24T04:52:19.782Z",
       "warnAfterHours": 168,
       "failAfterHours": 336,
-      "ageHours": 206.93,
+      "ageHours": 303.08,
       "status": "aging"
     }
   ],
@@ -87,7 +87,7 @@
     {
       "severity": "watch",
       "id": "task-queue-aging",
-      "message": "task-queue is aging (206.93h old).",
+      "message": "task-queue is aging (303.08h old).",
       "nextAction": "Let the next scheduled background cycle refresh it."
     }
   ]

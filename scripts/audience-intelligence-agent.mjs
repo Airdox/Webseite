@@ -215,45 +215,45 @@ function createRecommendations(summary) {
   if (topRoute) {
     recommendations.push({
       priority: 'high',
-      title: `Strengthen the CTA path on ${topRoute.key}`,
-      reason: `This route has the strongest audience activity with ${topRoute.value} weighted signal points.`,
-      action: 'Add or review contextual CTAs for set play, newsletter signup, booking, and sharing.'
+      title: `CTA-Pfad auf ${topRoute.key} staerken`,
+      reason: `Diese Route hat mit ${topRoute.value} gewichteten Signalpunkten die staerkste Audience-Aktivitaet.`,
+      action: 'Kontextuelle CTAs fuer Set-Play, Newsletter-Anmeldung, Booking und Sharing ergaenzen oder pruefen.'
     });
   }
 
   if (topContent) {
     recommendations.push({
       priority: 'high',
-      title: `Repurpose top content: ${topContent.key}`,
-      reason: `This content currently leads audience interest with ${topContent.value} weighted signal points.`,
-      action: 'Generate social captions, newsletter copy, SEO description, and booking angle from this content.'
+      title: `Top-Inhalt wiederverwenden: ${topContent.key}`,
+      reason: `Dieser Inhalt fuehrt das Audience-Interesse aktuell mit ${topContent.value} gewichteten Signalpunkten an.`,
+      action: 'Aus diesem Inhalt Social-Captions, Newsletter-Copy, SEO-Beschreibung und Booking-Winkel ableiten.'
     });
   }
 
   if (playSignals > 0 && signupSignals === 0) {
     recommendations.push({
       priority: 'medium',
-      title: 'Add newsletter capture after music engagement',
-      reason: 'Users are playing sets, but no newsletter signal is present.',
-      action: 'Show a contextual newsletter CTA after meaningful play or tracklist interaction.'
+      title: 'Newsletter-Capture nach Musik-Engagement ergaenzen',
+      reason: 'Nutzer spielen Sets, aber es ist kein Newsletter-Signal vorhanden.',
+      action: 'Nach relevantem Play oder Tracklist-Engagement einen kontextuellen Newsletter-CTA zeigen.'
     });
   }
 
   if (shareSignals > 0 && bookingSignals + contactSignals === 0) {
     recommendations.push({
       priority: 'medium',
-      title: 'Connect social sharing with booking intent',
-      reason: 'Sharing signals exist, but booking/contact signals are missing.',
-      action: 'Add a lightweight booking or EPK CTA on highly shared pages.'
+      title: 'Social-Sharing mit Booking-Intent verbinden',
+      reason: 'Sharing-Signale sind vorhanden, aber Booking-/Kontakt-Signale fehlen.',
+      action: 'Auf stark geteilten Seiten einen leichten Booking- oder EPK-CTA ergaenzen.'
     });
   }
 
   if (summary.totalConsentedEvents === 0) {
     recommendations.push({
       priority: 'high',
-      title: 'Start collecting consented audience events',
-      reason: 'No consented analytics events were found, so recommendations are based on readiness only.',
-      action: 'Wire route, CTA, set-play, newsletter, booking, and share events into a consent-aware analytics export.'
+      title: 'Consent-basierte Audience-Events erfassen',
+      reason: 'Es wurden keine consent-basierten Analytics-Events gefunden; Empfehlungen basieren daher nur auf Readiness.',
+      action: 'Route-, CTA-, Set-Play-, Newsletter-, Booking- und Share-Events in einen consent-bewussten Analytics-Export fuehren.'
     });
   }
 
@@ -286,14 +286,14 @@ function createMarkdown(report) {
     ...report.recommendations.map((item, index) => `${index + 1}. ${item.title} (${item.priority})\n   - Reason: ${item.reason}\n   - Action: ${item.action}`),
     '',
     '## Notes',
-    '- This report uses only consented aggregate or pseudonymous signals.',
-    '- Do not add raw personal data, form messages, IP addresses, emails, phone numbers, or hidden fingerprinting fields to analytics events.'
+    '- Dieser Bericht nutzt nur consent-basierte aggregierte oder pseudonyme Signale.',
+    '- Keine rohen personenbezogenen Daten, Formularnachrichten, IP-Adressen, E-Mails, Telefonnummern oder versteckte Fingerprinting-Felder zu Analytics-Events hinzufuegen.'
   ];
   return `${lines.join('\n')}\n`;
 }
 
 function formatList(items) {
-  if (!items.length) return ['- No data yet'];
+  if (!items.length) return ['- Noch keine Daten'];
   return items.map((item) => `- ${item.key}: ${item.value}`);
 }
 

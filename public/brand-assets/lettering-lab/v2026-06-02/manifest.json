@@ -1,0 +1,18 @@
+{
+  "version": "v2026-06-02",
+  "purpose": "AIRDOX custom lettering exploration before more reel production.",
+  "rule": "AIRDOX wordmarks are built from SVG paths/symbols, not normal font text. Captions may use standard UI type.",
+  "contactSheet": "contact-sheet.svg",
+  "gallery": "index.html",
+  "variants": [
+    "Stencil Pressure",
+    "Marker Burn",
+    "Chrome Cuts",
+    "Tape Wild",
+    "Broken Neon",
+    "Block Assembly",
+    "Spray Skeleton",
+    "Ripped Poster"
+  ],
+  "nextStep": "Pick 2-3 directions, redraw the letter joins and counters manually in Photoshop/vector software, then export layered PNG/SVG for Remotion tests."
+}

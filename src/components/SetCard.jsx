@@ -4,27 +4,8 @@ import { getCurrentLocale, t } from '../utils/i18n';
 import { buildSetAnchorId, buildSetShareUrl } from '../lib/set-links';
 import { getSeekableTracks, parseTrackTimeToSeconds } from '../utils/timeUtils';
 import { audienceEvents } from '../utils/audienceSignals';
-
-const DE_MONTH_TOKEN_MAP = {
-    MAY: 'MAI',
-    OCT: 'OKT',
-    DEC: 'DEZ'
-};
-
-const formatSetDateLabel = (rawDate = '') => {
-    const value = String(rawDate || '').trim();
-    if (!value || getCurrentLocale() !== 'de') return value;
-
-    const parts = value.split(/\s+/);
-    if (!parts.length) return value;
-
-    const firstToken = parts[0].replace('.', '').toUpperCase();
-    if (DE_MONTH_TOKEN_MAP[firstToken]) {
-        parts[0] = DE_MONTH_TOKEN_MAP[firstToken];
-        return parts.join(' ');
-    }
-    return value;
-};
+import { dispatchWindowEvent, WINDOW_EVENTS } from '../utils/websiteContracts';
+import { buildBookingDetail, copyToClipboard, formatSetDateLabel } from './setCardUtils';
 
 const SetCard = ({
     set,
@@ -43,7 +24,7 @@ const SetCard = ({
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [isCopied, setIsCopied] = useState(false);
     const shareResetTimerRef = useRef(null);
-    const dateLabel = formatSetDateLabel(set.date);
+    const dateLabel = formatSetDateLabel(set.date, getCurrentLocale());
 
     const seekableTracks = getSeekableTracks(set.tracks);
 
@@ -60,22 +41,6 @@ const SetCard = ({
             window.clearTimeout(shareResetTimerRef.current);
         }
     }, []);
-
-    const copyToClipboard = async (value) => {
-        if (navigator.clipboard?.writeText) {
-            await navigator.clipboard.writeText(value);
-            return;
-        }
-        const textArea = document.createElement('textarea');
-        textArea.value = value;
-        textArea.setAttribute('readonly', '');
-        textArea.style.position = 'fixed';
-        textArea.style.opacity = '0';
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-    };
 
     const trackShare = (method) => {
         const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
@@ -136,13 +101,7 @@ const SetCard = ({
 
     const handleBookingIntent = (event) => {
         event.stopPropagation();
-        const bookingDetail = {
-            setId: set.id,
-            setTitle: set.title,
-            source: 'set_card',
-            event: `AIRDOX Booking - ${set.title}`,
-            message: t('booking.prefillMessage').replace('{setTitle}', set.title)
-        };
+        const bookingDetail = buildBookingDetail(set, t('booking.prefillMessage'));
         const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
         analytics?.trackEvent?.('booking_intent', {
             setId: set.id,
@@ -155,7 +114,7 @@ const SetCard = ({
             source: 'set_card',
             value: 1
         });
-        window.dispatchEvent(new CustomEvent('airdox_booking_prefill', { detail: bookingDetail }));
+        dispatchWindowEvent(WINDOW_EVENTS.bookingPrefill, bookingDetail);
         window.setTimeout(() => {
             document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 0);

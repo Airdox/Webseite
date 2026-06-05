@@ -212,6 +212,7 @@
       ],
       "recommendedGates": [
         "npm run refactor:website:opportunities",
+        "manual:refactor-website-patch-proposal before code changes",
         "npm run guardian:risk",
         "npm run test -- --run",
         "npm run build"

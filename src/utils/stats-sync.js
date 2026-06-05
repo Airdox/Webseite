@@ -1,7 +1,14 @@
 import { buildRuntimeApiUrl } from './apiResponse';
-
-const STORAGE_KEY = 'airdox_offline_queue';
-const GLOBAL_STATS_KEY = 'airdox_global_stats';
+import { requestUrlJson } from './apiClient';
+import {
+    dispatchWindowEvent,
+    getStorageItem,
+    readStorageJson,
+    setStorageItem,
+    STORAGE_KEYS,
+    WINDOW_EVENTS,
+    writeStorageJson,
+} from './websiteContracts';
 
 const isDev = import.meta.env?.DEV;
 const devLog = (...args) => isDev && console.log('[StatsSync]', ...args);
@@ -40,11 +47,10 @@ const getMetadata = () => {
 
 // Generate or get persistent session ID
 const getSessionId = () => {
-    if (typeof localStorage === 'undefined') return null;
-    let sid = localStorage.getItem('airdox_sid');
+    let sid = getStorageItem(STORAGE_KEYS.sessionId, '');
     if (!sid) {
         sid = 's_' + Math.random().toString(36).substring(2, 15);
-        localStorage.setItem('airdox_sid', sid);
+        setStorageItem(STORAGE_KEYS.sessionId, sid);
     }
     return sid;
 };
@@ -70,13 +76,12 @@ class StatsSync {
         const primaryStatsUrl = getPrimaryStatsUrl();
         const fallbackStatsUrl = getFallbackStatsUrl();
         try {
-            const res = await fetch(primaryStatsUrl);
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-            const data = await res.json();
+            const { response, data } = await requestUrlJson(primaryStatsUrl);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             
             if (data && typeof data === 'object') {
-                localStorage.setItem(GLOBAL_STATS_KEY, JSON.stringify(data));
-                window.dispatchEvent(new CustomEvent('airdox_stats_updated', { detail: data }));
+                writeStorageJson(STORAGE_KEYS.globalStats, data);
+                dispatchWindowEvent(WINDOW_EVENTS.statsUpdated, data);
                 devLog('Global stats updated successfully');
                 return data;
             }
@@ -86,11 +91,10 @@ class StatsSync {
             // Try fallback if primary fails
             if (fallbackStatsUrl && fallbackStatsUrl !== primaryStatsUrl) {
                 try {
-                    const fallbackRes = await fetch(fallbackStatsUrl);
+                    const { response: fallbackRes, data: fallbackData } = await requestUrlJson(fallbackStatsUrl);
                     if (fallbackRes.ok) {
-                        const fallbackData = await fallbackRes.json();
-                        localStorage.setItem(GLOBAL_STATS_KEY, JSON.stringify(fallbackData));
-                        window.dispatchEvent(new CustomEvent('airdox_stats_updated', { detail: fallbackData }));
+                        writeStorageJson(STORAGE_KEYS.globalStats, fallbackData);
+                        dispatchWindowEvent(WINDOW_EVENTS.statsUpdated, fallbackData);
                         return fallbackData;
                     }
                 } catch (fallbackErr) {
@@ -102,15 +106,11 @@ class StatsSync {
     }
 
     loadQueue() {
-        try {
-            return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        } catch {
-            return [];
-        }
+        return readStorageJson(STORAGE_KEYS.offlineStatsQueue, []);
     }
 
     saveQueue() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.queue));
+        writeStorageJson(STORAGE_KEYS.offlineStatsQueue, this.queue);
     }
 
     addToQueue(id, type) {
@@ -127,22 +127,20 @@ class StatsSync {
         const metadata = getMetadata();
         const primaryStatsUrl = getPrimaryStatsUrl();
         const fallbackStatsUrl = getFallbackStatsUrl();
-        const payload = JSON.stringify({ 
+        const payload = { 
             id, 
             type, 
             sessionId: getSessionId(),
             ...metadata 
-        });
+        };
         
         const postOnce = async (url) => {
             try {
-                const res = await fetch(url, {
+                const { response, data } = await requestUrlJson(url, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: payload
+                    body: payload,
                 });
-                if (!res.ok) return { ok: false };
-                const data = await res.json();
+                if (!response.ok) return { ok: false };
                 return { ok: true, data };
             } catch (err) {
                 return { ok: false, error: err };
@@ -168,12 +166,11 @@ class StatsSync {
 
     updateLocalStatsCache(id, newRow) {
         try {
-            const stats = JSON.parse(localStorage.getItem(GLOBAL_STATS_KEY) || '{}');
+            const stats = readStorageJson(STORAGE_KEYS.globalStats, {});
             stats[id] = newRow;
-            localStorage.setItem(GLOBAL_STATS_KEY, JSON.stringify(stats));
+            writeStorageJson(STORAGE_KEYS.globalStats, stats);
             
-            // Dispatch event for components to listen to
-            window.dispatchEvent(new CustomEvent('airdox_stats_updated', { detail: stats }));
+            dispatchWindowEvent(WINDOW_EVENTS.statsUpdated, stats);
         } catch (err) {
             devWarn('Failed to update local stats cache', err);
         }

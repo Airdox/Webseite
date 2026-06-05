@@ -1,6 +1,6 @@
 # AIRDOX Designer Portfolio
 
-Generated: 2026-05-27T04:06:53.051Z
+Erstellt: 2026-05-27T04:06:53.051Z
 Agent: Designer
 Batch: sissygut-airdox-portfolio-2026-05-27
 Campaign: SISSYGUT ALLES GUT

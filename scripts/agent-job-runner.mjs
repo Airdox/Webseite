@@ -48,25 +48,34 @@ const runNpm = (scriptName, scriptArgs = []) => {
   };
 };
 
+const localizeReports = () => {
+  const result = spawnSync(process.execPath, ['scripts/localize-agent-reports.mjs'], {
+    cwd: root,
+    stdio: 'inherit',
+    shell: false,
+  });
+  return result.status === 0;
+};
+
 const renderMarkdown = (report) => {
   const lines = [
-    '# AIRDOX Agent Job Run',
+    '# AIRDOX Agenten-Joblauf',
     '',
-    `Generated: ${generatedAt}`,
-    `Event: ${eventName}`,
+    `Erstellt: ${generatedAt}`,
+    `Ereignis: ${eventName}`,
     `Status: ${statusName}`,
     '',
-    '## Summary',
+    '## Ueberblick',
     '',
-    `- Selected jobs: ${report.summary.selectedJobCount}`,
-    `- Executed jobs: ${report.summary.executedJobCount}`,
-    `- Manual jobs: ${report.summary.manualJobCount}`,
-    `- Skipped jobs: ${report.summary.skippedJobCount}`,
-    `- Failed jobs: ${report.summary.failedJobCount}`,
+    `- Ausgewaehlte Jobs: ${report.summary.selectedJobCount}`,
+    `- Ausgefuehrte Jobs: ${report.summary.executedJobCount}`,
+    `- Manuelle Jobs: ${report.summary.manualJobCount}`,
+    `- Uebersprungene Jobs: ${report.summary.skippedJobCount}`,
+    `- Fehlgeschlagene Jobs: ${report.summary.failedJobCount}`,
     '',
     '## Jobs',
     '',
-    '| Job | Agent | Result | Detail |',
+    '| Job | Agent | Ergebnis | Detail |',
     '| --- | --- | --- | --- |',
     ...report.jobs.map((entry) => `| ${entry.id} | ${entry.owner} | ${entry.result.toUpperCase()} | ${entry.detail} |`),
     '',
@@ -101,16 +110,18 @@ if (!existsSync(catalogPath)) {
       results.push({
         ...base,
         result: 'skipped',
-        detail: 'Master Controller approval required.',
+        detail: 'Master-Controller-Freigabe erforderlich.',
       });
       continue;
     }
 
-    if (job.outputVisibility === 'external_live' && !userApprovedJobs.has(job.id)) {
+    if ((job.requiresUserApproval === true || job.outputVisibility === 'external_live') && !userApprovedJobs.has(job.id)) {
       results.push({
         ...base,
         result: 'skipped',
-        detail: 'Personal user approval required before live/external output.',
+        detail: job.outputVisibility === 'external_live'
+          ? 'Persoenliche Nutzerfreigabe vor Live-/externem Output erforderlich.'
+          : 'Persoenliche Nutzerfreigabe vor Ausfuehrung erforderlich.',
       });
       continue;
     }
@@ -119,7 +130,7 @@ if (!existsSync(catalogPath)) {
       results.push({
         ...base,
         result: 'manual',
-        detail: String(job.manualProtocol || 'Manual protocol required.'),
+        detail: String(job.manualProtocol || 'Manuelles Protokoll erforderlich.'),
       });
       continue;
     }
@@ -128,7 +139,7 @@ if (!existsSync(catalogPath)) {
       results.push({
         ...base,
         result: 'failed',
-        detail: `Unsupported execution mode: ${String(job.execution || 'undefined')}`,
+        detail: `Nicht unterstuetzter Ausfuehrungsmodus: ${String(job.execution || 'undefined')}`,
       });
       continue;
     }
@@ -138,7 +149,7 @@ if (!existsSync(catalogPath)) {
       results.push({
         ...base,
         result: 'failed',
-        detail: 'Missing script name for script execution.',
+        detail: 'Script-Name fuer Script-Ausfuehrung fehlt.',
       });
       continue;
     }
@@ -185,14 +196,15 @@ if (!existsSync(catalogPath)) {
   mkdirSync(outDir, { recursive: true });
   writeFileSync(join(outDir, 'latest-job-run.json'), `${JSON.stringify(report, null, 2)}\n`);
   writeFileSync(join(outDir, 'latest-job-run.md'), renderMarkdown(report));
+  localizeReports();
 
   process.stdout.write([
-    'Agent Job Runner: DONE',
-    `Event: ${eventName}`,
+    'Agenten-Job-Runner: ERLEDIGT',
+    `Ereignis: ${eventName}`,
     `Status: ${statusName}`,
-    `Selected jobs: ${summary.selectedJobCount}`,
-    `Executed: ${summary.executedJobCount}, Manual: ${summary.manualJobCount}, Skipped: ${summary.skippedJobCount}, Failed: ${summary.failedJobCount}`,
-    'Run log: docs/agent-system/latest-job-run.json',
+    `Ausgewaehlte Jobs: ${summary.selectedJobCount}`,
+    `Ausgefuehrt: ${summary.executedJobCount}, Manuell: ${summary.manualJobCount}, Uebersprungen: ${summary.skippedJobCount}, Fehlgeschlagen: ${summary.failedJobCount}`,
+    'Lauflog: docs/agent-system/latest-job-run.json',
   ].join('\n'));
   process.stdout.write('\n');
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T19:47:56.423Z",
+  "generatedAt": "2026-06-05T19:57:08.253Z",
   "status": "skipped",
   "reason": "Missing --notebook <id> or NOTEBOOKLM_NOTEBOOK_ID.",
   "nextAction": "Set NOTEBOOKLM_NOTEBOOK_ID or run this script manually with --notebook <id> when a research refresh is required."

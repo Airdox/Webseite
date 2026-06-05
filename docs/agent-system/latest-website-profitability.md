@@ -1,42 +1,47 @@
 # Latest Website Profitability
 
-Generated: 2026-06-01T19:46:13.120Z
+Erstellt: 2026-06-05T19:56:16.684Z
 Measurement window: 30 days
 Event source: neon:analytics_logs
-Status: no_measurement_data
+Status: value_detected_costs_missing
 
 ## Financial Estimate
-- Estimated gross value: EUR 0.00
+- Estimated gross value: EUR 30.60
 - Estimated monthly cost: EUR 0.00
-- Estimated net value: EUR 0.00
+- Estimated net value: EUR 30.60
 - ROI: n/a
 
 ## Funnel
-- Consented events: 0
+- Consented events: 41
 - Rejected events: 0
-- Route views: 0
-- Set plays: 0
+- Route views: 12
+- Set plays: 20
 - Newsletter signups: 0
 - Booking clicks: 0
 - Contact submits: 0
 
 ## Conversion Rates
-- engagedPlayRate: 0
+- engagedPlayRate: 1.6667
 - newsletterRate: 0
 - bookingIntentRate: 0
 - contactRate: 0
 
 ## Value By Event
-- No data yet
+- set_play: EUR 30.00
+- route_view: EUR 0.60
+- section_view: EUR 0.00
 
 ## Value By Route
-- No data yet
+- /: EUR 29.05
+- /en/: EUR 1.55
 
-## Recommendations
-1. Enable consented website event export (high, Webbie)
-   - Verify route_view, set_play, newsletter_signup, booking_click, contact_submit, and epk_download reach the audience event store.
-2. Do not optimize ROI without data (high, Audience Intelligence)
-   - Keep the profitability status as no_measurement_data until at least one consented event source exists.
+## Empfehlungen
+1. Enter real monthly cost assumptions (medium, Master Controller)
+   - Set hosting, tools, paid media, and manual production costs in website-profitability-model.json before using ROI for business decisions.
+2. Improve booking CTA path (high, Webbie)
+   - Review the strongest route and place a contextual booking or EPK CTA after meaningful music engagement.
+3. Strengthen fan capture (medium, Manni)
+   - Pair the top content with a newsletter offer and a measurable campaign parameter.
 
 ## Guardrails
 - Aggregate and consented events only.

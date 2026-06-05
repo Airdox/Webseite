@@ -72,8 +72,11 @@ Der Background-Cycle ist nicht mehr nur ein Runner-Aufruf. Er fuehrt in jedem La
 4. `agent:jobs:run -- --event=scheduled_background --status=<standard|deep>`
 5. `agent:dependencies:write`
 6. `agent:system:health`
+7. `reports:localize:de`
 
 Wenn ein Schritt fehlschlaegt, bleibt der Fehler im `latest-background-cycle.json` sichtbar. Externe Live-Jobs bleiben trotz Automation blockiert, bis eine persoenliche Nutzerfreigabe uebergeben wurde.
+
+Alle gespeicherten Markdown-Berichte werden danach deutsch normalisiert. Technische Tokens, IDs, Befehle und Pfade bleiben unveraendert, damit Gates und Automatisierung stabil bleiben.
 
 Workbench-Wakeup:
 
@@ -93,6 +96,7 @@ Orchestrator Request Gate:
 - Master Controller ordnet an, verweigert oder reiht ein.
 - Testweise interne Drafts und Prototypen duerfen nach Orchestrator-Anordnung automatisiert laufen.
 - Extern/Live bleibt immer persoenlich freigabepflichtig.
+- Refactor laeuft zweistufig: `refactor-website-patch-proposal` erstellt einen konkreten Patch-Vorschlag ohne Code-Aenderung; `website-stability-refactor-execution` setzt nur den freigegebenen Scope um und bleibt ohne `--user-approved=website-stability-refactor-execution` blockiert.
 
 Manni Social Execution:
 
@@ -123,6 +127,7 @@ Der Workflow validiert zuerst den Job-Katalog und fuehrt danach genau die Jobs f
 
 - Jobs mit `changeClass: gravierend` werden nur mit Master-Freigabe ausgefuehrt.
 - Ohne Freigabe bleiben sie im Run-Log als `skipped`.
+- Jobs mit `requiresUserApproval: true` bleiben ohne `--user-approved=<job-id>` als `skipped` im Run-Log, auch wenn sie nicht extern live sind.
 - Jobs mit `outputVisibility: external_draft` duerfen ohne Nutzer-OK erstellt werden, bleiben aber unveroeffentlicht.
 - Jobs mit `outputVisibility: external_live` werden ohne persoenliches Nutzer-OK als `skipped` protokolliert.
 - Manni-PR-Kampagnen laufen dreistufig: `pr-campaign-draft-pack` bereitet vor, `pr-campaign-user-preview` zeigt die Kampagne, `pr-campaign-live-publish` bringt sie erst mit `--user-approved=pr-campaign-live-publish` online.

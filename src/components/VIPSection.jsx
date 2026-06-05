@@ -3,7 +3,14 @@ import { useAudio } from '../contexts/AudioContext';
 import { sets } from '../data/musicSets';
 import { partitionSetsByAccess } from '../lib/set-access';
 import { t } from '../utils/i18n';
-import { buildApiUrl, readApiJson } from '../utils/apiResponse';
+import { requestApiJson } from '../utils/apiClient';
+import {
+    dispatchWindowEvent,
+    getStorageItem,
+    removeStorageItem,
+    STORAGE_KEYS,
+    WINDOW_EVENTS,
+} from '../utils/websiteContracts';
 import './VIPSection.css';
 
 const { vipSets } = partitionSetsByAccess(sets);
@@ -49,7 +56,7 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
     const [validatingSession, setValidatingSession] = useState(false);
 
     useEffect(() => {
-        const savedToken = localStorage.getItem('airdox_token');
+        const savedToken = getStorageItem(STORAGE_KEYS.authToken, '');
         if (savedToken) {
             validateToken(savedToken);
         }
@@ -58,18 +65,16 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
     const validateToken = async (token) => {
         setValidatingSession(true);
         try {
-            const response = await fetch(buildApiUrl('/api/auth'), {
+            const { response, data: result } = await requestApiJson('/api/auth', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'validate', token }),
+                body: { action: 'validate', token },
             });
-            const result = await readApiJson(response);
 
             if (response.ok && result.ok) {
                 setUser(result.user);
-                window.dispatchEvent(new CustomEvent('airdox_login_success'));
+                dispatchWindowEvent(WINDOW_EVENTS.loginSuccess);
             } else {
-                localStorage.removeItem('airdox_token');
+                removeStorageItem(STORAGE_KEYS.authToken);
                 setUser(null);
             }
         } catch {
@@ -80,9 +85,9 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('airdox_token');
+        removeStorageItem(STORAGE_KEYS.authToken);
         setUser(null);
-        window.dispatchEvent(new CustomEvent('airdox_logout'));
+        dispatchWindowEvent(WINDOW_EVENTS.logout);
     };
 
     const handlePlayClick = (set) => {

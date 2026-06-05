@@ -1,18 +1,18 @@
-# AIRDOX Agent Currency Report
+# AIRDOX Agenten-Aktualitaetsbericht
 
-Generated: 2026-06-01T19:45:52.416Z
+Erstellt: 2026-06-05T19:45:53.409Z
 Owner: Mentor
 Status: warn
 
-## Summary
+## Ueberblick
 
-- Agents checked: 8
+- Gepruefte Agenten: 8
 - Pass: 7
-- Warn: 1
+- Warnungen: 1
 
-## Agents
+## Agenten
 
-| Agent | Status | Domain | Warnings |
+| Agent | Status | Domaene | Warnungen |
 | --- | --- | --- | --- |
 | Webbie | PASS | Frontend architecture and web performance | - |
 | Designer | PASS | Visual quality, accessibility, UX evidence | - |
@@ -23,7 +23,7 @@ Status: warn
 | Refactor | WARN | Architecture simplification and maintainability | 1 source(s) unreachable or changed. |
 | Mentor | PASS | Learning loops and agent improvement process | - |
 
-## Source Checks
+## Quellenchecks
 
 ### Webbie
 

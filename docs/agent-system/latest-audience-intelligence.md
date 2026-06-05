@@ -1,31 +1,43 @@
-# Latest Audience Intelligence
+# AIRDOX Audience-Intelligence-Bericht
 
-Generated: 2026-06-01T19:46:11.204Z
+Erstellt: 2026-06-05T19:56:15.236Z
 
-Consent mode: consented-aggregate
-Consented events analyzed: 0
-Rejected events without analytics consent: 0
+Consent-Modus: consented-aggregate
+Analysierte Consent-Events: 41
+Abgelehnte Events ohne Analytics-Consent: 0
 
-## Top Routes
-- No data yet
+## Staerkste Routen
+- /: 792
+- /en/: 40
 
-## Top Content
-- No data yet
+## Staerkste Inhalte
+- recording_2026_05_24: 490
+- recording_2026_06_02: 210
+- home: 72
+- page: 60
 
-## Top Event Types
-- No data yet
+## Staerkste Event-Typen
+- set_play: 20
+- route_view: 12
+- section_view: 9
 
-## Intent Segments
+## Intent-Segmente
 - booking_intent: 0
-- fan_intent: 0
+- fan_intent: 700
 - sharing_intent: 0
-- discovery_intent: 0
+- discovery_intent: 132
 
-## Recommendations
-1. Start collecting consented audience events (high)
-   - Reason: No consented analytics events were found, so recommendations are based on readiness only.
-   - Action: Wire route, CTA, set-play, newsletter, booking, and share events into a consent-aware analytics export.
+## Empfehlungen
+1. CTA-Pfad auf / staerken (high)
+   - Grund: Diese Route hat mit 792 gewichteten Signalpunkten die staerkste Audience-Aktivitaet.
+   - Aktion: Kontextuelle CTAs fuer Set-Play, Newsletter-Anmeldung, Booking und Sharing ergaenzen oder pruefen.
+2. Top-Inhalt wiederverwenden: recording_2026_05_24 (high)
+   - Grund: Dieser Inhalt fuehrt das Audience-Interesse aktuell mit 490 gewichteten Signalpunkten an.
+   - Aktion: Aus diesem Inhalt Social-Captions, Newsletter-Copy, SEO-Beschreibung und Booking-Winkel ableiten.
+3. Newsletter-Capture nach Musik-Engagement ergaenzen (medium)
+   - Grund: Nutzer spielen Sets, aber es ist kein Newsletter-Signal vorhanden.
+   - Aktion: Nach relevantem Play oder Tracklist-Engagement einen kontextuellen Newsletter-CTA zeigen.
 
-## Notes
-- This report uses only consented aggregate or pseudonymous signals.
-- Do not add raw personal data, form messages, IP addresses, emails, phone numbers, or hidden fingerprinting fields to analytics events.
+## Hinweise
+- Dieser Bericht nutzt nur consent-basierte aggregierte oder pseudonyme Signale.
+- Keine rohen personenbezogenen Daten, Formularnachrichten, IP-Adressen, E-Mails, Telefonnummern oder versteckte Fingerprinting-Felder zu Analytics-Events hinzufuegen.

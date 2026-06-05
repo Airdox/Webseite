@@ -4,8 +4,7 @@ import { t } from '../utils/i18n';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { sets } from '../data/musicSets';
 import { statsSync } from '../utils/stats-sync';
-
-const GLOBAL_STATS_KEY = 'airdox_global_stats';
+import { readStorageJson, STORAGE_KEYS, WINDOW_EVENTS } from '../utils/websiteContracts';
 
 const sumPlays = (stats = {}) => Object.values(stats || {}).reduce(
     (total, row) => total + (Number(row?.plays) || 0),
@@ -16,11 +15,7 @@ const formatStatNumber = (value) => new Intl.NumberFormat('de-DE').format(Number
 
 const readCachedPlayCount = () => {
     if (typeof window === 'undefined') return 0;
-    try {
-        return sumPlays(JSON.parse(window.localStorage.getItem(GLOBAL_STATS_KEY) || '{}'));
-    } catch {
-        return 0;
-    }
+    return sumPlays(readStorageJson(STORAGE_KEYS.globalStats, {}));
 };
 
 const BioSection = () => {
@@ -41,13 +36,13 @@ const BioSection = () => {
         };
 
         const handleStatsUpdated = (event) => updateTotalPlays(event.detail);
-        window.addEventListener('airdox_stats_updated', handleStatsUpdated);
+        window.addEventListener(WINDOW_EVENTS.statsUpdated, handleStatsUpdated);
 
         void statsSync.fetchAllStats().then(updateTotalPlays);
 
         return () => {
             cancelled = true;
-            window.removeEventListener('airdox_stats_updated', handleStatsUpdated);
+            window.removeEventListener(WINDOW_EVENTS.statsUpdated, handleStatsUpdated);
         };
     }, []);
 

@@ -1180,11 +1180,40 @@
       ]
     },
     {
+      "id": "refactor-website-patch-proposal",
+      "title": "Refactor website patch proposal",
+      "owner": "Refactor",
+      "execution": "manual",
+      "manualProtocol": "Prepare exactly one executable website refactor proposal before code changes: target flow, affected files, before/after benefit, risk color, rollback path, validation gates, and explicit approval question for the user. Do not modify production code in this job.",
+      "trigger": {
+        "events": [
+          "website_change",
+          "architecture_drift",
+          "manual_background"
+        ],
+        "statuses": [
+          "proposal",
+          "high_complexity",
+          "stability_risk"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "website_stability",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-refactor-website-opportunities.md",
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
       "id": "website-stability-refactor-execution",
       "title": "Website stability refactor execution",
       "owner": "Refactor",
       "execution": "manual",
-      "manualProtocol": "Execute larger website refactors only with Master Controller approval, named affected user flows, before/after impact, rollback note, and mandatory gates: npm run quality:web, npm run guardian:risk, npm run agent:audit -- --strict. Availability, functionality and production safety outrank cleanup.",
+      "manualProtocol": "Execute only the approved refactor proposal. Before execution, confirm the approved scope, affected user flows, before/after impact, rollback note, and mandatory gates: npm run quality:web, npm run guardian:risk, npm run agent:audit -- --strict. Availability, functionality and production safety outrank cleanup.",
       "trigger": {
         "events": [
           "architecture_drift",
@@ -1203,7 +1232,7 @@
       "requiresMasterApproval": true,
       "domain": "website_stability",
       "outputVisibility": "internal_planning",
-      "requiresUserApproval": false,
+      "requiresUserApproval": true,
       "enabled": true,
       "outputs": [
         "docs/agent-system/DECISION_LOG.md",
@@ -1212,11 +1241,39 @@
       ]
     },
     {
+      "id": "approved-small-refactor-patch",
+      "title": "Approved small refactor patch",
+      "owner": "Refactor",
+      "execution": "manual",
+      "manualProtocol": "Execute only a previously approved green or yellow refactor proposal. Keep scope to one flow or one module boundary, preserve behavior, run the named nearest test plus npm run build, and stop if implementation needs a broader scope than approved.",
+      "trigger": {
+        "events": [
+          "website_change",
+          "architecture_drift",
+          "manual_background"
+        ],
+        "statuses": [
+          "approved",
+          "standard"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "website_stability",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": true,
+      "enabled": true,
+      "outputs": [
+        "terminal:test-output",
+        "docs/agent-system/DECISION_LOG.md"
+      ]
+    },
+    {
       "id": "cross-module-refactor-plan",
       "title": "Cross-module refactor plan",
       "owner": "Refactor",
       "execution": "manual",
-      "manualProtocol": "Prepare an impact analysis and phased plan before any broad restructuring.",
+      "manualProtocol": "Prepare an impact analysis and phased plan before any broad restructuring. Execution is a separate step and requires explicit approval for the selected phase.",
       "trigger": {
         "events": [
           "architecture_drift",

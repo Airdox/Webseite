@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Newsletter.css';
 import { t } from '../utils/i18n';
-import { buildApiUrl, readApiError, readApiJson } from '../utils/apiResponse';
+import { requireApiJson } from '../utils/apiClient';
 import { audienceEvents } from '../utils/audienceSignals';
 
 const Newsletter = () => {
@@ -15,30 +15,24 @@ const Newsletter = () => {
 
         setStatus('loading');
         try {
-            const response = await fetch(buildApiUrl('/api/subscribe'), {
+            await requireApiJson('/api/subscribe', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            });
+                body: { email }
+            }, t('newsletter.subscriptionFailed'));
 
-            if (response.ok) {
-                await readApiJson(response);
-                setStatus('success');
-                setMessage(t('newsletter.success'));
-                setEmail('');
-                window.airdoxAnalyticsV2?.trackEvent('newsletter_subscribe', { status: 'success' });
-                window.airdoxAnalyticsV2?.trackEvent('sign_up', {
-                    method: 'newsletter',
-                    status: 'success'
-                });
-                audienceEvents.newsletterSignup({
-                    contentType: 'newsletter',
-                    source: 'newsletter_section',
-                    value: 1
-                });
-            } else {
-                throw new Error(await readApiError(response, t('newsletter.subscriptionFailed')));
-            }
+            setStatus('success');
+            setMessage(t('newsletter.success'));
+            setEmail('');
+            window.airdoxAnalyticsV2?.trackEvent('newsletter_subscribe', { status: 'success' });
+            window.airdoxAnalyticsV2?.trackEvent('sign_up', {
+                method: 'newsletter',
+                status: 'success'
+            });
+            audienceEvents.newsletterSignup({
+                contentType: 'newsletter',
+                source: 'newsletter_section',
+                value: 1
+            });
         } catch (err) {
             setStatus('error');
             setMessage(err.message || t('newsletter.error'));

@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-06-02T13:12:03.543Z",
+  "objective": "AIRDOX custom lettering exploration, not normal fonts",
+  "rule": "Main AIRDOX wordmarks are built from SVG paths and polygons.",
+  "outputs": {
+    "contactSheet": "docs/agent-system/lettering-lab/airdox-2026-06-02/contact-sheet.png",
+    "html": "docs/agent-system/lettering-lab/airdox-2026-06-02/index.html"
+  },
+  "variants": [
+    {
+      "id": "01",
+      "slug": "berlin-stencil-break",
+      "title": "Berlin Stencil Break",
+      "subtitle": "Sharp stencil skeleton, hard cuts, useful for industrial poster motion.",
+      "svg": "docs/agent-system/lettering-lab/airdox-2026-06-02/berlin-stencil-break.svg",
+      "png": "docs/agent-system/lettering-lab/airdox-2026-06-02/berlin-stencil-break.png"
+    },
+    {
+      "id": "02",
+      "slug": "wildline-marker-pressure",
+      "title": "Wildline Marker Pressure",
+      "subtitle": "Hand-marker direction with overdraw, arrows, imperfect pressure.",
+      "svg": "docs/agent-system/lettering-lab/airdox-2026-06-02/wildline-marker-pressure.svg",
+      "png": "docs/agent-system/lettering-lab/airdox-2026-06-02/wildline-marker-pressure.png"
+    },
+    {
+      "id": "03",
+      "slug": "tape-cut-industrial",
+      "title": "Tape Cut Industrial",
+      "subtitle": "Letters assembled from torn tape blocks, strong for beat-by-beat build animations.",
+      "svg": "docs/agent-system/lettering-lab/airdox-2026-06-02/tape-cut-industrial.svg",
+      "png": "docs/agent-system/lettering-lab/airdox-2026-06-02/tape-cut-industrial.png"
+    },
+    {
+      "id": "04",
+      "slug": "chrome-bubble-skeleton",
+      "title": "Chrome Bubble Skeleton",
+      "subtitle": "Bigger graffiti mass, chrome body, but with curated AIRDOX readability.",
+      "svg": "docs/agent-system/lettering-lab/airdox-2026-06-02/chrome-bubble-skeleton.svg",
+      "png": "docs/agent-system/lettering-lab/airdox-2026-06-02/chrome-bubble-skeleton.png"
+    },
+    {
+      "id": "05",
+      "slug": "broken-neon-sign",
+      "title": "Broken Neon Sign",
+      "subtitle": "AIRDOX as a damaged club sign: missing tubes, glow hits, readable silhouette.",
+      "svg": "docs/agent-system/lettering-lab/airdox-2026-06-02/broken-neon-sign.svg",
+      "png": "docs/agent-system/lettering-lab/airdox-2026-06-02/broken-neon-sign.png"
+    },
+    {
+      "id": "06",
+      "slug": "spray-skeleton-raw",
+      "title": "Spray Skeleton Raw",
+      "subtitle": "Wireframe outline, overspray field, meant for Photoshop cleanup and mask work.",
+      "svg": "docs/agent-system/lettering-lab/airdox-2026-06-02/spray-skeleton-raw.svg",
+      "png": "docs/agent-system/lettering-lab/airdox-2026-06-02/spray-skeleton-raw.png"
+    },
+    {
+      "id": "07",
+      "slug": "x-lock-block-assembly",
+      "title": "X-Lock Block Assembly",
+      "subtitle": "Modular letters that can assemble on beat; X gets its own final lock.",
+      "svg": "docs/agent-system/lettering-lab/airdox-2026-06-02/x-lock-block-assembly.svg",
+      "png": "docs/agent-system/lettering-lab/airdox-2026-06-02/x-lock-block-assembly.png"
+    },
+    {
+      "id": "08",
+      "slug": "acid-poster-slash",
+      "title": "Acid Poster Slash",
+      "subtitle": "Club flyer version: slash composition, aggressive negative space, less sticker-like.",
+      "svg": "docs/agent-system/lettering-lab/airdox-2026-06-02/acid-poster-slash.svg",
+      "png": "docs/agent-system/lettering-lab/airdox-2026-06-02/acid-poster-slash.png"
+    }
+  ]
+}

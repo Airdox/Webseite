@@ -1,6 +1,6 @@
 # NotebookLM Deep Research Brief
 
-Stand: 2026-06-01T19:47:56.423Z
+Stand: 2026-06-05T19:57:08.253Z
 Status: skipped
 
 ## Reason

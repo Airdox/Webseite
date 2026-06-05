@@ -1,0 +1,5 @@
+{
+  "warning": "ffmpeg/ffprobe are not available in this environment; MP4 encoding and audio muxing could not run.",
+  "expectedOutput": "/workspace/Webseite/cloud-render/output/airdox-three-polished-final.mp4",
+  "proofFrame": "/workspace/Webseite/cloud-render/output/proof-final-frame.png"
+}

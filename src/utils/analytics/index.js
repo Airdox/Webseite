@@ -1,3 +1,14 @@
+import {
+    getStorageItem,
+    readStorageJson,
+    removeStorageItem,
+    STORAGE_KEYS,
+    writeStorageJson,
+} from '../websiteContracts.js';
+import { buildAnalyticsCsv, buildAnalyticsExportObject } from './analyticsExport.js';
+import { getAnalyticsDeviceInfo, getDefaultAnalyticsData, trimAnalyticsBucket } from './analyticsRuntime.js';
+import { calculateDistribution, generateHeatmap, generateTimeline } from './analyticsStats.js';
+
 const isDev = import.meta.env?.DEV;
 const devError = (...args) => {
     if (isDev) console.error(...args);
@@ -5,8 +16,8 @@ const devError = (...args) => {
 
 class Analytics {
     constructor() {
-        this.storageKey = 'airdox-analytics-data';
-        this.consentKey = 'airdox-analytics-enabled';
+        this.storageKey = STORAGE_KEYS.analyticsData;
+        this.consentKey = STORAGE_KEYS.analyticsConsent;
         this.sessionKey = 'airdox-session-id';
         this.sessionStartKey = 'airdox-session-start';
         this.initialized = false;
@@ -48,7 +59,7 @@ class Analytics {
     }
 
     isEnabled() {
-        return localStorage.getItem(this.consentKey) === 'true';
+        return getStorageItem(this.consentKey, 'false') === 'true';
     }
 
     generateSessionId() {
@@ -77,7 +88,7 @@ class Analytics {
                 interactions: 0,
                 referrer: document.referrer || 'Direct/Unknown',
                 maxScrollDepth: 0,
-                device: this.getDeviceInfo(),
+                device: getAnalyticsDeviceInfo(),
                 exitPage: null
             });
 
@@ -115,63 +126,18 @@ class Analytics {
         return sessionStorage.getItem(this.sessionKey) || 'no-session';
     }
 
-    getDeviceInfo() {
-        const ua = navigator.userAgent;
-        const width = window.screen.width;
-
-        let deviceType = 'desktop';
-        if (width < 768) deviceType = 'mobile';
-        else if (width < 1024) deviceType = 'tablet';
-
-        let browser = 'Unknown';
-        if (ua.includes('Chrome')) browser = 'Chrome';
-        else if (ua.includes('Firefox')) browser = 'Firefox';
-        else if (ua.includes('Safari')) browser = 'Safari';
-        else if (ua.includes('Edge')) browser = 'Edge';
-        else if (ua.includes('Opera')) browser = 'Opera';
-
-        let os = 'Unknown';
-        if (ua.includes('Windows')) os = 'Windows';
-        else if (ua.includes('Mac')) os = 'macOS';
-        else if (ua.includes('Linux')) os = 'Linux';
-        else if (ua.includes('Android')) os = 'Android';
-        else if (ua.includes('iOS')) os = 'iOS';
-
-        return {
-            type: deviceType,
-            browser,
-            os,
-            screenWidth: window.screen.width,
-            screenHeight: window.screen.height,
-            language: navigator.language
-        };
-    }
-
     getData() {
         try {
-            const data = localStorage.getItem(this.storageKey);
-            return data ? JSON.parse(data) : this.getDefaultData();
+            return readStorageJson(this.storageKey, getDefaultAnalyticsData());
         } catch (error) {
             devError('Analytics: Fehler beim Laden', error);
-            return this.getDefaultData();
+            return getDefaultAnalyticsData();
         }
-    }
-
-    getDefaultData() {
-        return {
-            pageViews: [],
-            downloads: [],
-            sessions: [],
-            audioEvents: [],
-            interactions: [],
-            customEvents: [],
-            socialClicks: []
-        };
     }
 
     saveData(data) {
         try {
-            localStorage.setItem(this.storageKey, JSON.stringify(data));
+            writeStorageJson(this.storageKey, data);
         } catch (error) {
             devError('Analytics: Fehler beim Speichern', error);
         }
@@ -192,15 +158,13 @@ class Analytics {
             page,
             timestamp: new Date().toISOString(),
             sessionId: this.getSessionId(),
-            device: this.getDeviceInfo()
+            device: getAnalyticsDeviceInfo()
         };
 
         data.pageViews.push(event);
         this.updateSessionMetric('pageViews');
 
-        if (data.pageViews.length > 2000) {
-            data.pageViews = data.pageViews.slice(-2000);
-        }
+        trimAnalyticsBucket(data, 'pageViews', 2000);
 
         this.saveData(data);
 
@@ -218,15 +182,13 @@ class Analytics {
             category,
             timestamp: new Date().toISOString(),
             sessionId: this.getSessionId(),
-            device: this.getDeviceInfo()
+            device: getAnalyticsDeviceInfo()
         };
 
         data.downloads.push(event);
         this.updateSessionMetric('downloads');
 
-        if (data.downloads.length > 1000) {
-            data.downloads = data.downloads.slice(-1000);
-        }
+        trimAnalyticsBucket(data, 'downloads', 1000);
 
         this.saveData(data);
 
@@ -258,9 +220,7 @@ class Analytics {
             this.updateSessionMetric('audioPlays');
         }
 
-        if (data.audioEvents.length > 1000) {
-            data.audioEvents = data.audioEvents.slice(-1000);
-        }
+        trimAnalyticsBucket(data, 'audioEvents', 1000);
 
         this.saveData(data);
 
@@ -287,9 +247,7 @@ class Analytics {
         data.interactions.push(event);
         this.updateSessionMetric('interactions');
 
-        if (data.interactions.length > 1000) {
-            data.interactions = data.interactions.slice(-1000);
-        }
+        trimAnalyticsBucket(data, 'interactions', 1000);
 
         this.saveData(data);
 
@@ -328,9 +286,7 @@ class Analytics {
         if (!data.socialClicks) data.socialClicks = [];
         data.socialClicks.push(event);
 
-        if (data.socialClicks.length > 500) {
-            data.socialClicks = data.socialClicks.slice(-500);
-        }
+        trimAnalyticsBucket(data, 'socialClicks', 500);
         this.saveData(data);
 
         this.sendToGA('outbound_click', {
@@ -354,9 +310,7 @@ class Analytics {
 
         data.customEvents.push(event);
 
-        if (data.customEvents.length > 500) {
-            data.customEvents = data.customEvents.slice(-500);
-        }
+        trimAnalyticsBucket(data, 'customEvents', 500);
 
         this.saveData(data);
 
@@ -411,8 +365,8 @@ class Analytics {
             ? sessions.reduce((sum, s) => sum + (s.maxScrollDepth || 0), 0) / sessions.length
             : 0;
 
-        const referrers = this.calculateDistribution(sessions, 'referrer');
-        const topSocialClicks = this.calculateDistribution(socialClicks, 'platform');
+        const referrers = calculateDistribution(sessions, 'referrer');
+        const topSocialClicks = calculateDistribution(socialClicks, 'platform');
 
         const downloadsByFile = {};
         downloads.forEach((d) => {
@@ -445,12 +399,12 @@ class Analytics {
             ? (audioEvents.filter((e) => e.action === 'skip').length / audioEvents.length) * 100
             : 0;
 
-        const deviceDistribution = this.calculateDistribution(sessions, 'device.type');
-        const browserDistribution = this.calculateDistribution(sessions, 'device.browser');
-        const osDistribution = this.calculateDistribution(sessions, 'device.os');
+        const deviceDistribution = calculateDistribution(sessions, 'device.type');
+        const browserDistribution = calculateDistribution(sessions, 'device.browser');
+        const osDistribution = calculateDistribution(sessions, 'device.os');
 
-        const timeline = this.generateTimeline(pageViews, downloads, audioEvents, timeRange);
-        const heatmap = this.generateHeatmap(pageViews);
+        const timeline = generateTimeline(pageViews, downloads, audioEvents, timeRange);
+        const heatmap = generateHeatmap(pageViews);
 
         return {
             timeRange,
@@ -487,69 +441,6 @@ class Analytics {
         };
     }
 
-    calculateDistribution(items, path) {
-        const distribution = {};
-        items.forEach((item) => {
-            const value = path.split('.').reduce((obj, key) => obj?.[key], item) || 'Unknown';
-            distribution[value] = (distribution[value] || 0) + 1;
-        });
-        return Object.entries(distribution)
-            .sort((a, b) => b[1] - a[1])
-            .map(([name, count]) => ({ name, count }));
-    }
-
-    generateTimeline(pageViews, downloads, audioEvents, timeRange) {
-        const days = timeRange === '7days' ? 7 : timeRange === '30days' ? 30 : timeRange === '90days' ? 90 : 30;
-        const now = new Date();
-        const timeline = [];
-
-        for (let i = days - 1; i >= 0; i--) {
-            const date = new Date(now);
-            date.setDate(date.getDate() - i);
-            date.setHours(0, 0, 0, 0);
-
-            const nextDate = new Date(date);
-            nextDate.setDate(nextDate.getDate() + 1);
-
-            const dayViews = pageViews.filter((pv) => {
-                const pvDate = new Date(pv.timestamp);
-                return pvDate >= date && pvDate < nextDate;
-            }).length;
-
-            const dayDownloads = downloads.filter((d) => {
-                const dDate = new Date(d.timestamp);
-                return dDate >= date && dDate < nextDate;
-            }).length;
-
-            const dayPlays = audioEvents.filter((e) => {
-                const eDate = new Date(e.timestamp);
-                return e.action === 'play' && eDate >= date && eDate < nextDate;
-            }).length;
-
-            timeline.push({
-                date: date.toISOString().split('T')[0],
-                pageViews: dayViews,
-                downloads: dayDownloads,
-                audioPlays: dayPlays
-            });
-        }
-
-        return timeline;
-    }
-
-    generateHeatmap(pageViews) {
-        const heatmap = Array.from({ length: 7 }, () => Array(24).fill(0));
-
-        pageViews.forEach((pv) => {
-            const date = new Date(pv.timestamp);
-            const day = date.getDay();
-            const hour = date.getHours();
-            heatmap[day][hour]++;
-        });
-
-        return heatmap;
-    }
-
     exportData(format = 'json', timeRange = 'all') {
         const stats = this.getStats(timeRange);
 
@@ -561,48 +452,14 @@ class Analytics {
     }
 
     exportJSON(stats) {
-        const exportObject = {
-            exportDate: new Date().toISOString(),
-            timeRange: stats.timeRange,
-            summary: {
-                total: stats.total,
-                averages: stats.averages,
-                rates: stats.rates
-            },
-            traffic: stats.traffic,
-            topLists: {
-                downloads: stats.downloads?.top,
-                tracks: stats.audio?.top
-            },
-            devices: stats.devices,
-            timeline: stats.timeline,
-            fullData: stats.rawData
-        };
-
-        const blob = new Blob([JSON.stringify(exportObject, null, 2)], {
+        const blob = new Blob([JSON.stringify(buildAnalyticsExportObject(stats), null, 2)], {
             type: 'application/json'
         });
         this.downloadBlob(blob, `airdox-analytics-${Date.now()}.json`);
     }
 
     exportCSV(stats) {
-        let csv = 'Timestamp,Event Type,Value,Category,Session ID,Device,Browser\n';
-
-        const data = stats.rawData || {};
-
-        (data.pageViews || []).forEach((pv) => {
-            csv += `${pv.timestamp},pageview,${pv.page},-,${pv.sessionId},${pv.device?.type},${pv.device?.browser}\n`;
-        });
-
-        (data.downloads || []).forEach((d) => {
-            csv += `${d.timestamp},download,${d.fileName},${d.category},${d.sessionId},${d.device?.type},${d.device?.browser}\n`;
-        });
-
-        (data.audioEvents || []).forEach((e) => {
-            csv += `${e.timestamp},audio_${e.action},${e.trackName},-,${e.sessionId},-,-\n`;
-        });
-
-        const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+        const blob = new Blob(['\ufeff' + buildAnalyticsCsv(stats)], { type: 'text/csv;charset=utf-8;' });
         this.downloadBlob(blob, `airdox-analytics-${Date.now()}.csv`);
     }
 
@@ -619,7 +476,7 @@ class Analytics {
 
     clearData() {
         if (confirm('Möchtest du wirklich alle Analytics-Daten löschen?')) {
-            localStorage.removeItem(this.storageKey);
+            removeStorageItem(this.storageKey);
             sessionStorage.removeItem(this.sessionKey);
             sessionStorage.removeItem(this.sessionStartKey);
             return true;

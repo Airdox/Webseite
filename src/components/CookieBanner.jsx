@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './CookieBanner.css';
 import { t } from '../utils/i18n';
 import { ensureAnalyticsLoaded, maybeLoadAnalytics } from '../utils/analyticsLoader.js';
+import { dispatchWindowEvent, getStorageItem, setStorageItem, STORAGE_KEYS, WINDOW_EVENTS } from '../utils/websiteContracts';
 
 const CookieBanner = () => {
     const [showBanner, setShowBanner] = useState(false);
@@ -10,7 +11,7 @@ const CookieBanner = () => {
 
     useEffect(() => {
         // Prüfe ob bereits eine Entscheidung getroffen wurde
-        const consent = localStorage.getItem('airdox-analytics-enabled');
+        const consent = getStorageItem(STORAGE_KEYS.analyticsConsent, null);
         if (consent === null) {
             // Noch keine Entscheidung - Banner zeigen nach kurzer Verzögerung
             setTimeout(() => setShowBanner(true), 1500);
@@ -57,18 +58,18 @@ const CookieBanner = () => {
 
 
     const handleDecline = () => {
-        localStorage.setItem('airdox-analytics-enabled', 'false');
-        localStorage.setItem('airdox-marketing-enabled', 'false');
+        setStorageItem(STORAGE_KEYS.analyticsConsent, 'false');
+        setStorageItem(STORAGE_KEYS.marketingConsent, 'false');
         setShowBanner(false);
-        window.dispatchEvent(new CustomEvent('analytics-consent-changed'));
+        dispatchWindowEvent(WINDOW_EVENTS.analyticsConsentChanged);
     };
 
     const handleAcceptAll = () => {
-        localStorage.setItem('airdox-analytics-enabled', 'true');
-        localStorage.setItem('airdox-marketing-enabled', 'true');
+        setStorageItem(STORAGE_KEYS.analyticsConsent, 'true');
+        setStorageItem(STORAGE_KEYS.marketingConsent, 'true');
         ensureAnalyticsLoaded();
         setShowBanner(false);
-        window.dispatchEvent(new CustomEvent('analytics-consent-changed'));
+        dispatchWindowEvent(WINDOW_EVENTS.analyticsConsentChanged);
     };
 
     if (!showBanner) return null;

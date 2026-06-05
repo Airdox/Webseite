@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
 import { statsSync } from '../utils/stats-sync';
 import { audienceEvents } from '../utils/audienceSignals';
-import { getRuntimeApiBase } from '../utils/apiResponse';
+import { AUDIO_MAX_PARTS, padPartIndex, toPart000, toPlayableSrc } from './audioSources';
 // jsmediatags removed
 
 const isDev = import.meta.env?.DEV;
@@ -10,63 +10,6 @@ const devLog = (...args) => {
 };
 const devWarn = (...args) => {
     if (isDev) console.warn(...args);
-};
-
-// Use API endpoint for audio streaming
-const AUDIO_BASE = '/api/audio';
-const AUDIO_MAX_PARTS = 25;
-const AUDIO_API_BASE = (import.meta.env?.VITE_AUDIO_API_BASE || '').replace(/\/+$/, '');
-
-const getAuthToken = () => {
-    try {
-        return localStorage.getItem('airdox_token') || '';
-    } catch {
-        return '';
-    }
-};
-
-const resolveAudioSrc = (src) => {
-    if (!src) return src;
-    // Always use API endpoint for audio
-    // Only keep filename (strip path)
-    const filename = src.split('/').pop();
-    const encodedFilename = encodeURIComponent(filename);
-    const base = getAudioApiBase();
-    return `${base}${AUDIO_BASE}/${encodedFilename}`;
-};
-const isAbsoluteUrl = (url) => /^https?:\/\//i.test(url);
-const getAudioApiBase = () => getRuntimeApiBase(AUDIO_API_BASE, { useProductionForMobile: false });
-const encodeAudioSrc = (src) => {
-    if (!src) return src;
-    try {
-        if (isAbsoluteUrl(src)) return new URL(src).toString();
-        return new URL(src, window.location.origin).toString();
-    } catch {
-        return encodeURI(src);
-    }
-};
-
-const appendTokenParam = (src) => {
-    const token = getAuthToken();
-    if (!src || !token) return src;
-    try {
-        const url = isAbsoluteUrl(src) ? new URL(src) : new URL(src, window.location.origin);
-        if (!url.searchParams.has('token')) {
-            url.searchParams.set('token', token);
-        }
-        return url.toString();
-    } catch {
-        return src;
-    }
-};
-
-const toPlayableSrc = (src) => appendTokenParam(encodeAudioSrc(resolveAudioSrc(src)));
-const padPartIndex = (index) => String(index).padStart(3, '0');
-const toPart000 = (file) => {
-    if (!file || !/\.mp3$/i.test(file)) return null;
-    if (/_part\d{3}\.mp3$/i.test(file)) return null;
-    if (/_full\.mp3$/i.test(file)) return file.replace(/_full\.mp3$/i, '_part000.mp3');
-    return file.replace(/\.mp3$/i, '_part000.mp3');
 };
 
 const AudioContext = createContext();

@@ -1,38 +1,89 @@
 {
-  "generatedAt": "2026-06-01T19:47:58.072Z",
+  "generatedAt": "2026-06-05T19:57:09.436Z",
   "controller": "Master Controller",
   "job": "agent-quality-chain",
   "purpose": "Turn changed code into explicit test, validation, and owner follow-up obligations.",
-  "changedFileCount": 28,
+  "changedFileCount": 79,
   "changedFiles": [
     "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md",
+    "docs/agent-system/DECISION_LOG.md",
+    "docs/agent-system/OPERATING_MODEL.md",
+    "docs/agent-system/ORCHESTRATION_WORKFLOW.md",
+    "docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md",
+    "docs/agent-system/SUPERAGENT_ASSIGNMENTS.md",
+    "docs/agent-system/agent-routing-rules.json",
+    "docs/agent-system/job-catalog.json",
     "docs/agent-system/manni-reel-draft-pack.md",
     "docs/agent-system/manni-reel-queue.json",
     "docs/agent-system/manni-reel-weekly-plan.md",
+    "package-lock.json",
     "package.json",
-    "scripts/agent-dependency-radar.mjs",
-    "scripts/agent-quality-chain.mjs",
-    "scripts/agent-routing-report.mjs",
+    "scripts/agent-background-cycle.mjs",
+    "scripts/agent-job-runner.mjs",
     "scripts/audience-intelligence-agent.mjs",
-    "scripts/social-tiktok-oauth-init.mjs",
-    "scripts/website-profitability-report.mjs",
-    "src/App.jsx",
-    "src/desktop/__tests__/DesktopControls.test.jsx",
-    "src/desktop/components/DesignExportPhase.jsx",
-    "src/desktop/components/DesignSetupPhase.jsx",
-    "src/desktop/components/DesignStudioPhase.jsx",
+    "scripts/refactor-website-opportunities.mjs",
+    "src/components/AuthModal.jsx",
+    "src/components/BioSection.jsx",
+    "src/components/BookingSection.jsx",
+    "src/components/CookieBanner.jsx",
+    "src/components/MusicSection.jsx",
+    "src/components/Newsletter.jsx",
+    "src/components/SetCard.jsx",
+    "src/components/VIPSection.jsx",
+    "src/contexts/AudioContext.jsx",
     "src/lib/stats-logic.js",
+    "src/server/worker.js",
+    "src/utils/analytics/index.js",
     "src/utils/audienceSignals.js",
-    "docs/brand/templates/airdox-daumenkino-reel-war-preview.png",
-    "docs/brand/templates/airdox-daumenkino-reel-war-preview.svg",
-    "docs/brand/templates/airdox-daumenkino-reel-war-template.md",
-    "scripts/photoshop-daumenkino-clean-letter-masks.jsx",
-    "scripts/photoshop-daumenkino-letter-layers.jsx",
-    "scripts/render-daumenkino-airdox-letterbeat.mjs",
-    "scripts/render-daumenkino-airdox-web-preview.mjs",
-    "scripts/render-daumenkino-gif-letterbeat.mjs",
-    "scripts/social-tiktok-upload-inbox.mjs",
-    "src/utils/__tests__/audienceSignals.test.js"
+    "src/utils/i18n.js",
+    "src/utils/stats-sync.js",
+    "airdox_three_reel.html",
+    "cloud-render/",
+    "docs/agent-system/lettering-lab/",
+    "docs/brand/templates/airdox-lettering-lab-brief.md",
+    "docs/brand/templates/airdox-remotion-reel-template.md",
+    "public/brand-assets/airdox-lettering/",
+    "public/brand-assets/lettering-lab/",
+    "remotion/",
+    "scripts/airdox-lettering-lab.mjs",
+    "scripts/build-mega-analytics-pack.mjs",
+    "scripts/extract-airdox-strobe-proof-assets.mjs",
+    "scripts/localize-agent-reports.mjs",
+    "scripts/photoshop-export-airdox-letter-masks.jsx",
+    "scripts/render-airdox-lettering-lab.mjs",
+    "scripts/run-photoshop-airdox-letter-masks.mjs",
+    "src/components/AuthModalFields.jsx",
+    "src/components/AuthSocialButtons.jsx",
+    "src/components/AuthSocialProviderIcon.jsx",
+    "src/components/BookingSocialLinks.jsx",
+    "src/components/__tests__/authModalUtils.test.js",
+    "src/components/__tests__/setCardUtils.test.js",
+    "src/components/authModalUtils.js",
+    "src/components/setCardUtils.js",
+    "src/contexts/__tests__/audioSources.test.js",
+    "src/contexts/audioSources.js",
+    "src/lib/__tests__/authHelpers.test.js",
+    "src/lib/__tests__/statsContracts.test.js",
+    "src/lib/authHelpers.js",
+    "src/lib/authRequestHandler.js",
+    "src/lib/statsContracts.js",
+    "src/lib/statsDatabase.js",
+    "src/server/__tests__/httpResponses.test.js",
+    "src/server/__tests__/legalPages.test.js",
+    "src/server/__tests__/oauthUtils.test.js",
+    "src/server/audioRoutes.js",
+    "src/server/httpResponses.js",
+    "src/server/legalPages.js",
+    "src/server/oauthUtils.js",
+    "src/utils/__tests__/apiClient.test.js",
+    "src/utils/__tests__/websiteContracts.test.js",
+    "src/utils/analytics/__tests__/",
+    "src/utils/analytics/analyticsExport.js",
+    "src/utils/analytics/analyticsRuntime.js",
+    "src/utils/analytics/analyticsStats.js",
+    "src/utils/apiClient.js",
+    "src/utils/i18nMessages.js",
+    "src/utils/websiteContracts.js"
   ],
   "routingAssignments": [
     {
@@ -46,8 +97,7 @@
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
         "docs/agent-system/manni-reel-weekly-plan.md",
-        "scripts/audience-intelligence-agent.mjs",
-        "scripts/website-profitability-report.mjs"
+        "scripts/audience-intelligence-agent.mjs"
       ],
       "rules": [
         "audience-intelligence"
@@ -66,33 +116,32 @@
     },
     {
       "agent": "Designer",
-      "role": "primary",
+      "role": "review",
       "files": [
-        "scripts/render-daumenkino-airdox-letterbeat.mjs",
-        "scripts/render-daumenkino-airdox-web-preview.mjs",
-        "scripts/render-daumenkino-gif-letterbeat.mjs"
+        "docs/agent-system/latest-designer-portfolio.md",
+        "public/brand-assets/airdox-lettering/",
+        "public/brand-assets/lettering-lab/"
       ],
       "rules": [
-        "daumenkino-reference-system"
+        "visual-quality"
       ]
     },
     {
-      "agent": "Designer",
-      "role": "review",
+      "agent": "Guardian",
+      "role": "primary",
       "files": [
-        "src/desktop/__tests__/DesktopControls.test.jsx",
-        "src/desktop/components/DesignExportPhase.jsx",
-        "src/desktop/components/DesignSetupPhase.jsx",
-        "src/desktop/components/DesignStudioPhase.jsx"
+        "docs/agent-system/latest-youtube-publish-audit.md"
       ],
       "rules": [
-        "desktop-experience-design"
+        "youtube-publish-quality"
       ]
     },
     {
       "agent": "Guardian",
       "role": "review",
       "files": [
+        "airdox_three_reel.html",
+        "cloud-render/",
         "docs/agent-system/latest-agent-currency.json",
         "docs/agent-system/latest-agent-currency.md",
         "docs/agent-system/latest-agent-dependency-radar.json",
@@ -106,6 +155,8 @@
         "docs/agent-system/latest-audit.json",
         "docs/agent-system/latest-audit.md",
         "docs/agent-system/latest-background-cycle.json",
+        "docs/agent-system/latest-brand-asset-generator.md",
+        "docs/agent-system/latest-designer-visual-quality.md",
         "docs/agent-system/latest-guardian-risk-summary.json",
         "docs/agent-system/latest-guardian-risk-summary.md",
         "docs/agent-system/latest-job-run.json",
@@ -114,19 +165,30 @@
         "docs/agent-system/latest-refactor-website-opportunities.md",
         "docs/agent-system/latest-repository-monitor.json",
         "docs/agent-system/latest-repository-monitor.md",
+        "docs/agent-system/latest-social-post-ledger.md",
+        "package-lock.json",
         "package.json",
-        "scripts/agent-dependency-radar.mjs",
-        "scripts/agent-quality-chain.mjs",
-        "scripts/agent-routing-report.mjs",
+        "remotion/",
+        "scripts/agent-background-cycle.mjs",
+        "scripts/agent-job-runner.mjs",
+        "scripts/airdox-lettering-lab.mjs",
         "scripts/audience-intelligence-agent.mjs",
-        "scripts/photoshop-daumenkino-clean-letter-masks.jsx",
-        "scripts/photoshop-daumenkino-letter-layers.jsx",
-        "scripts/render-daumenkino-airdox-letterbeat.mjs",
-        "scripts/render-daumenkino-airdox-web-preview.mjs",
-        "scripts/render-daumenkino-gif-letterbeat.mjs",
-        "scripts/social-tiktok-oauth-init.mjs",
-        "scripts/social-tiktok-upload-inbox.mjs",
-        "scripts/website-profitability-report.mjs"
+        "scripts/build-mega-analytics-pack.mjs",
+        "scripts/extract-airdox-strobe-proof-assets.mjs",
+        "scripts/localize-agent-reports.mjs",
+        "scripts/photoshop-export-airdox-letter-masks.jsx",
+        "scripts/refactor-website-opportunities.mjs",
+        "scripts/render-airdox-lettering-lab.mjs",
+        "scripts/run-photoshop-airdox-letter-masks.mjs",
+        "src/server/__tests__/httpResponses.test.js",
+        "src/server/__tests__/legalPages.test.js",
+        "src/server/__tests__/oauthUtils.test.js",
+        "src/server/audioRoutes.js",
+        "src/server/httpResponses.js",
+        "src/server/legalPages.js",
+        "src/server/oauthUtils.js",
+        "src/server/worker.js",
+        "src/utils/analytics/__tests__/"
       ],
       "rules": [
         "quality-security"
@@ -139,8 +201,9 @@
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
         "docs/agent-system/manni-reel-weekly-plan.md",
-        "scripts/social-tiktok-oauth-init.mjs",
-        "scripts/social-tiktok-upload-inbox.mjs"
+        "src/components/BookingSection.jsx",
+        "src/components/Newsletter.jsx",
+        "src/components/VIPSection.jsx"
       ],
       "rules": [
         "growth-conversion"
@@ -150,6 +213,8 @@
       "agent": "Master Controller",
       "role": "review",
       "files": [
+        "airdox_three_reel.html",
+        "cloud-render/",
         "docs/agent-system/latest-agent-currency.json",
         "docs/agent-system/latest-agent-currency.md",
         "docs/agent-system/latest-agent-dependency-radar.json",
@@ -163,6 +228,8 @@
         "docs/agent-system/latest-audit.json",
         "docs/agent-system/latest-audit.md",
         "docs/agent-system/latest-background-cycle.json",
+        "docs/agent-system/latest-brand-asset-generator.md",
+        "docs/agent-system/latest-designer-visual-quality.md",
         "docs/agent-system/latest-guardian-risk-summary.json",
         "docs/agent-system/latest-guardian-risk-summary.md",
         "docs/agent-system/latest-job-run.json",
@@ -170,7 +237,10 @@
         "docs/agent-system/latest-refactor-website-opportunities.json",
         "docs/agent-system/latest-refactor-website-opportunities.md",
         "docs/agent-system/latest-repository-monitor.json",
-        "docs/agent-system/latest-repository-monitor.md"
+        "docs/agent-system/latest-repository-monitor.md",
+        "docs/agent-system/latest-social-post-ledger.md",
+        "remotion/",
+        "src/utils/analytics/__tests__/"
       ],
       "rules": []
     },
@@ -179,12 +249,19 @@
       "role": "review",
       "files": [
         "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md",
+        "docs/agent-system/DECISION_LOG.md",
+        "docs/agent-system/OPERATING_MODEL.md",
+        "docs/agent-system/ORCHESTRATION_WORKFLOW.md",
+        "docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md",
+        "docs/agent-system/SUPERAGENT_ASSIGNMENTS.md",
+        "docs/agent-system/agent-routing-rules.json",
+        "docs/agent-system/job-catalog.json",
+        "docs/agent-system/lettering-lab/",
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
         "docs/agent-system/manni-reel-weekly-plan.md",
-        "docs/brand/templates/airdox-daumenkino-reel-war-preview.png",
-        "docs/brand/templates/airdox-daumenkino-reel-war-preview.svg",
-        "docs/brand/templates/airdox-daumenkino-reel-war-template.md"
+        "docs/brand/templates/airdox-lettering-lab-brief.md",
+        "docs/brand/templates/airdox-remotion-reel-template.md"
       ],
       "rules": [
         "learning-documentation"
@@ -194,13 +271,52 @@
       "agent": "Refactor",
       "role": "implementation_support",
       "files": [
-        "src/desktop/__tests__/DesktopControls.test.jsx",
-        "src/desktop/components/DesignExportPhase.jsx",
-        "src/desktop/components/DesignSetupPhase.jsx",
-        "src/desktop/components/DesignStudioPhase.jsx",
+        "src/components/AuthModal.jsx",
+        "src/components/AuthModalFields.jsx",
+        "src/components/AuthSocialButtons.jsx",
+        "src/components/AuthSocialProviderIcon.jsx",
+        "src/components/BioSection.jsx",
+        "src/components/BookingSection.jsx",
+        "src/components/BookingSocialLinks.jsx",
+        "src/components/CookieBanner.jsx",
+        "src/components/MusicSection.jsx",
+        "src/components/Newsletter.jsx",
+        "src/components/SetCard.jsx",
+        "src/components/VIPSection.jsx",
+        "src/components/__tests__/authModalUtils.test.js",
+        "src/components/__tests__/setCardUtils.test.js",
+        "src/components/authModalUtils.js",
+        "src/components/setCardUtils.js",
+        "src/contexts/AudioContext.jsx",
+        "src/contexts/__tests__/audioSources.test.js",
+        "src/contexts/audioSources.js",
+        "src/lib/__tests__/authHelpers.test.js",
+        "src/lib/__tests__/statsContracts.test.js",
+        "src/lib/authHelpers.js",
+        "src/lib/authRequestHandler.js",
         "src/lib/stats-logic.js",
-        "src/utils/__tests__/audienceSignals.test.js",
-        "src/utils/audienceSignals.js"
+        "src/lib/statsContracts.js",
+        "src/lib/statsDatabase.js",
+        "src/server/__tests__/httpResponses.test.js",
+        "src/server/__tests__/legalPages.test.js",
+        "src/server/__tests__/oauthUtils.test.js",
+        "src/server/audioRoutes.js",
+        "src/server/httpResponses.js",
+        "src/server/legalPages.js",
+        "src/server/oauthUtils.js",
+        "src/server/worker.js",
+        "src/utils/__tests__/apiClient.test.js",
+        "src/utils/__tests__/websiteContracts.test.js",
+        "src/utils/analytics/analyticsExport.js",
+        "src/utils/analytics/analyticsRuntime.js",
+        "src/utils/analytics/analyticsStats.js",
+        "src/utils/analytics/index.js",
+        "src/utils/apiClient.js",
+        "src/utils/audienceSignals.js",
+        "src/utils/i18n.js",
+        "src/utils/i18nMessages.js",
+        "src/utils/stats-sync.js",
+        "src/utils/websiteContracts.js"
       ],
       "rules": [
         "refactor-architecture"
@@ -210,7 +326,24 @@
       "agent": "Webbie",
       "role": "primary",
       "files": [
-        "src/App.jsx"
+        "public/brand-assets/airdox-lettering/",
+        "public/brand-assets/lettering-lab/",
+        "src/components/AuthModal.jsx",
+        "src/components/AuthModalFields.jsx",
+        "src/components/AuthSocialButtons.jsx",
+        "src/components/AuthSocialProviderIcon.jsx",
+        "src/components/BioSection.jsx",
+        "src/components/BookingSection.jsx",
+        "src/components/BookingSocialLinks.jsx",
+        "src/components/CookieBanner.jsx",
+        "src/components/MusicSection.jsx",
+        "src/components/Newsletter.jsx",
+        "src/components/SetCard.jsx",
+        "src/components/VIPSection.jsx",
+        "src/components/__tests__/authModalUtils.test.js",
+        "src/components/__tests__/setCardUtils.test.js",
+        "src/components/authModalUtils.js",
+        "src/components/setCardUtils.js"
       ],
       "rules": [
         "website-experience"
@@ -220,11 +353,7 @@
       "agent": "Winnie",
       "role": "primary",
       "files": [
-        "package.json",
-        "src/desktop/__tests__/DesktopControls.test.jsx",
-        "src/desktop/components/DesignExportPhase.jsx",
-        "src/desktop/components/DesignSetupPhase.jsx",
-        "src/desktop/components/DesignStudioPhase.jsx"
+        "package.json"
       ],
       "rules": [
         "desktop-flightdeck"
@@ -232,8 +361,17 @@
     }
   ],
   "testFiles": [
-    "src/desktop/__tests__/DesktopControls.test.jsx",
-    "src/utils/__tests__/audienceSignals.test.js"
+    "src/components/__tests__/authModalUtils.test.js",
+    "src/components/__tests__/setCardUtils.test.js",
+    "src/contexts/__tests__/audioSources.test.js",
+    "src/lib/__tests__/authHelpers.test.js",
+    "src/lib/__tests__/statsContracts.test.js",
+    "src/server/__tests__/httpResponses.test.js",
+    "src/server/__tests__/legalPages.test.js",
+    "src/server/__tests__/oauthUtils.test.js",
+    "src/utils/__tests__/apiClient.test.js",
+    "src/utils/__tests__/websiteContracts.test.js",
+    "src/utils/analytics/__tests__/"
   ],
   "obligations": [
     {
@@ -243,7 +381,22 @@
       "designAgent": "Designer",
       "status": "test_changes_present",
       "scope": [
-        "src/App.jsx"
+        "src/components/AuthModal.jsx",
+        "src/components/BioSection.jsx",
+        "src/components/BookingSection.jsx",
+        "src/components/CookieBanner.jsx",
+        "src/components/MusicSection.jsx",
+        "src/components/Newsletter.jsx",
+        "src/components/SetCard.jsx",
+        "src/components/VIPSection.jsx",
+        "src/components/AuthModalFields.jsx",
+        "src/components/AuthSocialButtons.jsx",
+        "src/components/AuthSocialProviderIcon.jsx",
+        "src/components/BookingSocialLinks.jsx",
+        "src/components/__tests__/authModalUtils.test.js",
+        "src/components/__tests__/setCardUtils.test.js",
+        "src/components/authModalUtils.js",
+        "src/components/setCardUtils.js"
       ],
       "reason": "Website/UI files changed; user-facing behavior must not rely on manual inspection only.",
       "requiredGates": [
@@ -253,31 +406,10 @@
       ],
       "requiredFollowUp": "Guardian must verify that changed tests cover the changed UI path.",
       "userTouchpoint": "Only ask user if expected behavior or content is ambiguous.",
-      "expectedNearbyTests": []
-    },
-    {
-      "id": "desktop-ui-quality-chain",
-      "owner": "Winnie",
-      "qaAgent": "Guardian",
-      "designAgent": "Designer",
-      "status": "test_changes_present",
-      "scope": [
-        "src/desktop/__tests__/DesktopControls.test.jsx",
-        "src/desktop/components/DesignExportPhase.jsx",
-        "src/desktop/components/DesignSetupPhase.jsx",
-        "src/desktop/components/DesignStudioPhase.jsx"
-      ],
-      "reason": "Desktop/Flight Deck UI changed; logic tests and, for visible changes, E2E proof must follow.",
-      "requiredGates": [
-        "npm run desktop:test:logic",
-        "npm run desktop:test:e2e"
-      ],
-      "requiredFollowUp": "Guardian must verify that Desktop tests cover the changed tab/menu/control behavior.",
-      "userTouchpoint": "Only ask user if workflow intent or acceptance criteria are unclear.",
       "expectedNearbyTests": [
-        "src/desktop/__tests__/DesktopApp.test.jsx",
-        "src/desktop/__tests__/DesktopControls.test.jsx",
-        "e2e/desktop-flightdeck.spec.js"
+        "src/components/__tests__",
+        "src/__tests__",
+        "e2e"
       ]
     },
     {
@@ -287,16 +419,24 @@
       "designAgent": "",
       "status": "test_changes_present",
       "scope": [
-        "scripts/agent-dependency-radar.mjs",
-        "scripts/agent-quality-chain.mjs",
-        "scripts/agent-routing-report.mjs",
+        "scripts/agent-background-cycle.mjs",
+        "scripts/agent-job-runner.mjs",
         "scripts/audience-intelligence-agent.mjs",
-        "scripts/social-tiktok-oauth-init.mjs",
-        "scripts/website-profitability-report.mjs",
-        "scripts/render-daumenkino-airdox-letterbeat.mjs",
-        "scripts/render-daumenkino-airdox-web-preview.mjs",
-        "scripts/render-daumenkino-gif-letterbeat.mjs",
-        "scripts/social-tiktok-upload-inbox.mjs"
+        "scripts/refactor-website-opportunities.mjs",
+        "src/server/worker.js",
+        "scripts/airdox-lettering-lab.mjs",
+        "scripts/build-mega-analytics-pack.mjs",
+        "scripts/extract-airdox-strobe-proof-assets.mjs",
+        "scripts/localize-agent-reports.mjs",
+        "scripts/render-airdox-lettering-lab.mjs",
+        "scripts/run-photoshop-airdox-letter-masks.mjs",
+        "src/server/__tests__/httpResponses.test.js",
+        "src/server/__tests__/legalPages.test.js",
+        "src/server/__tests__/oauthUtils.test.js",
+        "src/server/audioRoutes.js",
+        "src/server/httpResponses.js",
+        "src/server/legalPages.js",
+        "src/server/oauthUtils.js"
       ],
       "reason": "Scripts/server/desktop main logic changed; command validation or tests must prove behavior.",
       "requiredGates": [
@@ -318,13 +458,36 @@
       "designAgent": "Designer",
       "status": "watch",
       "scope": [
-        "scripts/agent-dependency-radar.mjs",
+        "docs/agent-system/DECISION_LOG.md",
+        "docs/agent-system/OPERATING_MODEL.md",
+        "docs/agent-system/ORCHESTRATION_WORKFLOW.md",
+        "docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md",
+        "docs/agent-system/SUPERAGENT_ASSIGNMENTS.md",
+        "docs/agent-system/job-catalog.json",
+        "package-lock.json",
+        "package.json",
         "scripts/audience-intelligence-agent.mjs",
-        "scripts/website-profitability-report.mjs",
-        "src/App.jsx",
-        "src/desktop/__tests__/DesktopControls.test.jsx",
-        "src/desktop/components/DesignExportPhase.jsx",
-        "src/lib/stats-logic.js"
+        "scripts/refactor-website-opportunities.mjs",
+        "src/components/AuthModal.jsx",
+        "src/components/BioSection.jsx",
+        "src/components/BookingSection.jsx",
+        "src/components/MusicSection.jsx",
+        "src/components/Newsletter.jsx",
+        "src/components/SetCard.jsx",
+        "src/components/VIPSection.jsx",
+        "src/lib/stats-logic.js",
+        "src/server/worker.js",
+        "src/utils/analytics/index.js",
+        "src/utils/i18n.js",
+        "src/components/AuthModalFields.jsx",
+        "src/components/AuthSocialButtons.jsx",
+        "src/components/BookingSocialLinks.jsx",
+        "src/components/__tests__/authModalUtils.test.js",
+        "src/components/__tests__/setCardUtils.test.js",
+        "src/components/authModalUtils.js",
+        "src/components/setCardUtils.js",
+        "src/lib/statsDatabase.js",
+        "src/server/audioRoutes.js"
       ],
       "reason": "A menu, navigation, tab, section, button, modal, or visible feature may have changed.",
       "requiredGates": [
@@ -337,9 +500,9 @@
         "scripts",
         "src/desktop/__tests__",
         "docs/agent-system/latest-job-run.md",
-        "src/desktop/__tests__/DesktopApp.test.jsx",
-        "src/desktop/__tests__/DesktopControls.test.jsx",
-        "e2e/desktop-flightdeck.spec.js"
+        "src/components/__tests__",
+        "src/__tests__",
+        "e2e"
       ]
     }
   ],

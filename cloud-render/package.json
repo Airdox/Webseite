@@ -1,0 +1,9 @@
+{
+  "name": "airdox-cloud-render",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render": "node render-airdox-cloud.mjs"
+  },
+  "dependencies": {}
+}

@@ -12,6 +12,7 @@ Kernprinzipien:
 
 - Jede Entscheidung bekommt einen nachpruefbaren Ort im Repo.
 - Jeder Agent liefert konkrete Artefakte, keine losen Ideen.
+- Alle maschinell gespeicherten Markdown-Berichte werden auf Deutsch erstellt; technische IDs, Befehle, Dateipfade und Status-Tokens bleiben stabil.
 - Jede Workbench-Aenderung wird von der Routing-Schicht gesichtet. Betroffene Agenten wachen auf, unbetroffene Agenten schlafen weiter.
 - Agenten warten aktiv aufeinander: Jeder relevante Output benennt den naechsten Agenten, die offene Abhaengigkeit und den Nutzer-Touchpoint.
 - Qualitaet wird vor Releases durch automatisierte Checks erzwungen.
@@ -115,6 +116,7 @@ npm run agent:system:health
 Regel:
 
 - `changeClass: gravierend` darf nur laufen, wenn `requiresMasterApproval: true` gesetzt ist und eine explizite Freigabe vorliegt.
+- `requiresUserApproval: true` blockiert jede Ausfuehrung bis zur persoenlichen Nutzerfreigabe per `--user-approved=<job-id>`.
 - Jobs mit `outputVisibility: external_live` duerfen nur mit `requiresUserApproval: true` und explizitem persoenlichem Nutzer-OK ausgefuehrt werden.
 - Manni darf PR-Kampagnen nach aussen vorbereiten und dem Nutzer zeigen; die Online-Schaltung laeuft ueber `pr-campaign-live-publish` und bleibt bis zur Bestaetigung blockiert.
 - Ohne Freigabe werden gravierende Jobs automatisch als `skipped` protokolliert.
@@ -136,6 +138,7 @@ Der Background-Cycle ist die verbindliche Reihenfolge:
 4. Passende Jobs ausfuehren.
 5. Dependency-Radar aktualisieren.
 6. System-Health und Diagramm schreiben.
+7. Markdown-Berichte mit `npm run reports:localize:de` auf Deutsch und einheitliche Lesestruktur normalisieren.
 
 Damit ist "selbststaendig" im Projektkontext definiert: Wiederholbare, protokollierte, freigabegeschuetzte Automatisierung. Dauerhaft laufende KI-Prozesse werden nicht behauptet; stattdessen werden konkrete Skripte, Reports, Scheduler und Gates versioniert.
 
@@ -161,6 +164,7 @@ Regel:
 - Kein Agent blockiert still. Wenn ein Agent Content, Freigabe, Messdaten oder eine Richtungsentscheidung braucht, schreibt er das als konkrete Abhaengigkeit in den Radar.
 - Nutzer-Touchpoints muessen konkret sein: eine Frage, ein benoetigtes Asset, eine Freigabe oder eine Entscheidung. Keine vagen Erinnerungen.
 - Live-Posting, Paid Spend, Deploys und gravierende Aenderungen bleiben trotz Wakeup-Modell freigabepflichtig.
+- Refactor-Arbeit an Website-Stabilitaet laeuft als Vorschlag vor Ausfuehrung: Der Agent darf Scope, Nutzen, Risiko, Rueckfallpfad und Gates vorbereiten, aber Code erst nach Nutzer-OK und bei gravierenden Aenderungen nach Master-Controller-Freigabe aendern.
 
 Reports:
 
@@ -168,6 +172,13 @@ Reports:
 - `docs/agent-system/latest-agent-quality-chain.md`
 - `docs/agent-system/latest-agent-dependency-radar.md`
 - `docs/agent-system/latest-website-profitability.md`
+
+Berichtssprache:
+
+- Markdown-Berichte in `docs/agent-system/latest-*.md`, `AGENT_SYSTEM_ARCHITECTURE.md` und Manni-Report-Artefakte laufen nach jedem Agenten-Joblauf durch `npm run reports:localize:de`.
+- Neue Report-Generatoren muessen deutsche Ueberschriften, Tabellenkoepfe, Hinweise und Handlungstexte verwenden.
+- Visuelle Berichte priorisieren einen schnellen Lesepfad: Titel, Stand, Ueberblick/Kennzahlen, klare Tabellen, Gates, Risiken und naechste Aktionen.
+- Status-Tokens wie `PASS`, `FAIL`, `WARN`, Job-IDs und npm-Befehle bleiben technisch stabil.
 
 Die stabilen Watch-Zonen liegen in:
 
@@ -306,7 +317,7 @@ Ergaenzender Workflow-Check:
 - Keine Windows-Pipeline-Aenderung ohne mindestens einen Logic-Test.
 - Keine sichtbare Windows-Tool-UI-Aenderung ohne Winnie als Primary und Designer als CD-Review; Guardian bleibt Gate-Review bei Release- oder Risikoauswirkung.
 - Keine Website-Layout-Aenderung ohne mobile und desktoprelevante Sichtpruefung oder E2E-Abdeckung.
-- Kein Refactoring ohne klare Vorher-/Nachher-Begruendung und passende Rechecks.
+- Kein Refactoring ohne klare Vorher-/Nachher-Begruendung, passenden Recheck und Freigabe fuer den konkreten Patch.
 - Keine Merge-/Release-Aktion ohne dokumentierte Branch-Regel und qualifizierende Quality-Gates.
 - Kein Superagent darf ohne Master-Controller-Freigabe gravierende Aenderungen ausfuehren.
 - Wiederholte Fehler werden in Tests oder Wiki-Regeln ueberfuehrt.

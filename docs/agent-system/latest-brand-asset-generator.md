@@ -1,15 +1,15 @@
 # AIRDOX Brand Asset Generator Report
 
-Generated: 2026-05-16T16:23:57.178Z
+Erstellt: 2026-05-16T16:23:57.178Z
 Version: v2026-05-16
 Status: pass
 
-## Summary
+## Ueberblick
 
 - Assets: 7
 - Checks: 52
-- Failures: 0
-- Warnings: 0
+- Fehler: 0
+- Warnungen: 0
 - Passes: 52
 
 ## Assets
@@ -26,7 +26,7 @@ Status: pass
 
 ## Checks
 
-| Check | Level | Detail |
+| Check | Stufe | Detail |
 | --- | --- | --- |
 | reel-drop-peak:brand-name-visible | PASS | AIRDOX brand name is visible in uppercase. |
 | reel-drop-peak:palette-complete | PASS | All required brand palette tokens are used. |

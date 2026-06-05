@@ -1,191 +1,22 @@
 {
-  "generatedAt": "2026-06-01T19:48:04.713Z",
+  "generatedAt": "2026-06-05T19:57:22.883Z",
   "controller": "Master Controller",
   "agent": "Refactor",
   "job": "refactor-website-opportunities",
   "purpose": "Turn Refactor from passive review into small, measurable website improvements.",
   "summary": {
-    "scannedFiles": 44,
-    "opportunityCount": 15,
-    "highPriorityCount": 3
+    "scannedFiles": 65,
+    "opportunityCount": 0,
+    "highPriorityCount": 0
   },
   "rules": [
-    "Availability, stability and functionality come before cleanup.",
-    "Broad restructuring is allowed only with Master Controller approval, rollback note and quality gates.",
-    "Each Refactor task must name before/after benefit and validation.",
-    "Prefer one website flow at a time: music, booking, newsletter, VIP/auth, stats."
+    "Erreichbarkeit, Stabilitaet und Funktionalitaet haben Vorrang vor Cleanup.",
+    "Refactor muss vor Code-Aenderungen einen ausfuehrbaren Patch-Vorschlag vorbereiten.",
+    "Der genehmigte Scope ist bindend; Scope-Erweiterung braucht einen neuen Vorschlag.",
+    "Ausfuehrung braucht explizite Nutzerfreigabe; riskante oder breite Arbeit zusaetzlich Master-Controller-Freigabe.",
+    "Breite Umstrukturierung ist nur mit Master-Controller-Freigabe, Rollback-Hinweis und Quality-Gates erlaubt.",
+    "Jede Refactor-Aufgabe muss Vorher-/Nachher-Nutzen und Validierung nennen.",
+    "Immer nur einen Website-Flow bevorzugen: Musik, Booking, Newsletter, VIP/Auth oder Stats."
   ],
-  "opportunities": [
-    {
-      "id": "website-api-client-consolidation",
-      "priority": "high",
-      "area": "availability-and-functionality",
-      "files": [
-        "src/utils/stats-sync.js",
-        "src/contexts/AudioContext.jsx",
-        "src/components/AuthModal.jsx",
-        "src/components/BookingSection.jsx",
-        "src/components/Newsletter.jsx",
-        "src/components/VIPSection.jsx"
-      ],
-      "evidence": "6 website service files contain fetch/base-url handling.",
-      "action": "Move base URL resolution and safe JSON/error reading into one small helper, then migrate one user flow at a time.",
-      "validation": "Run the touched flow test plus npm run build. For visible flows, add desktop/mobile proof before release."
-    },
-    {
-      "id": "audio-stats-runtime-boundary",
-      "priority": "high",
-      "area": "analytics-integrity",
-      "files": [
-        "src/utils/stats-sync.js",
-        "src/contexts/AudioContext.jsx"
-      ],
-      "evidence": "Audio and stats runtime URL logic are split across playback and stats modules.",
-      "action": "Keep localhost/production routing in a shared utility so local listening does not pollute production stats.",
-      "validation": "Run AudioContext and MusicSection tests, then npm run build."
-    },
-    {
-      "id": "large-file-src-lib-stats-logic-js",
-      "priority": "high",
-      "area": "maintainability",
-      "files": [
-        "src/lib/stats-logic.js"
-      ],
-      "evidence": "995 lines / 37499 bytes.",
-      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
-      "validation": "Run the nearest component/unit test plus npm run build."
-    },
-    {
-      "id": "large-file-src-server-worker-js",
-      "priority": "medium",
-      "area": "maintainability",
-      "files": [
-        "src/server/worker.js"
-      ],
-      "evidence": "762 lines / 29302 bytes.",
-      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
-      "validation": "Run the nearest component/unit test plus npm run build."
-    },
-    {
-      "id": "large-file-src-utils-i18n-js",
-      "priority": "medium",
-      "area": "maintainability",
-      "files": [
-        "src/utils/i18n.js"
-      ],
-      "evidence": "468 lines / 25968 bytes.",
-      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
-      "validation": "Run the nearest component/unit test plus npm run build."
-    },
-    {
-      "id": "large-file-src-utils-analytics-index-js",
-      "priority": "medium",
-      "area": "maintainability",
-      "files": [
-        "src/utils/analytics/index.js"
-      ],
-      "evidence": "639 lines / 20804 bytes.",
-      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
-      "validation": "Run the nearest component/unit test plus npm run build."
-    },
-    {
-      "id": "large-file-src-components-authmodal-jsx",
-      "priority": "medium",
-      "area": "maintainability",
-      "files": [
-        "src/components/AuthModal.jsx"
-      ],
-      "evidence": "475 lines / 19715 bytes.",
-      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
-      "validation": "Run the nearest component/unit test plus npm run build."
-    },
-    {
-      "id": "large-file-src-contexts-audiocontext-jsx",
-      "priority": "medium",
-      "area": "maintainability",
-      "files": [
-        "src/contexts/AudioContext.jsx"
-      ],
-      "evidence": "461 lines / 17094 bytes.",
-      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
-      "validation": "Run the nearest component/unit test plus npm run build."
-    },
-    {
-      "id": "large-file-src-components-bookingsection-jsx",
-      "priority": "medium",
-      "area": "maintainability",
-      "files": [
-        "src/components/BookingSection.jsx"
-      ],
-      "evidence": "282 lines / 16558 bytes.",
-      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
-      "validation": "Run the nearest component/unit test plus npm run build."
-    },
-    {
-      "id": "large-file-src-components-setcard-jsx",
-      "priority": "medium",
-      "area": "maintainability",
-      "files": [
-        "src/components/SetCard.jsx"
-      ],
-      "evidence": "380 lines / 16436 bytes.",
-      "action": "Extract only the next user-visible or service-flow subunit that can receive a focused test.",
-      "validation": "Run the nearest component/unit test plus npm run build."
-    },
-    {
-      "id": "state-contract-src-utils-stats-sync-js",
-      "priority": "medium",
-      "area": "state-contract",
-      "files": [
-        "src/utils/stats-sync.js"
-      ],
-      "evidence": "9 localStorage references, 7 event references.",
-      "action": "Document or extract the smallest event/storage contract before changing dependent UI.",
-      "validation": "Run the nearest tests that assert event dispatch, cache update, or UI refresh behavior."
-    },
-    {
-      "id": "state-contract-src-components-musicsection-jsx",
-      "priority": "medium",
-      "area": "state-contract",
-      "files": [
-        "src/components/MusicSection.jsx"
-      ],
-      "evidence": "9 localStorage references, 4 event references.",
-      "action": "Document or extract the smallest event/storage contract before changing dependent UI.",
-      "validation": "Run the nearest tests that assert event dispatch, cache update, or UI refresh behavior."
-    },
-    {
-      "id": "state-contract-src-components-cookiebanner-jsx",
-      "priority": "medium",
-      "area": "state-contract",
-      "files": [
-        "src/components/CookieBanner.jsx"
-      ],
-      "evidence": "5 localStorage references, 5 event references.",
-      "action": "Document or extract the smallest event/storage contract before changing dependent UI.",
-      "validation": "Run the nearest tests that assert event dispatch, cache update, or UI refresh behavior."
-    },
-    {
-      "id": "state-contract-src-contexts-audiocontext-jsx",
-      "priority": "medium",
-      "area": "state-contract",
-      "files": [
-        "src/contexts/AudioContext.jsx"
-      ],
-      "evidence": "1 localStorage references, 7 event references.",
-      "action": "Document or extract the smallest event/storage contract before changing dependent UI.",
-      "validation": "Run the nearest tests that assert event dispatch, cache update, or UI refresh behavior."
-    },
-    {
-      "id": "state-contract-src-components-vipsection-jsx",
-      "priority": "medium",
-      "area": "state-contract",
-      "files": [
-        "src/components/VIPSection.jsx"
-      ],
-      "evidence": "3 localStorage references, 4 event references.",
-      "action": "Document or extract the smallest event/storage contract before changing dependent UI.",
-      "validation": "Run the nearest tests that assert event dispatch, cache update, or UI refresh behavior."
-    }
-  ]
+  "opportunities": []
 }

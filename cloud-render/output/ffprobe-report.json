@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-06-02T02:46:54.386Z",
+  "status": "blocked",
+  "reason": "ffmpeg and/or ffprobe unavailable in this environment",
+  "outputPath": "/workspace/Webseite/cloud-render/output/airdox-three-polished-final.mp4",
+  "proofPath": "/workspace/Webseite/cloud-render/output/proof-final-frame.png",
+  "ffmpegPath": null,
+  "ffprobePath": null,
+  "audio": {
+    "requested": "D:\\beatport neu\\01. Sammy Virji, Fred again.., Reggie - Talk of the Town (Original Mix).flac",
+    "path": null,
+    "exists": false,
+    "fallback": true,
+    "candidates": [
+      "D:\\beatport neu\\01. Sammy Virji, Fred again.., Reggie - Talk of the Town (Original Mix).flac",
+      "/mnt/d/beatport neu/01. Sammy Virji, Fred again.., Reggie - Talk of the Town (Original Mix).flac"
+    ]
+  },
+  "expected": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration": 30,
+    "frames": 900,
+    "visibleText": [
+      "AIRDOX",
+      "airdox.info",
+      "A",
+      "I",
+      "R",
+      "D",
+      "O",
+      "X"
+    ]
+  },
+  "summary": {
+    "durationSeconds": null,
+    "width": null,
+    "height": null,
+    "fps": null,
+    "videoCodec": null,
+    "audioCodec": null,
+    "audioSource": "unavailable",
+    "qualityChecks": {
+      "size1080x1920": false,
+      "fps30": false,
+      "duration30s": false,
+      "hasAudio": false,
+      "sourceAudioAvailable": false
+    }
+  }
+}

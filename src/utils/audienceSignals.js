@@ -1,5 +1,12 @@
+import { dispatchWindowEvent, getStorageItem, STORAGE_KEYS, WINDOW_EVENTS } from './websiteContracts.js';
+
 const DEFAULT_ENDPOINT = '/api/audience-events';
 const SESSION_KEY = 'airdox_audience_session';
+const LEGACY_CONSENT_KEYS = [
+  'airdox_cookie_consent',
+  'cookieConsent',
+  'analyticsConsent'
+];
 
 let audienceConfig = {
   endpoint: DEFAULT_ENDPOINT,
@@ -21,15 +28,10 @@ function getSessionId() {
 
 function defaultConsentResolver() {
   try {
-    const candidates = [
-      'airdox-analytics-enabled',
-      'airdox_cookie_consent',
-      'cookieConsent',
-      'analyticsConsent'
-    ];
+    const candidates = [STORAGE_KEYS.analyticsConsent, ...LEGACY_CONSENT_KEYS];
 
     for (const key of candidates) {
-      const raw = window.localStorage.getItem(key);
+      const raw = getStorageItem(key, '');
       if (!raw) continue;
       if (raw === 'true') return { analytics: true };
       const parsed = JSON.parse(raw);
@@ -74,7 +76,7 @@ function getReferrerGroup() {
 }
 
 function dispatchLocalSignal(event) {
-  window.dispatchEvent(new CustomEvent('airdox:audience-signal', { detail: event }));
+  dispatchWindowEvent(WINDOW_EVENTS.audienceSignal, event);
 }
 
 function sendSignal(event) {

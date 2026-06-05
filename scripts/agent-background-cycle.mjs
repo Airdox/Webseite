@@ -46,6 +46,7 @@ steps.push(runNpmStep('agent-quality-chain', 'agent:quality-chain:write'));
 steps.push(runNpmStep('agent-jobs-run', 'agent:jobs:run', ['--', '--event=scheduled_background', `--status=${jobStatus}`, '--continue-on-error']));
 steps.push(runNpmStep('agent-dependency-radar', 'agent:dependencies:write'));
 steps.push(runNpmStep('agent-system-health', 'agent:system:health'));
+steps.push(runStep('report-localization-de', process.execPath, ['scripts/localize-agent-reports.mjs']));
 
 const failed = steps.filter((step) => !step.ok);
 const summary = {

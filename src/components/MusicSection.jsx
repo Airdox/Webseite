@@ -11,17 +11,17 @@ import { statsSync } from '../utils/stats-sync';
 import useVinylAnimation from '../hooks/useVinylAnimation';
 import SetCard from './SetCard';
 import { parseTrackTimeToSeconds } from '../utils/timeUtils';
+import {
+    getStorageItem,
+    readStorageJson,
+    STORAGE_KEYS,
+    WINDOW_EVENTS,
+    writeStorageJson,
+} from '../utils/websiteContracts';
 
 const { publicSets } = partitionSetsByAccess(sets);
-const ANIMATION_MODE_STORAGE_KEY = 'airdox_set_animation_modes';
 
-const readAnimationModes = () => {
-    try {
-        return JSON.parse(localStorage.getItem(ANIMATION_MODE_STORAGE_KEY) || '{}');
-    } catch {
-        return {};
-    }
-};
+const readAnimationModes = () => readStorageJson(STORAGE_KEYS.setAnimationModes, {});
 
 const MusicSection = () => {
     const {
@@ -39,15 +39,12 @@ const MusicSection = () => {
 
     // Globale Stats (von Datenbank) mit LocalStorage Fallback
     const [globalStats, setGlobalStats] = useState(() => {
-        try {
-            return JSON.parse(localStorage.getItem('airdox_global_stats') || '{}');
-        } catch { return {}; }
+        return readStorageJson(STORAGE_KEYS.globalStats, {});
     });
 
-    // Lokaler User Vote (localStorage)
+    // Lokaler User Vote
     const [userVotes, setUserVotes] = useState(() => {
-        try { return JSON.parse(localStorage.getItem('airdox_user_votes') || '{}'); }
-        catch { return {}; }
+        return readStorageJson(STORAGE_KEYS.userVotes, {});
     });
 
     const sectionRef = useRef(null);
@@ -58,7 +55,7 @@ const MusicSection = () => {
     const handleAnimationModeChange = (setId, mode) => {
         setAnimationModes((currentModes) => {
             const nextModes = { ...currentModes, [setId]: mode };
-            localStorage.setItem(ANIMATION_MODE_STORAGE_KEY, JSON.stringify(nextModes));
+            writeStorageJson(STORAGE_KEYS.setAnimationModes, nextModes);
             return nextModes;
         });
     };
@@ -66,9 +63,9 @@ const MusicSection = () => {
     // Sync bei Änderungen der globalen Stats (durch StatsSync oder andere Komponenten)
     useEffect(() => {
         const handleStatsUpdate = (e) => setGlobalStats(e.detail);
-        window.addEventListener('airdox_stats_updated', handleStatsUpdate);
+        window.addEventListener(WINDOW_EVENTS.statsUpdated, handleStatsUpdate);
         void statsSync.fetchAllStats();
-        return () => window.removeEventListener('airdox_stats_updated', handleStatsUpdate);
+        return () => window.removeEventListener(WINDOW_EVENTS.statsUpdated, handleStatsUpdate);
     }, []);
 
     useEffect(() => {
@@ -122,7 +119,7 @@ const MusicSection = () => {
             const newVotes = { ...userVotes };
             delete newVotes[setId];
             setUserVotes(newVotes);
-            localStorage.setItem('airdox_user_votes', JSON.stringify(newVotes));
+            writeStorageJson(STORAGE_KEYS.userVotes, newVotes);
         } else {
             if (currentVote) {
                 statsSync.trackVote(setId, `un${currentVote}`);
@@ -130,7 +127,7 @@ const MusicSection = () => {
 
             const newVotes = { ...userVotes, [setId]: voteType };
             setUserVotes(newVotes);
-            localStorage.setItem('airdox_user_votes', JSON.stringify(newVotes));
+            writeStorageJson(STORAGE_KEYS.userVotes, newVotes);
         }
 
         setGlobalStats(prev => ({
@@ -152,15 +149,15 @@ const MusicSection = () => {
     const getSetStats = (setId) => globalStats[setId] || { plays: 0, likes: 0, dislikes: 0 };
     const getUserVote = (setId) => userVotes[setId];
 
-    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('airdox_token'));
+    const [isLoggedIn, setIsLoggedIn] = useState(!!getStorageItem(STORAGE_KEYS.authToken, ''));
 
     useEffect(() => {
-        const checkLogin = () => setIsLoggedIn(!!localStorage.getItem('airdox_token'));
-        window.addEventListener('airdox_login_success', checkLogin);
-        window.addEventListener('airdox_logout', checkLogin);
+        const checkLogin = () => setIsLoggedIn(!!getStorageItem(STORAGE_KEYS.authToken, ''));
+        window.addEventListener(WINDOW_EVENTS.loginSuccess, checkLogin);
+        window.addEventListener(WINDOW_EVENTS.logout, checkLogin);
         return () => {
-            window.removeEventListener('airdox_login_success', checkLogin);
-            window.removeEventListener('airdox_logout', checkLogin);
+            window.removeEventListener(WINDOW_EVENTS.loginSuccess, checkLogin);
+            window.removeEventListener(WINDOW_EVENTS.logout, checkLogin);
         };
     }, []);
 

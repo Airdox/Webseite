@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1740" viewBox="0 0 1800 1740" role="img" aria-label="AIRDOX lettering lab contact sheet">
+  <defs>
+    <path id="A" d="M16 300 L82 20 L154 20 L206 300 L152 300 L140 238 L70 238 L56 300 Z M86 186 L128 186 L107 86 Z"/>
+    <path id="I" d="M20 28 L112 12 L102 64 L80 66 L66 246 L96 244 L84 300 L6 300 L18 248 L40 248 L54 70 L24 74 Z"/>
+    <path id="R" d="M18 300 L44 22 L136 18 C190 22 210 56 202 104 C196 144 170 168 134 174 L202 300 L140 300 L91 190 L76 300 Z M92 70 L84 136 L124 134 C146 132 158 116 160 96 C162 76 150 68 128 66 Z"/>
+    <path id="D" d="M18 300 L46 24 L126 18 C194 14 226 58 218 134 L210 190 C202 254 158 300 88 300 Z M93 72 L76 246 L106 246 C140 246 158 222 164 180 L171 126 C176 88 160 68 124 70 Z"/>
+    <path id="O" d="M116 16 C182 16 224 58 224 128 L214 194 C204 264 156 306 88 306 C32 306 0 268 6 210 L16 98 C22 44 58 16 116 16 Z M113 76 C84 76 68 94 64 128 L56 200 C52 232 68 248 96 248 C126 248 146 226 151 188 L158 132 C162 96 146 76 113 76 Z"/>
+    <path id="X" d="M0 300 L82 148 L32 22 L96 22 L126 98 L176 22 L228 22 L151 148 L214 300 L150 300 L116 218 L64 300 Z"/>
+    <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="9"/><feDisplacementMap in="SourceGraphic" scale="7"/></filter>
+    <filter id="neon"><feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#00f0ff"/><feDropShadow dx="0" dy="0" stdDeviation="14" flood-color="#ff00aa"/></filter>
+    <g id="word">
+      <use href="#A" x="0"/><use href="#I" x="218"/><use href="#R" x="346"/><use href="#D" x="564"/><use href="#O" x="802"/><use href="#X" x="1040"/>
+    </g>
+    <g id="slashes" stroke-linecap="round"><path d="M104 48 L178 24"/><path d="M438 72 L556 48"/><path d="M822 54 L958 26"/><path d="M1110 244 L1228 206"/></g>
+  </defs>
+  <rect width="1800" height="1740" fill="#050608"/>
+  <text x="40" y="38" fill="#f5f8ff" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="900">AIRDOX LETTERING LAB / v2026-06-02</text>
+  <text x="40" y="68" fill="#9aa6b2" font-family="Inter, Arial, sans-serif" font-size="18">Shape-based wordmark roughs. Captions use type; AIRDOX letterforms are SVG paths.</text>
+
+  <g transform="translate(42 104)">
+    <rect width="820" height="350" fill="#0f141a" stroke="#263241"/>
+    <g transform="translate(42 60) scale(0.58) skewX(-6)" fill="#f5f8ff" stroke="#020309" stroke-width="14" stroke-linejoin="round">
+      <use href="#word"/>
+      <use href="#slashes" stroke="#ff00aa" stroke-width="22"/>
+    </g>
+    <text x="28" y="314" fill="#00f0ff" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900">01 STENCIL PRESSURE</text>
+  </g>
+
+  <g transform="translate(938 104)">
+    <rect width="820" height="350" fill="#0f141a" stroke="#263241"/>
+    <g transform="translate(26 68) scale(0.58) skewX(-12)" filter="url(#rough)" fill="#f5f8ff" stroke="#020309" stroke-width="16" stroke-linejoin="round">
+      <use href="#word"/>
+      <path d="M80 246 C270 202 442 278 650 220 S1010 252 1224 204" fill="none" stroke="#9adf6b" stroke-width="24" opacity="0.62"/>
+    </g>
+    <text x="28" y="314" fill="#ff00aa" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900">02 MARKER BURN</text>
+  </g>
+
+  <g transform="translate(42 500)">
+    <rect width="820" height="350" fill="#0f141a" stroke="#263241"/>
+    <g transform="translate(40 54) scale(0.58) skewX(4)" fill="#dbe4f6" stroke="#020309" stroke-width="14" stroke-linejoin="round">
+      <use href="#word"/>
+      <use href="#word" fill="none" stroke="#00f0ff" stroke-width="7" transform="translate(18 16)"/>
+      <use href="#slashes" stroke="#f5f8ff" stroke-width="20"/>
+    </g>
+    <text x="28" y="314" fill="#f5f8ff" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900">03 CHROME CUTS</text>
+  </g>
+
+  <g transform="translate(938 500)">
+    <rect width="820" height="350" fill="#0f141a" stroke="#263241"/>
+    <g transform="translate(58 72) scale(0.55)" fill="#f5f8ff" stroke="#020309" stroke-width="14" stroke-linejoin="round">
+      <use href="#A" transform="rotate(-8 105 150)"/><use href="#I" x="218" transform="rotate(6 278 150)"/><use href="#R" x="346" transform="rotate(-4 451 150)"/><use href="#D" x="564" transform="rotate(5 679 150)"/><use href="#O" x="802" transform="rotate(-7 917 150)"/><use href="#X" x="1040" transform="rotate(8 1155 150)"/>
+      <path d="M176 26 l74 22 l-56 48 z M722 238 l80 32 l-74 42 z M1212 18 l76 58 l-88 14 z" fill="#ff00aa"/>
+    </g>
+    <text x="28" y="314" fill="#9adf6b" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900">04 TAPE WILD</text>
+  </g>
+
+  <g transform="translate(42 896)">
+    <rect width="820" height="350" fill="#050608" stroke="#263241"/>
+    <g transform="translate(44 72) scale(0.58)" fill="none" stroke="#00f0ff" stroke-width="20" stroke-linejoin="round" filter="url(#neon)">
+      <use href="#word"/>
+      <path d="M152 238 h-54 M226 44 h78 M840 76 h74 M1098 144 h96" stroke="#050608" stroke-width="28"/>
+    </g>
+    <text x="28" y="314" fill="#00f0ff" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900">05 BROKEN NEON</text>
+  </g>
+
+  <g transform="translate(938 896)">
+    <rect width="820" height="350" fill="#0f141a" stroke="#263241"/>
+    <g transform="translate(40 62) scale(0.58)" fill="#f5f8ff" stroke="#020309" stroke-width="14" stroke-linejoin="round">
+      <use href="#word"/>
+      <rect x="32" y="34" width="58" height="56" fill="#00f0ff"/><rect x="492" y="224" width="66" height="48" fill="#ff00aa"/><rect x="898" y="46" width="70" height="52" fill="#9adf6b"/><rect x="1130" y="226" width="72" height="54" fill="#00f0ff"/>
+    </g>
+    <text x="28" y="314" fill="#ff00aa" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900">06 BLOCK ASSEMBLY</text>
+  </g>
+
+  <g transform="translate(42 1292)">
+    <rect width="820" height="350" fill="#050608" stroke="#263241"/>
+    <g transform="translate(42 64) scale(0.58) skewX(-8)" fill="#050608" stroke="#f5f8ff" stroke-width="18" stroke-linejoin="round" filter="url(#rough)">
+      <use href="#word"/>
+      <use href="#word" fill="none" stroke="#00f0ff" stroke-width="7" transform="translate(16 16)"/>
+      <circle cx="180" cy="34" r="16" fill="#9adf6b"/><circle cx="640" cy="254" r="22" fill="#ff00aa"/><circle cx="1212" cy="58" r="18" fill="#9adf6b"/>
+    </g>
+    <text x="28" y="314" fill="#f5f8ff" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900">07 SPRAY SKELETON</text>
+  </g>
+
+  <g transform="translate(938 1292)">
+    <rect width="820" height="350" fill="#0f141a" stroke="#263241"/>
+    <g transform="translate(42 72) scale(0.58) skewX(3)" fill="#f5f8ff" stroke="#020309" stroke-width="14" stroke-linejoin="round" filter="url(#rough)">
+      <use href="#word"/>
+      <path d="M40 52 L1240 20 M0 170 L1200 142 M86 282 L1280 248" stroke="#ff00aa" stroke-width="18" opacity="0.38"/>
+      <path d="M220 0 l-60 320 M686 10 l-92 306 M1048 8 l-80 314" stroke="#050608" stroke-width="20" opacity="0.9"/>
+    </g>
+    <text x="28" y="314" fill="#00f0ff" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900">08 RIPPED POSTER</text>
+  </g>
+</svg>

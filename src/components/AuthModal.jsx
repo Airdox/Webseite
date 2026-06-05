@@ -1,38 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import TurnstileCaptcha from './TurnstileCaptcha';
+import AuthModalFields from './AuthModalFields';
+import AuthSocialButtons from './AuthSocialButtons';
 import './AuthModal.css';
 import { t } from '../utils/i18n';
 import {
-    buildApiUrl,
-    readApiJson,
     resolveApiBaseUrl,
     resolveApiOrigin,
 } from '../utils/apiResponse';
+import { apiErrorMessage, requestApiJson } from '../utils/apiClient';
+import { setStorageItem, STORAGE_KEYS } from '../utils/websiteContracts';
+import { buildAuthPayload, getAllowedOAuthProviders, validateRegistrationCaptcha } from './authModalUtils';
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
-
-const SocialProviderIcon = ({ provider }) => {
-    if (provider === 'google') {
-        return (
-            <svg className="auth-social-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="#EA4335" d="M12 10.2v3.9h5.4c-.2 1.3-1.5 3.9-5.4 3.9-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.8 3.4 14.6 2.4 12 2.4 6.7 2.4 2.4 6.7 2.4 12s4.3 9.6 9.6 9.6c5.5 0 9.2-3.9 9.2-9.3 0-.6-.1-1.1-.2-1.6H12z" />
-                <path fill="#34A853" d="M12 21.6c2.5 0 4.7-.8 6.2-2.3l-3-2.4c-.8.5-1.9.9-3.2.9-2.5 0-4.7-1.7-5.4-4l-3.1 2.4C4.9 19.4 8.2 21.6 12 21.6z" />
-                <path fill="#4A90E2" d="M6.6 13.8c-.2-.6-.4-1.2-.4-1.8s.1-1.3.4-1.8L3.5 7.8C2.8 9.1 2.4 10.5 2.4 12s.4 2.9 1.1 4.2l3.1-2.4z" />
-                <path fill="#FBBC05" d="M12 6c1.4 0 2.7.5 3.7 1.4l2.8-2.8C16.8 3 14.6 2.4 12 2.4 8.2 2.4 4.9 4.6 3.5 7.8l3.1 2.4c.7-2.3 2.9-4.2 5.4-4.2z" />
-            </svg>
-        );
-    }
-
-    return (
-        <svg className="auth-social-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="11" fill="#1877F2" />
-            <path
-                fill="#FFFFFF"
-                d="M13.7 20v-7.2h2.4l.4-2.8h-2.8V8.2c0-.8.2-1.4 1.4-1.4h1.5V4.3c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v2.8h2.4V20h3.3z"
-            />
-        </svg>
-    );
-};
 
 const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
     const [mode, setMode] = useState(initialMode); // 'login' or 'register'
@@ -111,13 +91,12 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
 
         const loadOAuthConfig = async () => {
             try {
-                const response = await fetch(buildApiUrl('/api/oauth/config'), {
+                const { response, data } = await requestApiJson('/api/oauth/config', {
                     method: 'GET',
                     signal: controller.signal,
                 });
-                const data = await readApiJson(response);
                 if (!disposed && response.ok && Array.isArray(data.providers)) {
-                    setOauthProviders(data.providers.filter((provider) => provider === 'google' || provider === 'facebook'));
+                    setOauthProviders(getAllowedOAuthProviders(data.providers));
                 }
             } catch {
                 if (!disposed) setOauthProviders([]);
@@ -148,7 +127,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                 setError(data.error || t('auth.oauthFailed'));
                 return;
             }
-            localStorage.setItem('airdox_token', data.token);
+            setStorageItem(STORAGE_KEYS.authToken, data.token);
             setSuccess(t('auth.loginSuccess'));
             setTimeout(() => {
                 onClose();
@@ -260,40 +239,32 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
         setError('');
         
         try {
-            if (mode === 'register') {
-                if (!TURNSTILE_SITE_KEY) {
-                    throw new Error(t('auth.registrationDisabled'));
-                }
-                if (captchaStatus === 'loading') {
-                    throw new Error(t('captcha.loading'));
-                }
-                if (captchaStatus === 'error') {
-                    throw new Error(t('captcha.loadError'));
-                }
-                if (!captchaToken) {
-                    throw new Error(t('auth.captchaRequired'));
-                }
-            }
-
-            const endpoint = buildApiUrl(mode === 'login' ? '/api/login' : '/api/register');
-            const payload = mode === 'login' 
-                ? { email, password } 
-                : { email, password, username, captchaToken };
-
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
+            validateRegistrationCaptcha({
+                mode,
+                siteKey: TURNSTILE_SITE_KEY,
+                captchaStatus,
+                captchaToken,
+                messages: {
+                    registrationDisabled: t('auth.registrationDisabled'),
+                    captchaLoading: t('captcha.loading'),
+                    captchaLoadError: t('captcha.loadError'),
+                    captchaRequired: t('auth.captchaRequired'),
+                },
             });
 
-            const data = await readApiJson(response);
+            const payload = buildAuthPayload({ mode, email, password, username, captchaToken });
+
+            const { response, data } = await requestApiJson(mode === 'login' ? '/api/login' : '/api/register', {
+                method: 'POST',
+                body: payload,
+            });
 
             if (!response.ok) {
-                throw new Error(data.error || data.message || t('auth.genericError'));
+                throw new Error(apiErrorMessage(data, t('auth.genericError')));
             }
 
             if (mode === 'login') {
-                localStorage.setItem('airdox_token', data.token);
+                setStorageItem(STORAGE_KEYS.authToken, data.token);
                 setSuccess(t('auth.loginSuccess'));
                 setTimeout(() => {
                     onClose();
@@ -351,82 +322,26 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                         {mode === 'login' ? t('auth.loginSubtitle') : t('auth.registerSubtitle')}
                     </p>
 
-                    {oauthProviders.length > 0 && (
-                        <div className="social-auth-row">
-                            {oauthProviders.includes('google') && (
-                                <button
-                                    type="button"
-                                    className={`btn btn-outline auth-social-btn auth-social-btn-google ${socialLoadingProvider === 'google' ? 'is-loading' : ''}`}
-                                    onClick={() => openSocialAuth('google')}
-                                    aria-label={t('auth.google')}
-                                    disabled={loading || Boolean(socialLoadingProvider)}
-                                >
-                                    <span className="auth-social-icon-shell" aria-hidden="true">
-                                        <SocialProviderIcon provider="google" />
-                                    </span>
-                                </button>
-                            )}
-                            {oauthProviders.includes('facebook') && (
-                                <button
-                                    type="button"
-                                    className={`btn btn-outline auth-social-btn auth-social-btn-facebook ${socialLoadingProvider === 'facebook' ? 'is-loading' : ''}`}
-                                    onClick={() => openSocialAuth('facebook')}
-                                    aria-label={t('auth.facebook')}
-                                    disabled={loading || Boolean(socialLoadingProvider)}
-                                >
-                                    <span className="auth-social-icon-shell" aria-hidden="true">
-                                        <SocialProviderIcon provider="facebook" />
-                                    </span>
-                                </button>
-                            )}
-                        </div>
-                    )}
+                    <AuthSocialButtons
+                        providers={oauthProviders}
+                        socialLoadingProvider={socialLoadingProvider}
+                        loading={loading}
+                        onOpenSocialAuth={openSocialAuth}
+                    />
 
                     {error && <div className="modal-error">{error}</div>}
                     {success && <div className="modal-success">{success}</div>}
 
                     <form id={authFormId} onSubmit={handleSubmit} className="auth-form">
-                        {mode === 'register' && (
-                            <div className="form-group">
-                                <label htmlFor="auth-username">{t('auth.username')}</label>
-                                <input 
-                                    id="auth-username"
-                                    name="username"
-                                    type="text" 
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    placeholder="your_dj_name"
-                                    autoComplete="username"
-                                    required
-                                />
-                            </div>
-                        )}
-                        <div className="form-group">
-                            <label htmlFor="auth-email">{t('auth.email')}</label>
-                            <input 
-                                id="auth-email"
-                                name="email"
-                                type="email" 
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="name@example.com"
-                                autoComplete="email"
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="auth-password">{t('auth.password')}</label>
-                            <input 
-                                id="auth-password"
-                                name="password"
-                                type="password" 
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="••••••••"
-                                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                                required
-                            />
-                        </div>
+                        <AuthModalFields
+                            mode={mode}
+                            username={username}
+                            email={email}
+                            password={password}
+                            setUsername={setUsername}
+                            setEmail={setEmail}
+                            setPassword={setPassword}
+                        />
                     </form>
                 </div>
 

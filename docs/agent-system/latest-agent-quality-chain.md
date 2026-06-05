@@ -1,29 +1,37 @@
-# AIRDOX Agent Quality Chain
+# AIRDOX Agenten-Qualitaetskette
 
-Generated: 2026-06-01T19:47:58.072Z
+Erstellt: 2026-06-05T19:57:09.436Z
 
-## Summary
+## Ueberblick
 
-- Changed files: 28
-- Test files changed: 2
-- Obligations: 4
-- Alerts: 1
+- Geaenderte Dateien: 79
+- Geaenderte Testdateien: 11
+- Pflichten: 3
+- Hinweise: 1
 
-## Obligations
+## Pflichten
 
-| ID | Owner | QA | Status | Required Follow-Up | Gates |
+| ID | Owner | QA | Status | Erforderlicher Nachlauf | Gates |
 | --- | --- | --- | --- | --- | --- |
 | website-ui-quality-chain | Webbie | Guardian | test_changes_present | Guardian must verify that changed tests cover the changed UI path. | `npm run lint`<br>`npm run test -- --run`<br>`npm run build` |
-| desktop-ui-quality-chain | Winnie | Guardian | test_changes_present | Guardian must verify that Desktop tests cover the changed tab/menu/control behavior. | `npm run desktop:test:logic`<br>`npm run desktop:test:e2e` |
 | script-api-quality-chain | Guardian | Guardian | test_changes_present | Guardian must run or request the narrow command that proves the changed script path. | `npm run agent:jobs:validate`<br>`npm run agent:audit -- --strict` |
 | user-facing-change-watch | Master Controller | Guardian | watch | Responsible primary agent must confirm tests exist for the new entry point and failure path. | `route-specific test`<br>`visual/safe-area review when visible` |
 
-## Changed Test Files
+## Geaenderte Testdateien
 
-- src/desktop/__tests__/DesktopControls.test.jsx
-- src/utils/__tests__/audienceSignals.test.js
+- src/components/__tests__/authModalUtils.test.js
+- src/components/__tests__/setCardUtils.test.js
+- src/contexts/__tests__/audioSources.test.js
+- src/lib/__tests__/authHelpers.test.js
+- src/lib/__tests__/statsContracts.test.js
+- src/server/__tests__/httpResponses.test.js
+- src/server/__tests__/legalPages.test.js
+- src/server/__tests__/oauthUtils.test.js
+- src/utils/__tests__/apiClient.test.js
+- src/utils/__tests__/websiteContracts.test.js
+- src/utils/analytics/__tests__/
 
-## Alerts
+## Hinweise
 
 - info: Master Controller -> Guardian: Responsible primary agent must confirm tests exist for the new entry point and failure path.
 

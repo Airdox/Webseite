@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T19:46:13.120Z",
+  "generatedAt": "2026-06-05T19:56:16.684Z",
   "agent": "audience-intelligence",
   "model": {
     "currency": "EUR",
@@ -8,31 +8,58 @@
   },
   "summary": {
     "eventSource": "neon:analytics_logs",
-    "totalRawEvents": 0,
-    "totalConsentedEvents": 0,
+    "totalRawEvents": 41,
+    "totalConsentedEvents": 41,
     "rejectedEvents": 0,
     "privacyRejectedEvents": 0,
-    "estimatedGrossValue": 0,
+    "estimatedGrossValue": 30.6,
     "totalCost": 0,
-    "estimatedNetValue": 0,
+    "estimatedNetValue": 30.6,
     "roi": null,
-    "profitabilityStatus": "no_measurement_data",
+    "profitabilityStatus": "value_detected_costs_missing",
     "funnel": {
-      "routeViews": 0,
-      "setPlays": 0,
+      "routeViews": 12,
+      "setPlays": 20,
       "newsletterSignups": 0,
       "bookingClicks": 0,
       "contactSubmits": 0
     },
     "conversionRates": {
-      "engagedPlayRate": 0,
+      "engagedPlayRate": 1.6667,
       "newsletterRate": 0,
       "bookingIntentRate": 0,
       "contactRate": 0
     },
-    "valueByEvent": [],
-    "valueByRoute": [],
-    "valueByCampaign": [],
+    "valueByEvent": [
+      {
+        "key": "set_play",
+        "value": 30
+      },
+      {
+        "key": "route_view",
+        "value": 0.6
+      },
+      {
+        "key": "section_view",
+        "value": 0
+      }
+    ],
+    "valueByRoute": [
+      {
+        "key": "/",
+        "value": 29.05
+      },
+      {
+        "key": "/en/",
+        "value": 1.55
+      }
+    ],
+    "valueByCampaign": [
+      {
+        "key": "unknown",
+        "value": 30.6
+      }
+    ],
     "supportedEvents": [
       "contact_submit",
       "booking_click",
@@ -54,16 +81,22 @@
   },
   "recommendations": [
     {
-      "priority": "high",
-      "owner": "Webbie",
-      "title": "Enable consented website event export",
-      "action": "Verify route_view, set_play, newsletter_signup, booking_click, contact_submit, and epk_download reach the audience event store."
+      "priority": "medium",
+      "owner": "Master Controller",
+      "title": "Enter real monthly cost assumptions",
+      "action": "Set hosting, tools, paid media, and manual production costs in website-profitability-model.json before using ROI for business decisions."
     },
     {
       "priority": "high",
-      "owner": "Audience Intelligence",
-      "title": "Do not optimize ROI without data",
-      "action": "Keep the profitability status as no_measurement_data until at least one consented event source exists."
+      "owner": "Webbie",
+      "title": "Improve booking CTA path",
+      "action": "Review the strongest route and place a contextual booking or EPK CTA after meaningful music engagement."
+    },
+    {
+      "priority": "medium",
+      "owner": "Manni",
+      "title": "Strengthen fan capture",
+      "action": "Pair the top content with a newsletter offer and a measurable campaign parameter."
     }
   ]
 }

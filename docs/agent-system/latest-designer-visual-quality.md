@@ -1,21 +1,21 @@
 # AIRDOX Designer Visual Quality Report
 
-Generated: 2026-05-23T18:46:57.289Z
+Erstellt: 2026-05-23T18:46:57.289Z
 Agent: Designer
 Base URL: http://127.0.0.1:4173
 Status: pass
 
-## Summary
+## Ueberblick
 
 - Total checks: 16
-- Failures: 0
-- Warnings: 0
+- Fehler: 0
+- Warnungen: 0
 - Passes: 16
 - Needs attention: no
 
 ## Checks
 
-| Check | Level | Detail |
+| Check | Stufe | Detail |
 | --- | --- | --- |
 | desktop-set-cards-visible | PASS | desktop: 4 Set-Cards sichtbar. |
 | desktop-horizontal-overflow | PASS | desktop: Kein horizontaler Overflow. |

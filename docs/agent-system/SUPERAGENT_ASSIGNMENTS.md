@@ -28,7 +28,7 @@ Informationspflicht:
 | Manni | Promotion, Branding und PR-Reach-Operations | Conversion-Drop, neue Kampagne, EPK-Luecke, Tracking-Unklarheit, Social-Reichweitenchance | Hypothesen, Content-Plan, Messplan, PR-/Social-Operations-Plan fuer Instagram, Facebook und passende weitere Plattformen | Produktive Kampagnen-/Tracking-Umschaltung, Social-Live-Ausspielung, Community-Reaktionen, Outreach oder Paid-Test mit Nutzer-OK |
 | Designer | Corporate Design, Visual Design, Windows-Tool-CD-Review, Creative Assets und Vorlagen-System | schwache Hook-Retention, hohe Creative-Fatigue, inkonsistentes Branding, Manni-Reel-Output bereit, wiederholbarer Asset-Bedarf, Flight-Deck-UI wirkt fremd oder nicht AIRDOX-konform | Creative-Pack, Design-Hypothesen, CD-Review, Flight-Deck-Designreview, website-konforme Reel-/Story-Varianten, wiederverwendbare Vorlagen fuer andere Agenten | finale Social-Live-Assets mit Nutzer-OK, verbindliche Template-Freigabe fuer Agenten |
 | Mentor | Lernsystem und Wissen | wiederholte Fehler, Wissensluecke, veraltete Doku | Wiki-Update, Lernschleife, Runbook-Entwurf | verbindliche Prozessaenderung fuer alle Agenten |
-| Refactor | Verschlankung/Architektur und Website-Stabilitaet | hohe Komplexitaet, Duplikate, Wartungsbremsen, Performance-Schuld, Erreichbarkeits- oder Funktionalitaetsrisiko | konkrete Website-Opportunity, kleiner Refactor-Patch, Impact-Analyse, PoC | breite Umstrukturierung, moduluebergreifende Umbauten, Stabilitaets-Refactor mit Pflichtgates und Rollback-Hinweis |
+| Refactor | Verschlankung/Architektur und Website-Stabilitaet | hohe Komplexitaet, Duplikate, Wartungsbremsen, Performance-Schuld, Erreichbarkeits- oder Funktionalitaetsrisiko | konkrete Website-Opportunity, Patch-Vorschlag ohne Code-Aenderung, Impact-Analyse, PoC | genehmigter kleiner Refactor-Patch, breite Umstrukturierung, moduluebergreifende Umbauten, Stabilitaets-Refactor mit Pflichtgates und Rollback-Hinweis |
 | Repository | Branching, GitHub, Releases | Branch-Konflikte, chaotische Commits, Release-Druck, Strukturdrift | Monitoring, Bereinigungsvorschlag, Policy-Check | Merge-Freigabe, Branch-Regel-Anpassung, Release-Schaltung |
 
 ## Gravierende Aenderung (Definition)
@@ -52,6 +52,14 @@ Eine Aenderung gilt als gravierend, wenn mindestens einer dieser Punkte zutrifft
    - `npm run master:gate`
    - `npm run agent:audit -- --strict`
    - `npm run repository:monitor:strict`
+
+## Pflichtfluss fuer Refactor-Ausfuehrung
+
+1. Refactor erstellt mit `refactor-website-patch-proposal` einen konkreten Vorschlag: Ziel, Scope, betroffene Dateien, Vorher-/Nachher-Nutzen, Risiko, Rueckfallpfad und Gates.
+2. Der Nutzer genehmigt genau diesen Scope oder lehnt ihn ab.
+3. Bei Gruen/Gelb fuehrt Refactor nur den genehmigten Patch aus und liefert die benannten Gates.
+4. Bei Rot braucht Refactor zusaetzlich Master-Controller-Freigabe und Guardian-Risiko-Review.
+5. Abweichungen vom genehmigten Scope werden gestoppt und als neuer Vorschlag vorgelegt.
 
 ## Pflichtfluss fuer Social-Live-Ausspielung
 

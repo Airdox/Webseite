@@ -2,6 +2,48 @@
 
 Dieses Log speichert strategische Entscheidungen des Multi-Agenten-Systems. Kurze Eintraege sind beabsichtigt: Datum, Kontext, Entscheidung, Risiko, Recheck.
 
+## 2026-06-05 - Berichte werden deutsch und lesbarer normalisiert
+
+Kontext:
+- Nutzerwunsch: Alle Berichte sollen auf Deutsch gespeichert und zukuenftig deutsch erstellt werden.
+- Nutzerwunsch: Fuer Berichterstellung soll ein geeigneter Skill genutzt werden, damit Reports visuell attraktiver und leichter erfassbar sind.
+- Gewaehlter Skill: Build Web Data Visualization / Data Visualization als Leitlinie fuer Report-Lesepfad, Kennzahlen, Tabellen, Gates und mobile/lesbare Struktur.
+
+Entscheidung:
+- Neuer Report-Nachlauf `scripts/localize-agent-reports.mjs` normalisiert `latest-*.md`, `AGENT_SYSTEM_ARCHITECTURE.md` und Manni-Report-Artefakte auf deutsche Markdown-Struktur.
+- Neuer npm-Befehl: `npm run reports:localize:de`.
+- `agent-background-cycle` fuehrt die Lokalisierung als letzten Schritt aus.
+- `agent-job-runner` fuehrt die Lokalisierung nach Joblauf-Berichten aus.
+- Neue Report-Generatoren muessen deutsche Ueberschriften, Tabellenkoepfe, Hinweise und Handlungstexte verwenden. Technische IDs, Befehle, Pfade und Status-Tokens bleiben stabil.
+
+Risiko:
+- Vollautomatische Uebersetzung darf keine technischen Tokens veraendern, sonst koennen Gates oder Skripte brechen.
+- Bestehende Freitextzeilen koennen noch einzelne englische Fachbegriffe enthalten; Generatoren sollen diese bei der naechsten fachlichen Bearbeitung direkt deutsch schreiben.
+
+Recheck:
+- `npm run reports:localize:de`
+- `npm run agent:jobs:validate`
+
+## 2026-06-05 - Refactor arbeitet nach Vorschlag-Freigabe-Ausfuehrung
+
+Kontext:
+- Nutzerhinweis: Refactor soll Optimierungsarbeit nicht nur analysieren, sondern konkrete Arbeiten vorbereiten, vorschlagen und nach Genehmigung ausfuehren.
+- Refactor darf dabei keine breiten oder unklaren Umbauten starten.
+
+Entscheidung:
+- Refactor arbeitet ab sofort zweistufig: `refactor-website-patch-proposal` erstellt einen konkreten Patch-Vorschlag ohne Code-Aenderung.
+- Kleine genehmigte Patches laufen ueber `approved-small-refactor-patch` und brauchen persoenliches Nutzer-OK.
+- Groessere oder riskante Stabilitaets-Refactors laufen ueber `website-stability-refactor-execution` und brauchen Nutzer-OK plus Master-Controller-Freigabe.
+- `requiresUserApproval: true` blockiert im Job-Runner jetzt jede Job-Ausfuehrung bis zur expliziten Freigabe, nicht nur externe Live-Jobs.
+
+Risiko:
+- Ohne strikten Scope koennte Refactor Nutzen versprechen, aber verdeckt Verhalten aendern.
+- Zu viel Freigabe-Gating kann kleine Verbesserungen verlangsamen; deshalb muessen Vorschlaege maximal einen naechsten Patch enthalten.
+
+Recheck:
+- `npm run agent:jobs:validate`
+- `npm run refactor:website:opportunities`
+
 ## 2026-05-27 - Refactor muss Website-Stabilitaet aktiv verbessern
 
 Kontext:

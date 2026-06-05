@@ -1,20 +1,20 @@
-# AIRDOX Agent Job Run
+# AIRDOX Agenten-Joblauf
 
-Generated: 2026-06-01T19:45:46.774Z
-Event: scheduled_background
+Erstellt: 2026-06-05T19:45:50.875Z
+Ereignis: scheduled_background
 Status: deep
 
-## Summary
+## Ueberblick
 
-- Selected jobs: 15
-- Executed jobs: 15
-- Manual jobs: 0
-- Skipped jobs: 0
-- Failed jobs: 0
+- Ausgewaehlte Jobs: 15
+- Ausgefuehrte Jobs: 15
+- Manuelle Jobs: 0
+- Uebersprungene Jobs: 0
+- Fehlgeschlagene Jobs: 0
 
 ## Jobs
 
-| Job | Agent | Result | Detail |
+| Job | Agent | Ergebnis | Detail |
 | --- | --- | --- | --- |
 | repository-hygiene-monitor | Repository | EXECUTED | ok (repository:monitor:write) |
 | agent-audit-cycle | Guardian | EXECUTED | ok (agent:audit:write) |

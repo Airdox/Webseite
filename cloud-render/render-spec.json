@@ -1,0 +1,24 @@
+{
+
+  "output": "cloud-render/output/airdox-three-polished-final.mp4",
+  "proofFrame": "cloud-render/output/proof-final-frame.png",
+  "report": "cloud-render/output/ffprobe-report.json",
+
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "duration": 30,
+
+  "audioStart": 20,
+  "brand": "AIRDOX",
+  "url": "airdox.info",
+  "letters": ["A", "I", "R", "D", "O", "X"],
+  "allowedVisibleText": ["AIRDOX", "airdox.info", "A", "I", "R", "D", "O", "X"],
+  "qualityTargets": [
+    "dark dice cup",
+    "3D dice fall and roll",
+    "letters land left-to-right in A I R D O X order",
+    "final AIRDOX title and airdox.info URL only"
+  ]
+
+}

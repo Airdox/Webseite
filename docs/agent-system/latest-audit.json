@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T19:45:48.770Z",
+  "generatedAt": "2026-06-05T19:45:52.548Z",
   "repository": "D:\\webseeite-main",
   "controller": {
     "name": "Master Controller",
@@ -7,8 +7,8 @@
   },
   "summary": {
     "averageScore": 94,
-    "dirtyPathCount": 55,
-    "testFileCount": 27,
+    "dirtyPathCount": 111,
+    "testFileCount": 40,
     "cssFileCount": 21
   },
   "gate": {
@@ -196,7 +196,7 @@
           "label": "Ausreichende Testdateien",
           "status": "pass",
           "weight": 1.5,
-          "detail": "27 Test-/Spec-Dateien gefunden."
+          "detail": "40 Test-/Spec-Dateien gefunden."
         },
         {
           "label": "Worker/API-Testsignale",
@@ -214,7 +214,7 @@
           "label": "Arbeitsbaum sauber",
           "status": "warn",
           "weight": 1.5,
-          "detail": "55 uncommitted Pfade gefunden; vor Releases klaeren."
+          "detail": "111 uncommitted Pfade gefunden; vor Releases klaeren."
         },
         {
           "label": "Env-Beispiel vorhanden",
@@ -532,7 +532,7 @@
           "label": "Arbeitsbaum releasebereit",
           "status": "warn",
           "weight": 1.5,
-          "detail": "55 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+          "detail": "111 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
         },
         {
           "label": "Einziges Deployment-Target",

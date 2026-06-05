@@ -1,16 +1,16 @@
-# AIRDOX Agent System Health
+# AIRDOX Agenten-Systemstatus
 
-Generated: 2026-06-01T19:48:06.639Z
+Erstellt: 2026-06-05T19:57:24.325Z
 
-## Summary
+## Ueberblick
 
 - Status: OK
-- Jobs: 42 (22 script, 20 manual)
-- External live jobs gated: 5
-- Stale reports: 0
-- Alerts: 1
+- Jobs: 44 (22 script, 22 manual)
+- Externe Live-Jobs mit Gate: 5
+- Veraltete Berichte: 0
+- Hinweise: 1
 
-## Architecture
+## Architektur
 
 ```mermaid
 flowchart TD
@@ -42,7 +42,7 @@ flowchart TD
   Health --> MC
 ```
 
-## Automation
+## Automatisierung
 
 - npm background script: present
 - health script: present
@@ -50,17 +50,17 @@ flowchart TD
 - .github/workflows/agent-background-monitor.yml: present
 - .github/workflows/agent-job-dispatch.yml: present
 
-## Reports
+## Berichte
 
-| Report | Status | Age h | Path |
+| Bericht | Status | Alter h | Pfad |
 | --- | --- | ---: | --- |
-| background-cycle | fresh | 5 | docs/agent-system/latest-background-cycle.json |
-| job-run | fresh | 0.04 | docs/agent-system/latest-job-run.json |
-| audit | fresh | 0.04 | docs/agent-system/latest-audit.json |
+| background-cycle | fresh | 6.2 | docs/agent-system/latest-background-cycle.json |
+| job-run | fresh | 0.19 | docs/agent-system/latest-job-run.json |
+| audit | fresh | 0.19 | docs/agent-system/latest-audit.json |
 | dependency-radar | fresh | 0 | docs/agent-system/latest-agent-dependency-radar.json |
-| task-queue | aging | 206.93 | docs/agent-system/latest-agent-task-queue.json |
+| task-queue | aging | 303.08 | docs/agent-system/latest-agent-task-queue.json |
 
-## Alerts
+## Hinweise
 
-- watch: task-queue is aging (206.93h old). Next: Let the next scheduled background cycle refresh it.
+- watch: task-queue is aging (303.08h old). Naechster Schritt: Let the next scheduled background cycle refresh it.
 

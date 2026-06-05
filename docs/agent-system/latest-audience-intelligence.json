@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T19:46:11.204Z",
+  "generatedAt": "2026-06-05T19:56:15.236Z",
   "agent": "audience-intelligence",
   "privacy": {
     "mode": "consented-aggregate",
@@ -18,24 +18,86 @@
   },
   "summary": {
     "eventSource": "neon:analytics_logs",
-    "totalRawEvents": 0,
-    "totalConsentedEvents": 0,
+    "totalRawEvents": 41,
+    "totalConsentedEvents": 41,
     "rejectedEvents": 0,
-    "byType": [],
-    "topRoutes": [],
-    "topContent": [],
-    "topCampaigns": [],
-    "topReferrers": [],
-    "topDevices": [],
+    "byType": [
+      {
+        "key": "set_play",
+        "value": 20
+      },
+      {
+        "key": "route_view",
+        "value": 12
+      },
+      {
+        "key": "section_view",
+        "value": 9
+      }
+    ],
+    "topRoutes": [
+      {
+        "key": "/",
+        "value": 792
+      },
+      {
+        "key": "/en/",
+        "value": 40
+      }
+    ],
+    "topContent": [
+      {
+        "key": "recording_2026_05_24",
+        "value": 490
+      },
+      {
+        "key": "recording_2026_06_02",
+        "value": 210
+      },
+      {
+        "key": "home",
+        "value": 72
+      },
+      {
+        "key": "page",
+        "value": 60
+      }
+    ],
+    "topCampaigns": [
+      {
+        "key": "unknown",
+        "value": 832
+      }
+    ],
+    "topReferrers": [
+      {
+        "key": "direct",
+        "value": 613
+      },
+      {
+        "key": "search",
+        "value": 219
+      }
+    ],
+    "topDevices": [
+      {
+        "key": "mobile",
+        "value": 658
+      },
+      {
+        "key": "desktop",
+        "value": 174
+      }
+    ],
     "intentSegments": {
       "booking_intent": 0,
-      "fan_intent": 0,
+      "fan_intent": 700,
       "sharing_intent": 0,
-      "discovery_intent": 0
+      "discovery_intent": 132
     },
     "journeyStats": {
-      "sessions": 0,
-      "sessionsWithPlay": 0,
+      "sessions": 8,
+      "sessionsWithPlay": 7,
       "sessionsWithNewsletter": 0,
       "sessionsWithBooking": 0
     }
@@ -43,9 +105,21 @@
   "recommendations": [
     {
       "priority": "high",
-      "title": "Start collecting consented audience events",
-      "reason": "No consented analytics events were found, so recommendations are based on readiness only.",
-      "action": "Wire route, CTA, set-play, newsletter, booking, and share events into a consent-aware analytics export."
+      "title": "CTA-Pfad auf / staerken",
+      "reason": "Diese Route hat mit 792 gewichteten Signalpunkten die staerkste Audience-Aktivitaet.",
+      "action": "Kontextuelle CTAs fuer Set-Play, Newsletter-Anmeldung, Booking und Sharing ergaenzen oder pruefen."
+    },
+    {
+      "priority": "high",
+      "title": "Top-Inhalt wiederverwenden: recording_2026_05_24",
+      "reason": "Dieser Inhalt fuehrt das Audience-Interesse aktuell mit 490 gewichteten Signalpunkten an.",
+      "action": "Aus diesem Inhalt Social-Captions, Newsletter-Copy, SEO-Beschreibung und Booking-Winkel ableiten."
+    },
+    {
+      "priority": "medium",
+      "title": "Newsletter-Capture nach Musik-Engagement ergaenzen",
+      "reason": "Nutzer spielen Sets, aber es ist kein Newsletter-Signal vorhanden.",
+      "action": "Nach relevantem Play oder Tracklist-Engagement einen kontextuellen Newsletter-CTA zeigen."
     }
   ]
 }

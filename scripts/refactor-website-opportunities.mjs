@@ -10,6 +10,12 @@ const outMd = join(root, 'docs', 'agent-system', 'latest-refactor-website-opport
 const sourceRoots = ['src/components', 'src/contexts', 'src/utils', 'src/lib', 'src/server'];
 const sourceExtensions = new Set(['.js', '.jsx']);
 const largeFileThreshold = 16000;
+const largeFileDataModules = new Set([
+  'src/utils/i18nMessages.js',
+]);
+const stateContractModules = new Set([
+  'src/utils/websiteContracts.js',
+]);
 
 const toPosix = (filePath) => filePath.replaceAll('\\', '/');
 const getExtension = (filePath) => filePath.slice(filePath.lastIndexOf('.'));
@@ -38,7 +44,7 @@ const sourceFiles = sourceRoots
       fetchCount: (text.match(/\bfetch\s*\(/g) || []).length,
       apiBaseCount: (text.match(/API_BASE|STATS_API_BASE|AUDIO_API_BASE|PRODUCTION_URL|PRODUCTION_API_BASE/g) || []).length,
       localStorageCount: (text.match(/\blocalStorage\b/g) || []).length,
-      eventCount: (text.match(/CustomEvent|addEventListener|dispatchEvent/g) || []).length,
+      eventCount: (text.match(/CustomEvent|dispatchEvent|addEventListener\(\s*['"]airdox[_:-]|removeEventListener\(\s*['"]airdox[_:-]/g) || []).length,
     };
   });
 
@@ -48,68 +54,85 @@ const apiFiles = sourceFiles
   .filter((file) => file.fetchCount > 0 || file.apiBaseCount > 0)
   .filter((file) => (
     /src\/components\/(AuthModal|Newsletter|VIPSection|BookingSection)\.jsx/.test(file.path)
-    || /src\/contexts\/AudioContext\.jsx/.test(file.path)
+    || (/src\/contexts\/AudioContext\.jsx/.test(file.path) && file.apiBaseCount > 0)
     || /src\/utils\/stats-sync\.js/.test(file.path)
   ))
   .sort((a, b) => (b.fetchCount + b.apiBaseCount) - (a.fetchCount + a.apiBaseCount));
 
 const opportunities = [];
 
+const withApproval = (opportunity, approval = {}) => ({
+  ...opportunity,
+  approval: {
+    status: approval.status || 'pending_user_ok',
+    requiredBeforeExecution: true,
+    requiredBy: opportunity.priority === 'high'
+      ? ['User', 'Master Controller if scope expands']
+      : ['User'],
+    proposalJob: 'refactor-website-patch-proposal',
+    executionJob: opportunity.priority === 'high'
+      ? 'website-stability-refactor-execution'
+      : 'approved-small-refactor-patch',
+  },
+});
+
 if (apiFiles.length >= 3) {
-  opportunities.push({
+  opportunities.push(withApproval({
     id: 'website-api-client-consolidation',
     priority: 'high',
     area: 'availability-and-functionality',
     files: apiFiles.map((file) => file.path),
-    evidence: `${apiFiles.length} website service files contain fetch/base-url handling.`,
-    action: 'Move base URL resolution and safe JSON/error reading into one small helper, then migrate one user flow at a time.',
-    validation: 'Run the touched flow test plus npm run build. For visible flows, add desktop/mobile proof before release.',
-  });
+    evidence: `${apiFiles.length} Website-Service-Dateien enthalten Fetch- oder Base-URL-Logik.`,
+    action: 'Base-URL-Aufloesung sowie sicheres JSON-/Fehlerlesen in einen kleinen Helper verschieben und danach jeweils nur einen Nutzerflow migrieren.',
+    validation: 'Den betroffenen Flow-Test plus npm run build ausfuehren. Bei sichtbaren Flows vor Release Desktop-/Mobile-Proof ergaenzen.',
+  }));
 }
 
 const audioStatsFiles = apiFiles.filter((file) => /AudioContext|stats-sync|MusicSection/.test(file.path));
 if (audioStatsFiles.length >= 2) {
-  opportunities.push({
+  opportunities.push(withApproval({
     id: 'audio-stats-runtime-boundary',
     priority: 'high',
     area: 'analytics-integrity',
     files: audioStatsFiles.map((file) => file.path),
-    evidence: 'Audio and stats runtime URL logic are split across playback and stats modules.',
-    action: 'Keep localhost/production routing in a shared utility so local listening does not pollute production stats.',
-    validation: 'Run AudioContext and MusicSection tests, then npm run build.',
-  });
+    evidence: 'Audio- und Stats-Runtime-URL-Logik ist zwischen Playback- und Stats-Modulen verteilt.',
+    action: 'Localhost-/Production-Routing in einer gemeinsamen Utility halten, damit lokales Hoeren keine Production-Stats verfaelscht.',
+    validation: 'AudioContext- und MusicSection-Tests ausfuehren, danach npm run build.',
+  }));
 }
 
 sourceFiles
   .filter((file) => file.bytes >= largeFileThreshold)
+  .filter((file) => !largeFileDataModules.has(file.path))
   .sort((a, b) => b.bytes - a.bytes)
   .slice(0, 8)
   .forEach((file) => {
-    opportunities.push({
+    opportunities.push(withApproval({
       id: `large-file-${slug(file.path)}`,
       priority: file.bytes >= 30000 ? 'high' : 'medium',
       area: 'maintainability',
       files: [file.path],
-      evidence: `${file.lines} lines / ${file.bytes} bytes.`,
-      action: 'Extract only the next user-visible or service-flow subunit that can receive a focused test.',
-      validation: 'Run the nearest component/unit test plus npm run build.',
-    });
+      evidence: `${file.lines} Zeilen / ${file.bytes} Bytes.`,
+      action: 'Nur die naechste nutzer- oder service-sichtbare Teileinheit extrahieren, die einen fokussierten Test bekommen kann.',
+      validation: 'Den naechstliegenden Komponenten-/Unit-Test plus npm run build ausfuehren.',
+    }));
   });
 
 sourceFiles
+  .filter((file) => !stateContractModules.has(file.path))
   .filter((file) => file.localStorageCount >= 2 || file.eventCount >= 3)
   .sort((a, b) => (b.localStorageCount + b.eventCount) - (a.localStorageCount + a.eventCount))
   .slice(0, 5)
   .forEach((file) => {
-    opportunities.push({
+    opportunities.push(withApproval({
       id: `state-contract-${slug(file.path)}`,
       priority: 'medium',
       area: 'state-contract',
       files: [file.path],
-      evidence: `${file.localStorageCount} localStorage references, ${file.eventCount} event references.`,
-      action: 'Document or extract the smallest event/storage contract before changing dependent UI.',
-      validation: 'Run the nearest tests that assert event dispatch, cache update, or UI refresh behavior.',
-    });
+      evidence: `${file.localStorageCount} localStorage-Referenzen, ${file.eventCount} Event-Referenzen.`,
+      action: 'Vor Aenderungen an abhaengiger UI den kleinsten Event-/Storage-Contract dokumentieren oder extrahieren.',
+      validation: 'Die naechstliegenden Tests fuer Event-Dispatch, Cache-Update oder UI-Refresh-Verhalten ausfuehren.',
+    }));
   });
 
 const report = {
@@ -124,35 +147,38 @@ const report = {
     highPriorityCount: opportunities.filter((item) => item.priority === 'high').length,
   },
   rules: [
-    'Availability, stability and functionality come before cleanup.',
-    'Broad restructuring is allowed only with Master Controller approval, rollback note and quality gates.',
-    'Each Refactor task must name before/after benefit and validation.',
-    'Prefer one website flow at a time: music, booking, newsletter, VIP/auth, stats.',
+    'Erreichbarkeit, Stabilitaet und Funktionalitaet haben Vorrang vor Cleanup.',
+    'Refactor muss vor Code-Aenderungen einen ausfuehrbaren Patch-Vorschlag vorbereiten.',
+    'Der genehmigte Scope ist bindend; Scope-Erweiterung braucht einen neuen Vorschlag.',
+    'Ausfuehrung braucht explizite Nutzerfreigabe; riskante oder breite Arbeit zusaetzlich Master-Controller-Freigabe.',
+    'Breite Umstrukturierung ist nur mit Master-Controller-Freigabe, Rollback-Hinweis und Quality-Gates erlaubt.',
+    'Jede Refactor-Aufgabe muss Vorher-/Nachher-Nutzen und Validierung nennen.',
+    'Immer nur einen Website-Flow bevorzugen: Musik, Booking, Newsletter, VIP/Auth oder Stats.',
   ],
   opportunities,
 };
 
 const markdown = [
-  '# AIRDOX Refactor Website Opportunities',
+  '# AIRDOX Refactor-Website-Chancen',
   '',
-  `Generated: ${generatedAt}`,
+  `Erstellt: ${generatedAt}`,
   'Agent: Refactor',
   '',
-  '## Summary',
+  '## Ueberblick',
   '',
-  `- Scanned source files: ${report.summary.scannedFiles}`,
-  `- Opportunities: ${report.summary.opportunityCount}`,
-  `- High priority: ${report.summary.highPriorityCount}`,
+  `- Gepruefte Quelldateien: ${report.summary.scannedFiles}`,
+  `- Chancen: ${report.summary.opportunityCount}`,
+  `- Hohe Prioritaet: ${report.summary.highPriorityCount}`,
   '',
-  '## Operating Rules',
+  '## Betriebsregeln',
   '',
   ...report.rules.map((rule) => `- ${rule}`),
   '',
-  '## Opportunities',
+  '## Chancen',
   '',
-  '| Priority | Area | ID | Evidence | Action | Validation | Files |',
+  '| Prioritaet | Bereich | ID | Beleg | Aktion | Validierung | Dateien |',
   '| --- | --- | --- | --- | --- | --- | --- |',
-  ...opportunities.map((item) => `| ${item.priority} | ${item.area} | ${item.id} | ${item.evidence} | ${item.action} | ${item.validation} | ${item.files.join('<br>')} |`),
+  ...opportunities.map((item) => `| ${item.priority} | ${item.area} | ${item.id} | ${item.evidence} | ${item.action} Freigabe: ${item.approval.status}; Job: ${item.approval.proposalJob}. | ${item.validation} | ${item.files.join('<br>')} |`),
   '',
 ].join('\n');
 
@@ -161,9 +187,9 @@ writeFileSync(outJson, `${JSON.stringify(report, null, 2)}\n`);
 writeFileSync(outMd, `${markdown}\n`);
 
 process.stdout.write([
-  'Refactor Website Opportunities: DONE',
-  `Scanned files: ${report.summary.scannedFiles}`,
-  `Opportunities: ${report.summary.opportunityCount}`,
-  'Report: docs/agent-system/latest-refactor-website-opportunities.md',
+  'Refactor-Website-Chancen: ERLEDIGT',
+  `Gepruefte Dateien: ${report.summary.scannedFiles}`,
+  `Chancen: ${report.summary.opportunityCount}`,
+  'Bericht: docs/agent-system/latest-refactor-website-opportunities.md',
 ].join('\n'));
 process.stdout.write('\n');

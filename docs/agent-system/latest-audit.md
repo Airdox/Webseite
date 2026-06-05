@@ -1,18 +1,18 @@
-# AIRDOX Agent Audit
+# AIRDOX Agenten-Audit
 
-Generated: 2026-06-01T19:45:48.770Z
+Erstellt: 2026-06-05T19:45:52.548Z
 Repository: D:\webseeite-main
 Controller: Master Controller
 
-## Summary
+## Ueberblick
 
-- Average score: 94/100
-- Gate status: pass
-- Test files: 27
-- CSS files: 21
-- Uncommitted paths: 55
+- Durchschnittsscore: 94/100
+- Gate-Status: pass
+- Testdateien: 40
+- CSS-Dateien: 21
+- Offene Pfade: 111
 
-## Agent Scores
+## Agenten-Scores
 
 | Agent | Score | Mission |
 | --- | ---: | --- |
@@ -39,7 +39,7 @@ Controller: Master Controller
 - PASS: HTML-Entry-Drift begrenzt - Warnung, wenn mehrere root HTML-Kopien SEO/Head-Drift erzeugen koennen.
 - PASS: Website E2E-Abdeckung - Sanity- und Navigation-Playwright-Specs sind vorhanden.
 
-Next actions:
+Naechste Aktionen:
 - Sitemap-lastmod bei Content-Releases automatisiert aktualisieren.
 - Core-Web-Vitals-Messung als Playwright/Lighthouse-Gate ergaenzen.
 - Visuelle Regression fuer Hero, Music und Booking etablieren.
@@ -57,7 +57,7 @@ Next actions:
 - WARN: Electron Sandbox aktiv oder begruendet - Warnung, wenn BrowserWindow mit sandbox:false laeuft.
 - PASS: Windows-Dokumentation vorhanden - docs/WINDOWS_FLIGHTDECK.md beschreibt Stand, Nutzung und Teststatus.
 
-Next actions:
+Naechste Aktionen:
 - Release-Gate aus desktop:test:logic, desktop:test:e2e und desktop:dist definieren.
 - Code-Signing- und Icon-Status als eigener Release-Check aufnehmen.
 - Publish-Pipeline-Fehler mit reproduzierbaren Test-Fixtures abdecken.
@@ -67,13 +67,13 @@ Next actions:
 - PASS: Standard Quality Scripts - Build, Lint, Unit- und E2E-Tests sind in package.json verankert.
 - PASS: Test Runner konfiguriert - Vitest und Playwright sind konfiguriert.
 - PASS: ESLint konfiguriert - ESLint Flat Config ist vorhanden.
-- PASS: Ausreichende Testdateien - 27 Test-/Spec-Dateien gefunden.
+- PASS: Ausreichende Testdateien - 40 Test-/Spec-Dateien gefunden.
 - PASS: Worker/API-Testsignale - Server-/API-Code ist vorhanden; dedizierte Testsignale werden geprueft.
 - PASS: Web-CI-Gate vorhanden - Warnung, wenn GitHub Actions kein Web-Lint/Test/Build-Gate enthaelt.
-- WARN: Arbeitsbaum sauber - 55 uncommitted Pfade gefunden; vor Releases klaeren.
+- WARN: Arbeitsbaum sauber - 111 uncommitted Pfade gefunden; vor Releases klaeren.
 - PASS: Env-Beispiel vorhanden - .env.example ist fuer sichere Konfiguration vorhanden.
 
-Next actions:
+Naechste Aktionen:
 - Guardian-Strict-Gate fuer Releases verwenden: npm run agent:audit -- --strict plus build/test/lint.
 - Bekannte Alt-Lintfehler als debt register dokumentieren und schrittweise abbauen.
 - Security-Checks fuer Booking, Auth und Analytics als gezielte Tests ergaenzen.
@@ -90,7 +90,7 @@ Next actions:
 - PASS: Mehrsprachigkeit als Reichweitenhebel - Englische Variante und hreflang sind vorhanden.
 - PASS: Merch-/Community-Flache - Newsletter/VIP bieten Ansatzpunkte fuer Community oder Merch.
 
-Next actions:
+Naechste Aktionen:
 - EPK als klare Download-/Presseseite mit aktuellen Assets und Tech-Rider erweitern.
 - Kampagnenkalender fuer Releases, Sets, Newsletter und Social Clips im Wiki fuehren.
 - Conversion Events fuer Booking, Newsletter, VIP und Set-Play sichtbar auswerten.
@@ -106,7 +106,7 @@ Next actions:
 - PASS: UI-Brandflaechen gepflegt - Warnung, wenn zentrale Brandflaechen fuer visuelle Konsistenz fehlen.
 - PASS: Social-Link-Signale gepflegt - Warnung, wenn Kern-Social-Links nicht konsistent verankert sind.
 
-Next actions:
+Naechste Aktionen:
 - Hook-Varianten je Reel in 3 visuellen Stilen planen und A/B-testen.
 - Statische Reel-Entwuerfe als creative_static_risk markieren und mit Equalizer, Waveform, Parallax-Still oder Kinetic Type ueberarbeiten.
 - Thumbnail- und First-Frame-Bibliothek fuer wiedererkennbare Social-Branding-Signale aufbauen.
@@ -124,7 +124,7 @@ Next actions:
 - PASS: Entwicklerhandbuch vorhanden - Admin Suite Developer Guide beschreibt Erweiterungsmuster.
 - PASS: Assistant-Testsignale - Assistant-Logik hat Testsignale.
 
-Next actions:
+Naechste Aktionen:
 - Entscheidungen und Audit-Ergebnisse nach groesseren Aenderungen in docs/agent-system protokollieren.
 - Lernluecken aus fehlgeschlagenen Checks direkt in Backlog-Eintraege uebersetzen.
 - Agenten-Briefings quartalsweise anhand echter Projekterfahrung schaerfen.
@@ -140,7 +140,7 @@ Next actions:
 - PASS: Deployment-Ziel konsolidiert - Nur wrangler.jsonc als einziges Deployment-Target vorhanden.
 - PASS: Dependency-Footprint kontrolliert - 9 Runtime-Abhaengigkeiten gefunden.
 
-Next actions:
+Naechste Aktionen:
 - Grosse Komponenten schrittweise in getestete Subkomponenten schneiden.
 - Deployment-Targets eindeutig priorisieren und historische Konfigs entfernen oder dokumentieren.
 - Freie Shell-/Import-Pfade im Desktop-Tool durch strukturierte APIs und Allowlists ersetzen.
@@ -153,11 +153,11 @@ Next actions:
 - PASS: Branching-Hinweise vorhanden - Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist.
 - PASS: Commit-Konvention dokumentiert - Warnung, wenn Commit-Typen nicht klar festgelegt sind.
 - PASS: Change-Tracking vorhanden - Warnung, wenn Entscheidungen oder Audit-Historie fehlen.
-- WARN: Arbeitsbaum releasebereit - 55 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
+- WARN: Arbeitsbaum releasebereit - 111 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
 - PASS: Einziges Deployment-Target - Nur Cloudflare (wrangler.jsonc) als Deployment-Target vorhanden.
 - PASS: Gefaehrdete Artefaktordner ignoriert - Warnung, wenn Build-/Wrangler-/Release-Artefakte nicht sauber ignoriert werden.
 
-Next actions:
+Naechste Aktionen:
 - Branch-Schutzregeln in GitHub mit Pflicht-Checks aus web-quality und agent:audit verknuepfen.
 - Release-Branches zeitlich begrenzen und nach Abschluss mergen oder schliessen.
 - Mehrdeutige Deployment-Strategien reduzieren und einen primaeren Pfad festlegen.
