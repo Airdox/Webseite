@@ -2,6 +2,49 @@ import fs from 'node:fs/promises';
 import { diffSetEntries, insertOrReplaceSet, serializeSetsModule, toManifestSet } from '../../../src/desktop/lib/setManifest.js';
 import { getWorkspacePaths, isWorkspaceRoot } from './workspace.mjs';
 
+const extractExportedArrayLiteral = (source, exportName) => {
+  const declarationPattern = new RegExp(`export\\s+const\\s+${exportName}\\s*=\\s*\\[`);
+  const declaration = declarationPattern.exec(source);
+  if (!declaration) {
+    throw new Error(`Manifest does not export ${exportName}.`);
+  }
+
+  const start = declaration.index + declaration[0].lastIndexOf('[');
+  let depth = 0;
+  let quote = '';
+  let escaped = false;
+
+  for (let index = start; index < source.length; index += 1) {
+    const char = source[index];
+
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === '\\') {
+        escaped = true;
+      } else if (char === quote) {
+        quote = '';
+      }
+      continue;
+    }
+
+    if (char === '"' || char === "'" || char === '`') {
+      quote = char;
+      continue;
+    }
+
+    if (char === '[') depth += 1;
+    if (char === ']') {
+      depth -= 1;
+      if (depth === 0) {
+        return source.slice(start, index + 1);
+      }
+    }
+  }
+
+  throw new Error(`Manifest export ${exportName} is not a closed array literal.`);
+};
+
 export const readSets = async (workspaceRoot) => {
   if (!(await isWorkspaceRoot(workspaceRoot))) {
     throw new Error('Workspace is not configured or invalid.');
@@ -9,9 +52,9 @@ export const readSets = async (workspaceRoot) => {
 
   const { manifestPath } = getWorkspacePaths(workspaceRoot);
   const source = await fs.readFile(manifestPath, 'utf8');
-  const moduleUrl = `data:text/javascript;base64,${Buffer.from(source).toString('base64')}#cacheBust=${Date.now()}-${Math.random().toString(36).slice(2)}`;
-  const imported = await import(moduleUrl);
-  return JSON.parse(JSON.stringify(imported.sets || []));
+  const { default: JSON5 } = await import('json5');
+  const sets = JSON5.parse(extractExportedArrayLiteral(source, 'sets'));
+  return JSON.parse(JSON.stringify(sets || []));
 };
 
 export const writeSets = async (workspaceRoot, sets) => {

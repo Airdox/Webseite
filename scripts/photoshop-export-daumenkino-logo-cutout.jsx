@@ -4,7 +4,7 @@ app.bringToFront();
 app.displayDialogs = DialogModes.NO;
 
 var sourcePath = "D:/webseeite-main/scratch/daumenkino-contact/tile_002.jpg";
-var outputPath = "D:/webseeite-main/docs/agent-system/social-auto-output/daumenkino-preview/sissygut-design-prototypes/airdox-wildstyle-cutout.png";
+var outputPath = "D:/webseeite-main/docs/agent-system/visual-templates/social/social-auto-output/daumenkino-preview/sissygut-design-prototypes/airdox-wildstyle-cutout.png";
 
 function ensureFolder(path) {
   var folder = new Folder(path);
@@ -57,7 +57,7 @@ function main() {
     return;
   }
 
-  ensureFolder("D:/webseeite-main/docs/agent-system/social-auto-output/daumenkino-preview/sissygut-design-prototypes");
+  ensureFolder("D:/webseeite-main/docs/agent-system/visual-templates/social/social-auto-output/daumenkino-preview/sissygut-design-prototypes");
 
   var doc = app.open(sourceFile);
   doc.activeLayer = doc.layers[0];

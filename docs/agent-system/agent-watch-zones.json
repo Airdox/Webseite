@@ -14,7 +14,7 @@
         "scratch/daumenkino-contact/**",
         "scratch/daumenkino-contact-sheet.jpg",
         "public/brand-assets/daumenkino/**",
-        "docs/agent-system/social-auto-output/daumenkino-preview/**",
+        "docs/agent-system/visual-templates/social/social-auto-output/daumenkino-preview/**",
         "scripts/render-daumenkino*.mjs",
         "scripts/photoshop-export-daumenkino*.jsx",
         "scripts/photoshop-export-portrait-cutout.jsx"
@@ -32,7 +32,7 @@
       "paths": [
         "docs/agent-system/SOCIAL_*.md",
         "docs/agent-system/manni-*",
-        "docs/agent-system/social-auto-output/**",
+        "docs/agent-system/visual-templates/social/social-auto-output/**",
         "scripts/social-*.mjs"
       ],
       "wakeAction": "Manni prepares campaign/draft intent; Designer and Guardian review before user preview."
@@ -100,8 +100,8 @@
       "paths": [
         "airdoX_wiki/**",
         "docs/agent-system/DECISION_LOG.md",
-        "docs/agent-system/OPERATING_MODEL.md",
-        "docs/agent-system/ORCHESTRATION_WORKFLOW.md",
+        "docs/agent-system/reports/operations/OPERATING_MODEL.md",
+        "docs/agent-system/reports/operations/ORCHESTRATION_WORKFLOW.md",
         "docs/agent-system/*SUMMARY*.md"
       ],
       "wakeAction": "Mentor converts repeated failures and accepted rules into durable wiki/runbook knowledge."

@@ -4,7 +4,7 @@ app.bringToFront();
 app.displayDialogs = DialogModes.NO;
 
 var sourcePath = "D:/webseeite-main/daumenkino_idee/1765931533777.jpg";
-var outputDir = "D:/webseeite-main/docs/agent-system/social-auto-output/daumenkino-airdox-letterbeat/photoshop";
+var outputDir = "D:/webseeite-main/docs/agent-system/visual-templates/social/social-auto-output/daumenkino-airdox-letterbeat/photoshop";
 
 var letters = [
   { name: "A", left: 64, top: 318, right: 272, bottom: 688 },

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-05T19:56:15.236Z",
+  "generatedAt": "2026-06-06T07:46:10.771Z",
   "agent": "audience-intelligence",
   "privacy": {
     "mode": "consented-aggregate",
@@ -18,8 +18,8 @@
   },
   "summary": {
     "eventSource": "neon:analytics_logs",
-    "totalRawEvents": 41,
-    "totalConsentedEvents": 41,
+    "totalRawEvents": 44,
+    "totalConsentedEvents": 44,
     "rejectedEvents": 0,
     "byType": [
       {
@@ -28,17 +28,17 @@
       },
       {
         "key": "route_view",
-        "value": 12
+        "value": 14
       },
       {
         "key": "section_view",
-        "value": 9
+        "value": 10
       }
     ],
     "topRoutes": [
       {
         "key": "/",
-        "value": 792
+        "value": 810
       },
       {
         "key": "/en/",
@@ -56,33 +56,37 @@
       },
       {
         "key": "home",
-        "value": 72
+        "value": 80
       },
       {
         "key": "page",
-        "value": 60
+        "value": 70
       }
     ],
     "topCampaigns": [
       {
         "key": "unknown",
-        "value": 832
+        "value": 850
       }
     ],
     "topReferrers": [
       {
         "key": "direct",
-        "value": 613
+        "value": 626
       },
       {
         "key": "search",
         "value": 219
+      },
+      {
+        "key": "social",
+        "value": 5
       }
     ],
     "topDevices": [
       {
         "key": "mobile",
-        "value": 658
+        "value": 676
       },
       {
         "key": "desktop",
@@ -93,10 +97,10 @@
       "booking_intent": 0,
       "fan_intent": 700,
       "sharing_intent": 0,
-      "discovery_intent": 132
+      "discovery_intent": 150
     },
     "journeyStats": {
-      "sessions": 8,
+      "sessions": 10,
       "sessionsWithPlay": 7,
       "sessionsWithNewsletter": 0,
       "sessionsWithBooking": 0
@@ -106,7 +110,7 @@
     {
       "priority": "high",
       "title": "CTA-Pfad auf / staerken",
-      "reason": "Diese Route hat mit 792 gewichteten Signalpunkten die staerkste Audience-Aktivitaet.",
+      "reason": "Diese Route hat mit 810 gewichteten Signalpunkten die staerkste Audience-Aktivitaet.",
       "action": "Kontextuelle CTAs fuer Set-Play, Newsletter-Anmeldung, Booking und Sharing ergaenzen oder pruefen."
     },
     {

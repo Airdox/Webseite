@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-05T19:56:16.684Z",
+  "generatedAt": "2026-06-06T09:52:07.883Z",
   "agent": "audience-intelligence",
   "model": {
     "currency": "EUR",
@@ -8,24 +8,24 @@
   },
   "summary": {
     "eventSource": "neon:analytics_logs",
-    "totalRawEvents": 41,
-    "totalConsentedEvents": 41,
+    "totalRawEvents": 47,
+    "totalConsentedEvents": 47,
     "rejectedEvents": 0,
     "privacyRejectedEvents": 0,
-    "estimatedGrossValue": 30.6,
-    "totalCost": 0,
-    "estimatedNetValue": 30.6,
-    "roi": null,
-    "profitabilityStatus": "value_detected_costs_missing",
+    "estimatedGrossValue": 32.25,
+    "totalCost": 552,
+    "estimatedNetValue": -519.75,
+    "roi": -0.9416,
+    "profitabilityStatus": "unprofitable",
     "funnel": {
-      "routeViews": 12,
-      "setPlays": 20,
+      "routeViews": 15,
+      "setPlays": 21,
       "newsletterSignups": 0,
       "bookingClicks": 0,
       "contactSubmits": 0
     },
     "conversionRates": {
-      "engagedPlayRate": 1.6667,
+      "engagedPlayRate": 1.4,
       "newsletterRate": 0,
       "bookingIntentRate": 0,
       "contactRate": 0
@@ -33,11 +33,11 @@
     "valueByEvent": [
       {
         "key": "set_play",
-        "value": 30
+        "value": 31.5
       },
       {
         "key": "route_view",
-        "value": 0.6
+        "value": 0.75
       },
       {
         "key": "section_view",
@@ -47,7 +47,7 @@
     "valueByRoute": [
       {
         "key": "/",
-        "value": 29.05
+        "value": 30.7
       },
       {
         "key": "/en/",
@@ -57,7 +57,7 @@
     "valueByCampaign": [
       {
         "key": "unknown",
-        "value": 30.6
+        "value": 32.25
       }
     ],
     "supportedEvents": [
@@ -80,12 +80,6 @@
     ]
   },
   "recommendations": [
-    {
-      "priority": "medium",
-      "owner": "Master Controller",
-      "title": "Enter real monthly cost assumptions",
-      "action": "Set hosting, tools, paid media, and manual production costs in website-profitability-model.json before using ROI for business decisions."
-    },
     {
       "priority": "high",
       "owner": "Webbie",

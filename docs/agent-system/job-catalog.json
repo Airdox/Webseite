@@ -97,11 +97,47 @@
       ]
     },
     {
+      "id": "mentor-agent-education",
+      "title": "Review agent education scorecard, training catalog and postmortem bank",
+      "owner": "Mentor",
+      "execution": "script",
+      "script": "mentor:education:write",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "monthly_learning_review",
+          "incident_review"
+        ],
+        "statuses": [
+          "standard",
+          "deep",
+          "monthly",
+          "needs_learning"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "agent_education",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-mentor-agent-education.json",
+        "docs/agent-system/latest-mentor-agent-education.md",
+        "docs/agent-system/AGENT_TRAINING_CATALOG.json",
+        "docs/agent-system/reports/mentor/AGENT_TRAINING_CATALOG.md",
+        "docs/agent-system/MENTOR_POSTMORTEM_BANK.json",
+        "docs/agent-system/reports/mentor/MENTOR_POSTMORTEM_BANK.md"
+      ]
+    },
+    {
       "id": "mentor-knowledge-improvement-review",
       "title": "Translate NotebookLM agent-school research into AIRDOX knowledge tasks",
       "owner": "Mentor",
       "execution": "manual",
-      "manualProtocol": "Review docs/agent-system/research/MENTOR_NOTEBOOKLM_RESULT_AGENT_SCHOOLS_2026-05-27.md and docs/agent-system/mentor-knowledge-improvement-tasks.json. Convert accepted findings into at least one concrete AIRDOX artifact: agent runbook, gate/test, training scenario, Decision Log rule, wiki entry, or scorecard criterion. Keep Guardian as reviewer for privacy, external-action, and governance rules.",
+      "manualProtocol": "Review docs/agent-system/reports/research/MENTOR_NOTEBOOKLM_RESULT_AGENT_SCHOOLS_2026-05-27.md and docs/agent-system/mentor-knowledge-improvement-tasks.json. Convert accepted findings into at least one concrete AIRDOX artifact: agent runbook, gate/test, training scenario, Decision Log rule, wiki entry, or scorecard criterion. Keep Guardian as reviewer for privacy, external-action, and governance rules.",
       "trigger": {
         "events": [
           "manual_background",
@@ -123,7 +159,7 @@
       "requiresUserApproval": false,
       "enabled": true,
       "outputs": [
-        "docs/agent-system/research/MENTOR_NOTEBOOKLM_RESULT_AGENT_SCHOOLS_2026-05-27.md",
+        "docs/agent-system/reports/research/MENTOR_NOTEBOOKLM_RESULT_AGENT_SCHOOLS_2026-05-27.md",
         "docs/agent-system/mentor-knowledge-improvement-tasks.json",
         "docs/agent-system/DECISION_LOG.md"
       ]
@@ -313,7 +349,7 @@
       "title": "Promotion and growth review",
       "owner": "Manni",
       "execution": "manual",
-      "manualProtocol": "Run the weekly Manni growth cycle from docs/agent-system/MANNI_GROWTH_PLAYBOOK.md and log winners/losers plus next experiments in docs/agent-system/DECISION_LOG.md.",
+      "manualProtocol": "Run the weekly Manni growth cycle from docs/agent-system/reports/campaigns/MANNI_GROWTH_PLAYBOOK.md and log winners/losers plus next experiments in docs/agent-system/DECISION_LOG.md.",
       "trigger": {
         "events": [
           "weekly_growth_review"
@@ -358,7 +394,7 @@
       "enabled": true,
       "outputs": [
         "docs/agent-system/DECISION_LOG.md",
-        "docs/agent-system/MANNI_GROWTH_PLAYBOOK.md"
+        "docs/agent-system/reports/campaigns/MANNI_GROWTH_PLAYBOOK.md"
       ]
     },
     {
@@ -384,7 +420,7 @@
       "requiresUserApproval": false,
       "enabled": true,
       "outputs": [
-        "docs/agent-system/manni-reel-weekly-plan.md",
+        "docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md",
         "docs/agent-system/DECISION_LOG.md"
       ]
     },
@@ -419,7 +455,7 @@
       "outputs": [
         "docs/agent-system/latest-designer-portfolio.json",
         "docs/agent-system/latest-designer-portfolio.md",
-        "docs/agent-system/designer-portfolio-output/*/*.svg"
+        "docs/agent-system/visual-templates/designer/designer-portfolio-output/*/*.svg"
       ]
     },
     {
@@ -448,7 +484,7 @@
       "outputs": [
         "docs/agent-system/latest-designer-visual-quality.json",
         "docs/agent-system/latest-designer-visual-quality.md",
-        "docs/agent-system/proof/designer-visual-quality/*"
+        "docs/agent-system/reports/proof/designer-visual-quality/*"
       ]
     },
     {
@@ -536,8 +572,8 @@
       "enabled": true,
       "outputs": [
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md",
-        "docs/agent-system/manni-reel-draft-pack.md"
+        "docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md",
+        "docs/agent-system/reports/campaigns/manni-reel-draft-pack.md"
       ]
     },
     {
@@ -569,11 +605,11 @@
       "requiresUserApproval": false,
       "enabled": true,
       "outputs": [
-        "docs/agent-system/social-auto-output/*/manifest.json",
-        "docs/agent-system/social-auto-output/*/captions.json",
-        "docs/agent-system/social-auto-output/*/upload-copy-paste.md",
-        "docs/agent-system/social-auto-output/*/*.mp4",
-        "docs/agent-system/social-auto-output/*/*-preview.png"
+        "docs/agent-system/visual-templates/social/social-auto-output/*/manifest.json",
+        "docs/agent-system/visual-templates/social/social-auto-output/*/captions.json",
+        "docs/agent-system/visual-templates/social/social-auto-output/*/upload-copy-paste.md",
+        "docs/agent-system/visual-templates/social/social-auto-output/*/*.mp4",
+        "docs/agent-system/visual-templates/social/social-auto-output/*/*-preview.png"
       ]
     },
     {
@@ -602,8 +638,8 @@
       "enabled": true,
       "outputs": [
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md",
-        "docs/agent-system/manni-reel-draft-pack.md"
+        "docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md",
+        "docs/agent-system/reports/campaigns/manni-reel-draft-pack.md"
       ]
     },
     {
@@ -632,9 +668,9 @@
       "enabled": true,
       "outputs": [
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md",
-        "docs/agent-system/social-auto-output/*",
-        "docs/agent-system/manni-reel-draft-pack.md"
+        "docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md",
+        "docs/agent-system/visual-templates/social/social-auto-output/*",
+        "docs/agent-system/reports/campaigns/manni-reel-draft-pack.md"
       ]
     },
     {
@@ -667,7 +703,7 @@
       "outputs": [
         "docs/agent-system/manni-reel-output/*",
         "docs/brand/templates/*",
-        "docs/agent-system/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md",
+        "docs/agent-system/reports/campaigns/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md",
         "docs/agent-system/DECISION_LOG.md"
       ]
     },
@@ -749,8 +785,8 @@
       "enabled": true,
       "outputs": [
         "docs/agent-system/DECISION_LOG.md",
-        "docs/agent-system/manni-reel-weekly-plan.md",
-        "docs/agent-system/manni-reel-draft-pack.md"
+        "docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md",
+        "docs/agent-system/reports/campaigns/manni-reel-draft-pack.md"
       ]
     },
     {
@@ -839,8 +875,8 @@
       "enabled": true,
       "outputs": [
         "docs/agent-system/DECISION_LOG.md",
-        "docs/agent-system/manni-reel-weekly-plan.md",
-        "docs/agent-system/manni-reel-draft-pack.md"
+        "docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md",
+        "docs/agent-system/reports/campaigns/manni-reel-draft-pack.md"
       ]
     },
     {
@@ -1122,7 +1158,7 @@
       "outputs": [
         "docs/agent-system/latest-agent-system-health.json",
         "docs/agent-system/latest-agent-system-health.md",
-        "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md"
+        "docs/agent-system/reports/operations/AGENT_SYSTEM_ARCHITECTURE.md"
       ]
     },
     {
@@ -1310,7 +1346,7 @@
       "enabled": true,
       "outputs": [
         "docs/agent-system/DECISION_LOG.md",
-        "docs/agent-system/REPOSITORY_GOVERNANCE.md"
+        "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md"
       ]
     }
   ]

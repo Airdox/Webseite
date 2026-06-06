@@ -229,7 +229,7 @@ const defaultManniCampaignState = {
   ],
   approvals: {
     version: 1,
-    proposalSource: 'docs/agent-system/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md',
+    proposalSource: 'docs/agent-system/reports/campaigns/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md',
     createdAt: '2026-05-13T05:13:05.728Z',
     updatedAt: '2026-05-13T05:13:05.728Z',
     operations: {
@@ -251,7 +251,7 @@ const defaultManniCampaignState = {
   },
   draftRequests: [],
   visualAssets: [],
-  rawMarkdownPath: 'docs/agent-system/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md',
+  rawMarkdownPath: 'docs/agent-system/reports/campaigns/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md',
   approvalsPath: 'docs/agent-system/manni-approval-state.json',
 };
 

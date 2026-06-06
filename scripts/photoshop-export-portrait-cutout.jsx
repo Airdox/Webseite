@@ -1,10 +1,10 @@
-﻿#target photoshop
+#target photoshop
 
 app.bringToFront();
 app.displayDialogs = DialogModes.NO;
 
-var sourcePath = "D:/webseeite-main/docs/agent-system/social-auto-output/daumenkino-preview/mixed-graffiti-portrait/portrait-source.png";
-var outputPath = "D:/webseeite-main/docs/agent-system/social-auto-output/daumenkino-preview/mixed-graffiti-portrait/portrait-cutout.png";
+var sourcePath = "D:/webseeite-main/docs/agent-system/visual-templates/social/social-auto-output/daumenkino-preview/mixed-graffiti-portrait/portrait-source.png";
+var outputPath = "D:/webseeite-main/docs/agent-system/visual-templates/social/social-auto-output/daumenkino-preview/mixed-graffiti-portrait/portrait-cutout.png";
 
 function selectSubject() {
   var desc = new ActionDescriptor();

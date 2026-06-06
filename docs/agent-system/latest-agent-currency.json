@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-05T19:45:53.409Z",
+  "generatedAt": "2026-06-06T07:45:50.368Z",
   "owner": "Mentor",
   "purpose": "Agent source currency and continuous learning check",
   "maxRunbookAgeDays": 45,
@@ -17,17 +17,17 @@
       "warnings": [],
       "runbooks": [
         {
-          "filePath": "docs/agent-system/AGENT_AUTOMATION_ROADMAP.md",
+          "filePath": "docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
           "ageDays": 5,
           "committedAt": "2026-05-16T15:27:57+02:00",
           "fresh": true
         },
         {
-          "filePath": "docs/agent-system/OPERATING_MODEL.md",
+          "filePath": "docs/agent-system/reports/operations/OPERATING_MODEL.md",
           "exists": true,
-          "ageDays": 0,
-          "committedAt": "2026-05-31T19:58:02+02:00",
+          "ageDays": 1,
+          "committedAt": "2026-06-06T01:53:44+02:00",
           "fresh": true
         }
       ],
@@ -48,7 +48,7 @@
           "url": "https://web.dev/articles",
           "ok": true,
           "status": 200,
-          "finalUrl": "https://web.dev/discover?hl=pt-br"
+          "finalUrl": "https://web.dev/discover"
         },
         {
           "url": "https://developer.mozilla.org/en-US/docs/Web",
@@ -69,7 +69,7 @@
       "warnings": [],
       "runbooks": [
         {
-          "filePath": "docs/agent-system/AGENT_AUTOMATION_ROADMAP.md",
+          "filePath": "docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
           "ageDays": 5,
           "committedAt": "2026-05-16T15:27:57+02:00",
@@ -161,14 +161,14 @@
       "warnings": [],
       "runbooks": [
         {
-          "filePath": "docs/agent-system/MENTOR_LEARNING_LOOPS.md",
+          "filePath": "docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
           "ageDays": 5,
           "committedAt": "2026-05-31T19:58:02+02:00",
           "fresh": true
         },
         {
-          "filePath": "docs/agent-system/REPOSITORY_GOVERNANCE.md",
+          "filePath": "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md",
           "exists": true,
           "ageDays": 5,
           "committedAt": "2026-05-02T11:27:04+02:00",
@@ -213,14 +213,14 @@
       "warnings": [],
       "runbooks": [
         {
-          "filePath": "docs/agent-system/MANNI_GROWTH_PLAYBOOK.md",
+          "filePath": "docs/agent-system/reports/campaigns/MANNI_GROWTH_PLAYBOOK.md",
           "exists": true,
           "ageDays": 5,
           "committedAt": "2026-05-13T18:13:57+02:00",
           "fresh": true
         },
         {
-          "filePath": "docs/agent-system/AGENT_CONTINUOUS_LEARNING.md",
+          "filePath": "docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
           "ageDays": 5,
           "committedAt": "2026-05-31T19:58:02+02:00",
@@ -232,7 +232,7 @@
           "url": "https://ads.tiktok.com/business/creativecenter/",
           "ok": true,
           "status": 200,
-          "finalUrl": "https://ads.tiktok.com/creative/creativeCenter?rid=wer4k2hb8gk"
+          "finalUrl": "https://ads.tiktok.com/creative/creativeCenter?rid=3fwzngtabdf"
         },
         {
           "url": "https://creators.instagram.com/",
@@ -259,7 +259,7 @@
       "warnings": [],
       "runbooks": [
         {
-          "filePath": "docs/agent-system/REPOSITORY_GOVERNANCE.md",
+          "filePath": "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md",
           "exists": true,
           "ageDays": 5,
           "committedAt": "2026-05-02T11:27:04+02:00",
@@ -300,10 +300,10 @@
       ],
       "runbooks": [
         {
-          "filePath": "docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md",
+          "filePath": "docs/agent-system/reports/operations/REFACTOR_OPTIMIZATION_LOOP.md",
           "exists": true,
-          "ageDays": 0,
-          "committedAt": "2026-05-31T19:58:02+02:00",
+          "ageDays": 1,
+          "committedAt": "2026-06-06T01:53:44+02:00",
           "fresh": true
         }
       ],
@@ -318,7 +318,7 @@
           "url": "https://web.dev/articles/fast",
           "ok": true,
           "status": 200,
-          "finalUrl": "https://web.dev/explore/fast?hl=th"
+          "finalUrl": "https://web.dev/explore/fast"
         },
         {
           "url": "https://nodejs.org/en/learn/diagnostics",
@@ -340,14 +340,14 @@
       "warnings": [],
       "runbooks": [
         {
-          "filePath": "docs/agent-system/MENTOR_LEARNING_LOOPS.md",
+          "filePath": "docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
           "ageDays": 5,
           "committedAt": "2026-05-31T19:58:02+02:00",
           "fresh": true
         },
         {
-          "filePath": "docs/agent-system/AGENT_CONTINUOUS_LEARNING.md",
+          "filePath": "docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
           "ageDays": 5,
           "committedAt": "2026-05-31T19:58:02+02:00",

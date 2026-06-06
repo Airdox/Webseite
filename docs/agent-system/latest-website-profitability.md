@@ -1,46 +1,44 @@
 # Latest Website Profitability
 
-Erstellt: 2026-06-05T19:56:16.684Z
+Generated: 2026-06-06T09:52:07.883Z
 Measurement window: 30 days
 Event source: neon:analytics_logs
-Status: value_detected_costs_missing
+Status: unprofitable
 
 ## Financial Estimate
-- Estimated gross value: EUR 30.60
-- Estimated monthly cost: EUR 0.00
-- Estimated net value: EUR 30.60
-- ROI: n/a
+- Estimated gross value: EUR 32.25
+- Estimated monthly cost: EUR 552.00
+- Estimated net value: EUR -519.75
+- ROI: -0.9416
 
 ## Funnel
-- Consented events: 41
+- Consented events: 47
 - Rejected events: 0
-- Route views: 12
-- Set plays: 20
+- Route views: 15
+- Set plays: 21
 - Newsletter signups: 0
 - Booking clicks: 0
 - Contact submits: 0
 
 ## Conversion Rates
-- engagedPlayRate: 1.6667
+- engagedPlayRate: 1.4
 - newsletterRate: 0
 - bookingIntentRate: 0
 - contactRate: 0
 
 ## Value By Event
-- set_play: EUR 30.00
-- route_view: EUR 0.60
+- set_play: EUR 31.50
+- route_view: EUR 0.75
 - section_view: EUR 0.00
 
 ## Value By Route
-- /: EUR 29.05
+- /: EUR 30.70
 - /en/: EUR 1.55
 
-## Empfehlungen
-1. Enter real monthly cost assumptions (medium, Master Controller)
-   - Set hosting, tools, paid media, and manual production costs in website-profitability-model.json before using ROI for business decisions.
-2. Improve booking CTA path (high, Webbie)
+## Recommendations
+1. Improve booking CTA path (high, Webbie)
    - Review the strongest route and place a contextual booking or EPK CTA after meaningful music engagement.
-3. Strengthen fan capture (medium, Manni)
+2. Strengthen fan capture (medium, Manni)
    - Pair the top content with a newsletter offer and a measurable campaign parameter.
 
 ## Guardrails

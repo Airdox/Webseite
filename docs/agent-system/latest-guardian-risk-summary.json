@@ -1,38 +1,11 @@
 {
-  "generatedAt": "2026-06-05T19:57:04.561Z",
-  "riskLevel": "medium",
+  "generatedAt": "2026-06-06T10:07:29.775Z",
+  "riskLevel": "low",
   "ok": true,
   "blockers": [],
-  "warnings": [
-    "111 uncommitted paths are present; review scope before release.",
-    "22 critical-path files changed: docs/agent-system/job-catalog.json, package-lock.json, package.json, scripts/agent-background-cycle.mjs, scripts/agent-job-runner.mjs, scripts/audience-intelligence-agent.mjs, scripts/refactor-website-opportunities.mjs, src/server/worker.js, ...",
-    "Master Controller review is recommended by routing."
-  ],
-  "changedFileCount": 111,
-  "criticalFiles": [
-    "docs/agent-system/job-catalog.json",
-    "package-lock.json",
-    "package.json",
-    "scripts/agent-background-cycle.mjs",
-    "scripts/agent-job-runner.mjs",
-    "scripts/audience-intelligence-agent.mjs",
-    "scripts/refactor-website-opportunities.mjs",
-    "src/server/worker.js",
-    "scripts/airdox-lettering-lab.mjs",
-    "scripts/build-mega-analytics-pack.mjs",
-    "scripts/extract-airdox-strobe-proof-assets.mjs",
-    "scripts/localize-agent-reports.mjs",
-    "scripts/photoshop-export-airdox-letter-masks.jsx",
-    "scripts/render-airdox-lettering-lab.mjs",
-    "scripts/run-photoshop-airdox-letter-masks.mjs",
-    "src/server/__tests__/httpResponses.test.js",
-    "src/server/__tests__/legalPages.test.js",
-    "src/server/__tests__/oauthUtils.test.js",
-    "src/server/audioRoutes.js",
-    "src/server/httpResponses.js",
-    "src/server/legalPages.js",
-    "src/server/oauthUtils.js"
-  ],
+  "warnings": [],
+  "changedFileCount": 0,
+  "criticalFiles": [],
   "checks": {
     "jobValidation": {
       "ok": true,
@@ -40,29 +13,12 @@
     },
     "routing": {
       "ok": true,
-      "assignmentCount": 11,
-      "recommendedGates": [
-        "manual:refactor-website-patch-proposal before code changes",
-        "npm run agent:audit -- --strict",
-        "npm run agent:jobs:validate",
-        "npm run agent:jobs:validate -- --strict-warnings",
-        "npm run agent:notebooklm:brief",
-        "npm run audience:intelligence",
-        "npm run build",
-        "npm run designer:visual:check -- --strict",
-        "npm run desktop:test:logic",
-        "npm run guardian:risk",
-        "npm run guardian:risk -- --strict",
-        "npm run lint",
-        "npm run refactor:website:opportunities",
-        "npm run social:youtube:audit -- --write",
-        "npm run test -- --run",
-        "npm run website:profitability"
-      ]
+      "assignmentCount": 0,
+      "recommendedGates": []
     },
     "latestAudit": {
       "available": true,
-      "score": 94
+      "score": 96
     }
   }
 }

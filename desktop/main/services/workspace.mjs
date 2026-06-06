@@ -83,15 +83,88 @@ export const readWorkspaceEnv = async (workspaceRoot) => {
   return merged;
 };
 
-export const runCommand = async ({ command, cwd, env = {} }) => new Promise((resolve) => {
-  const child = spawn(command, {
+const parseCommandLine = (commandLine = '') => {
+  const args = [];
+  let current = '';
+  let quote = '';
+  let escaped = false;
+
+  for (const char of String(commandLine).trim()) {
+    if (escaped) {
+      current += char;
+      escaped = false;
+      continue;
+    }
+
+    if (char === '\\' && quote !== "'") {
+      escaped = true;
+      continue;
+    }
+
+    if ((char === '"' || char === "'") && (!quote || quote === char)) {
+      quote = quote ? '' : char;
+      continue;
+    }
+
+    if (/\s/.test(char) && !quote) {
+      if (current) {
+        args.push(current);
+        current = '';
+      }
+      continue;
+    }
+
+    current += char;
+  }
+
+  if (current) args.push(current);
+  if (quote) throw new Error(`Unclosed quote in command: ${commandLine}`);
+  return args;
+};
+
+const resolveExecutable = (command) => {
+  if (process.platform !== 'win32') return command;
+  if (command === 'npm' || command === 'npx') return `${command}.cmd`;
+  return command;
+};
+
+export const runCommand = async ({ command, args, cwd, env = {} }) => new Promise((resolve) => {
+  let executable = command;
+  let commandArgs = args;
+
+  try {
+    if (!Array.isArray(commandArgs)) {
+      const parsed = parseCommandLine(command);
+      [executable, ...commandArgs] = parsed;
+    }
+  } catch (error) {
+    resolve({
+      ok: false,
+      code: 1,
+      stdout: '',
+      stderr: error.message,
+    });
+    return;
+  }
+
+  if (!executable) {
+    resolve({
+      ok: false,
+      code: 1,
+      stdout: '',
+      stderr: 'Command is empty.',
+    });
+    return;
+  }
+
+  const child = spawn(resolveExecutable(executable), commandArgs, {
     cwd,
-    shell: true,
     env: { ...process.env, ...env },
   });
 
   let stdout = '';
   let stderr = '';
+  let settled = false;
 
   child.stdout?.on('data', (chunk) => {
     stdout += chunk.toString();
@@ -102,11 +175,24 @@ export const runCommand = async ({ command, cwd, env = {} }) => new Promise((res
   });
 
   child.on('close', (code) => {
+    if (settled) return;
+    settled = true;
     resolve({
       ok: code === 0,
       code,
       stdout: stdout.trim(),
       stderr: stderr.trim(),
+    });
+  });
+
+  child.on('error', (error) => {
+    if (settled) return;
+    settled = true;
+    resolve({
+      ok: false,
+      code: 1,
+      stdout: stdout.trim(),
+      stderr: error.message,
     });
   });
 });

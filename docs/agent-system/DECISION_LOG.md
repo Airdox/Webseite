@@ -2,6 +2,26 @@
 
 Dieses Log speichert strategische Entscheidungen des Multi-Agenten-Systems. Kurze Eintraege sind beabsichtigt: Datum, Kontext, Entscheidung, Risiko, Recheck.
 
+## 2026-06-06 - Mentor-Agentenbildung wird operativer Monatsprozess
+
+Kontext:
+- Nutzerauftrag: Mentor soll nicht nur berichten, sondern die Weiterbildung, Bildung und Fortbildung der Agenten praktisch umsetzen.
+- Vorarbeit liegt in `MENTOR_AGENT_LEVEL_UP_PLAN_2026-05-27.md`, `mentor-knowledge-improvement-tasks.json` und `MENTOR_AGENT_EDUCATION_ADVANCEMENT_REPORT_2026-06-06.md`.
+
+Entscheidung:
+- Neuer npm-Befehl: `npm run mentor:education:write`.
+- Neuer Job-Katalog-Eintrag: `mentor-agent-education`.
+- Mentor erzeugt jetzt `latest-mentor-agent-education.*`, `AGENT_TRAINING_CATALOG.*` und `MENTOR_POSTMORTEM_BANK.*`.
+- Die Agentenbildung wird ueber Scorecard, Trainingsaufgaben und Fehler-zu-Gate-Bank messbar gemacht.
+
+Risiko:
+- Die Scorecard ist nur belastbar, wenn offene Postmortems wirklich in Gates, Tests, Runbooks oder dokumentierte Ausnahmen ueberfuehrt werden.
+- WARN-Status ist erwartet, solange Webbie, Winnie, Refactor und einzelne Governance-Themen noch offene Lernfolgen haben.
+
+Recheck:
+- `npm run mentor:education:write`
+- `npm run agent:jobs:validate`
+
 ## 2026-06-05 - Berichte werden deutsch und lesbarer normalisiert
 
 Kontext:
@@ -73,7 +93,7 @@ Kontext:
 - Im Repo liegen keine Social-Publishing-Credentials.
 
 Entscheidung:
-- Neuer manueller Handoff: `docs/agent-system/MANNI_MANUAL_PLATFORM_HANDOFF_2026-05-13.md`.
+- Neuer manueller Handoff: `docs/agent-system/reports/campaigns/MANNI_MANUAL_PLATFORM_HANDOFF_2026-05-13.md`.
 - Der Handoff listet Assets, Copy, Timing, KPI-Checkpoints und Blocker fuer die approved Operations.
 - `OPS-BOOST-01` wurde ausgeschlossen und nicht als aktiv, pending, vorbereitet oder budgetiert dokumentiert.
 
@@ -115,7 +135,7 @@ Kontext:
 
 Entscheidung:
 - Der Nutzerauftrag gilt als Freigabe fuer den lokalen Dispatch von `pr-social-reach-ops-execute`.
-- Manni erhaelt den ausfuehrbaren Operationsauftrag `docs/agent-system/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md`.
+- Manni erhaelt den ausfuehrbaren Operationsauftrag `docs/agent-system/reports/campaigns/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md`.
 - Der Auftrag umfasst Instagram/Facebook-Reels, Stories, Community-/Page-Post und Collab-/Tagging-Anfrage. Der vormals geplante kleine Boost-Test ist im aktuellen Approval-State als `OPS-BOOST-01` rejected und ausgeschlossen.
 
 Risiko:
@@ -241,7 +261,7 @@ Kontext:
 - Bestehende Manni-Artefakte waren vorhanden, aber mussten fuer den heutigen Lauf aktualisiert und verankert werden.
 
 Entscheidung:
-- Neuer bindender Plan: `docs/agent-system/AIRDOX_REACH_MASTERPLAN_2026-05-08.md`.
+- Neuer bindender Plan: `docs/agent-system/reports/campaigns/AIRDOX_REACH_MASTERPLAN_2026-05-08.md`.
 - Der Plan definiert:
   - Sprint-Zeitraum 2026-05-08 bis 2026-06-05,
   - feste Milestones M0-M6 mit konkreten Termin-Deadlines,
@@ -249,8 +269,8 @@ Entscheidung:
   - messbare Scorecards fuer Manni, Designer, Webbie, Guardian, Refactor, Repository, Winnie, Mentor und Master Controller.
 - Manni-Produktionsartefakte wurden frisch erzeugt:
   - `docs/agent-system/manni-reel-queue.json`
-  - `docs/agent-system/manni-reel-weekly-plan.md`
-  - `docs/agent-system/manni-reel-draft-pack.md`
+  - `docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md`
+  - `docs/agent-system/reports/campaigns/manni-reel-draft-pack.md`
   - Generiert am 2026-05-08, Szenario B (Collab- und Creator-Leverage).
 
 Risiko:
@@ -334,7 +354,7 @@ Kontext:
 
 Entscheidung:
 - `Repository` wird als feste Agentenidentitaet im Operating Model und Audit erfasst.
-- `docs/agent-system/REPOSITORY_GOVERNANCE.md` definiert Branch-, Commit-, PR- und Merge-Regeln.
+- `docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md` definiert Branch-, Commit-, PR- und Merge-Regeln.
 - `scripts/agent-audit.mjs` bewertet `Repository` mit strukturellen Repo-Checks.
 
 Risiko:
@@ -369,7 +389,7 @@ Kontext:
 - Die Superagenten sollen Aufgaben nach Faehigkeit und Ereignis ausfuehren, aber ohne eigenstaendige gravierende Eingriffe.
 
 Entscheidung:
-- `docs/agent-system/SUPERAGENT_ASSIGNMENTS.md` definiert Faehigkeiten, Trigger und erlaubte Aktionen je Agent.
+- `docs/agent-system/reports/operations/SUPERAGENT_ASSIGNMENTS.md` definiert Faehigkeiten, Trigger und erlaubte Aktionen je Agent.
 - PRs erhalten eine verbindliche Vorlage mit Freigabe-Block.
 - CI erzwingt Master-Controller-Freigabe ueber `npm run master:gate`.
 
@@ -430,7 +450,7 @@ Entscheidung:
 - Neues Kommando: `npm run manni:reels:generate -- --scenario=<A|B|C|D> --count=<n>`.
 - Outputs:
   - `docs/agent-system/manni-reel-queue.json`
-  - `docs/agent-system/manni-reel-weekly-plan.md`
+  - `docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md`
 - `job-catalog.json` wurde um den Script-Job `manni-reel-factory` erweitert.
 
 Risiko:
@@ -533,7 +553,7 @@ Kontext:
 - Reels sollen State-of-the-Art wirken und mit Effekten wie Equalizer, Waveform, Parallax-Stills oder Kinetic Type ueberraschen.
 
 Entscheidung:
-- Designer bekommt eine verbindliche Creative-Direction-Datei: `docs/agent-system/DESIGNER_CREATIVE_DIRECTION.md`.
+- Designer bekommt eine verbindliche Creative-Direction-Datei: `docs/agent-system/visual-templates/DESIGNER_CREATIVE_DIRECTION.md`.
 - Corporate-Design- und Reel-Template-Regeln fordern jetzt Motion-/Audio-Signatur, Still-Pruefung und `creative_static_risk` bei reinen Text-/Logo-Frames.
 - Der Brand-Asset-Generator erzeugt zusaetzliche Reel-Richtungen: `reel-signal-system`, `reel-club-still-parallax`, `reel-glitch-type-drop`.
 - Der Agent-Audit prueft, ob Designer-Motion-Regeln und Social-Reel-Motion-Felder vorhanden sind.

@@ -117,23 +117,23 @@
   "boards": [
     {
       "directionId": "airdox-block-assembly",
-      "path": "docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/01-airdox-block-assembly.svg"
+      "path": "docs/agent-system/visual-templates/designer/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/01-airdox-block-assembly.svg"
     },
     {
       "directionId": "airdox-stencil-industrial",
-      "path": "docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/02-airdox-stencil-industrial.svg"
+      "path": "docs/agent-system/visual-templates/designer/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/02-airdox-stencil-industrial.svg"
     },
     {
       "directionId": "daumenkino-wildstyle-controlled",
-      "path": "docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/03-daumenkino-wildstyle-controlled.svg"
+      "path": "docs/agent-system/visual-templates/designer/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/03-daumenkino-wildstyle-controlled.svg"
     },
     {
       "directionId": "fragment-glitch-type-drop",
-      "path": "docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/04-fragment-glitch-type-drop.svg"
+      "path": "docs/agent-system/visual-templates/designer/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/04-fragment-glitch-type-drop.svg"
     },
     {
       "directionId": "portrait-logo-lightgate",
-      "path": "docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/05-portrait-logo-lightgate.svg"
+      "path": "docs/agent-system/visual-templates/designer/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/05-portrait-logo-lightgate.svg"
     }
   ],
   "nextAction": "Build only short visual prototypes from approved directions; do not produce a 60s final or upload without user OK."

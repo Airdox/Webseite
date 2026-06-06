@@ -3,8 +3,8 @@
 app.bringToFront();
 app.displayDialogs = DialogModes.NO;
 
-var sourceFramePath = "D:/webseeite-main/docs/agent-system/social-auto-output/daumenkino-gif-letterbeat/source-gif-frames/gif_001.png";
-var outputDir = "D:/webseeite-main/docs/agent-system/social-auto-output/daumenkino-gif-letterbeat/photoshop-clean";
+var sourceFramePath = "D:/webseeite-main/docs/agent-system/visual-templates/social/social-auto-output/daumenkino-gif-letterbeat/source-gif-frames/gif_001.png";
+var outputDir = "D:/webseeite-main/docs/agent-system/visual-templates/social/social-auto-output/daumenkino-gif-letterbeat/photoshop-clean";
 
 var letters = [
   { name: "A", left: 18, top: 128, right: 148, bottom: 352, color: "ff174d" },
@@ -45,7 +45,7 @@ function saveJson(path) {
   file.encoding = "UTF8";
   file.write("{\n");
   file.write("  \"schema\": \"airdox.daumenkino.clean-letter-masks.v1\",\n");
-  file.write("  \"sourceFrame\": \"docs/agent-system/social-auto-output/daumenkino-gif-letterbeat/source-gif-frames/gif_001.png\",\n");
+  file.write("  \"sourceFrame\": \"docs/agent-system/visual-templates/social/social-auto-output/daumenkino-gif-letterbeat/source-gif-frames/gif_001.png\",\n");
   file.write("  \"note\": \"Photoshop prepared crop workfile for clean filled letter masks. Rendering uses these boxes and generated silhouette fills to avoid black holes.\",\n");
   file.write("  \"letters\": [\n");
   for (var i = 0; i < letters.length; i += 1) {

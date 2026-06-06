@@ -170,12 +170,13 @@ const agents = [
       optional('Manifest wird nicht im Main-Prozess ausgefuehrt', !/import\s*\(\s*moduleUrl\s*\)/.test(read('desktop/main/services/manifest.mjs')), 'Warnung, wenn Workspace-Dateien per dynamic import im Main-Prozess ausgefuehrt werden.', { weight: 1.5 }),
       optional('Shell-Kommandos eingegrenzt', !/shell:\s*true/.test(read('desktop/main/services/workspace.mjs') + read('desktop/main/services/pipeline.mjs')), 'Warnung, wenn Pipeline-Kommandos ueber shell:true laufen.', { weight: 1.5 }),
       optional('Electron Sandbox aktiv oder begruendet', !/sandbox:\s*false/.test(read('desktop/main/index.cjs')), 'Warnung, wenn BrowserWindow mit sandbox:false laeuft.'),
+      optional('Desktop Service-Sicherheit getestet', exists('src/desktop/__tests__/ManifestService.test.js') && exists('src/desktop/__tests__/WorkspaceService.test.js'), 'Manifest-Parsing und shellfreie Prozessaufrufe haben fokussierte Service-Tests.', { weight: 1.5 }),
       check('Windows-Dokumentation vorhanden', exists('docs/WINDOWS_FLIGHTDECK.md'), 'docs/WINDOWS_FLIGHTDECK.md beschreibt Stand, Nutzung und Teststatus.'),
     ],
     [
-      'Release-Gate aus desktop:test:logic, desktop:test:e2e und desktop:dist definieren.',
-      'Code-Signing- und Icon-Status als eigener Release-Check aufnehmen.',
-      'Publish-Pipeline-Fehler mit reproduzierbaren Test-Fixtures abdecken.',
+      'Sandbox-Start des echten Electron Flight Decks mit desktop:test:e2e nachweisen.',
+      'Build-, Deploy- und Git-Kommandos im Windows Tool auf erlaubte Befehle/Argumente begrenzen.',
+      'Design-Render- und Publish-Pipeline-Fehler mit reproduzierbaren Fixtures abdecken.',
     ],
   ),
   agent(
@@ -229,10 +230,10 @@ const agents = [
     'Designer',
     'Visual Design, Creative Direction und Social-Asset-Qualitaet.',
     [
-      check('Manni Growth Playbook vorhanden', exists('docs/agent-system/MANNI_GROWTH_PLAYBOOK.md'), 'Das Growth-Playbook ist als Creative-Rahmen verfuegbar.'),
-      check('Designer Creative Direction vorhanden', exists('docs/agent-system/DESIGNER_CREATIVE_DIRECTION.md') && /audio-reactive|Equalizer|creative_static_risk/i.test(read('docs/agent-system/DESIGNER_CREATIVE_DIRECTION.md')), 'Designer besitzt verbindliche Motion-, Audio-Reaktivitaets- und Static-Risk-Regeln.', { weight: 1.5 }),
+      check('Manni Growth Playbook vorhanden', exists('docs/agent-system/reports/campaigns/MANNI_GROWTH_PLAYBOOK.md'), 'Das Growth-Playbook ist als Creative-Rahmen verfuegbar.'),
+      check('Designer Creative Direction vorhanden', exists('docs/agent-system/visual-templates/DESIGNER_CREATIVE_DIRECTION.md') && /audio-reactive|Equalizer|creative_static_risk/i.test(read('docs/agent-system/visual-templates/DESIGNER_CREATIVE_DIRECTION.md')), 'Designer besitzt verbindliche Motion-, Audio-Reaktivitaets- und Static-Risk-Regeln.', { weight: 1.5 }),
       check('Reel Factory skriptbar', hasScript('manni:reels:generate') && exists('scripts/manni-reel-factory.mjs'), 'Reel-Factory ist als wiederholbarer Creative-Generator vorhanden.', { weight: 1.5 }),
-      optional('Reel Queue und Plan vorhanden', exists('docs/agent-system/manni-reel-queue.json') && exists('docs/agent-system/manni-reel-weekly-plan.md'), 'Warnung, wenn kreative Wochenplanung noch nicht erzeugt wurde.', { weight: 1.5 }),
+      optional('Reel Queue und Plan vorhanden', exists('docs/agent-system/manni-reel-queue.json') && exists('docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md'), 'Warnung, wenn kreative Wochenplanung noch nicht erzeugt wurde.', { weight: 1.5 }),
       optional('Social-Reel-Template fordert Motion', exists('docs/brand/templates/airdox-social-reel-template.md') && /MOTION_SIGNATURE|Equalizer|Parallax-Still|Glitch/i.test(read('docs/brand/templates/airdox-social-reel-template.md')), 'Warnung, wenn Reel-Templates keine Audio-/Motion-Signaturen erzwingen.', { weight: 1.5 }),
       optional('Visual Proof-Assets vorhanden', fileCount((filePath) => filePath.startsWith('docs/proof/') && /\.(png|jpg|jpeg|webp)$/i.test(filePath)) >= 6, 'Warnung, wenn kaum visuelle Proof-Assets fuer Creative-Qualitaet vorhanden sind.'),
       optional('UI-Brandflaechen gepflegt', exists('src/components/Hero.css') && exists('src/components/Footer.css'), 'Warnung, wenn zentrale Brandflaechen fuer visuelle Konsistenz fehlen.'),
@@ -252,9 +253,9 @@ const agents = [
     [
       check('Wiki-Kernel vorhanden', exists('airdoX_wiki/SYSTEM.md') && exists('airdoX_wiki/wiki/index.md'), 'AIRDOX Wiki besitzt Systemdatei und Index.', { weight: 1.5 }),
       check('Wissenslog vorhanden', exists('airdoX_wiki/wiki/log.md'), 'Wiki-Log ist fuer Erfahrungslernen vorhanden.'),
-      check('Agenten-Operating-Model vorhanden', exists('docs/agent-system/OPERATING_MODEL.md'), 'Das Multi-Agenten-System ist als Operating Model dokumentiert.', { weight: 1.5 }),
+      check('Agenten-Operating-Model vorhanden', exists('docs/agent-system/reports/operations/OPERATING_MODEL.md'), 'Das Multi-Agenten-System ist als Operating Model dokumentiert.', { weight: 1.5 }),
       check('Agenten-Decision-Log vorhanden', exists('docs/agent-system/DECISION_LOG.md'), 'Strategische Agentenentscheidungen werden im Decision Log gespeichert.'),
-      check('Mentor-Lernschleifen vorhanden', exists('docs/agent-system/MENTOR_LEARNING_LOOPS.md') || [
+      check('Mentor-Lernschleifen vorhanden', exists('docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md') || [
         'airdoX_wiki/wiki/local-09-mentor-audit.md',
         'airdoX_wiki/wiki/local-10-agent-decisions.md',
         'airdoX_wiki/wiki/local-11-feedback-loops.md',
@@ -275,7 +276,7 @@ const agents = [
     'Refactor',
     'Systemoptimierung, Verschlankung, Architekturqualitaet und technische Effizienz.',
     [
-      check('Refactor-Wissensseite vorhanden', exists('docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md') || exists('airdoX_wiki/wiki/local-12-refactor-optimization.md'), 'Refactor besitzt eine eigene Optimierungs- und Verschlankungsseite als versioniertes Runbook oder im Wiki.'),
+      check('Refactor-Wissensseite vorhanden', exists('docs/agent-system/reports/operations/REFACTOR_OPTIMIZATION_LOOP.md') || exists('airdoX_wiki/wiki/local-12-refactor-optimization.md'), 'Refactor besitzt eine eigene Optimierungs- und Verschlankungsseite als versioniertes Runbook oder im Wiki.'),
       check('Quality-Skripte vorhanden', hasScript('quality:web') && hasScript('quality:desktop'), 'Web- und Desktop-Quality-Gates sind in package.json abrufbar.'),
       optional('Generierte Ordner aus Lint ausgeschlossen', /\.wrangler/.test(read('eslint.config.js')) && /dist/.test(read('eslint.config.js')), 'Warnung, wenn generierte Build-/Wrangler-Artefakte vom Lint erfasst werden.'),
       optional('Root-HTML-Duplikate reduziert', rootHtmlCopies.length === 0, rootHtmlCopies.length ? `${rootHtmlCopies.length} Root-HTML-Kopien koennen Head-/SEO-Drift erzeugen.` : 'Keine Root-HTML-Kopien neben den Vite-Einstiegen gefunden.', { weight: 1.5 }),
@@ -295,11 +296,11 @@ const agents = [
     'Repository',
     'Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet.',
     [
-      check('Repository-Governance dokumentiert', exists('docs/agent-system/REPOSITORY_GOVERNANCE.md'), 'Branch-, Commit-, PR- und Merge-Regeln sind dokumentiert.'),
+      check('Repository-Governance dokumentiert', exists('docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md'), 'Branch-, Commit-, PR- und Merge-Regeln sind dokumentiert.'),
       check('Web-Quality-Workflow vorhanden', exists('.github/workflows/web-quality.yml'), 'GitHub Workflow fuer Lint, Tests, Build und Audit existiert.'),
       check('Repository-Monitoring skriptbar', hasScript('repository:monitor') && exists('scripts/repository-monitor.mjs'), 'Repository hat ein eigenes Monitoring-Skript fuer Bereinigung und Ueberwachung.'),
-      optional('Branching-Hinweise vorhanden', /feature\/|hotfix\/|release\//.test(read('docs/agent-system/REPOSITORY_GOVERNANCE.md')), 'Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist.'),
-      optional('Commit-Konvention dokumentiert', /feat|fix|refactor|docs|chore|ci/.test(read('docs/agent-system/REPOSITORY_GOVERNANCE.md')), 'Warnung, wenn Commit-Typen nicht klar festgelegt sind.'),
+      optional('Branching-Hinweise vorhanden', /feature\/|hotfix\/|release\//.test(read('docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md')), 'Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist.'),
+      optional('Commit-Konvention dokumentiert', /feat|fix|refactor|docs|chore|ci/.test(read('docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md')), 'Warnung, wenn Commit-Typen nicht klar festgelegt sind.'),
       optional('Change-Tracking vorhanden', exists('docs/agent-system/DECISION_LOG.md') && exists('docs/agent-system/latest-audit.md'), 'Warnung, wenn Entscheidungen oder Audit-Historie fehlen.'),
       optional('Arbeitsbaum releasebereit', dirtyFiles.length <= 20, `${dirtyFiles.length} uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.`, { weight: 1.5 }),
       check('Einziges Deployment-Target', exists('wrangler.jsonc') && !exists('netlify.toml') && !exists('vercel.json'), 'Nur Cloudflare (wrangler.jsonc) als Deployment-Target vorhanden.'),

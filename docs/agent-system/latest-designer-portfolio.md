@@ -35,7 +35,7 @@ Designer must proactively keep a selectable visual portfolio ready. Manni should
 - Risk: Kann zu geometrisch/techno-clean werden, wenn keine rauen Kanten und unregelmaessigen Versatzlayer dazukommen.
 - Next prototype: 5s Motion-Test: 12-18 AIRDOX-Segmente, 6 Beat-Zustaende, SISSYGUT/CTA nur als klare Nebenebene.
 - Recommendation: ja - direkt als erste neue Visualisierung bauen
-- Concept board: `docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/01-airdox-block-assembly.svg`
+- Concept board: `docs/agent-system/visual-templates/designer/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/01-airdox-block-assembly.svg`
 
 ### 2. AIRDOX Stencil Industrial
 
@@ -48,7 +48,7 @@ Designer must proactively keep a selectable visual portfolio ready. Manni should
 - Risk: Zu nah an normaler Techno-Schablone, wenn die Letterforms nicht speziell genug werden.
 - Next prototype: Still plus 3 Frame-Zustaende: verborgen, halb gescannt, voll eingerastet.
 - Recommendation: vielleicht - gut als Backup, wenn Wildstyle zu unlesbar wird
-- Concept board: `docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/02-airdox-stencil-industrial.svg`
+- Concept board: `docs/agent-system/visual-templates/designer/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/02-airdox-stencil-industrial.svg`
 
 ### 3. Controlled Daumenkino Wildstyle
 
@@ -61,7 +61,7 @@ Designer must proactively keep a selectable visual portfolio ready. Manni should
 - Risk: Hoher Lesbarkeitsverlust; darf nicht als zufaelliges Pseudo-Graffiti enden.
 - Next prototype: Kontaktbogen aus 6 AIRDOX-Letter-Ideen, noch ohne Audio, nur zur Stilentscheidung.
 - Recommendation: ja, aber nur als Ideation-Portfolio, nicht sofort final rendern
-- Concept board: `docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/03-daumenkino-wildstyle-controlled.svg`
+- Concept board: `docs/agent-system/visual-templates/designer/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/03-daumenkino-wildstyle-controlled.svg`
 
 ### 4. Fragment Glitch Type Drop
 
@@ -74,7 +74,7 @@ Designer must proactively keep a selectable visual portfolio ready. Manni should
 - Risk: Kann generisch wirken, wenn AIRDOX nicht speziell gezeichnet ist.
 - Next prototype: 5s Drop-Test mit 3 Stufen: Chaos, Lock, Pulse.
 - Recommendation: vielleicht - stark fuer Motion, aber zweite Prioritaet
-- Concept board: `docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/04-fragment-glitch-type-drop.svg`
+- Concept board: `docs/agent-system/visual-templates/designer/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/04-fragment-glitch-type-drop.svg`
 
 ### 5. Portrait + AIRDOX Light Gate
 
@@ -87,7 +87,7 @@ Designer must proactively keep a selectable visual portfolio ready. Manni should
 - Risk: Kann wieder nach Freistellungsproblem aussehen, wenn Cutout/Masken nicht hochwertig sind.
 - Next prototype: Erst nach erfolgreichem AIRDOX-Letter-System wieder aufnehmen.
 - Recommendation: naechste Woche
-- Concept board: `docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/05-portrait-logo-lightgate.svg`
+- Concept board: `docs/agent-system/visual-templates/designer/designer-portfolio-output/sissygut-airdox-portfolio-2026-05-27/05-portrait-logo-lightgate.svg`
 
 ## Reference Pools
 

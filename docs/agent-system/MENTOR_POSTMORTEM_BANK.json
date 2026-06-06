@@ -1,0 +1,61 @@
+{
+  "generatedAt": "2026-06-06T09:09:13.044Z",
+  "owner": "Mentor",
+  "postmortemBank": [
+    {
+      "id": "webbie-consent-cwv-gate",
+      "owner": "Webbie",
+      "reviewer": "Guardian",
+      "failureClass": "Website-Aenderung ohne klare Consent-, CSP- oder Core-Web-Vitals-Pruefung.",
+      "followUp": "Runbook-Regel und Gate-Hinweis fuer consent-konforme Analytics und CWV-Proof ergaenzen.",
+      "evidence": [
+        "docs/agent-system/latest-audit.md"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "winnie-ipc-shell-sandbox-risk",
+      "owner": "Winnie",
+      "reviewer": "Guardian",
+      "failureClass": "Desktop-Pfade mit IPC-, Shell- oder Sandbox-Risiko koennen Release-Risiko erzeugen.",
+      "followUp": "Training zu strukturierten APIs, Allowlist und desktop:test:logic plus E2E-Release-Gate.",
+      "evidence": [
+        "docs/agent-system/latest-audit.md"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "repository-dirty-state-release-risk",
+      "owner": "Repository",
+      "reviewer": "Master Controller",
+      "failureClass": "Viele uncommitted Pfade erschweren kontrollierte Releases und Reviews.",
+      "followUp": "Dirty-State-Training und Release-Checkliste in Repository-Governance aufnehmen.",
+      "evidence": [
+        "docs/agent-system/latest-audit.md"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "refactor-source-currency-warning",
+      "owner": "Refactor",
+      "reviewer": "Mentor",
+      "failureClass": "Eine Refactor-Quelle ist nicht erreichbar oder hat sich geaendert.",
+      "followUp": "Quelle ersetzen oder fachlich begruenden und Currency-Check erneut ausfuehren.",
+      "evidence": [
+        "docs/agent-system/latest-agent-currency.md"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "mentor-research-to-runbook",
+      "owner": "Mentor",
+      "reviewer": "Guardian",
+      "failureClass": "Research kann als Zusammenfassung enden, ohne Projektregel zu erzeugen.",
+      "followUp": "NotebookLM-Ergebnisse nur schliessen, wenn Runbook, Gate, Aufgabe, Scorecard oder Decision-Log-Regel entsteht.",
+      "evidence": [
+        "docs/agent-system/mentor-knowledge-improvement-tasks.json"
+      ],
+      "status": "in_progress"
+    }
+  ]
+}

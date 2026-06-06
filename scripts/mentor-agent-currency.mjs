@@ -13,7 +13,7 @@ const sources = [
   {
     agent: 'Webbie',
     domain: 'Frontend architecture and web performance',
-    runbooks: ['docs/agent-system/AGENT_AUTOMATION_ROADMAP.md', 'docs/agent-system/OPERATING_MODEL.md'],
+    runbooks: ['docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md', 'docs/agent-system/reports/operations/OPERATING_MODEL.md'],
     urls: [
       'https://react.dev/',
       'https://vite.dev/guide/',
@@ -24,7 +24,7 @@ const sources = [
   {
     agent: 'Designer',
     domain: 'Visual quality, accessibility, UX evidence',
-    runbooks: ['docs/agent-system/AGENT_AUTOMATION_ROADMAP.md', 'docs/brand/AIRDOX_CORPORATE_DESIGN.md'],
+    runbooks: ['docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md', 'docs/brand/AIRDOX_CORPORATE_DESIGN.md'],
     urls: [
       'https://www.w3.org/WAI/standards-guidelines/wcag/',
       'https://web.dev/learn/accessibility/',
@@ -44,7 +44,7 @@ const sources = [
   {
     agent: 'Guardian',
     domain: 'Security, CI, runtime quality and risk',
-    runbooks: ['docs/agent-system/MENTOR_LEARNING_LOOPS.md', 'docs/agent-system/REPOSITORY_GOVERNANCE.md'],
+    runbooks: ['docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md', 'docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md'],
     urls: [
       'https://owasp.org/www-project-top-ten/',
       'https://docs.github.com/en/actions',
@@ -55,7 +55,7 @@ const sources = [
   {
     agent: 'Manni',
     domain: 'Growth, booking conversion and social platform practice',
-    runbooks: ['docs/agent-system/MANNI_GROWTH_PLAYBOOK.md', 'docs/agent-system/AGENT_CONTINUOUS_LEARNING.md'],
+    runbooks: ['docs/agent-system/reports/campaigns/MANNI_GROWTH_PLAYBOOK.md', 'docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md'],
     urls: [
       'https://ads.tiktok.com/business/creativecenter/',
       'https://creators.instagram.com/',
@@ -65,7 +65,7 @@ const sources = [
   {
     agent: 'Repository',
     domain: 'Source control, GitHub governance and release hygiene',
-    runbooks: ['docs/agent-system/REPOSITORY_GOVERNANCE.md'],
+    runbooks: ['docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md'],
     urls: [
       'https://git-scm.com/docs',
       'https://docs.github.com/en/repositories',
@@ -75,17 +75,17 @@ const sources = [
   {
     agent: 'Refactor',
     domain: 'Architecture simplification and maintainability',
-    runbooks: ['docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md'],
+    runbooks: ['docs/agent-system/reports/operations/REFACTOR_OPTIMIZATION_LOOP.md'],
     urls: [
       'https://martinfowler.com/refactoring/',
       'https://web.dev/articles/fast',
-      'https://nodejs.org/en/learn/diagnostics',
+      'https://nodejs.org/en/learn/diagnostics/user-journey',
     ],
   },
   {
     agent: 'Mentor',
     domain: 'Learning loops and agent improvement process',
-    runbooks: ['docs/agent-system/MENTOR_LEARNING_LOOPS.md', 'docs/agent-system/AGENT_CONTINUOUS_LEARNING.md'],
+    runbooks: ['docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md', 'docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md'],
     urls: [
       'https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows',
       'https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows',

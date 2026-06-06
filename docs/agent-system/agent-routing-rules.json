@@ -35,8 +35,8 @@
         "public/assets/**",
         "public/brand-assets/**",
         "docs/agent-system/latest-designer-portfolio.*",
-        "docs/agent-system/designer-portfolio-output/**",
-        "docs/agent-system/proof/**"
+        "docs/agent-system/visual-templates/designer/designer-portfolio-output/**",
+        "docs/agent-system/reports/proof/**"
       ],
       "recommendedGates": [
         "npm run designer:visual:check -- --strict"
@@ -50,7 +50,7 @@
         "scratch/daumenkino-contact/**",
         "scratch/daumenkino-contact-sheet.jpg",
         "public/brand-assets/daumenkino/**",
-        "docs/agent-system/social-auto-output/daumenkino-preview/**",
+        "docs/agent-system/visual-templates/social/social-auto-output/daumenkino-preview/**",
         "scripts/render-daumenkino*.mjs",
         "scripts/photoshop-export-daumenkino*.jsx",
         "scripts/photoshop-export-portrait-cutout.jsx"
@@ -124,7 +124,7 @@
         "docs/agent-system/MANNI_*.md",
         "docs/agent-system/SOCIAL_PROMOTION_*.md",
         "docs/agent-system/manni-*",
-        "docs/agent-system/social-auto-output/**",
+        "docs/agent-system/visual-templates/social/social-auto-output/**",
         "scripts/manni-*.mjs",
         "scripts/social-*.mjs"
       ],
@@ -141,7 +141,7 @@
         "scripts/youtube-publish-audit.mjs",
         "scripts/verify-youtube-playback.mjs",
         "docs/agent-system/latest-youtube-publish-audit.*",
-        "docs/agent-system/social-auto-output/**/manifest.json"
+        "docs/agent-system/visual-templates/social/social-auto-output/**/manifest.json"
       ],
       "recommendedGates": [
         "npm run social:youtube:audit -- --write",
@@ -186,7 +186,7 @@
       "agent": "Deep Research",
       "role": "primary",
       "paths": [
-        "docs/agent-system/research/**",
+        "docs/agent-system/reports/research/**",
         "docs/agent-system/latest-notebooklm-brief.*",
         "docs/agent-system/latest-agent-task-queue.json"
       ],
@@ -226,7 +226,7 @@
         ".gitignore",
         ".gitattributes",
         ".github/**",
-        "docs/agent-system/REPOSITORY_GOVERNANCE.md"
+        "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md"
       ],
       "recommendedGates": [
         "npm run repository:monitor:strict"

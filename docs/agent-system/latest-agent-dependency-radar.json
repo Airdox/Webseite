@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-06-05T19:57:23.753Z",
+  "generatedAt": "2026-06-06T07:47:05.496Z",
   "controller": "Master Controller",
   "job": "agent-dependency-radar",
   "purpose": "Keep AIRDOX agents interlocked: every output should name the next waiting agent, dependency, and user touchpoint.",
   "summary": {
-    "handoffCount": 19,
-    "alertCount": 14,
-    "lastJobRun": "2026-06-05T19:45:50.875Z",
-    "changedFileCount": 111,
-    "qualityObligationCount": 3
+    "handoffCount": 16,
+    "alertCount": 12,
+    "lastJobRun": "2026-06-06T07:45:46.896Z",
+    "changedFileCount": 77,
+    "qualityObligationCount": 2
   },
   "handoffs": [
     {
@@ -16,7 +16,7 @@
       "from": "Workbench",
       "to": "Audience Intelligence",
       "status": "watch",
-      "waitsFor": "8 changed file(s) matched audience-intelligence.",
+      "waitsFor": "7 changed file(s) matched audience-intelligence.",
       "nextAction": "Sondieren, ob aus docs/agent-system/latest-audience-intelligence.json, docs/agent-system/latest-audience-intelligence.md, docs/agent-system/latest-website-profitability.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
@@ -34,17 +34,8 @@
       "from": "Workbench",
       "to": "Designer",
       "status": "watch",
-      "waitsFor": "3 changed file(s) matched visual-quality.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/latest-designer-portfolio.md, public/brand-assets/airdox-lettering/, public/brand-assets/lettering-lab/ eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-guardian-primary",
-      "from": "Workbench",
-      "to": "Guardian",
-      "status": "watch",
-      "waitsFor": "1 changed file(s) matched youtube-publish-quality.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/latest-youtube-publish-audit.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "32 changed file(s) matched visual-quality.",
+      "nextAction": "Sondieren, ob aus public/brand-assets/airdox-lettering/strobe-proof/concepts/, public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o-solid.png, public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o.png eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -52,8 +43,8 @@
       "from": "Workbench",
       "to": "Guardian",
       "status": "watch",
-      "waitsFor": "49 changed file(s) matched quality-security.",
-      "nextAction": "Sondieren, ob aus airdox_three_reel.html, cloud-render/, docs/agent-system/latest-agent-currency.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "35 changed file(s) matched quality-security.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/latest-agent-currency.json, docs/agent-system/latest-agent-currency.md, docs/agent-system/latest-agent-dependency-radar.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -61,8 +52,8 @@
       "from": "Workbench",
       "to": "Manni",
       "status": "watch",
-      "waitsFor": "6 changed file(s) matched growth-conversion.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json, docs/agent-system/manni-reel-weekly-plan.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "3 changed file(s) matched growth-conversion.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/reports/campaigns/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json, docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -71,7 +62,7 @@
       "to": "Master Controller",
       "status": "watch",
       "waitsFor": "28 changed file(s) matched default routing.",
-      "nextAction": "Sondieren, ob aus airdox_three_reel.html, cloud-render/, docs/agent-system/latest-agent-currency.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/latest-agent-currency.json, docs/agent-system/latest-agent-currency.md, docs/agent-system/latest-agent-dependency-radar.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -79,17 +70,8 @@
       "from": "Workbench",
       "to": "Mentor",
       "status": "watch",
-      "waitsFor": "14 changed file(s) matched learning-documentation.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md, docs/agent-system/DECISION_LOG.md, docs/agent-system/OPERATING_MODEL.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-refactor-implementation_support",
-      "from": "Workbench",
-      "to": "Refactor",
-      "status": "watch",
-      "waitsFor": "46 changed file(s) matched refactor-architecture.",
-      "nextAction": "Sondieren, ob aus src/components/AuthModal.jsx, src/components/AuthModalFields.jsx, src/components/AuthSocialButtons.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "4 changed file(s) matched learning-documentation.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/reports/operations/AGENT_SYSTEM_ARCHITECTURE.md, docs/agent-system/reports/campaigns/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -97,8 +79,8 @@
       "from": "Workbench",
       "to": "Webbie",
       "status": "watch",
-      "waitsFor": "18 changed file(s) matched website-experience.",
-      "nextAction": "Sondieren, ob aus public/brand-assets/airdox-lettering/, public/brand-assets/lettering-lab/, src/components/AuthModal.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "32 changed file(s) matched website-experience.",
+      "nextAction": "Sondieren, ob aus public/brand-assets/airdox-lettering/strobe-proof/concepts/, public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o-solid.png, public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o.png eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -156,19 +138,10 @@
       "userTouchpoint": "Ask for OK only on a concrete preview package."
     },
     {
-      "id": "quality-chain-website-ui-quality-chain",
-      "from": "Webbie",
-      "to": "Guardian",
-      "status": "test_changes_present",
-      "waitsFor": "Website/UI files changed; user-facing behavior must not rely on manual inspection only.",
-      "nextAction": "Guardian must verify that changed tests cover the changed UI path.",
-      "userTouchpoint": "Only ask user if expected behavior or content is ambiguous."
-    },
-    {
       "id": "quality-chain-script-api-quality-chain",
       "from": "Guardian",
       "to": "Guardian",
-      "status": "test_changes_present",
+      "status": "validation_required",
       "waitsFor": "Scripts/server/desktop main logic changed; command validation or tests must prove behavior.",
       "nextAction": "Guardian must run or request the narrow command that proves the changed script path.",
       "userTouchpoint": "Only ask user for credentials or live-system approval if a validation needs external access."
@@ -187,7 +160,7 @@
     {
       "id": "workbench-change-audience-intelligence-review",
       "severity": "info",
-      "message": "Audience Intelligence waits for: 8 changed file(s) matched audience-intelligence.",
+      "message": "Audience Intelligence waits for: 7 changed file(s) matched audience-intelligence.",
       "nextAction": "Sondieren, ob aus docs/agent-system/latest-audience-intelligence.json, docs/agent-system/latest-audience-intelligence.md, docs/agent-system/latest-website-profitability.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
@@ -201,57 +174,43 @@
     {
       "id": "workbench-change-designer-review",
       "severity": "info",
-      "message": "Designer waits for: 3 changed file(s) matched visual-quality.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/latest-designer-portfolio.md, public/brand-assets/airdox-lettering/, public/brand-assets/lettering-lab/ eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-guardian-primary",
-      "severity": "info",
-      "message": "Guardian waits for: 1 changed file(s) matched youtube-publish-quality.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/latest-youtube-publish-audit.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Designer waits for: 32 changed file(s) matched visual-quality.",
+      "nextAction": "Sondieren, ob aus public/brand-assets/airdox-lettering/strobe-proof/concepts/, public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o-solid.png, public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o.png eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-guardian-review",
       "severity": "info",
-      "message": "Guardian waits for: 49 changed file(s) matched quality-security.",
-      "nextAction": "Sondieren, ob aus airdox_three_reel.html, cloud-render/, docs/agent-system/latest-agent-currency.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Guardian waits for: 35 changed file(s) matched quality-security.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/latest-agent-currency.json, docs/agent-system/latest-agent-currency.md, docs/agent-system/latest-agent-dependency-radar.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-manni-primary",
       "severity": "info",
-      "message": "Manni waits for: 6 changed file(s) matched growth-conversion.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json, docs/agent-system/manni-reel-weekly-plan.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Manni waits for: 3 changed file(s) matched growth-conversion.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/reports/campaigns/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json, docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-master-controller-review",
       "severity": "info",
       "message": "Master Controller waits for: 28 changed file(s) matched default routing.",
-      "nextAction": "Sondieren, ob aus airdox_three_reel.html, cloud-render/, docs/agent-system/latest-agent-currency.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/latest-agent-currency.json, docs/agent-system/latest-agent-currency.md, docs/agent-system/latest-agent-dependency-radar.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-mentor-review",
       "severity": "info",
-      "message": "Mentor waits for: 14 changed file(s) matched learning-documentation.",
-      "nextAction": "Sondieren, ob aus docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md, docs/agent-system/DECISION_LOG.md, docs/agent-system/OPERATING_MODEL.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-refactor-implementation_support",
-      "severity": "info",
-      "message": "Refactor waits for: 46 changed file(s) matched refactor-architecture.",
-      "nextAction": "Sondieren, ob aus src/components/AuthModal.jsx, src/components/AuthModalFields.jsx, src/components/AuthSocialButtons.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Mentor waits for: 4 changed file(s) matched learning-documentation.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/reports/operations/AGENT_SYSTEM_ARCHITECTURE.md, docs/agent-system/reports/campaigns/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-webbie-primary",
       "severity": "info",
-      "message": "Webbie waits for: 18 changed file(s) matched website-experience.",
-      "nextAction": "Sondieren, ob aus public/brand-assets/airdox-lettering/, public/brand-assets/lettering-lab/, src/components/AuthModal.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Webbie waits for: 32 changed file(s) matched website-experience.",
+      "nextAction": "Sondieren, ob aus public/brand-assets/airdox-lettering/strobe-proof/concepts/, public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o-solid.png, public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o.png eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {

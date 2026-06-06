@@ -62,7 +62,7 @@ const slim = items.map((item) => ({
 }));
 
 writeFileSync(
-  'docs/agent-system/social-auto-output/recording-2026-05-24/youtube-upload-list.json',
+  'docs/agent-system/visual-templates/social/social-auto-output/recording-2026-05-24/youtube-upload-list.json',
   JSON.stringify(slim, null, 2),
 );
 

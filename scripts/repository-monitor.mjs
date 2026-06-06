@@ -50,7 +50,7 @@ const trackedArtifactsForReview = trackedArtifacts.filter((line) => !allowedTrac
 
 const rootHtmlCopies = ['custom.html', 'live_index.html', 'page.html'].filter((filePath) => exists(filePath));
 const requiredFiles = [
-  'docs/agent-system/REPOSITORY_GOVERNANCE.md',
+  'docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md',
   '.github/workflows/web-quality.yml',
   'scripts/agent-audit.mjs',
 ];

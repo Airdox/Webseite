@@ -1,6 +1,6 @@
 # AIRDOX Refactor-Website-Chancen
 
-Erstellt: 2026-06-05T19:57:22.883Z
+Erstellt: 2026-06-06T07:47:04.591Z
 Agent: Refactor
 
 ## Ueberblick

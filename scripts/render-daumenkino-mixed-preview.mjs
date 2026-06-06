@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const outDir = join(root, 'docs/agent-system/social-auto-output/daumenkino-preview/mixed-graffiti-portrait');
+const outDir = join(root, 'docs/agent-system/visual-templates/social/social-auto-output/daumenkino-preview/mixed-graffiti-portrait');
 const logoPath = join(outDir, 'logo-source.png');
 const bgPath = join(outDir, 'portrait-source.png');
 const portraitCutoutPath = join(outDir, 'portrait-cutout.png');

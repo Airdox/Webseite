@@ -1,0 +1,174 @@
+{
+  "generatedAt": "2026-06-06T09:09:13.044Z",
+  "owner": "Mentor",
+  "trainingCatalog": [
+    {
+      "agent": "Webbie",
+      "goal": "Messbare Website-, UX-, SEO- und Performance-Aenderungen mit Proof liefern.",
+      "trainings": [
+        {
+          "type": "basis",
+          "title": "Website-Aenderung mit Build- und Testnachweis",
+          "acceptance": "Aenderung nennt betroffene Section, Risiko, npm-Gates und erwarteten Nutzer-/Conversion-Effekt."
+        },
+        {
+          "type": "fehlerfall",
+          "title": "Consent- oder Tracking-Luecke erkennen",
+          "acceptance": "Agent blockiert Blindoptimierung, benennt fehlendes Event und fordert consent-konforme Messung an."
+        },
+        {
+          "type": "cross-agent",
+          "title": "Funnel-Training mit Manni und Audience Intelligence",
+          "acceptance": "Manni liefert Kampagnenziel, Webbie Messpunkt, Audience Intelligence Auswertung, Guardian prueft Risiko."
+        }
+      ]
+    },
+    {
+      "agent": "Winnie",
+      "goal": "Flight-Deck-Features stabil, testbar und releasefaehig vorbereiten.",
+      "trainings": [
+        {
+          "type": "basis",
+          "title": "Desktop-Feature mit Logic-Test",
+          "acceptance": "Feature nennt Main/Preload/Renderer-Grenze und fuehrt desktop:test:logic aus."
+        },
+        {
+          "type": "fehlerfall",
+          "title": "Unsicheren IPC- oder Shell-Pfad erkennen",
+          "acceptance": "Agent markiert Risiko, schlaegt Allowlist/strukturierte API vor und eskaliert an Guardian."
+        },
+        {
+          "type": "cross-agent",
+          "title": "Flight-Deck-UI mit Designer-Proof",
+          "acceptance": "Winnie liefert Funktion, Designer CD-Review, Guardian Release-Gate und Proof-Pfad."
+        }
+      ]
+    },
+    {
+      "agent": "Guardian",
+      "goal": "Risiko-, Security-, Datenschutz- und Release-Gates fuehrend absichern.",
+      "trainings": [
+        {
+          "type": "basis",
+          "title": "Quality-Gate-Bewertung",
+          "acceptance": "Agent benennt Pflichtgates, Status, offene Risiken und Blocker."
+        },
+        {
+          "type": "fehlerfall",
+          "title": "Externe Live-Aktion ohne Nutzerfreigabe blockieren",
+          "acceptance": "Agent blockiert, verweist auf Freigaberegel und fordert Decision-Log-Eintrag."
+        },
+        {
+          "type": "cross-agent",
+          "title": "Release-Ausnahme mit Master Controller pruefen",
+          "acceptance": "Risiko, Ausnahmegrund, Rueckfallpfad und Recheck sind dokumentiert."
+        }
+      ]
+    },
+    {
+      "agent": "Manni",
+      "goal": "Promotion- und PR-Arbeit zielgerichtet, messbar und freigabesicher vorbereiten.",
+      "trainings": [
+        {
+          "type": "basis",
+          "title": "Kampagnenplan mit Ziel-Event",
+          "acceptance": "Plan nennt Plattform, Asset, Ziel-KPI, Landing-URL und ersten Messzeitpunkt."
+        },
+        {
+          "type": "fehlerfall",
+          "title": "Draft/Live-Trennung bei Social-Post",
+          "acceptance": "Agent erstellt nur Drafts und blockiert Upload, Outreach oder Paid Spend ohne persoenliches OK."
+        },
+        {
+          "type": "cross-agent",
+          "title": "Creative-Pack mit Designer und Audience Intelligence",
+          "acceptance": "Designer prueft CD, Audience Intelligence definiert Messung, Manni plant Copy und Timing."
+        }
+      ]
+    },
+    {
+      "agent": "Designer",
+      "goal": "AIRDOX-Designqualitaet, Vorlagen und Proof-Artefakte wiederholbar sichern.",
+      "trainings": [
+        {
+          "type": "basis",
+          "title": "Asset gegen Corporate Design pruefen",
+          "acceptance": "Review nennt Farbdisziplin, Typografie, Safe-Area, Hook-Frame und final nutzbaren Pfad."
+        },
+        {
+          "type": "fehlerfall",
+          "title": "Statisches Reel als creative_static_risk markieren",
+          "acceptance": "Agent fordert Motion-, Equalizer-, Waveform- oder Kinetic-Type-Ueberarbeitung."
+        },
+        {
+          "type": "cross-agent",
+          "title": "Template-Handoff fuer andere Agenten",
+          "acceptance": "Vorlage nennt editierbare Felder, Exportziel, Safe-Area-Regeln und erlaubte Nutzer."
+        }
+      ]
+    },
+    {
+      "agent": "Mentor",
+      "goal": "Agentenbildung, Wissensbasis, Scorecard und Fehlerlernen fuehrend steuern.",
+      "trainings": [
+        {
+          "type": "basis",
+          "title": "Kompetenzmatrix monatlich aktualisieren",
+          "acceptance": "Jeder Agent hat Level, schwaechste Dimension, Belege, offene Trainings und naechste Aktion."
+        },
+        {
+          "type": "fehlerfall",
+          "title": "Research ohne Projektwirkung abfangen",
+          "acceptance": "NotebookLM- oder Research-Ergebnis wird erst akzeptiert, wenn Runbook, Gate, Aufgabe oder Scorecard folgt."
+        },
+        {
+          "type": "cross-agent",
+          "title": "Postmortem in Gate/Test/Regel ueberfuehren",
+          "acceptance": "Mentor benennt Owner, Reviewer, Folgearbeit, Recheck und Status."
+        }
+      ]
+    },
+    {
+      "agent": "Refactor",
+      "goal": "Komplexitaet klein, belegbar und rueckfallfaehig reduzieren.",
+      "trainings": [
+        {
+          "type": "basis",
+          "title": "Kleiner Refactor-Vorschlag",
+          "acceptance": "Vorschlag nennt Scope, betroffene Dateien, Nutzen, Risiko, Gates und Rueckfallpfad."
+        },
+        {
+          "type": "fehlerfall",
+          "title": "Zu breiten Umbau stoppen",
+          "acceptance": "Agent trennt den Umbau in genehmigungsfaehige kleine Schritte oder eskaliert an Master Controller."
+        },
+        {
+          "type": "cross-agent",
+          "title": "DesktopApp-Komplexitaet mit Winnie und Guardian reduzieren",
+          "acceptance": "Winnie prueft Funktion, Guardian Gates, Refactor Scope und Repository Branch-Hygiene."
+        }
+      ]
+    },
+    {
+      "agent": "Repository",
+      "goal": "Branch-, PR-, Release- und Arbeitsbaum-Hygiene stabilisieren.",
+      "trainings": [
+        {
+          "type": "basis",
+          "title": "Dirty-State-Review vor Release",
+          "acceptance": "Agent trennt eigene, fremde, generierte und releasekritische Aenderungen."
+        },
+        {
+          "type": "fehlerfall",
+          "title": "Mehrdeutige Deployment- oder Branch-Strategie erkennen",
+          "acceptance": "Agent fordert primaeren Pfad, Pflichtchecks und Decision-Log-Klarstellung."
+        },
+        {
+          "type": "cross-agent",
+          "title": "PR-Handoff mit Guardian und Master Controller",
+          "acceptance": "PR nennt Owner, Gates, Risiko, Master-Freigabe falls gravierend und offene Restpunkte."
+        }
+      ]
+    }
+  ]
+}

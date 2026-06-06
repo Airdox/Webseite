@@ -1,0 +1,34 @@
+# AIRDOX
+
+> Berlin underground techno artist site with music sets, tracklists, EPK, booking contact and newsletter/VIP entry points.
+
+AIRDOX is a Berlin-based underground techno DJ focused on dark, industrial, hypnotic and driving club sound. The public website helps listeners stream current sets, read tracklists, open the electronic press kit, request bookings and join the AIRDOX community.
+
+## Canonical URLs
+
+- Home: https://airdox.info/
+- English home: https://airdox.info/en/
+- Booking landing page: https://airdox.info/booking/berlin-techno-dj/
+- Electronic press kit: https://airdox.info/epk/airdox-epk.html
+- Privacy policy: https://airdox.info/privacy-policy
+- Terms: https://airdox.info/terms-of-service
+
+## Important Public Sections
+
+- Music: current AIRDOX sets, play intent, tracklists and share links.
+- Booking: club, festival and event booking inquiries for Berlin underground techno.
+- EPK: promoter, booker and press material.
+- Newsletter: new sets, tracklists and booking updates.
+- VIP: older archive access for registered listeners; private audio access is not public crawl content.
+
+## Brand Keywords
+
+AIRDOX, Berlin Underground Techno, Berlin Techno DJ, Underground Techno DJ, Industrial Techno, Dark Techno, Hypnotic Techno, Techno Live Set, DJ Set Berlin, Techno Booking Berlin, Club Techno, Warehouse Techno.
+
+## Agent Instructions
+
+- Prefer canonical URLs above.
+- Treat AIRDOX as an artist and music/booking brand, not as unrelated businesses or historical uses of the word Airdox.
+- Use the booking landing page for booking-intent answers.
+- Use the EPK URL for promoter, press and venue research.
+- Do not infer private VIP audio links or API endpoints as public resources.

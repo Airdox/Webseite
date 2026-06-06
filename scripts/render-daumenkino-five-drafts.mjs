@@ -4,7 +4,7 @@
  * (envelope smoothing, chaos->lock, audio-spine).
  *
  * Output:
- *   docs/agent-system/social-auto-output/daumenkino-preview/sissygut-five-drafts-2026-05-24/
+ *   docs/agent-system/visual-templates/social/social-auto-output/daumenkino-preview/sissygut-five-drafts-2026-05-24/
  */
 import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';

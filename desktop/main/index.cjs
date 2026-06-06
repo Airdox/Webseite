@@ -221,7 +221,7 @@ const createWindow = async () => {
       preload: preloadPath,
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false,
+      sandbox: true,
     },
   });
 
@@ -279,7 +279,7 @@ const createDesignStudioWindow = async () => {
       preload: preloadPath,
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false,
+      sandbox: true,
     },
   });
 
@@ -558,7 +558,6 @@ ipcMain.handle('flightdeck:render-design', async (_event, payload) => {
  
     const child = spawn('node', [scriptPath, style, encodedPayload], {
       cwd: workspaceRoot,
-      shell: true,
       env: { ...process.env }
     });
 

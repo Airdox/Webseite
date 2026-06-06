@@ -1,36 +1,44 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /desktop/
+Disallow: /vip/
 
-# Block AI Crawlers
+# Agent and AI crawler policy
+# Public AIRDOX artist, music, EPK and booking pages may be indexed for search,
+# recommendations and AI answer engines. API, admin, desktop and VIP surfaces
+# remain excluded above.
 User-agent: GPTBot
-Disallow: /
+Allow: /
 User-agent: ChatGPT-User
-Disallow: /
+Allow: /
 User-agent: Google-Extended
-Disallow: /
+Allow: /
 User-agent: CCBot
-Disallow: /
+Allow: /
 User-agent: Omgilibot
-Disallow: /
+Allow: /
 User-agent: FacebookBot
-Disallow: /
+Allow: /
 User-agent: Diffbot
-Disallow: /
+Allow: /
 User-agent: Bytespider
-Disallow: /
+Allow: /
 User-agent: ImagesiftBot
-Disallow: /
+Allow: /
 User-agent: PerplexityBot
-Disallow: /
+Allow: /
 User-agent: YouBot
-Disallow: /
+Allow: /
 User-agent: Anthropic-AI
-Disallow: /
+Allow: /
 User-agent: Claude-Web
-Disallow: /
+Allow: /
 User-agent: ClaudeBot
-Disallow: /
+Allow: /
 User-agent: Amazonbot
-Disallow: /
+Allow: /
 
 Sitemap: https://airdox.info/sitemap.xml
+LLM-Profile: https://airdox.info/llms.txt

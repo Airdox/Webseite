@@ -1,6 +1,6 @@
 # AIRDOX Repository-Monitor
 
-Erstellt: 2026-06-05T19:45:51.399Z
+Erstellt: 2026-06-06T07:45:47.692Z
 Agent: Repository
 Repository: D:\webseeite-main
 Branch: main
@@ -10,8 +10,8 @@ Branch: main
 - Checks: 6
 - Fehler: 0
 - Warnungen: 2
-- Offene Pfade: 111
-- Unerwartete offene Pfade: 109
+- Offene Pfade: 77
+- Unerwartete offene Pfade: 76
 - Baseline offene Pfade: 80
 - Versionierte generierte Artefakte (Review): 0
 
@@ -21,21 +21,14 @@ Branch: main
 | --- | --- | --- |
 | branch-naming | PASS | Aktueller Branch: main |
 | required-governance-files | PASS | Gefundene Governance-Dateien: 3/3 |
-| working-tree-cleanliness-total | WARN | 111 uncommitted Pfade insgesamt. |
-| working-tree-cleanliness | WARN | 109 unerwartete uncommitted Pfade (111 gesamt, 80 baseline) |
+| working-tree-cleanliness-total | WARN | 77 uncommitted Pfade insgesamt. |
+| working-tree-cleanliness | WARN | 76 unerwartete uncommitted Pfade (77 gesamt, 80 baseline) |
 | tracked-generated-artifacts | PASS | 0 potentiell generierte Artefaktpfade sind versioniert. |
 | root-html-duplication | PASS | 0 zusaetzliche Root-HTML-Dateien erkannt. |
 
 ## Unerwartete offene Pfade
 
-- M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
-- M docs/agent-system/DECISION_LOG.md
-- M docs/agent-system/OPERATING_MODEL.md
-- M docs/agent-system/ORCHESTRATION_WORKFLOW.md
-- M docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md
-- M docs/agent-system/SUPERAGENT_ASSIGNMENTS.md
-- M docs/agent-system/agent-routing-rules.json
-- M docs/agent-system/job-catalog.json
+- M docs/agent-system/reports/operations/AGENT_SYSTEM_ARCHITECTURE.md
 - M docs/agent-system/latest-agent-currency.json
 - M docs/agent-system/latest-agent-currency.md
 - M docs/agent-system/latest-agent-dependency-radar.json
@@ -51,9 +44,6 @@ Branch: main
 - M docs/agent-system/latest-audit.json
 - M docs/agent-system/latest-audit.md
 - M docs/agent-system/latest-background-cycle.json
-- M docs/agent-system/latest-brand-asset-generator.md
-- M docs/agent-system/latest-designer-portfolio.md
-- M docs/agent-system/latest-designer-visual-quality.md
 - M docs/agent-system/latest-guardian-risk-summary.json
 - M docs/agent-system/latest-guardian-risk-summary.md
 - M docs/agent-system/latest-job-run.json
@@ -64,79 +54,56 @@ Branch: main
 - M docs/agent-system/latest-refactor-website-opportunities.md
 - M docs/agent-system/latest-repository-monitor.json
 - M docs/agent-system/latest-repository-monitor.md
-- M docs/agent-system/latest-social-post-ledger.md
 - M docs/agent-system/latest-website-profitability.json
 - M docs/agent-system/latest-website-profitability.md
-- M docs/agent-system/latest-youtube-publish-audit.md
-- M docs/agent-system/manni-reel-draft-pack.md
+- M docs/agent-system/reports/campaigns/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
-- M docs/agent-system/manni-reel-weekly-plan.md
-- M package-lock.json
-- M scripts/agent-background-cycle.mjs
-- M scripts/agent-job-runner.mjs
-- M scripts/audience-intelligence-agent.mjs
-- M scripts/refactor-website-opportunities.mjs
-- M src/components/AuthModal.jsx
-- M src/components/BioSection.jsx
-- M src/components/BookingSection.jsx
-- M src/components/MusicSection.jsx
-- M src/components/Newsletter.jsx
-- M src/components/SetCard.jsx
-- M src/components/VIPSection.jsx
-- M src/contexts/AudioContext.jsx
-- M src/lib/stats-logic.js
-- M src/server/worker.js
-- M src/utils/analytics/index.js
-- M src/utils/audienceSignals.js
-- M src/utils/i18n.js
-- M src/utils/stats-sync.js
-- ?? airdox_three_reel.html
-- ?? cloud-render/
-- ?? docs/agent-system/lettering-lab/
-- ?? docs/brand/templates/airdox-lettering-lab-brief.md
-- ?? docs/brand/templates/airdox-remotion-reel-template.md
-- ?? public/brand-assets/airdox-lettering/
-- ?? public/brand-assets/lettering-lab/
-- ?? remotion/
-- ?? scripts/airdox-lettering-lab.mjs
-- ?? scripts/build-mega-analytics-pack.mjs
-- ?? scripts/extract-airdox-strobe-proof-assets.mjs
-- ?? scripts/localize-agent-reports.mjs
-- ?? scripts/photoshop-export-airdox-letter-masks.jsx
-- ?? scripts/render-airdox-lettering-lab.mjs
-- ?? scripts/run-photoshop-airdox-letter-masks.mjs
-- ?? src/components/AuthModalFields.jsx
-- ?? src/components/AuthSocialButtons.jsx
-- ?? src/components/AuthSocialProviderIcon.jsx
-- ?? src/components/BookingSocialLinks.jsx
-- ?? src/components/__tests__/authModalUtils.test.js
-- ?? src/components/__tests__/setCardUtils.test.js
-- ?? src/components/authModalUtils.js
-- ?? src/components/setCardUtils.js
-- ?? src/contexts/__tests__/audioSources.test.js
-- ?? src/contexts/audioSources.js
-- ?? src/lib/__tests__/authHelpers.test.js
-- ?? src/lib/__tests__/statsContracts.test.js
-- ?? src/lib/authHelpers.js
-- ?? src/lib/authRequestHandler.js
-- ?? src/lib/statsContracts.js
-- ?? src/lib/statsDatabase.js
-- ?? src/server/__tests__/httpResponses.test.js
-- ?? src/server/__tests__/legalPages.test.js
-- ?? src/server/__tests__/oauthUtils.test.js
-- ?? src/server/audioRoutes.js
-- ?? src/server/httpResponses.js
-- ?? src/server/legalPages.js
-- ?? src/server/oauthUtils.js
-- ?? src/utils/__tests__/apiClient.test.js
-- ?? src/utils/__tests__/websiteContracts.test.js
-- ?? src/utils/analytics/__tests__/
-- ?? src/utils/analytics/analyticsExport.js
-- ?? src/utils/analytics/analyticsRuntime.js
-- ?? src/utils/analytics/analyticsStats.js
-- ?? src/utils/apiClient.js
-- ?? src/utils/i18nMessages.js
-- ?? src/utils/websiteContracts.js
+- M docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-a-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-a.png
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-d-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-d.png
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-i-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-i.png
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-o-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-o.png
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-r-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-r.png
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-x-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-x.png
+- D public/brand-assets/airdox-lettering/strobe-proof/source-sheet.png
+- D public/brand-assets/airdox-lettering/strobe-proof/wordmark-02-raw.png
+- D public/brand-assets/airdox-lettering/strobe-proof/wordmark-02.png
+- M remotion/airdox-reels/out/airdox-letter-strobe-proof-8s.mp4
+- M remotion/airdox-reels/out/airdox-letter-strobe-proof.png
+- M remotion/airdox-reels/src/AirdoxLetterStrobe.jsx
+- D scripts/extract-airdox-strobe-proof-assets.mjs
+- D scripts/photoshop-export-airdox-letter-masks.jsx
+- D scripts/run-photoshop-airdox-letter-masks.mjs
+- ?? public/brand-assets/airdox-lettering/strobe-proof/concepts/
+- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-x-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-x.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-a-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-d-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-i-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-o-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-r-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-x-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/mask-review-sheet.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/photoshop-separated-letter-mask-manifest.json
+- ?? public/brand-assets/airdox-lettering/strobe-proof/photoshop-separated-letter-mask.done
+- ?? public/brand-assets/airdox-lettering/strobe-proof/separated-letter-mask-manifest.json
+- ?? public/brand-assets/airdox-lettering/strobe-proof/source-separated-airdox-before-concept-1.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/source-separated-airdox.png
+- ?? remotion/airdox-reels/out/airdox-letter-strobe-proof-ox-hit.png
+- ?? remotion/airdox-reels/out/airdox-letter-strobe-proof.mp4
+- ?? remotion/airdox-reels/out/airdox-letter-strobe-vertical-proof-8s.mp4
+- ?? remotion/airdox-reels/out/airdox-letter-strobe-vertical-proof.png
+- ?? scripts/extract-airdox-separated-letter-assets.mjs
+- ?? scripts/photoshop-export-airdox-separated-letter-masks.jsx
+- ?? scripts/run-photoshop-airdox-separated-letter-masks.mjs
 
 ## Baseline fuer offene Pfade
 
@@ -223,14 +190,7 @@ Branch: main
 
 ## Alle offenen Pfade
 
-- M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
-- M docs/agent-system/DECISION_LOG.md
-- M docs/agent-system/OPERATING_MODEL.md
-- M docs/agent-system/ORCHESTRATION_WORKFLOW.md
-- M docs/agent-system/REFACTOR_OPTIMIZATION_LOOP.md
-- M docs/agent-system/SUPERAGENT_ASSIGNMENTS.md
-- M docs/agent-system/agent-routing-rules.json
-- M docs/agent-system/job-catalog.json
+- M docs/agent-system/reports/operations/AGENT_SYSTEM_ARCHITECTURE.md
 - M docs/agent-system/latest-agent-currency.json
 - M docs/agent-system/latest-agent-currency.md
 - M docs/agent-system/latest-agent-dependency-radar.json
@@ -246,9 +206,6 @@ Branch: main
 - M docs/agent-system/latest-audit.json
 - M docs/agent-system/latest-audit.md
 - M docs/agent-system/latest-background-cycle.json
-- M docs/agent-system/latest-brand-asset-generator.md
-- M docs/agent-system/latest-designer-portfolio.md
-- M docs/agent-system/latest-designer-visual-quality.md
 - M docs/agent-system/latest-guardian-risk-summary.json
 - M docs/agent-system/latest-guardian-risk-summary.md
 - M docs/agent-system/latest-job-run.json
@@ -259,81 +216,57 @@ Branch: main
 - M docs/agent-system/latest-refactor-website-opportunities.md
 - M docs/agent-system/latest-repository-monitor.json
 - M docs/agent-system/latest-repository-monitor.md
-- M docs/agent-system/latest-social-post-ledger.md
 - M docs/agent-system/latest-website-profitability.json
 - M docs/agent-system/latest-website-profitability.md
-- M docs/agent-system/latest-youtube-publish-audit.md
-- M docs/agent-system/manni-reel-draft-pack.md
+- M docs/agent-system/reports/campaigns/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
-- M docs/agent-system/manni-reel-weekly-plan.md
-- M package-lock.json
+- M docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md
 - M package.json
-- M scripts/agent-background-cycle.mjs
-- M scripts/agent-job-runner.mjs
-- M scripts/audience-intelligence-agent.mjs
-- M scripts/refactor-website-opportunities.mjs
-- M src/components/AuthModal.jsx
-- M src/components/BioSection.jsx
-- M src/components/BookingSection.jsx
-- M src/components/CookieBanner.jsx
-- M src/components/MusicSection.jsx
-- M src/components/Newsletter.jsx
-- M src/components/SetCard.jsx
-- M src/components/VIPSection.jsx
-- M src/contexts/AudioContext.jsx
-- M src/lib/stats-logic.js
-- M src/server/worker.js
-- M src/utils/analytics/index.js
-- M src/utils/audienceSignals.js
-- M src/utils/i18n.js
-- M src/utils/stats-sync.js
-- ?? airdox_three_reel.html
-- ?? cloud-render/
-- ?? docs/agent-system/lettering-lab/
-- ?? docs/brand/templates/airdox-lettering-lab-brief.md
-- ?? docs/brand/templates/airdox-remotion-reel-template.md
-- ?? public/brand-assets/airdox-lettering/
-- ?? public/brand-assets/lettering-lab/
-- ?? remotion/
-- ?? scripts/airdox-lettering-lab.mjs
-- ?? scripts/build-mega-analytics-pack.mjs
-- ?? scripts/extract-airdox-strobe-proof-assets.mjs
-- ?? scripts/localize-agent-reports.mjs
-- ?? scripts/photoshop-export-airdox-letter-masks.jsx
-- ?? scripts/render-airdox-lettering-lab.mjs
-- ?? scripts/run-photoshop-airdox-letter-masks.mjs
-- ?? src/components/AuthModalFields.jsx
-- ?? src/components/AuthSocialButtons.jsx
-- ?? src/components/AuthSocialProviderIcon.jsx
-- ?? src/components/BookingSocialLinks.jsx
-- ?? src/components/__tests__/authModalUtils.test.js
-- ?? src/components/__tests__/setCardUtils.test.js
-- ?? src/components/authModalUtils.js
-- ?? src/components/setCardUtils.js
-- ?? src/contexts/__tests__/audioSources.test.js
-- ?? src/contexts/audioSources.js
-- ?? src/lib/__tests__/authHelpers.test.js
-- ?? src/lib/__tests__/statsContracts.test.js
-- ?? src/lib/authHelpers.js
-- ?? src/lib/authRequestHandler.js
-- ?? src/lib/statsContracts.js
-- ?? src/lib/statsDatabase.js
-- ?? src/server/__tests__/httpResponses.test.js
-- ?? src/server/__tests__/legalPages.test.js
-- ?? src/server/__tests__/oauthUtils.test.js
-- ?? src/server/audioRoutes.js
-- ?? src/server/httpResponses.js
-- ?? src/server/legalPages.js
-- ?? src/server/oauthUtils.js
-- ?? src/utils/__tests__/apiClient.test.js
-- ?? src/utils/__tests__/websiteContracts.test.js
-- ?? src/utils/analytics/__tests__/
-- ?? src/utils/analytics/analyticsExport.js
-- ?? src/utils/analytics/analyticsRuntime.js
-- ?? src/utils/analytics/analyticsStats.js
-- ?? src/utils/apiClient.js
-- ?? src/utils/i18nMessages.js
-- ?? src/utils/websiteContracts.js
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-a-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-a.png
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-d-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-d.png
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-i-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-i.png
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-o-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-o.png
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-r-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-r.png
+- D public/brand-assets/airdox-lettering/strobe-proof/letter-x-raw.png
+- M public/brand-assets/airdox-lettering/strobe-proof/letter-x.png
+- D public/brand-assets/airdox-lettering/strobe-proof/source-sheet.png
+- D public/brand-assets/airdox-lettering/strobe-proof/wordmark-02-raw.png
+- D public/brand-assets/airdox-lettering/strobe-proof/wordmark-02.png
+- M remotion/airdox-reels/out/airdox-letter-strobe-proof-8s.mp4
+- M remotion/airdox-reels/out/airdox-letter-strobe-proof.png
+- M remotion/airdox-reels/src/AirdoxLetterStrobe.jsx
+- D scripts/extract-airdox-strobe-proof-assets.mjs
+- D scripts/photoshop-export-airdox-letter-masks.jsx
+- D scripts/run-photoshop-airdox-letter-masks.mjs
+- ?? public/brand-assets/airdox-lettering/strobe-proof/concepts/
+- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-x-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-x.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-a-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-d-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-i-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-o-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-r-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-x-solid.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/mask-review-sheet.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/photoshop-separated-letter-mask-manifest.json
+- ?? public/brand-assets/airdox-lettering/strobe-proof/photoshop-separated-letter-mask.done
+- ?? public/brand-assets/airdox-lettering/strobe-proof/separated-letter-mask-manifest.json
+- ?? public/brand-assets/airdox-lettering/strobe-proof/source-separated-airdox-before-concept-1.png
+- ?? public/brand-assets/airdox-lettering/strobe-proof/source-separated-airdox.png
+- ?? remotion/airdox-reels/out/airdox-letter-strobe-proof-ox-hit.png
+- ?? remotion/airdox-reels/out/airdox-letter-strobe-proof.mp4
+- ?? remotion/airdox-reels/out/airdox-letter-strobe-vertical-proof-8s.mp4
+- ?? remotion/airdox-reels/out/airdox-letter-strobe-vertical-proof.png
+- ?? scripts/extract-airdox-separated-letter-assets.mjs
+- ?? scripts/photoshop-export-airdox-separated-letter-masks.jsx
+- ?? scripts/run-photoshop-airdox-separated-letter-masks.mjs
 
 ## Versionierte generierte Artefakte
 
@@ -341,6 +274,7 @@ Branch: main
 
 ## Letzte Commits
 
+- 1d64571 chore: daily autopush 2026-06-06 01:53 +02:00
 - d958d77 feat(flightdeck): publish recording_2026_06_02
 - 6af7582 chore: daily autopush 2026-06-02 02:12 +02:00
 - 8afd559 chore: daily autopush 2026-06-01 10:06 +02:00
@@ -350,5 +284,4 @@ Branch: main
 - 7e5b174 feat: import TikTok upload script and workflow from qa-setup branch
 - 62b5573 chore: clean up repo, update agent reports, add privacy/terms pages, expand .gitignore for scratch/
 - 60b67e2 chore: daily autopush 2026-05-31 20:06 +02:00
-- a14f60b chore: daily autopush 2026-05-31 20:05 +02:00
 

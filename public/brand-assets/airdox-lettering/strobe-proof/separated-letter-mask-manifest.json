@@ -1,0 +1,55 @@
+{
+  "schema": "airdox.separated-letter-masks.v1",
+  "source": "source-separated-airdox.png",
+  "note": "Generated from isolated AIRDOX image with non-overlapping letters.",
+  "crops": [
+    {
+      "name": "letter-a",
+      "label": "A",
+      "left": 20,
+      "top": 190,
+      "width": 380,
+      "height": 420
+    },
+    {
+      "name": "letter-i",
+      "label": "i",
+      "left": 405,
+      "top": 205,
+      "width": 200,
+      "height": 400
+    },
+    {
+      "name": "letter-r",
+      "label": "R",
+      "left": 640,
+      "top": 210,
+      "width": 320,
+      "height": 410
+    },
+    {
+      "name": "letter-d",
+      "label": "D",
+      "left": 960,
+      "top": 195,
+      "width": 310,
+      "height": 430
+    },
+    {
+      "name": "letter-o",
+      "label": "O",
+      "left": 1295,
+      "top": 230,
+      "width": 295,
+      "height": 380
+    },
+    {
+      "name": "letter-x",
+      "label": "X",
+      "left": 1595,
+      "top": 215,
+      "width": 370,
+      "height": 410
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # AIRDOX Agenten-Aktualitaetsbericht
 
-Erstellt: 2026-06-05T19:45:53.409Z
+Erstellt: 2026-06-06T07:45:50.368Z
 Owner: Mentor
 Status: warn
 

@@ -74,6 +74,8 @@ docs/agent-system/manni-reel-output/
 docs/proof/
 public/campaign/**/*.mp4
 public/campaign/**/*.png
+remotion/airdox-reels/out/*.mp4
+remotion/airdox-reels/out/*.png
 exports/
 .devserver.pid
 state.json
@@ -88,6 +90,9 @@ scripts/render-airdox-photoshop-video.ps1
 scripts/render-airdox-reference-style-video.mjs
 
 docs/agent-system/social-auto-output/
+docs/agent-system/visual-templates/social/social-auto-output/
+docs/agent-system/visual-templates/inbox/
+docs/agent-system/reports/proof/
 docs/agent-system/download.png
 .codex-devserver/
 .codex-remote-attachments/

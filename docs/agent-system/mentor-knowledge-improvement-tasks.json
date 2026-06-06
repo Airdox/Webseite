@@ -3,11 +3,11 @@
   "owner": "Mentor",
   "source": {
     "type": "manual_deep_research_brief",
-    "path": "docs/agent-system/research/MENTOR_NOTEBOOKLM_DEEP_RESEARCH_AGENT_SCHOOLS_2026-05-27.md",
+    "path": "docs/agent-system/reports/research/MENTOR_NOTEBOOKLM_DEEP_RESEARCH_AGENT_SCHOOLS_2026-05-27.md",
     "notebooklmStatus": "deep_research_completed",
     "notebookId": "658d9fda-63cf-4353-8d19-6ada790f8232",
     "researchTaskId": "0ac2fb64-48cf-47c4-b6dd-dc92cabe8713",
-    "resultPath": "docs/agent-system/research/MENTOR_NOTEBOOKLM_RESULT_AGENT_SCHOOLS_2026-05-27.md"
+    "resultPath": "docs/agent-system/reports/research/MENTOR_NOTEBOOKLM_RESULT_AGENT_SCHOOLS_2026-05-27.md"
   },
   "purpose": "Improve AIRDOX agents through curated knowledge, NotebookLM research, agentic memory rules, RAG architecture, training scenarios and evaluation rubrics.",
   "tasks": [

@@ -18,18 +18,18 @@
     "route_view": 0.05
   },
   "monthlyCosts": {
-    "hosting": 0,
-    "tools": 0,
+    "hosting": 7,
+    "tools": 35,
     "paidMedia": 0,
-    "manualProduction": 0
+    "manualProduction": 240
   },
   "agentCostRates": {
-    "Webbie": 0,
-    "Manni": 0,
-    "Designer": 0,
-    "Audience Intelligence": 0,
-    "Guardian": 0,
-    "Master Controller": 0
+    "Webbie": 45,
+    "Manni": 35,
+    "Designer": 45,
+    "Audience Intelligence": 40,
+    "Guardian": 50,
+    "Master Controller": 55
   },
   "conversionTargets": {
     "bookingIntentRate": 0.02,
@@ -40,6 +40,7 @@
   "notes": [
     "Values are planning weights until real booking revenue, costs, and campaign exports are entered.",
     "Do not store personal data in profitability reports; aggregate events only.",
-    "Set costs above zero before using ROI as a real business decision metric."
+    "Monthly costs now include conservative real assumptions: hosting 7 EUR, tools 35 EUR, manual production 240 EUR, paid media 0 EUR until explicitly approved.",
+    "Agent cost rates are planning rates in EUR/hour for internal effort valuation, not external invoices."
   ]
 }

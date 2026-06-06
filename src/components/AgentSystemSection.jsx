@@ -79,7 +79,7 @@ const AgentSystemSection = () => {
                                 <p>{text.liveEvidenceText}</p>
                                 <div className="agent-proof-lines">
                                     {[
-                                        'docs/agent-system/OPERATING_MODEL.md',
+                                        'docs/agent-system/reports/operations/OPERATING_MODEL.md',
                                         'docs/agent-system/job-catalog.json',
                                         'scripts/agent-audit.mjs',
                                         '.github/workflows/web-quality.yml',

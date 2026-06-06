@@ -16,10 +16,10 @@ Expliziter Website-Verweis ist Pflicht:
 
 ## Source Basis
 
-- Primary reference: `docs/agent-system/social-auto-output/daumenkino-preview/daumenkino-logo-idea-pack/01-clean-white.png`
+- Primary reference: `docs/agent-system/visual-templates/social/social-auto-output/daumenkino-preview/daumenkino-logo-idea-pack/01-clean-white.png`
 - Visual preview: `docs/brand/templates/airdox-daumenkino-reel-war-preview.svg`
 - Texture references: `daumenkino_idee/` and `scratch/daumenkino-contact/tile_001.jpg`, `tile_002.jpg`
-- Motion references: `docs/agent-system/research/REEL_GRAFFITI_KINETIC_TYPE_PLAYBOOK_2026-05-24.md`
+- Motion references: `docs/agent-system/reports/research/REEL_GRAFFITI_KINETIC_TYPE_PLAYBOOK_2026-05-24.md`
 - Base brand template: `docs/brand/templates/airdox-social-reel-template.md`
 
 ## Creative Transformation Rule

@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-06-05T19:45:52.548Z",
+  "generatedAt": "2026-06-06T09:43:54.221Z",
   "repository": "D:\\webseeite-main",
   "controller": {
     "name": "Master Controller",
     "mission": "Priorisierung, Koordination, Release-Entscheidungen und Audit-Auswertung."
   },
   "summary": {
-    "averageScore": 94,
-    "dirtyPathCount": 111,
-    "testFileCount": 40,
+    "averageScore": 96,
+    "dirtyPathCount": 193,
+    "testFileCount": 42,
     "cssFileCount": 21
   },
   "gate": {
@@ -99,7 +99,7 @@
       "id": "winnie",
       "name": "Winnie",
       "mission": "Windows Flight Deck, lokale Automatisierung, Datenbankkommunikation und Release-Stabilitaet.",
-      "score": 83,
+      "score": 100,
       "checks": [
         {
           "label": "Electron Main/Preload vorhanden",
@@ -139,21 +139,27 @@
         },
         {
           "label": "Manifest wird nicht im Main-Prozess ausgefuehrt",
-          "status": "warn",
+          "status": "pass",
           "weight": 1.5,
           "detail": "Warnung, wenn Workspace-Dateien per dynamic import im Main-Prozess ausgefuehrt werden."
         },
         {
           "label": "Shell-Kommandos eingegrenzt",
-          "status": "warn",
+          "status": "pass",
           "weight": 1.5,
           "detail": "Warnung, wenn Pipeline-Kommandos ueber shell:true laufen."
         },
         {
           "label": "Electron Sandbox aktiv oder begruendet",
-          "status": "warn",
+          "status": "pass",
           "weight": 1,
           "detail": "Warnung, wenn BrowserWindow mit sandbox:false laeuft."
+        },
+        {
+          "label": "Desktop Service-Sicherheit getestet",
+          "status": "pass",
+          "weight": 1.5,
+          "detail": "Manifest-Parsing und shellfreie Prozessaufrufe haben fokussierte Service-Tests."
         },
         {
           "label": "Windows-Dokumentation vorhanden",
@@ -163,9 +169,9 @@
         }
       ],
       "nextActions": [
-        "Release-Gate aus desktop:test:logic, desktop:test:e2e und desktop:dist definieren.",
-        "Code-Signing- und Icon-Status als eigener Release-Check aufnehmen.",
-        "Publish-Pipeline-Fehler mit reproduzierbaren Test-Fixtures abdecken."
+        "Sandbox-Start des echten Electron Flight Decks mit desktop:test:e2e nachweisen.",
+        "Build-, Deploy- und Git-Kommandos im Windows Tool auf erlaubte Befehle/Argumente begrenzen.",
+        "Design-Render- und Publish-Pipeline-Fehler mit reproduzierbaren Fixtures abdecken."
       ]
     },
     {
@@ -196,7 +202,7 @@
           "label": "Ausreichende Testdateien",
           "status": "pass",
           "weight": 1.5,
-          "detail": "40 Test-/Spec-Dateien gefunden."
+          "detail": "42 Test-/Spec-Dateien gefunden."
         },
         {
           "label": "Worker/API-Testsignale",
@@ -214,7 +220,7 @@
           "label": "Arbeitsbaum sauber",
           "status": "warn",
           "weight": 1.5,
-          "detail": "111 uncommitted Pfade gefunden; vor Releases klaeren."
+          "detail": "193 uncommitted Pfade gefunden; vor Releases klaeren."
         },
         {
           "label": "Env-Beispiel vorhanden",
@@ -477,7 +483,7 @@
           "label": "Dependency-Footprint kontrolliert",
           "status": "pass",
           "weight": 1,
-          "detail": "9 Runtime-Abhaengigkeiten gefunden."
+          "detail": "10 Runtime-Abhaengigkeiten gefunden."
         }
       ],
       "nextActions": [
@@ -532,7 +538,7 @@
           "label": "Arbeitsbaum releasebereit",
           "status": "warn",
           "weight": 1.5,
-          "detail": "111 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+          "detail": "193 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
         },
         {
           "label": "Einziges Deployment-Target",

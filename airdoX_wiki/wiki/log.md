@@ -27,7 +27,7 @@ Dieses Journal protokolliert alle Änderungen und Ingest-Vorgänge im AIRDOX Wik
 ## 2. Mai 2026
 
 * Aufbau des Multi-Agenten-Operating-Models fuer AIRDOX:
-  * `docs/agent-system/OPERATING_MODEL.md`
+  * `docs/agent-system/reports/operations/OPERATING_MODEL.md`
   * `docs/agent-system/DECISION_LOG.md`
   * `scripts/agent-audit.mjs`
 * Erweiterung des lokalen Wiki-Lernsystems:

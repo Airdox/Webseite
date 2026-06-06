@@ -50,4 +50,4 @@ The `17:58` reel pair is the best direct match for this package.
 
 - Campaign docs stay in `live-set-may-2026-2/`
 - Final rendered media should be copied or linked into `public/campaign/live-set-may-2026-2/`
-- If this becomes the preferred Manni upload asset, mirror the preferred filename in `docs/agent-system/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md`
+- If this becomes the preferred Manni upload asset, mirror the preferred filename in `docs/agent-system/reports/campaigns/MANNI_PR_SOCIAL_REACH_OPS_2026-05-13.md`
