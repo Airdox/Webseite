@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { cwd } from 'node:process';
 import { describe, expect, it } from 'vitest';
 
-const root = process.cwd();
+const root = cwd();
 const readPublic = (path) => readFileSync(resolve(root, 'public', path), 'utf8');
 
 describe('agent readiness static assets', () => {
