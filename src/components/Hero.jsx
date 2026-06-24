@@ -7,7 +7,9 @@ import HeroBackground from './HeroBackground';
 import GlitchBlocks from './GlitchBlocks';
 import HeroTitle from './HeroTitle';
 import './Hero.css';
-import { t } from '../utils/i18n';
+import { getCurrentLocale, t } from '../utils/i18n';
+import { sets } from '../data/musicSets';
+import { formatSetDate, getLatestSet } from '../lib/set-access';
 
 const Hero = ({ designMode = 'classic' }) => {
     const [loaded, setLoaded] = useState(false);
@@ -16,8 +18,12 @@ const Hero = ({ designMode = 'classic' }) => {
     const { cursorRef, cursorOuterRef, glowRef } = useCustomCursor();
 
     const TITLE = 'AIRDOX';
+    const latestSetDate = formatSetDate(getLatestSet(sets), getCurrentLocale());
+    const latestSetValue = latestSetDate
+        ? `${latestSetDate} ${t('hero.proof.latest.suffix')}`
+        : t('hero.proof.latest.fallback');
     const reachSignals = [
-        { label: t('hero.proof.latest.label'), value: t('hero.proof.latest.value') },
+        { label: t('hero.proof.latest.label'), value: latestSetValue },
         { label: t('hero.proof.tracklists.label'), value: t('hero.proof.tracklists.value') },
         { label: t('hero.proof.booking.label'), value: t('hero.proof.booking.value') }
     ];
@@ -166,4 +172,3 @@ const Hero = ({ designMode = 'classic' }) => {
 };
 
 export default Hero;
-

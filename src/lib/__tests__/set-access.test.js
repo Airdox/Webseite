@@ -3,6 +3,8 @@ import {
     partitionSetsByAccess,
     normalizeAudioBaseFilename,
     buildAudioApiHref,
+    formatSetDate,
+    getLatestSet,
 } from '../set-access';
 
 describe('set-access', () => {
@@ -28,5 +30,22 @@ describe('set-access', () => {
     it('builds tokenized audio endpoint links', () => {
         expect(buildAudioApiHref('Demo Set.mp3', 'abc123')).toBe('/api/audio/Demo%20Set.mp3?token=abc123');
         expect(buildAudioApiHref('Demo Set.mp3')).toBe('/api/audio/Demo%20Set.mp3');
+    });
+
+    it('detects the latest set from publish metadata instead of list position', () => {
+        const sampleSets = [
+            { id: 'recording_2026_05_02', publishedAt: '2026-05-02', file: 'old.mp3' },
+            { id: 'recording_2026_06_02', publishedAt: '2026-06-02', file: 'middle.mp3' },
+            { id: 'recording_2026_06_21-5', publishedAt: '2026-06-21', file: 'latest.mp3' },
+        ];
+
+        expect(getLatestSet(sampleSets).id).toBe('recording_2026_06_21-5');
+    });
+
+    it('formats latest-set dates in the active site locale', () => {
+        const set = { publishedAt: '2026-06-21' };
+
+        expect(formatSetDate(set, 'de')).toBe('21.06.');
+        expect(formatSetDate(set, 'en')).toBe('21 Jun');
     });
 });

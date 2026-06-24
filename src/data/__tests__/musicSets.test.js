@@ -11,4 +11,13 @@ describe('music set audio manifest', () => {
       expect(set.file, `${set.id} should point to an mp3 audio file`).toMatch(/\.mp3$/i);
     }
   });
+
+  it('keeps seekable tracklists on all public sets', () => {
+    const { publicSets } = partitionSetsByAccess(sets);
+
+    for (const set of publicSets) {
+      expect(Array.isArray(set.tracks), `${set.id} should expose a tracklist`).toBe(true);
+      expect(set.tracks.length, `${set.id} should keep at least one seekable row`).toBeGreaterThan(0);
+    }
+  });
 });

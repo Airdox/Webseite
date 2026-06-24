@@ -26,7 +26,7 @@ const tryDateFromPattern = (value = '', pattern, mapper) => {
   return mapper(match);
 };
 
-const deriveSetTimestamp = (set = {}, index = 0) => {
+export const deriveSetPublishedTimestamp = (set = {}) => {
   const byPublishedAt = toTimestamp(set.publishedAt);
   if (!Number.isNaN(byPublishedAt)) return byPublishedAt;
 
@@ -51,7 +51,40 @@ const deriveSetTimestamp = (set = {}, index = 0) => {
   );
   if (!Number.isNaN(byMonthLabel)) return byMonthLabel;
 
+  return Number.NaN;
+};
+
+export const deriveSetTimestamp = (set = {}, index = 0) => {
+  const publishedTimestamp = deriveSetPublishedTimestamp(set);
+  if (!Number.isNaN(publishedTimestamp)) return publishedTimestamp;
+
   return Number.MAX_SAFE_INTEGER - index;
+};
+
+export const getLatestSet = (allSets = []) => allSets
+  .map((set, index) => ({
+    set,
+    index,
+    timestamp: deriveSetTimestamp(set, index),
+  }))
+  .sort((left, right) => {
+    if (right.timestamp !== left.timestamp) return right.timestamp - left.timestamp;
+    return left.index - right.index;
+  })[0]?.set;
+
+const EN_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+export const formatSetDate = (set = {}, locale = 'de') => {
+  const timestamp = deriveSetPublishedTimestamp(set);
+  if (Number.isNaN(timestamp)) return '';
+
+  const publishedDate = new Date(timestamp);
+  const day = String(publishedDate.getUTCDate()).padStart(2, '0');
+  const monthIndex = publishedDate.getUTCMonth();
+  const month = String(monthIndex + 1).padStart(2, '0');
+
+  if (locale === 'de') return `${day}.${month}.`;
+  return `${day} ${EN_MONTHS[monthIndex] || month}`;
 };
 
 export const partitionSetsByAccess = (allSets = [], publicCount = PUBLIC_SET_COUNT) => {
