@@ -1,16 +1,16 @@
 # AIRDOX Agenten-Joblauf
 
-Erstellt: 2026-06-24T16:39:17.348Z
+Erstellt: 2026-06-24T20:36:00.354Z
 Ereignis: scheduled_background
 Status: deep
 
 ## Ueberblick
 
 - Ausgewaehlte Jobs: 18
-- Ausgefuehrte Jobs: 17
+- Ausgefuehrte Jobs: 16
 - Manuelle Jobs: 1
 - Uebersprungene Jobs: 0
-- Fehlgeschlagene Jobs: 0
+- Fehlgeschlagene Jobs: 1
 
 ## Jobs
 
@@ -22,7 +22,7 @@ Status: deep
 | mentor-agent-education | Mentor | EXECUTED | ok (mentor:education:write) |
 | audience-intelligence-cycle | Audience Intelligence | EXECUTED | ok (audience:intelligence:write) |
 | website-profitability-review | Audience Intelligence | EXECUTED | ok (website:profitability:write) |
-| windows-tool-healthcheck | Winnie | EXECUTED | ok (desktop:test:logic) |
+| windows-tool-healthcheck | Winnie | FAILED | exit 1 (desktop:test:logic) |
 | designer-pdf-draft-build | Designer | EXECUTED | ok (brand:epk) |
 | manni-reel-factory | Manni | EXECUTED | ok (manni:reels:generate) |
 | guardian-risk-summary | Guardian | EXECUTED | ok (guardian:risk:write) |

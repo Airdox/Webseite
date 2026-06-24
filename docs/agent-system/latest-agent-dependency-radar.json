@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-06-24T16:41:24.085Z",
+  "generatedAt": "2026-06-24T20:55:01.068Z",
   "controller": "Master Controller",
   "job": "agent-dependency-radar",
   "purpose": "Keep AIRDOX agents interlocked: every output should name the next waiting agent, dependency, and user touchpoint.",
   "summary": {
-    "handoffCount": 20,
-    "alertCount": 16,
-    "lastJobRun": "2026-06-24T16:39:17.348Z",
-    "changedFileCount": 132,
-    "qualityObligationCount": 4
+    "handoffCount": 12,
+    "alertCount": 10,
+    "lastJobRun": "2026-06-24T20:36:00.354Z",
+    "changedFileCount": 31,
+    "qualityObligationCount": 0
   },
   "handoffs": [
     {
@@ -16,7 +16,7 @@
       "from": "Workbench",
       "to": "Audience Intelligence",
       "status": "watch",
-      "waitsFor": "7 changed file(s) matched audience-intelligence.",
+      "waitsFor": "8 changed file(s) matched audience-intelligence.",
       "nextAction": "Sondieren, ob aus docs/agent-system/latest-audience-intelligence.json, docs/agent-system/latest-audience-intelligence.md, docs/agent-system/latest-website-profitability.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
@@ -30,21 +30,12 @@
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
-      "id": "workbench-change-designer-review",
-      "from": "Workbench",
-      "to": "Designer",
-      "status": "watch",
-      "waitsFor": "8 changed file(s) matched desktop-experience-design, visual-quality.",
-      "nextAction": "Sondieren, ob aus src/components/IndustrialDashboard.css, src/components/Navigation.css, src/desktop/__tests__/DesktopApp.test.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
       "id": "workbench-change-guardian-review",
       "from": "Workbench",
       "to": "Guardian",
       "status": "watch",
-      "waitsFor": "48 changed file(s) matched quality-security.",
-      "nextAction": "Sondieren, ob aus .env.example, capacitor.config.json, docs/agent-system/latest-agent-currency.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "16 changed file(s) matched default routing.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/latest-agent-currency.json, docs/agent-system/latest-agent-currency.md, docs/agent-system/latest-agent-quality-chain.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -52,7 +43,7 @@
       "from": "Workbench",
       "to": "Manni",
       "status": "watch",
-      "waitsFor": "5 changed file(s) matched growth-conversion.",
+      "waitsFor": "3 changed file(s) matched growth-conversion.",
       "nextAction": "Sondieren, ob aus docs/agent-system/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json, docs/agent-system/manni-reel-weekly-plan.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
@@ -61,8 +52,8 @@
       "from": "Workbench",
       "to": "Master Controller",
       "status": "watch",
-      "waitsFor": "31 changed file(s) matched default routing.",
-      "nextAction": "Sondieren, ob aus .env.example, capacitor.config.json, docs/agent-system/latest-agent-currency.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "16 changed file(s) matched default routing.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/latest-agent-currency.json, docs/agent-system/latest-agent-currency.md, docs/agent-system/latest-agent-quality-chain.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -70,8 +61,8 @@
       "from": "Workbench",
       "to": "Mentor",
       "status": "watch",
-      "waitsFor": "28 changed file(s) matched learning-documentation.",
-      "nextAction": "Sondieren, ob aus airdoX_wiki/.obsidian/, airdoX_wiki/SYSTEM.md, airdoX_wiki/__pycache__/core.cpython-311.pyc eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "7 changed file(s) matched learning-documentation.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/AGENT_TRAINING_CATALOG.json, docs/agent-system/AGENT_TRAINING_CATALOG.md, docs/agent-system/MENTOR_POSTMORTEM_BANK.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -79,35 +70,8 @@
       "from": "Workbench",
       "to": "Refactor",
       "status": "watch",
-      "waitsFor": "33 changed file(s) matched refactor-architecture.",
-      "nextAction": "Sondieren, ob aus desktop/main/services/pipeline.mjs, desktop/main/services/workspace.mjs, src/components/AuthModal.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-webbie-primary",
-      "from": "Workbench",
-      "to": "Webbie",
-      "status": "watch",
-      "waitsFor": "26 changed file(s) matched website-experience.",
-      "nextAction": "Sondieren, ob aus public/_headers, public/_redirects, public/airdox-actions-last-24h.html eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-wiki-maintainer-primary",
-      "from": "Workbench",
-      "to": "Wiki Maintainer",
-      "status": "watch",
-      "waitsFor": "16 changed file(s) matched wiki-assistant-knowledge.",
-      "nextAction": "Sondieren, ob aus airdoX_wiki/.obsidian/, airdoX_wiki/SYSTEM.md, airdoX_wiki/__pycache__/core.cpython-311.pyc eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-winnie-primary",
-      "from": "Workbench",
-      "to": "Winnie",
-      "status": "watch",
-      "waitsFor": "17 changed file(s) matched desktop-flightdeck.",
-      "nextAction": "Sondieren, ob aus desktop/main/index.cjs, desktop/main/services/pipeline.mjs, desktop/main/services/workspace.mjs eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "waitsFor": "2 changed file(s) matched refactor-architecture.",
+      "nextAction": "Sondieren, ob aus src/data/__tests__/musicSets.test.js, src/data/musicSets.js eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -132,10 +96,10 @@
       "id": "audience-to-manni-hook-priority",
       "from": "Audience Intelligence",
       "to": "Manni",
-      "status": "blocked_by_no_measurement_data",
-      "waitsFor": "Consented website events for route_view, set_play, newsletter_signup, booking_click, contact_submit, and epk_download.",
-      "nextAction": "Webbie must verify consented event export before Manni treats hook priorities as data-backed.",
-      "userTouchpoint": "Do not ask for creative approval as data-backed; ask only for tracking credentials or explicit no-data prioritization."
+      "status": "ready",
+      "waitsFor": "Latest audience signal, hook type priority, channel hypothesis.",
+      "nextAction": "Use audience signal to decide whether this batch optimizes completion, shares, follows, or website clicks.",
+      "userTouchpoint": "If KPI data is missing, ask user for platform screenshots or export before inventing performance claims."
     },
     {
       "id": "designer-to-user-content-request",
@@ -154,49 +118,13 @@
       "waitsFor": "Explicit personal OK for platform, asset, caption, timing, and landing URL.",
       "nextAction": "Keep all social outputs as external_draft until approval is logged.",
       "userTouchpoint": "Ask for OK only on a concrete preview package."
-    },
-    {
-      "id": "quality-chain-website-ui-quality-chain",
-      "from": "Webbie",
-      "to": "Guardian",
-      "status": "test_changes_present",
-      "waitsFor": "Website/UI files changed; user-facing behavior must not rely on manual inspection only.",
-      "nextAction": "Guardian must verify that changed tests cover the changed UI path.",
-      "userTouchpoint": "Only ask user if expected behavior or content is ambiguous."
-    },
-    {
-      "id": "quality-chain-desktop-ui-quality-chain",
-      "from": "Winnie",
-      "to": "Guardian",
-      "status": "test_changes_present",
-      "waitsFor": "Desktop/Flight Deck UI changed; logic tests and, for visible changes, E2E proof must follow.",
-      "nextAction": "Guardian must verify that Desktop tests cover the changed tab/menu/control behavior.",
-      "userTouchpoint": "Only ask user if workflow intent or acceptance criteria are unclear."
-    },
-    {
-      "id": "quality-chain-script-api-quality-chain",
-      "from": "Guardian",
-      "to": "Guardian",
-      "status": "test_changes_present",
-      "waitsFor": "Scripts/server/desktop main logic changed; command validation or tests must prove behavior.",
-      "nextAction": "Guardian must run or request the narrow command that proves the changed script path.",
-      "userTouchpoint": "Only ask user for credentials or live-system approval if a validation needs external access."
-    },
-    {
-      "id": "quality-chain-user-facing-change-watch",
-      "from": "Master Controller",
-      "to": "Guardian",
-      "status": "watch",
-      "waitsFor": "A menu, navigation, tab, section, button, modal, or visible feature may have changed.",
-      "nextAction": "Responsible primary agent must confirm tests exist for the new entry point and failure path.",
-      "userTouchpoint": "Ask user for acceptance only after a working preview or clear behavior summary exists."
     }
   ],
   "alerts": [
     {
       "id": "workbench-change-audience-intelligence-review",
       "severity": "info",
-      "message": "Audience Intelligence waits for: 7 changed file(s) matched audience-intelligence.",
+      "message": "Audience Intelligence waits for: 8 changed file(s) matched audience-intelligence.",
       "nextAction": "Sondieren, ob aus docs/agent-system/latest-audience-intelligence.json, docs/agent-system/latest-audience-intelligence.md, docs/agent-system/latest-website-profitability.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
@@ -208,66 +136,38 @@
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
-      "id": "workbench-change-designer-review",
-      "severity": "info",
-      "message": "Designer waits for: 8 changed file(s) matched desktop-experience-design, visual-quality.",
-      "nextAction": "Sondieren, ob aus src/components/IndustrialDashboard.css, src/components/Navigation.css, src/desktop/__tests__/DesktopApp.test.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
       "id": "workbench-change-guardian-review",
       "severity": "info",
-      "message": "Guardian waits for: 48 changed file(s) matched quality-security.",
-      "nextAction": "Sondieren, ob aus .env.example, capacitor.config.json, docs/agent-system/latest-agent-currency.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Guardian waits for: 16 changed file(s) matched default routing.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/latest-agent-currency.json, docs/agent-system/latest-agent-currency.md, docs/agent-system/latest-agent-quality-chain.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-manni-primary",
       "severity": "info",
-      "message": "Manni waits for: 5 changed file(s) matched growth-conversion.",
+      "message": "Manni waits for: 3 changed file(s) matched growth-conversion.",
       "nextAction": "Sondieren, ob aus docs/agent-system/manni-reel-draft-pack.md, docs/agent-system/manni-reel-queue.json, docs/agent-system/manni-reel-weekly-plan.md eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-master-controller-review",
       "severity": "info",
-      "message": "Master Controller waits for: 31 changed file(s) matched default routing.",
-      "nextAction": "Sondieren, ob aus .env.example, capacitor.config.json, docs/agent-system/latest-agent-currency.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Master Controller waits for: 16 changed file(s) matched default routing.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/latest-agent-currency.json, docs/agent-system/latest-agent-currency.md, docs/agent-system/latest-agent-quality-chain.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-mentor-review",
       "severity": "info",
-      "message": "Mentor waits for: 28 changed file(s) matched learning-documentation.",
-      "nextAction": "Sondieren, ob aus airdoX_wiki/.obsidian/, airdoX_wiki/SYSTEM.md, airdoX_wiki/__pycache__/core.cpython-311.pyc eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Mentor waits for: 7 changed file(s) matched learning-documentation.",
+      "nextAction": "Sondieren, ob aus docs/agent-system/AGENT_TRAINING_CATALOG.json, docs/agent-system/AGENT_TRAINING_CATALOG.md, docs/agent-system/MENTOR_POSTMORTEM_BANK.json eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
       "id": "workbench-change-refactor-implementation_support",
       "severity": "info",
-      "message": "Refactor waits for: 33 changed file(s) matched refactor-architecture.",
-      "nextAction": "Sondieren, ob aus desktop/main/services/pipeline.mjs, desktop/main/services/workspace.mjs, src/components/AuthModal.jsx eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-webbie-primary",
-      "severity": "info",
-      "message": "Webbie waits for: 26 changed file(s) matched website-experience.",
-      "nextAction": "Sondieren, ob aus public/_headers, public/_redirects, public/airdox-actions-last-24h.html eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-wiki-maintainer-primary",
-      "severity": "info",
-      "message": "Wiki Maintainer waits for: 16 changed file(s) matched wiki-assistant-knowledge.",
-      "nextAction": "Sondieren, ob aus airdoX_wiki/.obsidian/, airdoX_wiki/SYSTEM.md, airdoX_wiki/__pycache__/core.cpython-311.pyc eine konkrete Aufgabe im eigenen Bereich entsteht.",
-      "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
-    },
-    {
-      "id": "workbench-change-winnie-primary",
-      "severity": "info",
-      "message": "Winnie waits for: 17 changed file(s) matched desktop-flightdeck.",
-      "nextAction": "Sondieren, ob aus desktop/main/index.cjs, desktop/main/services/pipeline.mjs, desktop/main/services/workspace.mjs eine konkrete Aufgabe im eigenen Bereich entsteht.",
+      "message": "Refactor waits for: 2 changed file(s) matched refactor-architecture.",
+      "nextAction": "Sondieren, ob aus src/data/__tests__/musicSets.test.js, src/data/musicSets.js eine konkrete Aufgabe im eigenen Bereich entsteht.",
       "userTouchpoint": "Only interrupt user when the agent needs content, approval, or a decision."
     },
     {
@@ -276,13 +176,6 @@
       "message": "Designer waits for: Current campaign hook, required on-screen message, platform intent.",
       "nextAction": "Designer has portfolio context; build only short visual prototypes after user direction.",
       "userTouchpoint": "Ask user to choose direction only after a small portfolio is visible."
-    },
-    {
-      "id": "audience-to-manni-hook-priority",
-      "severity": "gate",
-      "message": "Manni waits for: Consented website events for route_view, set_play, newsletter_signup, booking_click, contact_submit, and epk_download.",
-      "nextAction": "Webbie must verify consented event export before Manni treats hook priorities as data-backed.",
-      "userTouchpoint": "Do not ask for creative approval as data-backed; ask only for tracking credentials or explicit no-data prioritization."
     },
     {
       "id": "designer-to-user-content-request",
@@ -297,13 +190,6 @@
       "message": "Manni waits for: Explicit personal OK for platform, asset, caption, timing, and landing URL.",
       "nextAction": "Keep all social outputs as external_draft until approval is logged.",
       "userTouchpoint": "Ask for OK only on a concrete preview package."
-    },
-    {
-      "id": "quality-chain-user-facing-change-watch",
-      "severity": "info",
-      "message": "Guardian waits for: A menu, navigation, tab, section, button, modal, or visible feature may have changed.",
-      "nextAction": "Responsible primary agent must confirm tests exist for the new entry point and failure path.",
-      "userTouchpoint": "Ask user for acceptance only after a working preview or clear behavior summary exists."
     }
   ]
 }

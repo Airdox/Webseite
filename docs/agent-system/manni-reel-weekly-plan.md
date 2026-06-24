@@ -1,13 +1,25 @@
 # Manni Reel Weekly Plan
 
-Erstellt: 2026-06-24T16:41:04.648Z
+Erstellt: 2026-06-24T20:53:51.424Z
 Scenario: A - Organischer Engine-Aufbau
-Items: 0
+Items: 12
 
 ## Schedule
 
 | Slot | Day | Reel ID | Variant | Hook | Approval | Report Due | Posting Status | KPI Focus |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Mon | reel-recording-2026-06-21-5-00-00-00-drop-moment | raw_drop_marker | Warte auf den Drop bei 00:00 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
+| 2 | Tue | reel-recording-2026-06-21-5-00-02-50-transition-breakdown | deck_split_screen | So baue ich den Uebergang bei 02:50 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
+| 3 | Wed | reel-recording-2026-06-21-5-00-06-44-crowd-energy | floor_energy_loop | Dieser Moment killt den Floor bei 06:44 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
+| 4 | Thu | reel-recording-2026-06-21-5-00-09-58-drop-moment | raw_drop_marker | Warte auf den Drop bei 09:58 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
+| 5 | Fri | reel-recording-2026-06-02-00-00-00-drop-moment | raw_drop_marker | Warte auf den Drop bei 00:00 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
+| 6 | Sat | reel-recording-2026-06-02-00-02-45-transition-breakdown | deck_split_screen | So baue ich den Uebergang bei 02:45 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
+| 7 | Sun | reel-recording-2026-06-02-00-05-39-crowd-energy | floor_energy_loop | Dieser Moment killt den Floor bei 05:39 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
+| 8 | Mon | reel-recording-2026-06-02-00-09-04-drop-moment | raw_drop_marker | Warte auf den Drop bei 09:04 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
+| 9 | Tue | reel-recording-2026-05-24-00-00-00-drop-moment | raw_drop_marker | Warte auf den Drop bei 00:00 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
+| 10 | Wed | reel-recording-2026-05-24-00-01-08-transition-breakdown | deck_split_screen | So baue ich den Uebergang bei 01:08 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
+| 11 | Thu | reel-recording-2026-05-24-00-07-24-crowd-energy | floor_energy_loop | Dieser Moment killt den Floor bei 07:24 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
+| 12 | Fri | reel-recording-2026-05-24-00-12-39-drop-moment | raw_drop_marker | Warte auf den Drop bei 12:39 | draft_allowed_publish_pending_user_ok | 2026-07-01 | planned | watch_time_and_shares |
 
 ## Manni Action Plan
 
@@ -29,4 +41,16 @@ Items: 0
 
 ## Queue Notes
 
+- reel-recording-2026-06-21-5-00-00-00-drop-moment: fete de la musiQue #5 @ 00:00:00 -> Martin Books - Veloroom (Original Mix)
+- reel-recording-2026-06-21-5-00-02-50-transition-breakdown: fete de la musiQue #5 @ 00:02:50 -> Jill Stanley - Work It (Original Mix)
+- reel-recording-2026-06-21-5-00-06-44-crowd-energy: fete de la musiQue #5 @ 00:06:44 -> Martin Books - Ekohook (Original Mix)
+- reel-recording-2026-06-21-5-00-09-58-drop-moment: fete de la musiQue #5 @ 00:09:58 -> Aliens Bad Brothers - Extasy (Original Mix)
+- reel-recording-2026-06-02-00-00-00-drop-moment: FOR THE HATERS @ 00:00:00 -> Green Velvet, Meduza, GENESI (ITA), ESSENTIA (IT) - La La Land (Extended Mix)
+- reel-recording-2026-06-02-00-02-45-transition-breakdown: FOR THE HATERS @ 00:02:45 -> Beachbag - Beatbox Rocker (Extended Mix)
+- reel-recording-2026-06-02-00-05-39-crowd-energy: FOR THE HATERS @ 00:05:39 -> The Flirts, Beltran (BR) - Passion (R U Satisfied) (Extended Mix)
+- reel-recording-2026-06-02-00-09-04-drop-moment: FOR THE HATERS @ 00:09:04 -> Sammy Virji, Fred again.., Reggie - Talk of the Town (Original Mix)
+- reel-recording-2026-05-24-00-00-00-drop-moment: LIVE SET MAY 2026 @ 00:00:00 -> Kolter - What Did You Come For ? (Original Mix)
+- reel-recording-2026-05-24-00-01-08-transition-breakdown: LIVE SET MAY 2026 @ 00:01:08 -> East End Dubs, Di Chiara Brothers - Face Bass (Original Mix)
+- reel-recording-2026-05-24-00-07-24-crowd-energy: LIVE SET MAY 2026 @ 00:07:24 -> Claude VonStroke - A Little Drizzle (Extended)
+- reel-recording-2026-05-24-00-12-39-drop-moment: LIVE SET MAY 2026 @ 00:12:39 -> Diego Straube, Taavi - Mr. Chongo (Original Mix)
 

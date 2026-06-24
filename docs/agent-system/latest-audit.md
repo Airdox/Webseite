@@ -1,16 +1,16 @@
 # AIRDOX Agenten-Audit
 
-Erstellt: 2026-06-24T16:39:19.728Z
+Erstellt: 2026-06-24T20:36:14.984Z
 Repository: D:\webseeite-main
 Controller: Master Controller
 
 ## Ueberblick
 
-- Durchschnittsscore: 96/100
+- Durchschnittsscore: 97/100
 - Gate-Status: pass
 - Testdateien: 44
 - CSS-Dateien: 22
-- Offene Pfade: 132
+- Offene Pfade: 10
 
 ## Agenten-Scores
 
@@ -23,7 +23,7 @@ Controller: Master Controller
 | Designer | 100/100 | Visual Design, Creative Direction und Social-Asset-Qualitaet. |
 | Mentor | 100/100 | Wissensspeicherung, Lernschleifen, Prozessverbesserung und Agenten-Weiterentwicklung. |
 | Refactor | 92/100 | Systemoptimierung, Verschlankung, Architekturqualitaet und technische Effizienz. |
-| Repository | 92/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
+| Repository | 100/100 | Quellcodeverwaltung, GitHub-Disziplin, Branching, Versionierung und Merge-Stabilitaet. |
 
 ## Webbie
 
@@ -71,7 +71,7 @@ Naechste Aktionen:
 - PASS: Ausreichende Testdateien - 44 Test-/Spec-Dateien gefunden.
 - PASS: Worker/API-Testsignale - Server-/API-Code ist vorhanden; dedizierte Testsignale werden geprueft.
 - PASS: Web-CI-Gate vorhanden - Warnung, wenn GitHub Actions kein Web-Lint/Test/Build-Gate enthaelt.
-- WARN: Arbeitsbaum sauber - 132 uncommitted Pfade gefunden; vor Releases klaeren.
+- WARN: Arbeitsbaum sauber - 10 uncommitted Pfade gefunden; vor Releases klaeren.
 - PASS: Env-Beispiel vorhanden - .env.example ist fuer sichere Konfiguration vorhanden.
 
 Naechste Aktionen:
@@ -154,7 +154,7 @@ Naechste Aktionen:
 - PASS: Branching-Hinweise vorhanden - Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist.
 - PASS: Commit-Konvention dokumentiert - Warnung, wenn Commit-Typen nicht klar festgelegt sind.
 - PASS: Change-Tracking vorhanden - Warnung, wenn Entscheidungen oder Audit-Historie fehlen.
-- WARN: Arbeitsbaum releasebereit - 132 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
+- PASS: Arbeitsbaum releasebereit - 10 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
 - PASS: Einziges Deployment-Target - Nur Cloudflare (wrangler.jsonc) als Deployment-Target vorhanden.
 - PASS: Gefaehrdete Artefaktordner ignoriert - Warnung, wenn Build-/Wrangler-/Release-Artefakte nicht sauber ignoriert werden.
 

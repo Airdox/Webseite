@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-24T16:41:25.040Z",
+  "generatedAt": "2026-06-24T20:55:03.492Z",
   "controller": "Master Controller",
   "job": "agent-system-health",
   "summary": {
@@ -10,7 +10,7 @@
     "externalLiveJobCount": 5,
     "reportCount": 5,
     "staleReportCount": 1,
-    "alertCount": 2
+    "alertCount": 1
   },
   "automation": {
     "npmBackgroundScript": true,
@@ -31,34 +31,34 @@
     {
       "id": "background-cycle",
       "path": "docs/agent-system/latest-background-cycle.json",
-      "generatedAt": "2026-06-23T13:45:40.836Z",
+      "generatedAt": "2026-06-24T16:38:52.704Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
-      "ageHours": 26.93,
-      "status": "aging"
+      "ageHours": 4.27,
+      "status": "fresh"
     },
     {
       "id": "job-run",
       "path": "docs/agent-system/latest-job-run.json",
-      "generatedAt": "2026-06-24T16:39:17.348Z",
+      "generatedAt": "2026-06-24T20:36:00.354Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
-      "ageHours": 0.04,
+      "ageHours": 0.32,
       "status": "fresh"
     },
     {
       "id": "audit",
       "path": "docs/agent-system/latest-audit.json",
-      "generatedAt": "2026-06-24T16:39:19.728Z",
+      "generatedAt": "2026-06-24T20:36:14.984Z",
       "warnAfterHours": 24,
       "failAfterHours": 72,
-      "ageHours": 0.03,
+      "ageHours": 0.31,
       "status": "fresh"
     },
     {
       "id": "dependency-radar",
       "path": "docs/agent-system/latest-agent-dependency-radar.json",
-      "generatedAt": "2026-06-24T16:41:24.085Z",
+      "generatedAt": "2026-06-24T20:55:01.068Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
       "ageHours": 0,
@@ -70,7 +70,7 @@
       "generatedAt": "2026-05-24T04:52:19.782Z",
       "warnAfterHours": 168,
       "failAfterHours": 336,
-      "ageHours": 755.82,
+      "ageHours": 760.05,
       "status": "stale"
     }
   ],
@@ -85,15 +85,9 @@
   "diagram": "flowchart TD\n  User[User Auftrag / Freigabe] --> MC[Master Controller]\n  MC --> Catalog[Job Catalog]\n  MC --> Router[Routing Rules]\n  Router --> Wakeup[Workbench Wakeup]\n  Wakeup --> Webbie\n  Wakeup --> Winnie\n  Wakeup --> Guardian\n  Wakeup --> Manni\n  Wakeup --> Designer\n  Wakeup --> Mentor\n  Wakeup --> Research[Deep Research]\n  Wakeup --> Repository\n  Catalog --> Runner[Agent Job Runner]\n  Runner --> Reports[latest-*.json/md]\n  Reports --> Radar[Dependency Radar]\n  Radar --> Queue[Task Queue]\n  Queue --> MC\n  Guardian --> Gates[Quality Gates]\n  Manni --> Drafts[External Drafts]\n  Drafts --> Approval[Personal User OK]\n  Approval --> Live[External Live Action]\n  Live -. blocked without OK .-> Approval\n  Scheduler[GitHub Schedule / Windows Task] --> Background[Background Cycle]\n  Background --> Runner\n  Background --> Health[System Health]\n  Health --> MC",
   "alerts": [
     {
-      "severity": "watch",
-      "id": "background-cycle-aging",
-      "message": "background-cycle is aging (26.93h old).",
-      "nextAction": "Let the next scheduled background cycle refresh it."
-    },
-    {
       "severity": "action",
       "id": "task-queue-stale",
-      "message": "task-queue is stale (755.82h old).",
+      "message": "task-queue is stale (760.05h old).",
       "nextAction": "Run npm run agents:background:deep and inspect failed steps."
     }
   ]

@@ -1,29 +1,26 @@
 # AIRDOX Wiki Sync Audit
 
-Erstellt: 2026-06-24T16:41:21.365Z
-Status: ok
+Erstellt: 2026-06-24T20:54:52.506Z
+Status: warn
 
 ## Ueberblick
 
-- Geaenderte Dateien: 128
-- Content / project files: 102
-- Wiki / Assistant knowledge files: 13
-- Owner: Wiki Maintainer
+- Geaenderte Dateien: 34
+- Content / project files: 34
+- Wiki / Assistant knowledge files: 0
+- Owner: Master Controller -> Wiki Maintainer
 
 ## Required Action
 
-Keine Eskalation: Zu den aktuellen Content-/Projekt-Aenderungen existiert bereits eine Wiki- oder Assistant-Wissensaenderung, oder es gibt keine relevanten Content-Aenderungen.
+Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Aenderungen in airdoX_wiki und lokale Assistant-Antworten ueberfuehren, danach Wiki-Lint und Assistant-Coverage ausfuehren.
 
 ## Content Files
 
-- desktop/main/index.cjs
-- desktop/main/services/pipeline.mjs
-- desktop/main/services/workspace.mjs
+- docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - docs/agent-system/AGENT_TRAINING_CATALOG.json
+- docs/agent-system/AGENT_TRAINING_CATALOG.md
 - docs/agent-system/MENTOR_POSTMORTEM_BANK.json
-- docs/agent-system/agent-routing-rules.json
-- docs/agent-system/agent-watch-zones.json
-- docs/agent-system/job-catalog.json
+- docs/agent-system/MENTOR_POSTMORTEM_BANK.md
 - docs/agent-system/latest-agent-currency.json
 - docs/agent-system/latest-agent-currency.md
 - docs/agent-system/latest-agent-dependency-radar.json
@@ -38,102 +35,25 @@ Keine Eskalation: Zu den aktuellen Content-/Projekt-Aenderungen existiert bereit
 - docs/agent-system/latest-audience-intelligence.md
 - docs/agent-system/latest-audit.json
 - docs/agent-system/latest-audit.md
-- docs/agent-system/latest-background-cycle.json
 - docs/agent-system/latest-guardian-risk-summary.json
 - docs/agent-system/latest-guardian-risk-summary.md
-- docs/agent-system/latest-job-run.json
-- docs/agent-system/latest-job-run.md
 - docs/agent-system/latest-mentor-agent-education.json
 - docs/agent-system/latest-mentor-agent-education.md
 - docs/agent-system/latest-notebooklm-brief.json
 - docs/agent-system/latest-notebooklm-brief.md
-- docs/agent-system/latest-refactor-website-opportunities.json
-- docs/agent-system/latest-refactor-website-opportunities.md
 - docs/agent-system/latest-repository-monitor.json
 - docs/agent-system/latest-repository-monitor.md
 - docs/agent-system/latest-website-profitability.json
 - docs/agent-system/latest-website-profitability.md
-- docs/agent-system/manni-reel-queue.json
-- docs/agent-system/reports/operations/AGENT_RESPONSIBILITY_MATRIX.md
-- docs/agent-system/reports/operations/ORCHESTRATION_WORKFLOW.md
-- docs/brand/airdox-epk-content.json
-- docs/brand/templates/airdox-epk.template.html
-- package.json
-- public/epk/airdox-epk.html
-- public/epk/airdox-epk.pdf
-- public/epk/airdox-press-assets.txt
-- scripts/agent-background-cycle.mjs
-- scripts/agent-job-validator.mjs
-- scripts/build-airdox-epk.mjs
-- src/components/AuthModal.jsx
-- src/components/AuthModalFields.jsx
-- src/components/EPKSection.jsx
-- src/components/Hero.jsx
-- src/components/Navigation.css
-- src/components/Navigation.jsx
-- src/components/SetCard.jsx
-- src/components/VIPSection.jsx
-- src/components/Visualizer.jsx
-- src/components/__tests__/AuthModal.test.jsx
-- src/contexts/__tests__/audioSources.test.js
-- src/contexts/audioSources.js
-- src/desktop/DesktopApp.jsx
-- src/desktop/__tests__/DesktopApp.test.jsx
-- src/desktop/components/AssistantTab.jsx
-- src/desktop/components/DesignSetupPhase.jsx
-- src/desktop/components/SetImportTab.jsx
-- src/desktop/desktop.css
-- src/desktop/lib/__tests__/assistantCoverage.test.js
-- src/desktop/lib/__tests__/assistantEngine.test.js
-- src/desktop/lib/assistantEngine.js
-- src/desktop/lib/assistantKnowledge.js
-- src/desktop/lib/tracklistCore.js
-- src/lib/__tests__/authHelpers.test.js
-- src/lib/authHelpers.js
-- src/lib/authRequestHandler.js
-- src/lib/statsContracts.js
-- src/server/__tests__/worker.test.js
-- src/server/worker.js
-- src/utils/audienceSignals.js
-- src/utils/i18nMessages.js
-- docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
-- docs/agent-system/AGENT_TRAINING_CATALOG.md
-- docs/agent-system/MENTOR_POSTMORTEM_BANK.md
 - docs/agent-system/manni-reel-draft-pack.md
+- docs/agent-system/manni-reel-queue.json
 - docs/agent-system/manni-reel-weekly-plan.md
-- docs/agent-system/wiki-maintainer-todo.md
-- public/epk/assets/
-- public/epk/press-assets.html
-- scripts/R2_README.md
-- scripts/_deduped_manifest.js
-- scripts/_deploy_manifest_4.js
-- scripts/_deploy_manifest_for_src.js
-- scripts/_final_manifest.js
-- scripts/capture-auth-workflow-proof.mjs
-- scripts/publish-and-deploy.mjs
-- scripts/r2-delete.mjs
-- scripts/r2-list.mjs
-- scripts/wiki-sync-audit.mjs
-- src/components/IndustrialDashboard.css
-- src/components/IndustrialDashboard.jsx
-- src/desktop/lib/__tests__/publish.integration.test.mjs
-- src/desktop/lib/assistantGuides.js
+- src/data/__tests__/musicSets.test.js
+- src/data/musicSets.js
 
 ## Knowledge Files
 
-- airdoX_wiki/SYSTEM.md
-- airdoX_wiki/llm_interface.py
-- airdoX_wiki/wiki/flightdeck-expert-handbook.md
-- airdoX_wiki/wiki/flightdeck-faq.md
-- airdoX_wiki/wiki/flightdeck-troubleshooting.md
-- airdoX_wiki/wiki/index.md
-- airdoX_wiki/wiki/log.md
-- src/desktop/lib/__tests__/assistantCoverage.test.js
-- src/desktop/lib/assistantEngine.js
-- src/desktop/lib/assistantKnowledge.js
-- airdoX_wiki/wiki/Untitled-2.yml
-- airdoX_wiki/wiki/flightdeck-workflow-diagrams.md
-- docs/agent-system/wiki-maintainer-todo.md
+- Keine
 
 ## Gates
 

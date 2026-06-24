@@ -1,9 +1,766 @@
 {
-  "generatedAt": "2026-06-24T16:41:04.648Z",
+  "generatedAt": "2026-06-24T20:53:51.424Z",
   "agent": "Manni",
   "scenario": "A",
   "scenarioLabel": "Organischer Engine-Aufbau",
-  "sourceSetCount": 0,
-  "itemCount": 0,
-  "queue": []
+  "sourceSetCount": 4,
+  "itemCount": 12,
+  "queue": [
+    {
+      "id": "reel-recording-2026-06-21-5-00-00-00-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 1,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_06_21-5",
+      "sourceSetTitle": "fete de la musiQue #5",
+      "sourceTrack": "Martin Books - Veloroom (Original Mix)",
+      "sourceTimestamp": "00:00:00",
+      "landingUrl": "https://airdox.info/#set-recording_2026_06_21-5",
+      "hook": "Warte auf den Drop bei 00:00",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 00:00. Martin Books - Veloroom (Original Mix). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "drop-moment Hook aus fete de la musiQue #5 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Warte auf den Drop bei 00:00",
+        "styleVariant": "raw_drop_marker",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-06-21-5-00-02-50-transition-breakdown",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 2,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_06_21-5",
+      "sourceSetTitle": "fete de la musiQue #5",
+      "sourceTrack": "Jill Stanley - Work It (Original Mix)",
+      "sourceTimestamp": "00:02:50",
+      "landingUrl": "https://airdox.info/#set-recording_2026_06_21-5",
+      "hook": "So baue ich den Uebergang bei 02:50",
+      "concept": "Split-Screen: Deck A / Deck B plus kurze On-Screen-Erklaerung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "So baue ich den Uebergang bei 02:50. Jill Stanley - Work It (Original Mix). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "transition-breakdown Hook aus fete de la musiQue #5 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "So baue ich den Uebergang bei 02:50",
+        "styleVariant": "deck_split_screen",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-06-21-5-00-06-44-crowd-energy",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 3,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_06_21-5",
+      "sourceSetTitle": "fete de la musiQue #5",
+      "sourceTrack": "Martin Books - Ekohook (Original Mix)",
+      "sourceTimestamp": "00:06:44",
+      "landingUrl": "https://airdox.info/#set-recording_2026_06_21-5",
+      "hook": "Dieser Moment killt den Floor bei 06:44",
+      "concept": "POV-Cut mit Crowd-Reaction und schneller Wiederholung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Dieser Moment killt den Floor bei 06:44. Martin Books - Ekohook (Original Mix). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "crowd-energy Hook aus fete de la musiQue #5 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Dieser Moment killt den Floor bei 06:44",
+        "styleVariant": "floor_energy_loop",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-06-21-5-00-09-58-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 4,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_06_21-5",
+      "sourceSetTitle": "fete de la musiQue #5",
+      "sourceTrack": "Aliens Bad Brothers - Extasy (Original Mix)",
+      "sourceTimestamp": "00:09:58",
+      "landingUrl": "https://airdox.info/#set-recording_2026_06_21-5",
+      "hook": "Warte auf den Drop bei 09:58",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 09:58. Aliens Bad Brothers - Extasy (Original Mix). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "drop-moment Hook aus fete de la musiQue #5 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Warte auf den Drop bei 09:58",
+        "styleVariant": "raw_drop_marker",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-06-02-00-00-00-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 1,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_06_02",
+      "sourceSetTitle": "FOR THE HATERS",
+      "sourceTrack": "Green Velvet, Meduza, GENESI (ITA), ESSENTIA (IT) - La La Land (Extended Mix)",
+      "sourceTimestamp": "00:00:00",
+      "landingUrl": "https://airdox.info/#set-recording_2026_06_02",
+      "hook": "Warte auf den Drop bei 00:00",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 00:00. Green Velvet, Meduza, GENESI (ITA), ESSENTIA (IT) - La La Land (Extended Mix). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "drop-moment Hook aus FOR THE HATERS steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Warte auf den Drop bei 00:00",
+        "styleVariant": "raw_drop_marker",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-06-02-00-02-45-transition-breakdown",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 2,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_06_02",
+      "sourceSetTitle": "FOR THE HATERS",
+      "sourceTrack": "Beachbag - Beatbox Rocker (Extended Mix)",
+      "sourceTimestamp": "00:02:45",
+      "landingUrl": "https://airdox.info/#set-recording_2026_06_02",
+      "hook": "So baue ich den Uebergang bei 02:45",
+      "concept": "Split-Screen: Deck A / Deck B plus kurze On-Screen-Erklaerung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "So baue ich den Uebergang bei 02:45. Beachbag - Beatbox Rocker (Extended Mix). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "transition-breakdown Hook aus FOR THE HATERS steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "So baue ich den Uebergang bei 02:45",
+        "styleVariant": "deck_split_screen",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-06-02-00-05-39-crowd-energy",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 3,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_06_02",
+      "sourceSetTitle": "FOR THE HATERS",
+      "sourceTrack": "The Flirts, Beltran (BR) - Passion (R U Satisfied) (Extended Mix)",
+      "sourceTimestamp": "00:05:39",
+      "landingUrl": "https://airdox.info/#set-recording_2026_06_02",
+      "hook": "Dieser Moment killt den Floor bei 05:39",
+      "concept": "POV-Cut mit Crowd-Reaction und schneller Wiederholung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Dieser Moment killt den Floor bei 05:39. The Flirts, Beltran (BR) - Passion (R U Satisfied) (Extended Mix). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "crowd-energy Hook aus FOR THE HATERS steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Dieser Moment killt den Floor bei 05:39",
+        "styleVariant": "floor_energy_loop",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-06-02-00-09-04-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 4,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_06_02",
+      "sourceSetTitle": "FOR THE HATERS",
+      "sourceTrack": "Sammy Virji, Fred again.., Reggie - Talk of the Town (Original Mix)",
+      "sourceTimestamp": "00:09:04",
+      "landingUrl": "https://airdox.info/#set-recording_2026_06_02",
+      "hook": "Warte auf den Drop bei 09:04",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 09:04. Sammy Virji, Fred again.., Reggie - Talk of the Town (Original Mix). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "drop-moment Hook aus FOR THE HATERS steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Warte auf den Drop bei 09:04",
+        "styleVariant": "raw_drop_marker",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-05-24-00-00-00-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 1,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_24",
+      "sourceSetTitle": "LIVE SET MAY 2026",
+      "sourceTrack": "Kolter - What Did You Come For ? (Original Mix)",
+      "sourceTimestamp": "00:00:00",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_24",
+      "hook": "Warte auf den Drop bei 00:00",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 00:00. Kolter - What Did You Come For ? (Original Mix). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "drop-moment Hook aus LIVE SET MAY 2026 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Warte auf den Drop bei 00:00",
+        "styleVariant": "raw_drop_marker",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-05-24-00-01-08-transition-breakdown",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 2,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_24",
+      "sourceSetTitle": "LIVE SET MAY 2026",
+      "sourceTrack": "East End Dubs, Di Chiara Brothers - Face Bass (Original Mix)",
+      "sourceTimestamp": "00:01:08",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_24",
+      "hook": "So baue ich den Uebergang bei 01:08",
+      "concept": "Split-Screen: Deck A / Deck B plus kurze On-Screen-Erklaerung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "So baue ich den Uebergang bei 01:08. East End Dubs, Di Chiara Brothers - Face Bass (Original Mix). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "transition-breakdown Hook aus LIVE SET MAY 2026 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "So baue ich den Uebergang bei 01:08",
+        "styleVariant": "deck_split_screen",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-05-24-00-07-24-crowd-energy",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 3,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_24",
+      "sourceSetTitle": "LIVE SET MAY 2026",
+      "sourceTrack": "Claude VonStroke - A Little Drizzle (Extended)",
+      "sourceTimestamp": "00:07:24",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_24",
+      "hook": "Dieser Moment killt den Floor bei 07:24",
+      "concept": "POV-Cut mit Crowd-Reaction und schneller Wiederholung.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Dieser Moment killt den Floor bei 07:24. Claude VonStroke - A Little Drizzle (Extended). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "crowd-energy Hook aus LIVE SET MAY 2026 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Dieser Moment killt den Floor bei 07:24",
+        "styleVariant": "floor_energy_loop",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    },
+    {
+      "id": "reel-recording-2026-05-24-00-12-39-drop-moment",
+      "owner": "Manni",
+      "status": "planned",
+      "createdAt": "2026-06-24T20:53:51.424Z",
+      "updatedAt": "2026-06-24T20:53:51.424Z",
+      "scenario": "A",
+      "scenarioLabel": "Organischer Engine-Aufbau",
+      "priority": 4,
+      "platforms": [
+        "instagram_reels",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "sourceSetId": "recording_2026_05_24",
+      "sourceSetTitle": "LIVE SET MAY 2026",
+      "sourceTrack": "Diego Straube, Taavi - Mr. Chongo (Original Mix)",
+      "sourceTimestamp": "00:12:39",
+      "landingUrl": "https://airdox.info/#set-recording_2026_05_24",
+      "hook": "Warte auf den Drop bei 12:39",
+      "concept": "Zoom-In auf Build-Up und harter Cut auf den Drop.",
+      "cta": "Follow fuer den naechsten Part.",
+      "hashtags": [
+        "#techno",
+        "#berlintechno",
+        "#undergroundtechno",
+        "#reelsmusic",
+        "#djset"
+      ],
+      "kpiFocus": "watch_time_and_shares",
+      "captionTemplate": "Warte auf den Drop bei 12:39. Diego Straube, Taavi - Mr. Chongo (Original Mix). Follow fuer den naechsten Part.",
+      "experiment": {
+        "hypothesis": "drop-moment Hook aus LIVE SET MAY 2026 steigert Completion Rate und Shares.",
+        "primaryMetric": "completion_rate",
+        "secondaryMetric": "shares",
+        "reportDue": "2026-07-01"
+      },
+      "approval": {
+        "visibility": "external_draft",
+        "creationAllowed": true,
+        "requiresUserApprovalForPublish": true,
+        "status": "draft_allowed_publish_pending_user_ok"
+      },
+      "actionPlan": {
+        "owner": "Manni",
+        "nextAction": "Create external-ready reel/poster draft, caption variant, and platform copy. Keep unpublished until user OK.",
+        "handoffTo": "Designer",
+        "handoffReason": "First-frame, thumbnail, and safe-area readiness review.",
+        "gate": "Creation is allowed; external publishing requires personal user OK in DECISION_LOG."
+      },
+      "creativePack": {
+        "firstFrameText": "Warte auf den Drop bei 12:39",
+        "styleVariant": "raw_drop_marker",
+        "thumbnailDirection": "Deck-/Waveform-Nahaufnahme mit sichtbarem Timestamp-Marker.",
+        "safeAreaNotes": "Text oben zentriert, keine Plattform-UI verdecken."
+      },
+      "reporting": {
+        "postingStatus": "planned",
+        "resultStatus": "pending",
+        "winnerSignal": "",
+        "learning": ""
+      }
+    }
+  ]
 }

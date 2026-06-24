@@ -1,42 +1,50 @@
 # Latest Website Profitability
 
-Erstellt: 2026-06-24T16:40:08.456Z
+Erstellt: 2026-06-24T20:49:26.109Z
 Measurement window: 30 days
 Event source: neon:analytics_logs
-Status: no_measurement_data
+Status: unprofitable
 
 ## Financial Estimate
-- Estimated gross value: EUR 0.00
+- Estimated gross value: EUR 457.95
 - Estimated monthly cost: EUR 552.00
-- Estimated net value: EUR -552.00
-- ROI: -1
+- Estimated net value: EUR -94.05
+- ROI: -0.1704
 
 ## Funnel
-- Consented events: 0
+- Consented events: 293
 - Rejected events: 0
-- Route views: 0
-- Set plays: 0
+- Route views: 89
+- Set plays: 99
 - Newsletter signups: 0
-- Booking clicks: 0
+- Booking clicks: 4
 - Contact submits: 0
 
 ## Conversion Rates
-- engagedPlayRate: 0
+- engagedPlayRate: 1.1124
 - newsletterRate: 0
-- bookingIntentRate: 0
+- bookingIntentRate: 0.0449
 - contactRate: 0
 
 ## Value By Event
-- Noch keine Daten
+- booking_click: EUR 300.00
+- set_play: EUR 148.50
+- route_view: EUR 4.45
+- share_click: EUR 3.00
+- tracklist_open: EUR 2.00
+- section_view: EUR 0.00
+- cta_view: EUR 0.00
 
 ## Value By Route
-- Noch keine Daten
+- /: EUR 455.75
+- /en/: EUR 1.55
+- /stark/sets: EUR 0.40
+- /#set-recording_2026_06_21-5: EUR 0.20
+- /#set-recording_2026_06_02: EUR 0.05
 
 ## Empfehlungen
-1. Enable consented website event export (high, Webbie)
-   - Verify route_view, set_play, newsletter_signup, booking_click, contact_submit, and epk_download reach the audience event store.
-2. Do not optimize ROI without data (high, Audience Intelligence)
-   - Keep the profitability status as no_measurement_data until at least one consented event source exists.
+1. Strengthen fan capture (medium, Manni)
+   - Pair the top content with a newsletter offer and a measurable campaign parameter.
 
 ## Guardrails
 - Aggregate and consented events only.
