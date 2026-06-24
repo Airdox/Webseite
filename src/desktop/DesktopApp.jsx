@@ -2,7 +2,7 @@ import React, { startTransition, useCallback, useDeferredValue, useEffect, useMe
 import {
   CircleAlert, Database, LayoutDashboard, RadioTower, UploadCloud,
   BarChart3, Settings2, Package, Activity, BookOpen, Rocket, Bot,
-  RefreshCw, Gauge, ListChecks, Sparkles, Palette,
+  RefreshCw, Gauge, ListChecks, Sparkles, Palette, ArrowLeft,
 } from 'lucide-react';
 import { flightDeckApi } from './api.js';
 import OverviewTab from './components/OverviewTab.jsx';
@@ -19,6 +19,7 @@ import ManniApprovalTab from './components/ManniApprovalTab.jsx';
 import DesignAgentTab from './components/DesignAgentTab.jsx';
 import GuidedTutorialOverlay from './components/GuidedTutorialOverlay.jsx';
 import { TUTORIAL_TOURS } from './lib/tutorialContent.js';
+import { formatFlightDeckErrorHelp } from './lib/assistantEngine.js';
 import {
   AUDIO_EXTENSIONS,
   extractFilename,
@@ -215,6 +216,11 @@ const createPublishLogEntry = (step, status, detail) => ({
   status,
   detail,
 });
+
+const createFriendlyErrorDetail = (message = '') => {
+  const help = formatFlightDeckErrorHelp(message);
+  return help ? `${message}\n\n${help}` : message;
+};
 
 const getBatchProgressPercent = ({ current = 0, total = 0 } = {}) => (
   total > 0 ? Math.min(100, Math.round((current / total) * 100)) : 0
@@ -739,14 +745,15 @@ const DesktopApp = () => {
       await refreshState();
       await refreshTable();
     } catch (error) {
+      const friendlyDetail = createFriendlyErrorDetail(error.message);
       setPublishLogs((currentLogs) => [
         ...currentLogs,
-        createPublishLogEntry('Publish fehlgeschlagen', 'error', error.message),
+        createPublishLogEntry('Publish fehlgeschlagen', 'error', friendlyDetail),
       ]);
       finishPublishRun({
         mode: 'publish',
         label: 'Publish fehlgeschlagen',
-        detail: error.message,
+        detail: friendlyDetail,
         tone: 'error',
       });
     } finally {
@@ -820,14 +827,15 @@ const DesktopApp = () => {
       await refreshTable();
       setActiveTab('import');
     } catch (error) {
+      const friendlyDetail = createFriendlyErrorDetail(error.message);
       setPublishLogs((currentLogs) => [
         ...currentLogs,
-        createPublishLogEntry('Live fehlgeschlagen', 'error', error.message),
+        createPublishLogEntry('Live fehlgeschlagen', 'error', friendlyDetail),
       ]);
       finishPublishRun({
         mode: 'live',
         label: 'Live fehlgeschlagen',
-        detail: error.message,
+        detail: friendlyDetail,
         tone: 'error',
       });
       setActiveTab('import');
@@ -1155,6 +1163,15 @@ const DesktopApp = () => {
     markTutorialVisited(tabId);
   };
 
+  const returnFromDesignStudio = useCallback(() => {
+    if (flightDeckApi.isElectron || window.opener) {
+      window.close();
+      return;
+    }
+
+    window.location.assign(`${window.location.pathname || '/desktop.html'}`);
+  }, []);
+
   const renderTab = () => {
     if (activeTab === 'overview') {
       return (
@@ -1481,9 +1498,20 @@ const DesktopApp = () => {
             <span className="fd-eyebrow">AIRDOX</span>
             <h1>Design Studio</h1>
           </div>
-          <span className={`fd-status-pill ${appState.workspaceValid ? 'ok' : 'warn'}`}>
-            {appState.workspaceValid ? 'Workspace verbunden' : 'Workspace fehlt'}
-          </span>
+          <div className="fd-design-studio-actions">
+            <span className={`fd-status-pill ${appState.workspaceValid ? 'ok' : 'warn'}`}>
+              {appState.workspaceValid ? 'Workspace verbunden' : 'Workspace fehlt'}
+            </span>
+            <button
+              type="button"
+              className="fd-command-button"
+              onClick={returnFromDesignStudio}
+              aria-label="Zurueck zur Hauptansicht"
+            >
+              <ArrowLeft size={15} />
+              Hauptansicht
+            </button>
+          </div>
         </header>
         <main className="fd-design-studio-main">
           {settingsDraft ? (

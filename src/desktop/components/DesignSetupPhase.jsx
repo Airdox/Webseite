@@ -31,11 +31,23 @@ const DesignSetupPhase = ({ config, sets, onConfigChange, onNext, onOpenStudio, 
   };
 
   const randomize = () => {
+    const currentPresetIndex = CREATIVE_PRESETS.findIndex((preset) => preset.id === config.presetId);
+    const nextPreset = CREATIVE_PRESETS[(Math.max(currentPresetIndex, 0) + 1) % CREATIVE_PRESETS.length];
+    const currentFormatIndex = FORMAT_OPTIONS.findIndex((format) => format.id === config.format);
+    const nextFormat = FORMAT_OPTIONS[(Math.max(currentFormatIndex, 0) + 1) % FORMAT_OPTIONS.length];
+    const remixBackgrounds = BACKGROUND_STILL_OPTIONS.filter((option) => option.id !== 'custom');
+    const currentBackgroundIndex = remixBackgrounds.findIndex((background) => background.id === config.bgSource);
+    const nextBackground = remixBackgrounds[(Math.max(currentBackgroundIndex, 0) + 1) % remixBackgrounds.length];
     const drift = (value) => Math.max(0, Math.min(100, value + Math.round((Math.random() * 34) - 17)));
     patch({
+      presetId: nextPreset.id,
+      style: nextPreset.style,
+      format: nextFormat.id,
+      bgSource: nextBackground.id,
+      customBgPath: '',
       seed: config.seed + 137,
       controls: Object.fromEntries(
-        Object.entries(config.controls).map(([k, v]) => [k, drift(v)]),
+        Object.entries(nextPreset.controls).map(([k, v]) => [k, drift(v)]),
       ),
     });
   };

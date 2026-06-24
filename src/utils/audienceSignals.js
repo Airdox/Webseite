@@ -138,6 +138,7 @@ export const audienceEvents = {
   setComplete: (payload) => trackAudienceSignal('set_complete', payload),
   videoPlay: (payload) => trackAudienceSignal('video_play', payload),
   tracklistOpen: (payload) => trackAudienceSignal('tracklist_open', payload),
+  tracklistClick: (payload) => trackAudienceSignal('tracklist_click', payload),
   deepScroll: (payload) => trackAudienceSignal('deep_scroll', payload),
   shareClick: (payload) => trackAudienceSignal('share_click', payload),
   copyLink: (payload) => trackAudienceSignal('copy_link', payload),

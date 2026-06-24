@@ -17,6 +17,7 @@ const Footer = lazy(() => import('./components/Footer'));
 const Visualizer = lazy(() => import('./components/Visualizer')); // [NEW]
 const AuthModal = lazy(() => import('./components/AuthModal')); // [NEW]
 import GlobalPlayer from './components/GlobalPlayer';
+const IndustrialDashboard = lazy(() => import('./components/IndustrialDashboard'));
 
 import SetNotification from './components/SetNotification';
 import CookieBanner from './components/CookieBanner';
@@ -55,11 +56,17 @@ function App() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [authModal, setAuthModal] = useState({ isOpen: false, mode: 'login' });
   const [theme, setTheme] = useState(getInitialTheme);
+  const [designMode, setDesignMode] = useState(() => {
+    if (typeof window === 'undefined') return 'classic';
+    const stored = window.localStorage.getItem('airdox-design-mode');
+    return stored === 'industrial' ? 'industrial' : 'classic';
+  });
   const trackedSectionsRef = useRef(new Set());
 
   const openAuth = (mode = 'login') => setAuthModal({ isOpen: true, mode });
   const closeAuth = () => setAuthModal({ ...authModal, isOpen: false });
   const toggleTheme = () => setTheme((current) => (current === 'light' ? 'dark' : 'light'));
+  const toggleDesignMode = (mode) => setDesignMode(mode);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -71,6 +78,11 @@ function App() {
       themeColor.setAttribute('content', theme === 'light' ? '#f6fbff' : '#00f0ff');
     }
   }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.dataset.designMode = designMode;
+    window.localStorage.setItem('airdox-design-mode', designMode);
+  }, [designMode]);
 
   useEffect(() => {
     // Simulate loading progress
@@ -180,43 +192,55 @@ function App() {
   return (
     <ToastProvider>
       <AudioProvider>
-        <SmoothScroll>
-          <LoadingScreen progress={loadingProgress} isLoaded={!loading} />
-          <div className="app">
-            <AtmosphericBackground />
-            <Suspense fallback={null}>
-              <Visualizer />
+        <LoadingScreen progress={loadingProgress} isLoaded={!loading} />
+        <div className={`app app-${designMode}`}>
+          {designMode === 'industrial' ? (
+            <Suspense fallback={<div className="loading-screen"><div className="loading-logo">AIRDOX</div></div>}>
+              <IndustrialDashboard
+                onOpenAuth={openAuth}
+                theme={theme}
+                onToggleTheme={toggleTheme}
+                designMode={designMode}
+                onToggleDesignMode={toggleDesignMode}
+              />
             </Suspense>
-          <Navigation onOpenAuth={openAuth} theme={theme} onToggleTheme={toggleTheme} />
-          <Hero />
-          <BioSection />
-          <MusicSection />
-          <Suspense fallback={<SectionLoading />}>
-            <VIPSection onOpenAuth={openAuth} />
-          </Suspense>
-          <Suspense fallback={<SectionLoading />}>
-            <EPKSection />
-          </Suspense>
-          <BookingSection />
-          <Suspense fallback={<SectionLoading />}>
-            <Newsletter />
-          </Suspense>
-          <Suspense fallback={null}>
-            <Footer />
-          </Suspense>
-          <SetNotification />
+          ) : (
+            <SmoothScroll>
+              <AtmosphericBackground />
+              <Suspense fallback={null}>
+                <Visualizer />
+              </Suspense>
+              <Navigation onOpenAuth={openAuth} theme={theme} onToggleTheme={toggleTheme} designMode={designMode} onToggleDesignMode={toggleDesignMode} />
+              <Hero designMode={designMode} />
+              <BioSection designMode={designMode} />
+              <MusicSection designMode={designMode} />
+              <Suspense fallback={<SectionLoading />}>
+                <VIPSection onOpenAuth={openAuth} />
+              </Suspense>
+              <Suspense fallback={<SectionLoading />}>
+                <EPKSection />
+              </Suspense>
+              <BookingSection />
+              <Suspense fallback={<SectionLoading />}>
+                <Newsletter />
+              </Suspense>
+              <Suspense fallback={null}>
+                <Footer />
+              </Suspense>
+              <SetNotification />
+              <GlobalPlayer />
+              <AnalyticsDashboard />
+            </SmoothScroll>
+          )}
           <CookieBanner />
-          <GlobalPlayer />
-          <AnalyticsDashboard />
           <Suspense fallback={null}>
-            <AuthModal 
-              isOpen={authModal.isOpen} 
-              onClose={closeAuth} 
-              initialMode={authModal.mode} 
+            <AuthModal
+              isOpen={authModal.isOpen}
+              onClose={closeAuth}
+              initialMode={authModal.mode}
             />
           </Suspense>
-          </div>
-        </SmoothScroll>
+        </div>
       </AudioProvider>
     </ToastProvider>
   );

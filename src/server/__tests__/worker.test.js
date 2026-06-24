@@ -77,6 +77,32 @@ describe('worker API routing', () => {
         });
     });
 
+    it('exposes social providers for localhost dev social auth bypass', async () => {
+        const { default: worker } = await import('../worker.js');
+        const response = await worker.fetch(
+            new Request('http://localhost:8787/api/oauth/config'),
+            { ALLOW_DEV_SOCIAL_AUTH: 'true' },
+            {},
+        );
+        const body = await response.json();
+
+        expect(response.status).toBe(200);
+        expect(body).toEqual({ ok: true, providers: ['google', 'facebook'] });
+    });
+
+    it('does not expose dev social providers on non-localhost origins', async () => {
+        const { default: worker } = await import('../worker.js');
+        const response = await worker.fetch(
+            new Request('https://airdox.test/api/oauth/config'),
+            { ALLOW_DEV_SOCIAL_AUTH: 'true' },
+            {},
+        );
+        const body = await response.json();
+
+        expect(response.status).toBe(200);
+        expect(body).toEqual({ ok: true, providers: [] });
+    });
+
     it('blocks direct full-file audio downloads without a Range header', async () => {
         const { default: worker } = await import('../worker.js');
         const response = await worker.fetch(

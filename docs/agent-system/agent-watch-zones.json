@@ -92,6 +92,24 @@
       "wakeAction": "Guardian validates job specs, gates, and test obligations; Master Controller resolves conflicts."
     },
     {
+      "id": "wiki-assistant-knowledge",
+      "primaryAgent": "Wiki Maintainer",
+      "reviewAgents": [
+        "Mentor",
+        "Winnie",
+        "Guardian"
+      ],
+      "paths": [
+        "airdoX_wiki/**",
+        "src/desktop/lib/assistantKnowledge.js",
+        "src/desktop/lib/assistantEngine.js",
+        "src/desktop/components/AssistantTab.jsx",
+        "src/desktop/lib/__tests__/assistantCoverage.test.js",
+        "docs/agent-system/wiki-maintainer-todo.md"
+      ],
+      "wakeAction": "Wiki Maintainer converts project changes, repeated user questions and Flight Deck errors into linked wiki knowledge plus local Assistant answers; Mentor reviews learning quality, Winnie reviews Flight Deck accuracy, Guardian reviews gates."
+    },
+    {
       "id": "knowledge-and-learning",
       "primaryAgent": "Mentor",
       "reviewAgents": [

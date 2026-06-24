@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-06T09:43:54.221Z",
+  "generatedAt": "2026-06-24T16:39:19.728Z",
   "repository": "D:\\webseeite-main",
   "controller": {
     "name": "Master Controller",
@@ -7,9 +7,9 @@
   },
   "summary": {
     "averageScore": 96,
-    "dirtyPathCount": 193,
-    "testFileCount": 42,
-    "cssFileCount": 21
+    "dirtyPathCount": 132,
+    "testFileCount": 44,
+    "cssFileCount": 22
   },
   "gate": {
     "status": "pass",
@@ -202,7 +202,7 @@
           "label": "Ausreichende Testdateien",
           "status": "pass",
           "weight": 1.5,
-          "detail": "42 Test-/Spec-Dateien gefunden."
+          "detail": "44 Test-/Spec-Dateien gefunden."
         },
         {
           "label": "Worker/API-Testsignale",
@@ -220,7 +220,7 @@
           "label": "Arbeitsbaum sauber",
           "status": "warn",
           "weight": 1.5,
-          "detail": "193 uncommitted Pfade gefunden; vor Releases klaeren."
+          "detail": "132 uncommitted Pfade gefunden; vor Releases klaeren."
         },
         {
           "label": "Env-Beispiel vorhanden",
@@ -465,7 +465,7 @@
           "label": "Grosse JSX-Dateien begrenzt",
           "status": "warn",
           "weight": 1.5,
-          "detail": "src/desktop/DesktopApp.jsx hat 1708 Zeilen."
+          "detail": "src/desktop/DesktopApp.jsx hat 1736 Zeilen."
         },
         {
           "label": "Desktop Services modularisiert",
@@ -483,7 +483,7 @@
           "label": "Dependency-Footprint kontrolliert",
           "status": "pass",
           "weight": 1,
-          "detail": "10 Runtime-Abhaengigkeiten gefunden."
+          "detail": "12 Runtime-Abhaengigkeiten gefunden."
         }
       ],
       "nextActions": [
@@ -538,7 +538,7 @@
           "label": "Arbeitsbaum releasebereit",
           "status": "warn",
           "weight": 1.5,
-          "detail": "193 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+          "detail": "132 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
         },
         {
           "label": "Einziges Deployment-Target",

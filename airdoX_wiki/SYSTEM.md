@@ -36,7 +36,7 @@ Erstelle das "AIRDOX Wiki System" – ein autonomes "LLM Personal Wiki", das den
 ### Ingest & Compilation
 
 *   Das LLM erhält Rohdaten und entscheidet, ob es eine neue Seite erstellt oder eine bestehende Seite im /wiki erweitert (Smart-Merge).
-*   Jede neue Information muss mit mindestens zwei anderen Seiten verlinkt werden ([[Wikilinks]]), um "Waisenseiten" zu vermeiden.
+*   Jede neue Information muss mit mindestens zwei anderen Seiten verlinkt werden (Obsidian-Wiki-Links), um "Waisenseiten" zu vermeiden.
 
 ### Knowledge Linting (Aktivität im Hintergrund)
 
@@ -54,7 +54,7 @@ Das System scannt das Wiki regelmäßig auf:
 
 *   **Stack**: Python, Kivy, Ollama/Groq, Whisper, watchdog.
 *   **Obsidian Integration**: Das `/wiki` ist so formatiert, dass die Obsidian-Graphen-Ansicht ein dichtes, logisches Wissensnetzwerk zeigt.
-*   **Echtzeit-Feedback**: Die GUI zeigt den "Compile-Prozess" visualisiert an (z.B. "Webe Wissen in [[Physik]] ein...", "Löse Widerspruch in [[Quantenmechanik]] auf...").
+*   **Echtzeit-Feedback**: Die GUI zeigt den "Compile-Prozess" visualisiert an (z.B. "Webe Wissen in [[flightdeck-expert-handbook]] ein...", "Loese Widerspruch in [[flightdeck-troubleshooting]] auf...").
 
 ## 5. Auftrag für die KI
 
@@ -67,8 +67,8 @@ Das System scannt das Wiki regelmäßig auf:
 1.  **Eingabe**: Neue Rohdaten (Text, PDF, Audio-Transkript) im `/raw`-Ordner oder über eine API.
 2.  **Analyse**: Das LLM analysiert die Rohdaten, extrahiert Schlüsselkonzepte und identifiziert potenzielle Verbindungen zu bestehendem Wissen.
 3.  **Entscheidung**: Das LLM entscheidet, ob die Informationen eine neue Wiki-Seite erfordern oder in eine bestehende integriert werden sollen.
-    *   **Neue Seite**: Erstelle eine neue Markdown-Datei im `/wiki`-Ordner mit dem extrahierten Wissen. Stelle sicher, dass die neue Seite mit mindestens zwei bestehenden Seiten über `[[Wikilinks]]` verknüpft wird. Aktualisiere `index.md`.
-    *   **Bestehende Seite**: Führe die neuen Informationen intelligent (`Smart-Merge`) in die relevante(n) bestehende(n) Wiki-Seite(n) ein. Achte auf Konsistenz und vermeide Redundanz. Füge neue `[[Wikilinks]]` hinzu, falls relevant. Aktualisiere `index.md`.
+    *   **Neue Seite**: Erstelle eine neue Markdown-Datei im `/wiki`-Ordner mit dem extrahierten Wissen. Stelle sicher, dass die neue Seite mit mindestens zwei bestehenden Seiten ueber Obsidian-Wiki-Links verknuepft wird. Aktualisiere `index.md`.
+    *   **Bestehende Seite**: Führe die neuen Informationen intelligent (`Smart-Merge`) in die relevante(n) bestehende(n) Wiki-Seite(n) ein. Achte auf Konsistenz und vermeide Redundanz. Fuege neue Obsidian-Wiki-Links hinzu, falls relevant. Aktualisiere `index.md`.
 4.  **Protokollierung**: Trage den Ingest-Vorgang und die vorgenommenen Änderungen in `log.md` ein.
 5.  **Linting-Trigger**: Löse einen Knowledge Linting-Prozess für die betroffenen und verknüpften Seiten aus.
 
@@ -76,7 +76,7 @@ Das System scannt das Wiki regelmäßig auf:
 
 1.  **Erkennung**: Das System erkennt manuelle Änderungen an einer `.md`-Datei im `/wiki`-Ordner (z.B. durch `watchdog`).
 2.  **Analyse**: Das LLM analysiert die Änderungen und deren Auswirkungen auf das Wissensnetzwerk.
-3.  **Konsistenzprüfung**: Überprüfe die Integrität der `[[Wikilinks]]` und die Konsistenz der Informationen.
+3.  **Konsistenzprüfung**: Überprüfe die Integrität der Obsidian-Wiki-Links und die Konsistenz der Informationen.
 4.  **Protokollierung**: Trage die manuelle Änderung in `log.md` ein.
 5.  **Linting-Trigger**: Löse einen Knowledge Linting-Prozess für die betroffenen und verknüpften Seiten aus.
 
@@ -84,7 +84,7 @@ Das System scannt das Wiki regelmäßig auf:
 
 1.  **Eingabe**: Benutzerfrage oder Suchanfrage.
 2.  **Initialisierung**: Das LLM beginnt die Suche in `index.md`, um relevante Startpunkte zu identifizieren.
-3.  **Navigation**: Das LLM navigiert durch das Wiki-Netzwerk über `[[Wikilinks]]`, um Kontext aufzubauen und die relevantesten Informationen zu sammeln. Dabei wird die `index.md` als Karte und die Links als Pfade genutzt.
+3.  **Navigation**: Das LLM navigiert durch das Wiki-Netzwerk ueber Obsidian-Wiki-Links, um Kontext aufzubauen und die relevantesten Informationen zu sammeln. Dabei wird die `index.md` als Karte und die Links als Pfade genutzt.
 4.  **Synthese**: Das LLM synthetisiert die gesammelten Informationen, um eine kohärente und kontextbezogene Antwort zu generieren.
 5.  **Referenzierung**: Die Antwort enthält Verweise auf die verwendeten Wiki-Seiten und, falls zutreffend, auf die ursprünglichen Rohdaten im `/raw`-Ordner.
 
@@ -110,7 +110,7 @@ Das System scannt das Wiki regelmäßig auf:
 *   **Spracherkennung**: Whisper (für Audio-Transkripte im Ingest-Workflow)
 *   **Dateisystem-Überwachung**: `watchdog` (für die Erkennung manueller Updates im `/wiki`-Ordner)
 *   **Datenbank (optional)**: SQLite für Metadaten, falls die Dateisystem-basierte `index.md` und `log.md` nicht ausreichen.
-*   **Obsidian-Kompatibilität**: Sicherstellung der Markdown-Formatierung und `[[Wikilinks]]` für die Graphen-Ansicht.
+*   **Obsidian-Kompatibilität**: Sicherstellung der Markdown-Formatierung und Obsidian-Wiki-Links fuer die Graphen-Ansicht.
 
 ## Entwicklungsschritte (Übersicht)
 

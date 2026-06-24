@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-06-06T07:47:04.591Z",
+  "generatedAt": "2026-06-24T16:41:22.432Z",
   "controller": "Master Controller",
   "agent": "Refactor",
   "job": "refactor-website-opportunities",
   "purpose": "Turn Refactor from passive review into small, measurable website improvements.",
   "summary": {
-    "scannedFiles": 65,
-    "opportunityCount": 0,
-    "highPriorityCount": 0
+    "scannedFiles": 66,
+    "opportunityCount": 2,
+    "highPriorityCount": 1
   },
   "rules": [
     "Erreichbarkeit, Stabilitaet und Funktionalitaet haben Vorrang vor Cleanup.",
@@ -18,5 +18,47 @@
     "Jede Refactor-Aufgabe muss Vorher-/Nachher-Nutzen und Validierung nennen.",
     "Immer nur einen Website-Flow bevorzugen: Musik, Booking, Newsletter, VIP/Auth oder Stats."
   ],
-  "opportunities": []
+  "opportunities": [
+    {
+      "id": "large-file-src-components-industrialdashboard-jsx",
+      "priority": "high",
+      "area": "maintainability",
+      "files": [
+        "src/components/IndustrialDashboard.jsx"
+      ],
+      "evidence": "888 Zeilen / 48352 Bytes.",
+      "action": "Nur die naechste nutzer- oder service-sichtbare Teileinheit extrahieren, die einen fokussierten Test bekommen kann.",
+      "validation": "Den naechstliegenden Komponenten-/Unit-Test plus npm run build ausfuehren.",
+      "approval": {
+        "status": "pending_user_ok",
+        "requiredBeforeExecution": true,
+        "requiredBy": [
+          "User",
+          "Master Controller if scope expands"
+        ],
+        "proposalJob": "refactor-website-patch-proposal",
+        "executionJob": "website-stability-refactor-execution"
+      }
+    },
+    {
+      "id": "large-file-src-components-setcard-jsx",
+      "priority": "medium",
+      "area": "maintainability",
+      "files": [
+        "src/components/SetCard.jsx"
+      ],
+      "evidence": "387 Zeilen / 16765 Bytes.",
+      "action": "Nur die naechste nutzer- oder service-sichtbare Teileinheit extrahieren, die einen fokussierten Test bekommen kann.",
+      "validation": "Den naechstliegenden Komponenten-/Unit-Test plus npm run build ausfuehren.",
+      "approval": {
+        "status": "pending_user_ok",
+        "requiredBeforeExecution": true,
+        "requiredBy": [
+          "User"
+        ],
+        "proposalJob": "refactor-website-patch-proposal",
+        "executionJob": "approved-small-refactor-patch"
+      }
+    }
+  ]
 }

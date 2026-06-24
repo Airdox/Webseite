@@ -1,15 +1,67 @@
 import {
+    PASSWORD_HASH_ALGORITHM,
+    PASSWORD_HASH_ITERATIONS,
+    PASSWORD_MAX_LENGTH,
+    PASSWORD_MIN_LENGTH,
     TURNSTILE_MAX_TOKEN_LENGTH,
     TURNSTILE_VERIFY_TIMEOUT_MS,
     TURNSTILE_VERIFY_URL,
 } from './statsContracts.js';
 
-export const hashPassword = async (password, saltString) => {
+const bytesToHex = (bytes) => Array.from(bytes)
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+
+export const hashPasswordLegacy = async (password, saltString) => {
     const enc = new TextEncoder();
     const data = enc.encode(password + saltString);
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
+    return bytesToHex(new Uint8Array(hashBuffer));
+};
+
+export const hashPassword = async (password, saltString) => {
+    const enc = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+        'raw',
+        enc.encode(String(password || '')),
+        'PBKDF2',
+        false,
+        ['deriveBits'],
+    );
+    const bits = await crypto.subtle.deriveBits(
+        {
+            name: 'PBKDF2',
+            hash: 'SHA-256',
+            salt: enc.encode(String(saltString || '')),
+            iterations: PASSWORD_HASH_ITERATIONS,
+        },
+        key,
+        256,
+    );
+    return `${PASSWORD_HASH_ALGORITHM}$${PASSWORD_HASH_ITERATIONS}$${saltString}$${bytesToHex(new Uint8Array(bits))}`;
+};
+
+export const verifyPasswordHash = async ({ password, salt, storedHash }) => {
+    const hashValue = String(storedHash || '');
+    const [algorithm, iterations, storedSalt, derivedHash] = hashValue.split('$');
+    if (algorithm === PASSWORD_HASH_ALGORITHM && iterations && storedSalt && derivedHash) {
+        const recalculated = await hashPassword(password, storedSalt);
+        return recalculated === hashValue;
+    }
+    return await hashPasswordLegacy(password, salt) === hashValue;
+};
+
+export const isLegacyPasswordHash = (storedHash = '') => !String(storedHash).startsWith(`${PASSWORD_HASH_ALGORITHM}$`);
+
+export const validatePasswordPolicy = (password = '') => {
+    const normalized = String(password || '');
+    if (normalized.length < PASSWORD_MIN_LENGTH) {
+        return { ok: false, error: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long` };
+    }
+    if (normalized.length > PASSWORD_MAX_LENGTH) {
+        return { ok: false, error: `Password must be at most ${PASSWORD_MAX_LENGTH} characters long` };
+    }
+    return { ok: true };
 };
 
 export const generateRandomHex = (bytes) => {

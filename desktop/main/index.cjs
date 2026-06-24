@@ -586,12 +586,19 @@ ipcMain.handle('flightdeck:render-design', async (_event, payload) => {
       }
     });
 
-    child.on('close', (code) => {
+    child.on('close', async (code) => {
       if (code === 0) {
         sendLog(`Kreativ-Prozess erfolgreich abgeschlossen.`, 'success');
         sendLog(`[TRANSFER] GIF, MP4, Manifest und Handoff liegen in ${releaseDir}.`, 'success');
         if (mode === '5050' && photoshopAction === 'script_and_launch' && photoshopAvailable) {
           try {
+            if (!photoshopPath || typeof photoshopPath !== 'string') {
+              throw new Error('Photoshop path is not available. Aborting launch.');
+            }
+            const resolved = await fs.access(photoshopPath).then(() => true).catch(() => false);
+            if (!resolved) {
+              throw new Error(`Photoshop executable not found at ${photoshopPath}`);
+            }
             spawn(photoshopPath, ['-r', outputPaths.photoshopScriptPath], { detached: true, stdio: 'ignore' }).unref();
             sendLog(`[PHOTOSHOP] Setup-Skript an Photoshop uebergeben: ${outputPaths.photoshopScriptPath}`, 'success');
           } catch (error) {

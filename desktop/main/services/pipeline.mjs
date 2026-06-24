@@ -254,8 +254,21 @@ const convertWavToMp3 = async (wavPath, workspaceRoot) => {
     // MP3 does not exist yet, continue with conversion.
   }
 
+  const ffmpegArgs = [
+    '-hide_banner',
+    '-loglevel', 'error',
+    '-y',
+    '-i', wavPath,
+    '-vn',
+    '-af', 'loudnorm=I=-14:LRA=11:TP=-1.5',
+    '-codec:a', 'libmp3lame',
+    '-b:a', '320k',
+    mp3Path,
+  ];
+
   const convertResult = await runCommand({
-    command: `ffmpeg -hide_banner -loglevel error -y -i "${wavPath}" -vn -af "loudnorm=I=-14:LRA=11:TP=-1.5" -codec:a libmp3lame -b:a 320k "${mp3Path}"`,
+    command: 'ffmpeg',
+    args: ffmpegArgs,
     cwd: workspaceRoot,
   });
 

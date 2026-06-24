@@ -69,10 +69,11 @@ Der Background-Cycle ist nicht mehr nur ein Runner-Aufruf. Er fuehrt in jedem La
 1. `agent:jobs:validate`
 2. `agent:route:write`
 3. `agent:quality-chain:write`
-4. `agent:jobs:run -- --event=scheduled_background --status=<standard|deep>`
-5. `agent:dependencies:write`
-6. `agent:system:health`
-7. `reports:localize:de`
+4. `wiki:sync:audit`
+5. `agent:jobs:run -- --event=scheduled_background --status=<standard|deep>`
+6. `agent:dependencies:write`
+7. `agent:system:health`
+8. `reports:localize:de`
 
 Wenn ein Schritt fehlschlaegt, bleibt der Fehler im `latest-background-cycle.json` sichtbar. Externe Live-Jobs bleiben trotz Automation blockiert, bis eine persoenliche Nutzerfreigabe uebergeben wurde.
 
@@ -83,9 +84,11 @@ Workbench-Wakeup:
 - `agent-watch-zones.json` definiert stabile Beobachtungsbereiche mit Primary- und Review-Agenten.
 - `agent-routing-review` schreibt, welche Agenten durch aktuelle Workbench-Aenderungen betroffen sind.
 - `agent-quality-chain` schreibt, welche Test-, Proof- oder Validierungspflichten aus geaendertem Code entstehen.
+- `wiki:sync:audit` prueft, ob neue/geaenderte Projekt-, Content-, Flight-Deck- oder Agenten-Dateien ohne passende Wiki-/Assistant-Wissensaenderung vorliegen. Bei Luecke muss der Master Controller den `Wiki Maintainer` beauftragen.
 - `notebooklm-deep-research-brief` schreibt verwertbare Research-Ergebnisse als `latest-notebooklm-brief.*` und Pflichtaufgaben als `latest-agent-task-queue.json`.
 - `agent-dependency-radar` schreibt danach, wer auf wen wartet, welche Blocker bestehen und wann der Nutzer gezielt angesprochen werden muss.
 - Nicht betroffene Agenten bleiben ohne Aktion. Betroffene Agenten duerfen interne Planungs- und Draft-Artefakte vorbereiten, aber keine Live-Aktion ohne Gate ausfuehren.
+- Neue Inhalte in jeglicher Form erzeugen eine Wiki-Sync-Pflicht. Wenn `latest-wiki-sync-audit.*` den Status `warn` meldet, weist der Master Controller den `Wiki Maintainer` explizit an, die Aenderung in `airdoX_wiki` und bei Bedarf in `assistantKnowledge.js` / `assistantEngine.js` einzupflegen.
 - Designer muss bei Social-Kampagnen proaktiv ein Portfolio vorbereiten (`designer-social-portfolio`), bevor ein finaler Render oder Upload-Entwurf erwartet wird.
 - Research gilt erst als verarbeitet, wenn daraus konkrete Folgearbeit mit Owner und Acceptance-Kriterium entstanden ist.
 

@@ -9,6 +9,7 @@
     "Manni",
     "Designer",
     "Mentor",
+    "Wiki Maintainer",
     "Deep Research",
     "Audience Intelligence",
     "Refactor",
@@ -1159,6 +1160,87 @@
         "docs/agent-system/latest-agent-system-health.json",
         "docs/agent-system/latest-agent-system-health.md",
         "docs/agent-system/reports/operations/AGENT_SYSTEM_ARCHITECTURE.md"
+      ]
+    },
+    {
+      "id": "master-wiki-sync-enforcement",
+      "title": "Detect project content changes without Wiki Maintainer follow-up",
+      "owner": "Master Controller",
+      "execution": "script",
+      "script": "wiki:sync:audit",
+      "scriptArgs": [],
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "pr_review",
+          "release_candidate",
+          "windows_tool_review",
+          "documentation_change",
+          "assistant_gap_detected"
+        ],
+        "statuses": [
+          "standard",
+          "deep",
+          "ci",
+          "weekly",
+          "needs_learning",
+          "release_review"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "wiki_sync_enforcement",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "docs/agent-system/latest-wiki-sync-audit.json",
+        "docs/agent-system/latest-wiki-sync-audit.md",
+        "docs/agent-system/wiki-maintainer-todo.md"
+      ]
+    },
+    {
+      "id": "wiki-maintainer-project-sync",
+      "title": "Synchronize Flight Deck project changes into AIRDOX Wiki and Assistant knowledge",
+      "owner": "Wiki Maintainer",
+      "execution": "manual",
+      "manualProtocol": "Review changed project files in desktop/, src/desktop/, scripts/, docs/agent-system/latest-*.{md,json}, docs/agent-system/reports/, docs/agent-system/visual-templates/, README.md and airdoX_wiki/. Compile relevant functional, workflow, glossary, troubleshooting and agent-system changes into airdoX_wiki/wiki/flightdeck-expert-handbook.md, flightdeck-faq.md, flightdeck-troubleshooting.md or the matching local-* page. Update src/desktop/lib/assistantKnowledge.js and src/desktop/lib/assistantEngine.js when a likely user question, error message or workflow term needs a direct local Assistant answer. Keep Obsidian links connected: every new or substantially changed wiki section needs at least two valid [[...]] links, then update airdoX_wiki/wiki/index.md and airdoX_wiki/wiki/log.md. Run the local wiki lint with base path D:\\webseeite-main\\airdoX_wiki and run the nearest Assistant coverage test. If a user-facing Flight Deck behavior changed, run npm run desktop:test:logic -- --run.",
+      "trigger": {
+        "events": [
+          "scheduled_background",
+          "manual_background",
+          "windows_tool_review",
+          "incident_review",
+          "release_candidate",
+          "documentation_change",
+          "assistant_gap_detected"
+        ],
+        "statuses": [
+          "standard",
+          "deep",
+          "needs_learning",
+          "weekly",
+          "ci",
+          "release_review"
+        ]
+      },
+      "changeClass": "non_gravierend",
+      "requiresMasterApproval": false,
+      "domain": "wiki_assistant_knowledge",
+      "outputVisibility": "internal_planning",
+      "requiresUserApproval": false,
+      "enabled": true,
+      "outputs": [
+        "airdoX_wiki/wiki/flightdeck-expert-handbook.md",
+        "airdoX_wiki/wiki/flightdeck-faq.md",
+        "airdoX_wiki/wiki/flightdeck-troubleshooting.md",
+        "airdoX_wiki/wiki/index.md",
+        "airdoX_wiki/wiki/log.md",
+        "src/desktop/lib/assistantKnowledge.js",
+        "src/desktop/lib/assistantEngine.js",
+        "src/desktop/lib/__tests__/assistantCoverage.test.js",
+        "docs/agent-system/wiki-maintainer-todo.md"
       ]
     },
     {

@@ -3,7 +3,7 @@ import { Moon, Sun } from 'lucide-react';
 import { t, getCurrentLocale } from '../utils/i18n';
 import './Navigation.css';
 
-const Navigation = ({ onOpenAuth = () => {}, theme = 'dark', onToggleTheme = () => {} }) => {
+const Navigation = ({ onOpenAuth = () => {}, theme = 'dark', onToggleTheme = () => {}, designMode = 'classic', onToggleDesignMode = () => {} }) => {
     const [scrolled, setScrolled] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
     const [activeSection, setActiveSection] = useState('home');
@@ -115,6 +115,27 @@ const Navigation = ({ onOpenAuth = () => {}, theme = 'dark', onToggleTheme = () 
                         ))}
                     </div>
 
+                    {/* Design Mode Switcher Control */}
+                    <div className="design-switch" title={designMode === 'classic' ? t('nav.design.industrial') : t('nav.design.classic')}>
+                        <button
+                            type="button"
+                            className={`design-switch-btn ${designMode === 'classic' ? 'active' : ''}`}
+                            onClick={() => onToggleDesignMode('classic')}
+                            aria-label={t('nav.design.classic')}
+                        >
+                            {t('nav.design.classic')}
+                        </button>
+                        <button
+                            type="button"
+                            className={`design-switch-btn ${designMode === 'industrial' ? 'active' : ''}`}
+                            onClick={() => onToggleDesignMode('industrial')}
+                            aria-label={t('nav.design.industrial')}
+                        >
+                            {t('nav.design.industrial')}
+                        </button>
+                        <span className={`design-switch-bg slide-${designMode}`}></span>
+                    </div>
+
                     <label className="theme-switch" title={isLightTheme ? t('nav.theme.dark') : t('nav.theme.light')}>
                         <input
                             type="checkbox"
@@ -214,6 +235,27 @@ const Navigation = ({ onOpenAuth = () => {}, theme = 'dark', onToggleTheme = () 
                             <button onClick={() => onOpenAuth('login')} className="btn btn-secondary">{t('nav.login')}</button>
                             <button onClick={() => onOpenAuth('register')} className="btn btn-primary">{t('nav.joinVip')}</button>
                         </div>
+                        {/* Mobile Design Mode Switcher Control */}
+                        <div className="design-switch design-switch-mobile" title={designMode === 'classic' ? t('nav.design.industrial') : t('nav.design.classic')}>
+                            <button
+                                type="button"
+                                className={`design-switch-btn ${designMode === 'classic' ? 'active' : ''}`}
+                                onClick={() => onToggleDesignMode('classic')}
+                                aria-label={t('nav.design.classic')}
+                            >
+                                {t('nav.design.classic')}
+                            </button>
+                            <button
+                                type="button"
+                                className={`design-switch-btn ${designMode === 'industrial' ? 'active' : ''}`}
+                                onClick={() => onToggleDesignMode('industrial')}
+                                aria-label={t('nav.design.industrial')}
+                            >
+                                {t('nav.design.industrial')}
+                            </button>
+                            <span className={`design-switch-bg slide-${designMode}`}></span>
+                        </div>
+
                         <label className="theme-switch theme-switch-mobile" title={isLightTheme ? t('nav.theme.dark') : t('nav.theme.light')}>
                             <input
                                 type="checkbox"

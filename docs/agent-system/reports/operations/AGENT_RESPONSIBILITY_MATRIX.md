@@ -14,6 +14,7 @@ Diese Matrix grenzt die Agenten fuer Website-Automatisierung, Optimierung und Re
 | Guardian | Datenschutz, Tests, Security, Qualitaetsgates | Keine Wachstumsstrategie, keine Live-Freigabe | Teststatus, Privacy-Blocker, Audit-Fails, Risk Level | `latest-audit.*`, `latest-guardian-risk-summary.*` |
 | Refactor | Kleine, begruendete Stabilitaets- und Komplexitaetsverbesserungen | Keine breiten Umbauten ohne Master-Approval | Komponenten-Groesse, Build-Erfolg, Risikoabbau, Modulgrenzen | `latest-refactor-website-opportunities.*` |
 | Mentor | Lernen, Runbooks, Wiederholfehler verhindern | Keine operative Kampagnensteuerung | geschlossene Wissensluecken, wiederkehrende Fehler, Runbook-Aktualitaet | Wiki, Learning-Logs |
+| Wiki Maintainer | AIRDOX Wiki, Obsidian-Graph und Flight-Deck-Assistentenwissen aktuell halten | Keine Produktentscheidung, kein ungepruefter Code-Fix ausserhalb Knowledge/Assistant-Wissen | Wiki-Lint sauber, keine Waisenseiten, Assistant-Coverage fuer neue Fragen/Fehler, aktuelles Log | `airdoX_wiki/wiki/*`, `assistantKnowledge.js`, `assistantEngine.js`, `assistantCoverage.test.js`, `wiki-maintainer-todo.md` |
 | Repository | Branch-, Commit-, PR- und Release-Disziplin | Keine Produktentscheidung | Dirty Paths, Workflow-Status, Merge-Risiko | `latest-repository-monitor.*` |
 | Winnie | Flight Deck und lokale Produktions-/Upload-Workflows | Keine Website-Funnel-Entscheidung | Desktop-Teststatus, Publish-Pipeline-Erfolg, lokale Tool-Stabilitaet | Desktop-Code, Windows-Dokumentation |
 

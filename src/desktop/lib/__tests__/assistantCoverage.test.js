@@ -21,6 +21,21 @@ const QUESTIONS = [
   'Wie finde ich Performanceprobleme?',
   'Wie nutze ich den System Monitor?',
   'Wie kann ich den Cache löschen?',
+  'Was kann der Design Assistant?',
+  'Welche Bereiche gibt es im Flight Deck?',
+  'Was bedeutet Manifest?',
+  'Was ist der Unterschied zwischen Publish und Go Live?',
+  'Welche Tabellen gibt es im Data Explorer?',
+  'Was bedeutet Engagement Rate?',
+  'Was macht Auto Deploy?',
+  'Was ist ein R2 Prefix?',
+  'Wie lese ich den Publish Log?',
+  'Safe mode blocked publish: the source audio path is missing.',
+  'Live publish blocked: the set has no seekable tracklist.',
+  'Live verify failed: deployed bundle is missing recording_2026_06_06',
+  'Was kann der Marketing Manager?',
+  'Wo liegen die aktuellen Agenten Reports?',
+  'Wofür ist das Tutorial da?',
   'Wie gehe ich vor wenn ich keine Ahnung vom Fehler habe?',
 ];
 
@@ -37,6 +52,6 @@ describe('assistant coverage', () => {
     const matched = QUESTIONS
       .map((q) => findBestKnowledgeMatch(q))
       .filter((entry) => entry.score > 0);
-    expect(matched.length).toBeGreaterThanOrEqual(14);
+    expect(matched.length).toBeGreaterThanOrEqual(24);
   });
 });

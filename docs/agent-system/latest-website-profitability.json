@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-06T09:52:07.883Z",
+  "generatedAt": "2026-06-24T16:40:08.456Z",
   "agent": "audience-intelligence",
   "model": {
     "currency": "EUR",
@@ -8,58 +8,31 @@
   },
   "summary": {
     "eventSource": "neon:analytics_logs",
-    "totalRawEvents": 47,
-    "totalConsentedEvents": 47,
+    "totalRawEvents": 0,
+    "totalConsentedEvents": 0,
     "rejectedEvents": 0,
     "privacyRejectedEvents": 0,
-    "estimatedGrossValue": 32.25,
+    "estimatedGrossValue": 0,
     "totalCost": 552,
-    "estimatedNetValue": -519.75,
-    "roi": -0.9416,
-    "profitabilityStatus": "unprofitable",
+    "estimatedNetValue": -552,
+    "roi": -1,
+    "profitabilityStatus": "no_measurement_data",
     "funnel": {
-      "routeViews": 15,
-      "setPlays": 21,
+      "routeViews": 0,
+      "setPlays": 0,
       "newsletterSignups": 0,
       "bookingClicks": 0,
       "contactSubmits": 0
     },
     "conversionRates": {
-      "engagedPlayRate": 1.4,
+      "engagedPlayRate": 0,
       "newsletterRate": 0,
       "bookingIntentRate": 0,
       "contactRate": 0
     },
-    "valueByEvent": [
-      {
-        "key": "set_play",
-        "value": 31.5
-      },
-      {
-        "key": "route_view",
-        "value": 0.75
-      },
-      {
-        "key": "section_view",
-        "value": 0
-      }
-    ],
-    "valueByRoute": [
-      {
-        "key": "/",
-        "value": 30.7
-      },
-      {
-        "key": "/en/",
-        "value": 1.55
-      }
-    ],
-    "valueByCampaign": [
-      {
-        "key": "unknown",
-        "value": 32.25
-      }
-    ],
+    "valueByEvent": [],
+    "valueByRoute": [],
+    "valueByCampaign": [],
     "supportedEvents": [
       "contact_submit",
       "booking_click",
@@ -83,14 +56,14 @@
     {
       "priority": "high",
       "owner": "Webbie",
-      "title": "Improve booking CTA path",
-      "action": "Review the strongest route and place a contextual booking or EPK CTA after meaningful music engagement."
+      "title": "Enable consented website event export",
+      "action": "Verify route_view, set_play, newsletter_signup, booking_click, contact_submit, and epk_download reach the audience event store."
     },
     {
-      "priority": "medium",
-      "owner": "Manni",
-      "title": "Strengthen fan capture",
-      "action": "Pair the top content with a newsletter offer and a measurable campaign parameter."
+      "priority": "high",
+      "owner": "Audience Intelligence",
+      "title": "Do not optimize ROI without data",
+      "action": "Keep the profitability status as no_measurement_data until at least one consented event source exists."
     }
   ]
 }

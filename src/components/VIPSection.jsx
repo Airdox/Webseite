@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useAudio } from '../contexts/AudioContext';
 import { sets } from '../data/musicSets';
 import { partitionSetsByAccess } from '../lib/set-access';
@@ -55,14 +55,7 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
     const [user, setUser] = useState(null);
     const [validatingSession, setValidatingSession] = useState(false);
 
-    useEffect(() => {
-        const savedToken = getStorageItem(STORAGE_KEYS.authToken, '');
-        if (savedToken) {
-            validateToken(savedToken);
-        }
-    }, []);
-
-    const validateToken = async (token) => {
+    const validateToken = useCallback(async (token) => {
         setValidatingSession(true);
         try {
             const { response, data: result } = await requestApiJson('/api/auth', {
@@ -82,7 +75,27 @@ const VIPSection = ({ onOpenAuth = () => {} }) => {
         } finally {
             setValidatingSession(false);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        const validateSavedToken = () => {
+            const savedToken = getStorageItem(STORAGE_KEYS.authToken, '');
+            if (savedToken) {
+                validateToken(savedToken);
+            } else {
+                setUser(null);
+            }
+        };
+
+        validateSavedToken();
+        window.addEventListener(WINDOW_EVENTS.loginSuccess, validateSavedToken);
+        window.addEventListener(WINDOW_EVENTS.logout, validateSavedToken);
+
+        return () => {
+            window.removeEventListener(WINDOW_EVENTS.loginSuccess, validateSavedToken);
+            window.removeEventListener(WINDOW_EVENTS.logout, validateSavedToken);
+        };
+    }, [validateToken]);
 
     const handleLogout = () => {
         removeStorageItem(STORAGE_KEYS.authToken);

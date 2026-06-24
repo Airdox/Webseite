@@ -5,6 +5,7 @@ import { STORAGE_KEYS } from '../../utils/websiteContracts';
 describe('audio source helpers', () => {
     afterEach(() => {
         vi.unstubAllEnvs();
+        delete window.Capacitor;
         localStorage.clear();
     });
 
@@ -19,6 +20,14 @@ describe('audio source helpers', () => {
 
         expect(src).toContain('/api/audio/live_full.mp3');
         expect(src).toContain('token=tok_123');
+    });
+
+    it('routes mobile app audio playback to the production stream API', () => {
+        window.Capacitor = {};
+
+        expect(toPlayableSrc('/sets/live_full.mp3')).toBe(
+            'https://airdox-webseite.beuth62.workers.dev/api/audio/live_full.mp3',
+        );
     });
 
     it('derives part000 filenames only for full mp3 sources', () => {

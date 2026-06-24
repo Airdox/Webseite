@@ -88,16 +88,25 @@ const parseCommandLine = (commandLine = '') => {
   let current = '';
   let quote = '';
   let escaped = false;
+  const str = String(commandLine).trim();
 
-  for (const char of String(commandLine).trim()) {
+  for (let i = 0; i < str.length; i += 1) {
+    const char = str[i];
     if (escaped) {
       current += char;
       escaped = false;
       continue;
     }
 
+    // Handle backslash: only treat as escape when it precedes a quote, whitespace or another backslash.
+    // Otherwise preserve it (important for Windows paths like C:\\Dir\\file.wav).
     if (char === '\\' && quote !== "'") {
-      escaped = true;
+      const next = str[i + 1];
+      if (next && (next === '"' || next === "'" || /\s/.test(next) || next === '\\')) {
+        escaped = true;
+        continue;
+      }
+      current += char;
       continue;
     }
 
@@ -129,12 +138,25 @@ const resolveExecutable = (command) => {
 };
 
 export const runCommand = async ({ command, args, cwd, env = {} }) => new Promise((resolve) => {
-  let executable = command;
-  let commandArgs = args;
+  let executable;
+  let commandArgs;
+
+  // Normalize when a caller passes an array as `command`.
+  if (Array.isArray(command)) {
+    executable = String(command[0] || '');
+    commandArgs = command.slice(1).map((v) => String(v || ''));
+  } else {
+    executable = typeof command === 'string' ? command : String(command || '');
+    commandArgs = args;
+  }
 
   try {
-    if (!Array.isArray(commandArgs)) {
-      const parsed = parseCommandLine(command);
+    if (typeof commandArgs === 'string') {
+      // If args were passed as a single string, parse into array form.
+      commandArgs = parseCommandLine(commandArgs);
+    } else if (!Array.isArray(commandArgs)) {
+      // No explicit args array provided — parse the command string instead.
+      const parsed = parseCommandLine(executable);
       [executable, ...commandArgs] = parsed;
     }
   } catch (error) {
@@ -148,19 +170,54 @@ export const runCommand = async ({ command, args, cwd, env = {} }) => new Promis
   }
 
   if (!executable) {
-    resolve({
-      ok: false,
-      code: 1,
-      stdout: '',
-      stderr: 'Command is empty.',
-    });
+    resolve({ ok: false, code: 1, stdout: '', stderr: 'Command is empty.' });
     return;
   }
 
-  const child = spawn(resolveExecutable(executable), commandArgs, {
-    cwd,
-    env: { ...process.env, ...env },
-  });
+  if (typeof executable !== 'string') {
+    resolve({ ok: false, code: 1, stdout: '', stderr: `Invalid executable type: ${typeof executable}` });
+    return;
+  }
+
+  if (!Array.isArray(commandArgs)) commandArgs = [];
+
+  let child;
+  try {
+    const resolvedExec = resolveExecutable(executable);
+    try {
+      process.stderr.write(`runCommand spawn: executable=${resolvedExec} args=${JSON.stringify(commandArgs)} cwd=${cwd}\n`);
+    } catch {}
+
+    try {
+      child = spawn(resolvedExec, commandArgs, {
+        cwd,
+        env: { ...process.env, ...env },
+      });
+    } catch (innerErr) {
+      // Fallback for Windows .cmd/.bat executables — try via cmd.exe /c
+      if (process.platform === 'win32' && typeof resolvedExec === 'string'
+        && (resolvedExec.toLowerCase().endsWith('.cmd') || resolvedExec.toLowerCase().endsWith('.bat')))
+      {
+        try {
+          const cmd = process.env.ComSpec || 'cmd.exe';
+          process.stderr.write(`runCommand spawn-fallback: cmd=${cmd} /c ${resolvedExec} args=${JSON.stringify(commandArgs)} cwd=${cwd}\n`);
+          child = spawn(cmd, ['/c', resolvedExec, ...commandArgs], {
+            cwd,
+            env: { ...process.env, ...env },
+          });
+        } catch (cmdErr) {
+          throw cmdErr;
+        }
+      } else {
+        throw innerErr;
+      }
+    }
+  } catch (error) {
+    const errMsg = `${error.message}${error && error.stack ? '\n' + error.stack : ''} (executable=${String(executable)} args=${JSON.stringify(commandArgs)})`;
+    try { process.stderr.write(`runCommand error: ${errMsg}\n`); } catch {}
+    resolve({ ok: false, code: 1, stdout: '', stderr: errMsg });
+    return;
+  }
 
   let stdout = '';
   let stderr = '';
@@ -177,23 +234,15 @@ export const runCommand = async ({ command, args, cwd, env = {} }) => new Promis
   child.on('close', (code) => {
     if (settled) return;
     settled = true;
-    resolve({
-      ok: code === 0,
-      code,
-      stdout: stdout.trim(),
-      stderr: stderr.trim(),
-    });
+    resolve({ ok: code === 0, code, stdout: stdout.trim(), stderr: stderr.trim() });
   });
 
   child.on('error', (error) => {
     if (settled) return;
     settled = true;
-    resolve({
-      ok: false,
-      code: 1,
-      stdout: stdout.trim(),
-      stderr: error.message,
-    });
+    const errMsg = `${error.message}${error && error.stack ? '\n' + error.stack : ''} (executable=${String(executable)} args=${JSON.stringify(commandArgs)})`;
+    try { process.stderr.write(`runCommand error: ${errMsg}\n`); } catch {}
+    resolve({ ok: false, code: 1, stdout: stdout.trim(), stderr: errMsg });
   });
 });
 

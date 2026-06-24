@@ -133,6 +133,54 @@ const SetCard = ({
         onAnimationModeChange?.(set.id, isTrainerMode ? 'billiard' : 'trainer');
     };
 
+    const handleTracklistToggle = (event) => {
+        event.stopPropagation();
+        const nextCollapsed = !isCollapsed;
+        setIsCollapsed(nextCollapsed);
+        if (!nextCollapsed) {
+            const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
+            analytics?.trackEvent?.('tracklist_open', {
+                setId: set.id,
+                setTitle: set.title,
+                source: 'set_card'
+            });
+            audienceEvents.tracklistOpen({
+                contentId: set.id,
+                contentType: 'music_set',
+                source: 'set_card',
+                value: 1
+            });
+        }
+    };
+
+    const handleTrackClick = (event, track) => {
+        event.stopPropagation();
+        const analytics = window.airdoxAnalyticsV2 || window.airdoxAnalytics;
+        analytics?.trackEvent?.('tracklist_click', {
+            setId: set.id,
+            setTitle: set.title,
+            trackArtist: track.artist,
+            trackTitle: track.title,
+            trackTime: track.time,
+            source: 'set_card'
+        });
+        audienceEvents.tracklistClick({
+            contentId: set.id,
+            contentType: 'music_set',
+            source: 'set_card',
+            route: `${track.artist} - ${track.title}`,
+            value: 1
+        });
+        onTrackClick?.(set, track);
+    };
+
+    const handleTrackKeyDown = (event, track) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handleTrackClick(event, track);
+        }
+    };
+
     return (
         <div
             id={buildSetAnchorId(set.id)}
@@ -266,7 +314,7 @@ const SetCard = ({
                         <button
                             type="button"
                             className="tracklist-toggle"
-                            onClick={(e) => { e.stopPropagation(); setIsCollapsed(!isCollapsed); }}
+                            onClick={handleTracklistToggle}
                             aria-expanded={!isCollapsed}
                             aria-label={isCollapsed ? t('music.showTracklist') : t('music.hideTracklist')}
                         >
@@ -281,10 +329,10 @@ const SetCard = ({
                                     key={idx}
                                     className={`tracklist-item ${idx === activeTrackIndex ? 'current-track' : ''}`}
                                     aria-current={idx === activeTrackIndex ? 'true' : undefined}
-                                    onClick={(e) => { e.stopPropagation(); onTrackClick(set, track); }}
+                                    onClick={(e) => handleTrackClick(e, track)}
                                     role="button"
                                     tabIndex={0}
-                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onTrackClick(set, track); } }}
+                                    onKeyDown={(e) => handleTrackKeyDown(e, track)}
                                 >
                                     <span className="track-time">{track.time}</span>
                                     <span className="track-details">

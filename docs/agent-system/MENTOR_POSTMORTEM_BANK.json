@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-06T09:09:13.044Z",
+  "generatedAt": "2026-06-24T16:39:42.271Z",
   "owner": "Mentor",
   "postmortemBank": [
     {
@@ -8,10 +8,13 @@
       "reviewer": "Guardian",
       "failureClass": "Website-Aenderung ohne klare Consent-, CSP- oder Core-Web-Vitals-Pruefung.",
       "followUp": "Runbook-Regel und Gate-Hinweis fuer consent-konforme Analytics und CWV-Proof ergaenzen.",
+      "resolution": "In Mentor-Gates dokumentiert: Webbie-Aenderungen mit Analytics, Tracking, Consent, CSP oder Performance-Bezug brauchen Gate-Hinweis, passenden npm-Check und Proof-Erwartung.",
+      "resolutionArtifact": "docs/agent-system/MENTOR_AGENT_EDUCATION_GATES_2026-06-06.md",
+      "recheck": "npm run build plus bei Tracking-/Consent-Aenderungen Guardian-Review.",
       "evidence": [
         "docs/agent-system/latest-audit.md"
       ],
-      "status": "open"
+      "status": "closed"
     },
     {
       "id": "winnie-ipc-shell-sandbox-risk",
@@ -19,10 +22,13 @@
       "reviewer": "Guardian",
       "failureClass": "Desktop-Pfade mit IPC-, Shell- oder Sandbox-Risiko koennen Release-Risiko erzeugen.",
       "followUp": "Training zu strukturierten APIs, Allowlist und desktop:test:logic plus E2E-Release-Gate.",
+      "resolution": "In Mentor-Gates dokumentiert: IPC-, Shell-, Sandbox- und Main/Preload-Aenderungen brauchen strukturierte API/Allowlist, desktop:test:logic und bei Releasewirkung desktop:test:e2e.",
+      "resolutionArtifact": "docs/agent-system/MENTOR_AGENT_EDUCATION_GATES_2026-06-06.md",
+      "recheck": "npm run desktop:test:logic; bei Releasewirkung npm run desktop:test:e2e.",
       "evidence": [
         "docs/agent-system/latest-audit.md"
       ],
-      "status": "open"
+      "status": "closed"
     },
     {
       "id": "repository-dirty-state-release-risk",
@@ -30,10 +36,13 @@
       "reviewer": "Master Controller",
       "failureClass": "Viele uncommitted Pfade erschweren kontrollierte Releases und Reviews.",
       "followUp": "Dirty-State-Training und Release-Checkliste in Repository-Governance aufnehmen.",
+      "resolution": "In Mentor-Gates dokumentiert: vor Release/PR werden eigene, fremde, generierte und releasekritische Aenderungen getrennt; Dirty-State bleibt Blocker fuer Releasefreigabe.",
+      "resolutionArtifact": "docs/agent-system/MENTOR_AGENT_EDUCATION_GATES_2026-06-06.md",
+      "recheck": "git status --short plus repository:monitor:strict vor Release.",
       "evidence": [
         "docs/agent-system/latest-audit.md"
       ],
-      "status": "open"
+      "status": "closed"
     },
     {
       "id": "refactor-source-currency-warning",
@@ -41,10 +50,13 @@
       "reviewer": "Mentor",
       "failureClass": "Eine Refactor-Quelle ist nicht erreichbar oder hat sich geaendert.",
       "followUp": "Quelle ersetzen oder fachlich begruenden und Currency-Check erneut ausfuehren.",
+      "resolution": "Quelle in mentor-agent-currency auf offizielle Node.js Diagnostics User Journey aktualisiert.",
+      "resolutionArtifact": "scripts/mentor-agent-currency.mjs",
+      "recheck": "npm run mentor:currency:write.",
       "evidence": [
         "docs/agent-system/latest-agent-currency.md"
       ],
-      "status": "open"
+      "status": "closed"
     },
     {
       "id": "mentor-research-to-runbook",
@@ -52,10 +64,13 @@
       "reviewer": "Guardian",
       "failureClass": "Research kann als Zusammenfassung enden, ohne Projektregel zu erzeugen.",
       "followUp": "NotebookLM-Ergebnisse nur schliessen, wenn Runbook, Gate, Aufgabe, Scorecard oder Decision-Log-Regel entsteht.",
+      "resolution": "Als Bildungsregel in Mentor-Gates, Agenten-Trainingskatalog, Postmortem-Bank und Decision Log umgesetzt.",
+      "resolutionArtifact": "docs/agent-system/MENTOR_AGENT_EDUCATION_GATES_2026-06-06.md",
+      "recheck": "monthly_learning_review plus npm run mentor:education:write.",
       "evidence": [
         "docs/agent-system/mentor-knowledge-improvement-tasks.json"
       ],
-      "status": "in_progress"
+      "status": "closed"
     }
   ]
 }

@@ -15,6 +15,7 @@ vi.mock('../../utils/i18n', () => ({
         'auth.close': 'Schliessen',
         'auth.oauthFailed': 'OAuth fehlgeschlagen',
         'auth.loginSuccess': 'Login erfolgreich',
+        'auth.registrationSuccess': 'Registrierung erfolgreich',
         'auth.username': 'Benutzername',
         'auth.email': 'E-Mail',
         'auth.password': 'Passwort',
@@ -132,7 +133,7 @@ describe('AuthModal', () => {
 
         fireEvent.change(screen.getByLabelText('Benutzername'), { target: { value: 'tester' } });
         fireEvent.change(screen.getByLabelText('E-Mail'), { target: { value: 'tester@example.com' } });
-        fireEvent.change(screen.getByLabelText('Passwort'), { target: { value: 'Secret123!' } });
+        fireEvent.change(screen.getByLabelText('Passwort'), { target: { value: 'Secret123!Long' } });
 
         const submitButton = screen.getByRole('button', { name: /Konto erstellen/i });
         await waitFor(() => {
@@ -152,5 +153,9 @@ describe('AuthModal', () => {
             email: 'tester@example.com',
             captchaToken: 'captcha-token',
         });
+        await waitFor(() => {
+            expect(screen.getByText('Registrierung erfolgreich')).toBeInTheDocument();
+        });
+        expect(screen.getByRole('button', { name: 'ANMELDEN' })).toHaveClass('active');
     });
 });

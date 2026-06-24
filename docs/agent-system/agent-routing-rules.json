@@ -170,6 +170,23 @@
       ]
     },
     {
+      "id": "wiki-assistant-knowledge",
+      "agent": "Wiki Maintainer",
+      "role": "primary",
+      "paths": [
+        "airdoX_wiki/**",
+        "src/desktop/lib/assistantKnowledge.js",
+        "src/desktop/lib/assistantEngine.js",
+        "src/desktop/lib/__tests__/assistantCoverage.test.js",
+        "src/desktop/components/AssistantTab.jsx",
+        "docs/agent-system/wiki-maintainer-todo.md"
+      ],
+      "recommendedGates": [
+        "npx vitest run src/desktop/lib/__tests__/assistantCoverage.test.js",
+        "npm run agent:jobs:validate -- --strict-warnings"
+      ]
+    },
+    {
       "id": "learning-documentation",
       "agent": "Mentor",
       "role": "review",

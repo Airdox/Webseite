@@ -1,42 +1,30 @@
 # AIRDOX Audience-Intelligence-Bericht
 
-Erstellt: 2026-06-06T07:46:10.771Z
+Erstellt: 2026-06-24T16:39:56.231Z
 
 Consent-Modus: consented-aggregate
-Analysierte Consent-Events: 44
+Analysierte Consent-Events: 0
 Abgelehnte Events ohne Analytics-Consent: 0
 
 ## Staerkste Routen
-- /: 810
-- /en/: 40
+- Noch keine Daten
 
 ## Staerkste Inhalte
-- recording_2026_05_24: 490
-- recording_2026_06_02: 210
-- home: 80
-- page: 70
+- Noch keine Daten
 
 ## Staerkste Event-Typen
-- set_play: 20
-- route_view: 14
-- section_view: 10
+- Noch keine Daten
 
 ## Intent-Segmente
 - booking_intent: 0
-- fan_intent: 700
+- fan_intent: 0
 - sharing_intent: 0
-- discovery_intent: 150
+- discovery_intent: 0
 
 ## Empfehlungen
-1. CTA-Pfad auf / staerken (high)
-   - Grund: Diese Route hat mit 810 gewichteten Signalpunkten die staerkste Audience-Aktivitaet.
-   - Aktion: Kontextuelle CTAs fuer Set-Play, Newsletter-Anmeldung, Booking und Sharing ergaenzen oder pruefen.
-2. Top-Inhalt wiederverwenden: recording_2026_05_24 (high)
-   - Grund: Dieser Inhalt fuehrt das Audience-Interesse aktuell mit 490 gewichteten Signalpunkten an.
-   - Aktion: Aus diesem Inhalt Social-Captions, Newsletter-Copy, SEO-Beschreibung und Booking-Winkel ableiten.
-3. Newsletter-Capture nach Musik-Engagement ergaenzen (medium)
-   - Grund: Nutzer spielen Sets, aber es ist kein Newsletter-Signal vorhanden.
-   - Aktion: Nach relevantem Play oder Tracklist-Engagement einen kontextuellen Newsletter-CTA zeigen.
+1. Consent-basierte Audience-Events erfassen (high)
+   - Grund: Es wurden keine consent-basierten Analytics-Events gefunden; Empfehlungen basieren daher nur auf Readiness.
+   - Aktion: Route-, CTA-, Set-Play-, Newsletter-, Booking- und Share-Events in einen consent-bewussten Analytics-Export fuehren.
 
 ## Hinweise
 - Dieser Bericht nutzt nur consent-basierte aggregierte oder pseudonyme Signale.

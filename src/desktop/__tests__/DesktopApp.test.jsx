@@ -11,8 +11,10 @@ vi.mock('../api.js', async () => {
 
 describe('DesktopApp', () => {
   beforeEach(() => {
+    window.history.pushState({}, '', '/desktop.html');
     localStorage.clear();
     vi.restoreAllMocks();
+    vi.spyOn(window, 'open').mockImplementation(() => null);
     Object.keys(flightDeckApi).forEach((key) => {
       delete flightDeckApi[key];
     });
@@ -25,6 +27,38 @@ describe('DesktopApp', () => {
     await screen.findByText('Workspace verbunden');
     expect(screen.getByText('Mock API')).toBeInTheDocument();
     expect(screen.getByText('Operations Overview')).toBeInTheDocument();
+  }, 30000);
+
+  it('offers a return action from the standalone Design Studio window', async () => {
+    window.history.pushState({}, '', '/desktop.html?view=design-studio');
+    const closeSpy = vi.spyOn(window, 'close').mockImplementation(() => {});
+    Object.assign(flightDeckApi, { isElectron: true });
+
+    render(<DesktopApp />);
+
+    await screen.findByRole('heading', { name: 'Design Studio' });
+    fireEvent.click(screen.getByRole('button', { name: /Zurueck zur Hauptansicht/i }));
+
+    expect(closeSpy).toHaveBeenCalledTimes(1);
+  }, 30000);
+
+  it('remixes the Design Agent setup into a visible new variant', async () => {
+    render(<DesktopApp />);
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+
+    fireEvent.click(screen.getByRole('button', { name: /^Design Agent$/i }));
+    await waitFor(() => {
+      expect(screen.getAllByRole('heading', { name: 'Design Agent' }).length).toBeGreaterThanOrEqual(1);
+    });
+    expect(screen.getAllByText('Signal System').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Square').length).toBeGreaterThanOrEqual(1);
+
+    fireEvent.click(screen.getByRole('button', { name: /^Remix$/i }));
+
+    await waitFor(() => {
+      expect(screen.getAllByText('Club Still Parallax').length).toBeGreaterThanOrEqual(1);
+      expect(screen.getAllByText('Reel').length).toBeGreaterThanOrEqual(1);
+    });
   }, 30000);
 
   it('keeps assistant usable when backend returns an object fallback answer', async () => {
@@ -53,6 +87,25 @@ describe('DesktopApp', () => {
     await waitFor(() => expect(flightDeckApi.askAssistant).toHaveBeenCalledTimes(1));
     await screen.findByText('Objekt-Fallback wurde sauber gerendert.');
     expect(screen.getByPlaceholderText(/Frage stellen/i)).toBeInTheDocument();
+  }, 30000);
+
+  it('shows compact assistant help with matching software screenshots', async () => {
+    Object.assign(flightDeckApi, {
+      askAssistant: vi.fn().mockResolvedValue(null),
+    });
+
+    render(<DesktopApp />);
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+
+    fireEvent.click(screen.getByRole('button', { name: /^AI Assistant$/i }));
+    await screen.findByRole('heading', { name: /KI Flight-Deck Assistant/i });
+
+    fireEvent.click(screen.getByRole('button', { name: /Was kannst du alles/i }));
+
+    await screen.findByAltText(/AIRDOX KI Assistant im Windows Tool/i);
+    expect(screen.getByText(/Assistant: Frage stellen oder einen Einstieg oben wählen/i)).toBeInTheDocument();
+    expect(screen.getByText('Detaillierten Weg anzeigen')).toBeInTheDocument();
+    expect(screen.getByText('Textantwort anzeigen')).toBeInTheDocument();
   }, 30000);
 
   it('loads a demo import draft in browser mode', async () => {

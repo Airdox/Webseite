@@ -42,9 +42,11 @@ test.describe('AIRDOX Flight Deck', () => {
     await page.goto('/desktop.html');
     await page.getByRole('button', { name: /^System Monitor$/i }).dispatchEvent('click');
     await expect(page.getByRole('heading', { name: 'System Monitor' }).first()).toBeVisible();
-    await page.getByRole('button', { name: /Cache löschen/i }).dispatchEvent('click');
+    await expect(page.getByRole('button', { name: /Cache löschen/i })).toBeEnabled();
+    await page.getByRole('button', { name: /Cache löschen/i }).click();
     await expect(page.getByText(/Cache geloescht/i)).toBeVisible();
-    await page.getByRole('button', { name: /Optimieren/i }).dispatchEvent('click');
+    await expect(page.getByRole('button', { name: /Optimieren/i })).toBeEnabled();
+    await page.getByRole('button', { name: /Optimieren/i }).click();
     await expect(page.getByText(/System optimiert/i)).toBeVisible();
 
     await page.getByRole('button', { name: /^Batch Import$/i }).dispatchEvent('click');

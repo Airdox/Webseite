@@ -9,7 +9,7 @@ import HeroTitle from './HeroTitle';
 import './Hero.css';
 import { t } from '../utils/i18n';
 
-const Hero = () => {
+const Hero = ({ designMode = 'classic' }) => {
     const [loaded, setLoaded] = useState(false);
     const heroRef = useRef(null);
 
@@ -83,11 +83,23 @@ const Hero = () => {
                 <div className="hero-tagline">
                     <div className="tagline-line"></div>
                     <p className="tagline-text">
-                        <span>{t('hero.tagline.1')}</span>
-                        <span className="separator">◆</span>
-                        <span>{t('hero.tagline.2')}</span>
-                        <span className="separator">◆</span>
-                        <span>{t('hero.tagline.3')}</span>
+                        {designMode === 'industrial' ? (
+                            <>
+                                <span>[CTRL_01 // UNDERGROUND]</span>
+                                <span className="separator">▪</span>
+                                <span>[CTRL_02 // STARK_SOUND]</span>
+                                <span className="separator">▪</span>
+                                <span>[CTRL_03 // KINETIC]</span>
+                            </>
+                        ) : (
+                            <>
+                                <span>{t('hero.tagline.1')}</span>
+                                <span className="separator">◆</span>
+                                <span>{t('hero.tagline.2')}</span>
+                                <span className="separator">◆</span>
+                                <span>{t('hero.tagline.3')}</span>
+                            </>
+                        )}
                     </p>
                     <div className="tagline-line"></div>
                 </div>

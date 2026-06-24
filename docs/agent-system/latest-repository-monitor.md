@@ -1,17 +1,17 @@
 # AIRDOX Repository-Monitor
 
-Erstellt: 2026-06-06T07:45:47.692Z
+Erstellt: 2026-06-24T16:39:18.318Z
 Agent: Repository
 Repository: D:\webseeite-main
-Branch: main
+Branch: codex/guardian-scope-cleanup
 
 ## Ueberblick
 
 - Checks: 6
 - Fehler: 0
-- Warnungen: 2
-- Offene Pfade: 77
-- Unerwartete offene Pfade: 76
+- Warnungen: 3
+- Offene Pfade: 132
+- Unerwartete offene Pfade: 126
 - Baseline offene Pfade: 80
 - Versionierte generierte Artefakte (Review): 0
 
@@ -19,16 +19,29 @@ Branch: main
 
 | Check | Stufe | Detail |
 | --- | --- | --- |
-| branch-naming | PASS | Aktueller Branch: main |
+| branch-naming | WARN | Aktueller Branch: codex/guardian-scope-cleanup |
 | required-governance-files | PASS | Gefundene Governance-Dateien: 3/3 |
-| working-tree-cleanliness-total | WARN | 77 uncommitted Pfade insgesamt. |
-| working-tree-cleanliness | WARN | 76 unerwartete uncommitted Pfade (77 gesamt, 80 baseline) |
+| working-tree-cleanliness-total | WARN | 132 uncommitted Pfade insgesamt. |
+| working-tree-cleanliness | WARN | 126 unerwartete uncommitted Pfade (132 gesamt, 80 baseline) |
 | tracked-generated-artifacts | PASS | 0 potentiell generierte Artefaktpfade sind versioniert. |
 | root-html-duplication | PASS | 0 zusaetzliche Root-HTML-Dateien erkannt. |
 
 ## Unerwartete offene Pfade
 
-- M docs/agent-system/reports/operations/AGENT_SYSTEM_ARCHITECTURE.md
+- M airdoX_wiki/SYSTEM.md
+- M airdoX_wiki/__pycache__/core.cpython-311.pyc
+- M airdoX_wiki/llm_interface.py
+- M airdoX_wiki/wiki/flightdeck-expert-handbook.md
+- M airdoX_wiki/wiki/flightdeck-faq.md
+- M airdoX_wiki/wiki/flightdeck-troubleshooting.md
+- M desktop/main/index.cjs
+- M desktop/main/services/pipeline.mjs
+- M desktop/main/services/workspace.mjs
+- M docs/agent-system/AGENT_TRAINING_CATALOG.json
+- M docs/agent-system/MENTOR_POSTMORTEM_BANK.json
+- M docs/agent-system/agent-routing-rules.json
+- M docs/agent-system/agent-watch-zones.json
+- M docs/agent-system/job-catalog.json
 - M docs/agent-system/latest-agent-currency.json
 - M docs/agent-system/latest-agent-currency.md
 - M docs/agent-system/latest-agent-dependency-radar.json
@@ -48,6 +61,8 @@ Branch: main
 - M docs/agent-system/latest-guardian-risk-summary.md
 - M docs/agent-system/latest-job-run.json
 - M docs/agent-system/latest-job-run.md
+- M docs/agent-system/latest-mentor-agent-education.json
+- M docs/agent-system/latest-mentor-agent-education.md
 - M docs/agent-system/latest-notebooklm-brief.json
 - M docs/agent-system/latest-notebooklm-brief.md
 - M docs/agent-system/latest-refactor-website-opportunities.json
@@ -56,54 +71,89 @@ Branch: main
 - M docs/agent-system/latest-repository-monitor.md
 - M docs/agent-system/latest-website-profitability.json
 - M docs/agent-system/latest-website-profitability.md
-- M docs/agent-system/reports/campaigns/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
-- M docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-a-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-a.png
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-d-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-d.png
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-i-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-i.png
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-o-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-o.png
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-r-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-r.png
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-x-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-x.png
-- D public/brand-assets/airdox-lettering/strobe-proof/source-sheet.png
-- D public/brand-assets/airdox-lettering/strobe-proof/wordmark-02-raw.png
-- D public/brand-assets/airdox-lettering/strobe-proof/wordmark-02.png
-- M remotion/airdox-reels/out/airdox-letter-strobe-proof-8s.mp4
-- M remotion/airdox-reels/out/airdox-letter-strobe-proof.png
-- M remotion/airdox-reels/src/AirdoxLetterStrobe.jsx
-- D scripts/extract-airdox-strobe-proof-assets.mjs
-- D scripts/photoshop-export-airdox-letter-masks.jsx
-- D scripts/run-photoshop-airdox-letter-masks.mjs
-- ?? public/brand-assets/airdox-lettering/strobe-proof/concepts/
-- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-x-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-x.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-a-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-d-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-i-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-o-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-r-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-x-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/mask-review-sheet.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/photoshop-separated-letter-mask-manifest.json
-- ?? public/brand-assets/airdox-lettering/strobe-proof/photoshop-separated-letter-mask.done
-- ?? public/brand-assets/airdox-lettering/strobe-proof/separated-letter-mask-manifest.json
-- ?? public/brand-assets/airdox-lettering/strobe-proof/source-separated-airdox-before-concept-1.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/source-separated-airdox.png
-- ?? remotion/airdox-reels/out/airdox-letter-strobe-proof-ox-hit.png
-- ?? remotion/airdox-reels/out/airdox-letter-strobe-proof.mp4
-- ?? remotion/airdox-reels/out/airdox-letter-strobe-vertical-proof-8s.mp4
-- ?? remotion/airdox-reels/out/airdox-letter-strobe-vertical-proof.png
-- ?? scripts/extract-airdox-separated-letter-assets.mjs
-- ?? scripts/photoshop-export-airdox-separated-letter-masks.jsx
-- ?? scripts/run-photoshop-airdox-separated-letter-masks.mjs
+- M docs/agent-system/reports/operations/AGENT_RESPONSIBILITY_MATRIX.md
+- M docs/agent-system/reports/operations/ORCHESTRATION_WORKFLOW.md
+- M docs/brand/airdox-epk-content.json
+- M docs/brand/templates/airdox-epk.template.html
+- M e2e/desktop-flightdeck.spec.js
+- M package-lock.json
+- M public/_redirects
+- M public/epk/airdox-epk.html
+- M public/epk/airdox-epk.pdf
+- M public/epk/airdox-press-assets.txt
+- M scripts/agent-background-cycle.mjs
+- M scripts/agent-job-validator.mjs
+- M scripts/build-airdox-epk.mjs
+- M src/App.jsx
+- M src/components/AuthModal.jsx
+- M src/components/AuthModalFields.jsx
+- M src/components/EPKSection.jsx
+- M src/components/Navigation.css
+- M src/components/Navigation.jsx
+- M src/components/SetCard.jsx
+- M src/components/VIPSection.jsx
+- M src/components/Visualizer.jsx
+- M src/components/__tests__/AuthModal.test.jsx
+- M src/contexts/__tests__/audioSources.test.js
+- M src/contexts/audioSources.js
+- M src/desktop/DesktopApp.jsx
+- M src/desktop/__tests__/DesktopApp.test.jsx
+- M src/desktop/components/AssistantTab.jsx
+- M src/desktop/components/DesignSetupPhase.jsx
+- M src/desktop/components/SetImportTab.jsx
+- M src/desktop/desktop.css
+- M src/desktop/lib/__tests__/assistantCoverage.test.js
+- M src/desktop/lib/__tests__/assistantEngine.test.js
+- M src/desktop/lib/assistantEngine.js
+- M src/desktop/lib/assistantKnowledge.js
+- M src/desktop/lib/tracklistCore.js
+- M src/lib/__tests__/authHelpers.test.js
+- M src/lib/authHelpers.js
+- M src/lib/authRequestHandler.js
+- M src/lib/statsContracts.js
+- M src/server/__tests__/worker.test.js
+- M src/server/worker.js
+- M src/styles/global.css
+- M src/utils/audienceSignals.js
+- M src/utils/i18nMessages.js
+- ?? airdoX_wiki/.obsidian/
+- ?? airdoX_wiki/wiki/Untitled-2.yml
+- ?? airdoX_wiki/wiki/flightdeck-workflow-diagrams.md
+- ?? capacitor.config.json
+- ?? docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
+- ?? docs/agent-system/AGENT_TRAINING_CATALOG.md
+- ?? docs/agent-system/MENTOR_POSTMORTEM_BANK.md
+- ?? docs/agent-system/latest-wiki-sync-audit.json
+- ?? docs/agent-system/latest-wiki-sync-audit.md
+- ?? docs/agent-system/manni-reel-draft-pack.md
+- ?? docs/agent-system/manni-reel-weekly-plan.md
+- ?? docs/agent-system/wiki-maintainer-todo.md
+- ?? docs/auth-workflow-proof/
+- ?? public/airdox-actions-last-24h.html
+- ?? public/airdox-actions-last-24h.pdf
+- ?? public/airdox-analytics-report.html
+- ?? public/airdox-analytics-report.pdf
+- ?? public/assistant-screenshots/
+- ?? public/epk/assets/
+- ?? public/epk/press-assets.html
+- ?? scripts/R2_README.md
+- ?? scripts/_deduped_manifest.js
+- ?? scripts/_deploy_manifest_4.js
+- ?? scripts/_deploy_manifest_for_src.js
+- ?? scripts/_final_manifest.js
+- ?? scripts/capture-auth-workflow-proof.mjs
+- ?? scripts/publish-and-deploy.mjs
+- ?? scripts/r2-delete.mjs
+- ?? scripts/r2-list.mjs
+- ?? scripts/wiki-sync-audit.mjs
+- ?? src/components/IndustrialDashboard.css
+- ?? src/components/IndustrialDashboard.jsx
+- ?? src/desktop/lib/__tests__/publish.integration.test.mjs
+- ?? src/desktop/lib/assistantGuides.js
+- ?? test-draft-tracklist.mjs
+- ?? test-parse.mjs
+- ?? test-tracklist-dedupe.mjs
 
 ## Baseline fuer offene Pfade
 
@@ -190,7 +240,23 @@ Branch: main
 
 ## Alle offenen Pfade
 
-- M docs/agent-system/reports/operations/AGENT_SYSTEM_ARCHITECTURE.md
+- M .env.example
+- M airdoX_wiki/SYSTEM.md
+- M airdoX_wiki/__pycache__/core.cpython-311.pyc
+- M airdoX_wiki/llm_interface.py
+- M airdoX_wiki/wiki/flightdeck-expert-handbook.md
+- M airdoX_wiki/wiki/flightdeck-faq.md
+- M airdoX_wiki/wiki/flightdeck-troubleshooting.md
+- M airdoX_wiki/wiki/index.md
+- M airdoX_wiki/wiki/log.md
+- M desktop/main/index.cjs
+- M desktop/main/services/pipeline.mjs
+- M desktop/main/services/workspace.mjs
+- M docs/agent-system/AGENT_TRAINING_CATALOG.json
+- M docs/agent-system/MENTOR_POSTMORTEM_BANK.json
+- M docs/agent-system/agent-routing-rules.json
+- M docs/agent-system/agent-watch-zones.json
+- M docs/agent-system/job-catalog.json
 - M docs/agent-system/latest-agent-currency.json
 - M docs/agent-system/latest-agent-currency.md
 - M docs/agent-system/latest-agent-dependency-radar.json
@@ -210,6 +276,8 @@ Branch: main
 - M docs/agent-system/latest-guardian-risk-summary.md
 - M docs/agent-system/latest-job-run.json
 - M docs/agent-system/latest-job-run.md
+- M docs/agent-system/latest-mentor-agent-education.json
+- M docs/agent-system/latest-mentor-agent-education.md
 - M docs/agent-system/latest-notebooklm-brief.json
 - M docs/agent-system/latest-notebooklm-brief.md
 - M docs/agent-system/latest-refactor-website-opportunities.json
@@ -218,55 +286,92 @@ Branch: main
 - M docs/agent-system/latest-repository-monitor.md
 - M docs/agent-system/latest-website-profitability.json
 - M docs/agent-system/latest-website-profitability.md
-- M docs/agent-system/reports/campaigns/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
-- M docs/agent-system/reports/campaigns/manni-reel-weekly-plan.md
+- M docs/agent-system/reports/operations/AGENT_RESPONSIBILITY_MATRIX.md
+- M docs/agent-system/reports/operations/ORCHESTRATION_WORKFLOW.md
+- M docs/brand/airdox-epk-content.json
+- M docs/brand/templates/airdox-epk.template.html
+- M e2e/desktop-flightdeck.spec.js
+- M package-lock.json
 - M package.json
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-a-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-a.png
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-d-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-d.png
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-i-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-i.png
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-o-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-o.png
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-r-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-r.png
-- D public/brand-assets/airdox-lettering/strobe-proof/letter-x-raw.png
-- M public/brand-assets/airdox-lettering/strobe-proof/letter-x.png
-- D public/brand-assets/airdox-lettering/strobe-proof/source-sheet.png
-- D public/brand-assets/airdox-lettering/strobe-proof/wordmark-02-raw.png
-- D public/brand-assets/airdox-lettering/strobe-proof/wordmark-02.png
-- M remotion/airdox-reels/out/airdox-letter-strobe-proof-8s.mp4
-- M remotion/airdox-reels/out/airdox-letter-strobe-proof.png
-- M remotion/airdox-reels/src/AirdoxLetterStrobe.jsx
-- D scripts/extract-airdox-strobe-proof-assets.mjs
-- D scripts/photoshop-export-airdox-letter-masks.jsx
-- D scripts/run-photoshop-airdox-letter-masks.mjs
-- ?? public/brand-assets/airdox-lettering/strobe-proof/concepts/
-- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-o.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-x-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/debug-letter-x.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-a-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-d-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-i-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-o-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-r-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/letter-x-solid.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/mask-review-sheet.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/photoshop-separated-letter-mask-manifest.json
-- ?? public/brand-assets/airdox-lettering/strobe-proof/photoshop-separated-letter-mask.done
-- ?? public/brand-assets/airdox-lettering/strobe-proof/separated-letter-mask-manifest.json
-- ?? public/brand-assets/airdox-lettering/strobe-proof/source-separated-airdox-before-concept-1.png
-- ?? public/brand-assets/airdox-lettering/strobe-proof/source-separated-airdox.png
-- ?? remotion/airdox-reels/out/airdox-letter-strobe-proof-ox-hit.png
-- ?? remotion/airdox-reels/out/airdox-letter-strobe-proof.mp4
-- ?? remotion/airdox-reels/out/airdox-letter-strobe-vertical-proof-8s.mp4
-- ?? remotion/airdox-reels/out/airdox-letter-strobe-vertical-proof.png
-- ?? scripts/extract-airdox-separated-letter-assets.mjs
-- ?? scripts/photoshop-export-airdox-separated-letter-masks.jsx
-- ?? scripts/run-photoshop-airdox-separated-letter-masks.mjs
+- M public/_headers
+- M public/_redirects
+- M public/epk/airdox-epk.html
+- M public/epk/airdox-epk.pdf
+- M public/epk/airdox-press-assets.txt
+- M scripts/agent-background-cycle.mjs
+- M scripts/agent-job-validator.mjs
+- M scripts/build-airdox-epk.mjs
+- M src/App.jsx
+- M src/components/AuthModal.jsx
+- M src/components/AuthModalFields.jsx
+- M src/components/EPKSection.jsx
+- M src/components/Hero.jsx
+- M src/components/Navigation.css
+- M src/components/Navigation.jsx
+- M src/components/SetCard.jsx
+- M src/components/VIPSection.jsx
+- M src/components/Visualizer.jsx
+- M src/components/__tests__/AuthModal.test.jsx
+- M src/contexts/__tests__/audioSources.test.js
+- M src/contexts/audioSources.js
+- M src/desktop/DesktopApp.jsx
+- M src/desktop/__tests__/DesktopApp.test.jsx
+- M src/desktop/components/AssistantTab.jsx
+- M src/desktop/components/DesignSetupPhase.jsx
+- M src/desktop/components/SetImportTab.jsx
+- M src/desktop/desktop.css
+- M src/desktop/lib/__tests__/assistantCoverage.test.js
+- M src/desktop/lib/__tests__/assistantEngine.test.js
+- M src/desktop/lib/assistantEngine.js
+- M src/desktop/lib/assistantKnowledge.js
+- M src/desktop/lib/tracklistCore.js
+- M src/lib/__tests__/authHelpers.test.js
+- M src/lib/authHelpers.js
+- M src/lib/authRequestHandler.js
+- M src/lib/statsContracts.js
+- M src/server/__tests__/worker.test.js
+- M src/server/worker.js
+- M src/styles/global.css
+- M src/utils/audienceSignals.js
+- M src/utils/i18nMessages.js
+- ?? airdoX_wiki/.obsidian/
+- ?? airdoX_wiki/wiki/Untitled-2.yml
+- ?? airdoX_wiki/wiki/flightdeck-workflow-diagrams.md
+- ?? capacitor.config.json
+- ?? docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
+- ?? docs/agent-system/AGENT_TRAINING_CATALOG.md
+- ?? docs/agent-system/MENTOR_POSTMORTEM_BANK.md
+- ?? docs/agent-system/latest-wiki-sync-audit.json
+- ?? docs/agent-system/latest-wiki-sync-audit.md
+- ?? docs/agent-system/manni-reel-draft-pack.md
+- ?? docs/agent-system/manni-reel-weekly-plan.md
+- ?? docs/agent-system/wiki-maintainer-todo.md
+- ?? docs/auth-workflow-proof/
+- ?? public/airdox-actions-last-24h.html
+- ?? public/airdox-actions-last-24h.pdf
+- ?? public/airdox-analytics-report.html
+- ?? public/airdox-analytics-report.pdf
+- ?? public/assistant-screenshots/
+- ?? public/epk/assets/
+- ?? public/epk/press-assets.html
+- ?? scripts/R2_README.md
+- ?? scripts/_deduped_manifest.js
+- ?? scripts/_deploy_manifest_4.js
+- ?? scripts/_deploy_manifest_for_src.js
+- ?? scripts/_final_manifest.js
+- ?? scripts/capture-auth-workflow-proof.mjs
+- ?? scripts/publish-and-deploy.mjs
+- ?? scripts/r2-delete.mjs
+- ?? scripts/r2-list.mjs
+- ?? scripts/wiki-sync-audit.mjs
+- ?? src/components/IndustrialDashboard.css
+- ?? src/components/IndustrialDashboard.jsx
+- ?? src/desktop/lib/__tests__/publish.integration.test.mjs
+- ?? src/desktop/lib/assistantGuides.js
+- ?? test-draft-tracklist.mjs
+- ?? test-parse.mjs
+- ?? test-tracklist-dedupe.mjs
 
 ## Versionierte generierte Artefakte
 
@@ -274,14 +379,14 @@ Branch: main
 
 ## Letzte Commits
 
+- f6698db fix(manifest): keep only one 2026-06-21 set (recording_2026_06_21-5) and three prior sets; point file to existing R2 key
+- 7a0a6ef feat(flightdeck): publish recording_2026_06_21-5
+- 2cb003c Remove duplicate set recording_2026_06_21-2 (keep only FeTe de la Music)
+- ff66782 Deduplicate musicSets: keep single FeTe de la Music entry
+- 3220e1e test: clean up process imports for web quality
+- 703cd0b chore(agent-system): snapshot scoped reports and flightdeck fixes
 - 1d64571 chore: daily autopush 2026-06-06 01:53 +02:00
 - d958d77 feat(flightdeck): publish recording_2026_06_02
 - 6af7582 chore: daily autopush 2026-06-02 02:12 +02:00
 - 8afd559 chore: daily autopush 2026-06-01 10:06 +02:00
-- 92e6f31 feat: add CustomTkinter TikTok GUI with progress bar, build script, and official agent skill
-- 14d02c3 fix: add 'path' key to video dict in upload_tiktok.py for compatibility with tiktok-uploader library
-- c167ead chore: add video_url input to TikTok upload workflow to align with python script
-- 7e5b174 feat: import TikTok upload script and workflow from qa-setup branch
-- 62b5573 chore: clean up repo, update agent reports, add privacy/terms pages, expand .gitignore for scratch/
-- 60b67e2 chore: daily autopush 2026-05-31 20:06 +02:00
 

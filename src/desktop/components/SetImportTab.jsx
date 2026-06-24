@@ -38,6 +38,7 @@ const SetImportTab = ({
   const publishModeLabel = publishStatus?.mode === 'live' ? 'Go Live' : 'Publish';
   const publishStepLabel = publishStatus?.label || 'Bereit';
   const publishDetail = publishStatus?.detail || 'Noch kein Publish gestartet.';
+  const [publishMainDetail, publishHelpDetail] = String(publishDetail).split('\n\nHilfe:');
   const publishProgress = Math.min(100, Math.max(0, Number(publishStatus?.progress) || 0));
 
   return (
@@ -104,7 +105,12 @@ const SetImportTab = ({
           >
             <div>
               <strong>{publishBusy ? `${publishModeLabel} laeuft` : publishStepLabel}</strong>
-              <span>{publishDetail}</span>
+              <span>{publishMainDetail}</span>
+              {publishHelpDetail && (
+                <pre className="fd-assistant-code-block" style={{ whiteSpace: 'pre-wrap', marginTop: '8px' }}>
+                  {`Hilfe:${publishHelpDetail}`}
+                </pre>
+              )}
               <div
                 className="fd-inline-progress"
                 role="progressbar"

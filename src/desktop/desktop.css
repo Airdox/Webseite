@@ -84,6 +84,38 @@ input[type="range"] {
   border-color: rgba(38, 50, 65, 0.9);
 }
 
+.fd-design-studio-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 16px;
+  padding: 16px;
+}
+
+.fd-design-studio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.fd-design-studio-header h1 {
+  margin: 6px 0 0;
+}
+
+.fd-design-studio-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fd-design-studio-main {
+  min-width: 0;
+}
+
 .fd-brand-block {
   display: flex;
   align-items: center;
@@ -3444,6 +3476,110 @@ input[type="range"] {
 
 .fd-assistant-text-block {
   margin: 0;
+}
+
+.fd-assistant-compact-answer,
+.fd-assistant-visual-answer {
+  display: grid;
+  gap: 10px;
+}
+
+.fd-assistant-brief {
+  margin: 0;
+  color: var(--airdox-text);
+}
+
+.fd-assistant-screenshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin: 2px 0;
+}
+
+.fd-assistant-screenshot-card {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 240, 255, 0.18);
+  background: rgba(5, 8, 12, 0.72);
+}
+
+.fd-assistant-screenshot-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top left;
+  border-bottom: 1px solid rgba(38, 50, 65, 0.78);
+}
+
+.fd-assistant-screenshot-card figcaption {
+  padding: 8px 9px 9px;
+  color: var(--airdox-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.fd-assistant-flow {
+  display: grid;
+  gap: 7px;
+}
+
+.fd-assistant-flow-step {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 8px;
+  align-items: start;
+  padding: 8px 9px;
+  border-radius: 7px;
+  background: rgba(0, 240, 255, 0.055);
+  border: 1px solid rgba(0, 240, 255, 0.16);
+}
+
+.fd-assistant-flow-step strong {
+  color: var(--airdox-text);
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.fd-assistant-flow-index {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(0, 240, 255, 0.13);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  color: var(--airdox-cyan);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.fd-assistant-details {
+  border-top: 1px solid rgba(38, 50, 65, 0.72);
+  padding-top: 8px;
+  color: var(--airdox-muted);
+}
+
+.fd-assistant-details summary {
+  cursor: pointer;
+  color: var(--airdox-cyan);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.fd-assistant-details.muted summary {
+  color: var(--airdox-muted);
+}
+
+.fd-assistant-detail-list {
+  margin: 8px 0 0;
+  padding-left: 22px;
+}
+
+.fd-assistant-detail-list li {
+  margin: 0 0 6px;
+  color: var(--airdox-text);
 }
 
 /* Code formatting in messages */

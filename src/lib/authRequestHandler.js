@@ -17,11 +17,14 @@ import {
     generateToken,
     getSocialConfig,
     hashPassword,
+    isLegacyPasswordHash,
     isCaptchaRequired,
     isDevSocialAuthAllowed,
     normalizeIp,
     normalizeUsername,
     sanitizeEmail,
+    validatePasswordPolicy,
+    verifyPasswordHash,
     verifyTurnstileCaptcha,
 } from './authHelpers.js';
 import { ensureInitialized, getSqlClient } from './statsDatabase.js';
@@ -203,6 +206,11 @@ export const handleAuthRequest = async ({ body, env }) => {
 
     try {
         if (action === 'register') {
+            const passwordPolicy = validatePasswordPolicy(password);
+            if (!passwordPolicy.ok) {
+                return { status: 400, body: errorBody(passwordPolicy.error) };
+            }
+
             const isLimited = await isRegisterRateLimited(sql, clientIp);
             if (isLimited) {
                 return { status: 429, body: errorBody('Too many registration attempts. Please try again later.') };
@@ -272,9 +280,23 @@ export const handleAuthRequest = async ({ body, env }) => {
             `;
             if (!user) return { status: 401, body: errorBody('Invalid credentials') };
 
-            const hashedPassword = await hashPassword(password, user.salt);
-            if (hashedPassword !== user.password) {
+            const passwordMatches = await verifyPasswordHash({
+                password,
+                salt: user.salt,
+                storedHash: user.password,
+            });
+            if (!passwordMatches) {
                 return { status: 401, body: errorBody('Invalid credentials') };
+            }
+
+            if (isLegacyPasswordHash(user.password)) {
+                const nextSalt = generateSalt();
+                const nextPasswordHash = await hashPassword(password, nextSalt);
+                await sql`
+                    UPDATE users
+                    SET password = ${nextPasswordHash}, salt = ${nextSalt}
+                    WHERE id = ${user.id}
+                `;
             }
 
             const token = generateToken();

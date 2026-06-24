@@ -1,0 +1,200 @@
+{
+  "main": {
+    "id": "8a0dfbdb19f97b6c",
+    "type": "split",
+    "children": [
+      {
+        "id": "796304241229b629",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2d58b56ff967ff5e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "wiki/flightdeck-workflow-diagrams.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "flightdeck-workflow-diagrams"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "82ea4ad52fdce4ec",
+    "type": "split",
+    "children": [
+      {
+        "id": "30cd40ed344e6e96",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5aa32efa048a891c",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Dateiexplorer"
+            }
+          },
+          {
+            "id": "f925de1691597357",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Suchen"
+            }
+          },
+          {
+            "id": "522a7fe6ae575dcc",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Lesezeichen"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "829756656518fd9b",
+    "type": "split",
+    "children": [
+      {
+        "id": "2ff1f0f92f096bb8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "224ebbef4e92d973",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "SYSTEM.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Rückverweise auf SYSTEM"
+            }
+          },
+          {
+            "id": "6884a6999afa60d9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "SYSTEM.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Ausgehende Links von SYSTEM öffnen"
+            }
+          },
+          {
+            "id": "b6c67141fbbe6d12",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "31d9a7d3ca6fa834",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Alle Eigenschaften"
+            }
+          },
+          {
+            "id": "e5b96fb7d8764af4",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "SYSTEM.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Gliederung von SYSTEM"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Schnellauswahl öffnen": false,
+      "graph:Graph-Ansicht öffnen": false,
+      "canvas:Neuen Canvas erstellen": false,
+      "daily-notes:Heutige Notiz öffnen": false,
+      "templates:Vorlage einfügen": false,
+      "command-palette:Befehlspalette öffnen": false,
+      "bases:Neue Base erstellen": false
+    }
+  },
+  "active": "2d58b56ff967ff5e",
+  "lastOpenFiles": [
+    "SYSTEM.md",
+    "wiki/log.md",
+    "wiki/local-07-current-program-state.md",
+    "wiki/flightdeck-expert-handbook.md",
+    "wiki/flightdeck-faq.md",
+    "wiki/index.md",
+    "wiki/flightdeck-troubleshooting.md",
+    "README.md",
+    "raw",
+    "__pycache__/linting.cpython-311.pyc",
+    "wiki/local-00-source-registry.md"
+  ]
+}

@@ -1,11 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
     getSocialConfig,
+    hashPassword,
+    hashPasswordLegacy,
     isCaptchaRequired,
+    isLegacyPasswordHash,
     isDevSocialAuthAllowed,
     normalizeIp,
     normalizeUsername,
     sanitizeEmail,
+    validatePasswordPolicy,
+    verifyPasswordHash,
     verifyTurnstileCaptcha,
 } from '../authHelpers';
 
@@ -35,6 +40,33 @@ describe('authHelpers', () => {
             scope: 'openid email profile',
         });
         expect(getSocialConfig('github', {})).toBeNull();
+    });
+
+    it('uses versioned PBKDF2 hashes while still verifying legacy hashes', async () => {
+        const password = 'LongEnoughPassword123!';
+        const salt = '0123456789abcdef0123456789abcdef';
+        const hash = await hashPassword(password, salt);
+
+        expect(hash).toMatch(/^pbkdf2_sha256\$\d+\$/);
+        expect(isLegacyPasswordHash(hash)).toBe(false);
+        await expect(verifyPasswordHash({ password, salt, storedHash: hash })).resolves.toBe(true);
+        await expect(verifyPasswordHash({ password: 'wrong-password', salt, storedHash: hash })).resolves.toBe(false);
+
+        const legacyHash = await hashPasswordLegacy(password, salt);
+        expect(isLegacyPasswordHash(legacyHash)).toBe(true);
+        await expect(verifyPasswordHash({ password, salt, storedHash: legacyHash })).resolves.toBe(true);
+    });
+
+    it('enforces the registration password policy', () => {
+        expect(validatePasswordPolicy('short')).toEqual({
+            ok: false,
+            error: 'Password must be at least 12 characters long',
+        });
+        expect(validatePasswordPolicy('LongEnough12')).toEqual({ ok: true });
+        expect(validatePasswordPolicy('x'.repeat(129))).toEqual({
+            ok: false,
+            error: 'Password must be at most 128 characters long',
+        });
     });
 
     it('verifies turnstile success and rejects action mismatches', async () => {

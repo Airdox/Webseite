@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { answerToolQuestion } from '../lib/assistantEngine.js';
 import { ASSISTANT_ACTIONS } from '../lib/assistantKnowledge.js';
+import { ASSISTANT_GUIDES } from '../lib/assistantGuides.js';
 import { flightDeckApi } from '../api.js';
 
 const PROMPTS = [
@@ -19,6 +20,72 @@ const PROMPTS = [
   { text: 'Öffne den Set Import', icon: FolderOpen },
   { text: 'Was kannst du alles?', icon: HelpCircle },
 ];
+
+const SHARED_SCREENSHOTS = {
+  workbench: {
+    src: '/assistant-screenshots/flightdeck-workbench.png',
+    alt: 'AIRDOX Flight Deck Hauptansicht mit linker Navigation und Statuskarten',
+    caption: 'Hauptansicht: erst links den Bereich wählen, dann oben Status und Blocker lesen.',
+  },
+  dataExplorer: {
+    src: '/assistant-screenshots/data-explorer.png',
+    alt: 'AIRDOX Data Explorer mit Tabellenansicht und Export-Buttons',
+    caption: 'Data Explorer: Tabelle wählen, Ergebnis prüfen, danach CSV oder JSON exportieren.',
+  },
+  analytics: {
+    src: '/assistant-screenshots/analytics-filter.png',
+    alt: 'AIRDOX Analytics mit gesetztem Event-Filter',
+    caption: 'Analytics: Zeitraum und Event-Filter zuerst setzen, erst danach Zahlen bewerten.',
+  },
+  assistant: {
+    src: '/assistant-screenshots/assistant.png',
+    alt: 'AIRDOX KI Assistant im Windows Tool',
+    caption: 'Assistant: Frage stellen oder einen Einstieg oben wählen; Aktionen öffnen direkt den passenden Tab.',
+  },
+  approval: {
+    src: '/assistant-screenshots/approval-desk.png',
+    alt: 'AIRDOX Marketing Manager mit Freigabe-Desk',
+    caption: 'Marketing Manager: Operation, Copy, Asset und Budget einzeln prüfen, dann freigeben oder ablehnen.',
+  },
+};
+
+const ASSISTANT_SCREENSHOTS = {
+  'online-publish': [SHARED_SCREENSHOTS.workbench],
+  workspace: [SHARED_SCREENSHOTS.workbench],
+  import: [SHARED_SCREENSHOTS.workbench],
+  publish: [SHARED_SCREENSHOTS.workbench],
+  analytics: [SHARED_SCREENSHOTS.analytics],
+  'analytics-terms': [SHARED_SCREENSHOTS.analytics],
+  'db-error': [SHARED_SCREENSHOTS.workbench],
+  explorer: [SHARED_SCREENSHOTS.dataExplorer],
+  'data-model': [SHARED_SCREENSHOTS.dataExplorer],
+  'export-data': [SHARED_SCREENSHOTS.dataExplorer],
+  'subscriber-management': [SHARED_SCREENSHOTS.dataExplorer],
+  'vip-users': [SHARED_SCREENSHOTS.dataExplorer],
+  monitor: [SHARED_SCREENSHOTS.workbench],
+  batch: [SHARED_SCREENSHOTS.workbench],
+  'design-agent': [SHARED_SCREENSHOTS.workbench],
+  'flightdeck-map': [SHARED_SCREENSHOTS.workbench],
+  'go-live-preflight': [SHARED_SCREENSHOTS.workbench],
+  glossary: [SHARED_SCREENSHOTS.workbench],
+  'publish-pipeline': [SHARED_SCREENSHOTS.workbench],
+  'settings-toggles': [SHARED_SCREENSHOTS.workbench],
+  'agent-system': [SHARED_SCREENSHOTS.approval],
+  'marketing-manager': [SHARED_SCREENSHOTS.approval],
+  'tutorial-workflows': [SHARED_SCREENSHOTS.workbench],
+  settings: [SHARED_SCREENSHOTS.workbench],
+  tutorial: [SHARED_SCREENSHOTS.workbench],
+  'git-status': [SHARED_SCREENSHOTS.workbench],
+  'r2-upload': [SHARED_SCREENSHOTS.workbench],
+  'tracklist-editor': [SHARED_SCREENSHOTS.workbench],
+  'vinyl-cover': [SHARED_SCREENSHOTS.workbench],
+  'overview-dashboard': [SHARED_SCREENSHOTS.workbench],
+  'keyboard-shortcuts': [SHARED_SCREENSHOTS.assistant],
+  troubleshooting: [SHARED_SCREENSHOTS.workbench],
+  'safe-mode': [SHARED_SCREENSHOTS.workbench],
+  'assistant-help': [SHARED_SCREENSHOTS.assistant, SHARED_SCREENSHOTS.workbench],
+  'first-set': [SHARED_SCREENSHOTS.workbench],
+};
 
 const SOURCE_LABELS = {
   'knowledge': { label: 'Wiki', color: 'var(--airdox-lime)' },
@@ -43,6 +110,21 @@ const normalizeAssistantText = (value) => {
     if (typeof value.answer === 'string') return value.answer;
   }
   return String(value ?? '');
+};
+
+const getCompactText = (text = '') => normalizeAssistantText(text)
+  .split('\n')
+  .map((line) => line.trim())
+  .filter(Boolean)
+  .filter((line) => !/^Schnellweg:|^Detaillierter Weg:/i.test(line))
+  .filter((line) => !/^\d+\)/.test(line))
+  .slice(0, 2)
+  .join('\n');
+
+const truncateText = (text = '', max = 260) => {
+  const value = String(text || '').trim();
+  if (value.length <= max) return value;
+  return `${value.slice(0, max).replace(/\s+\S*$/, '')}...`;
 };
 
 const formatMessageText = (text = '') => {
@@ -149,6 +231,68 @@ const ActionButton = ({ actionId, onAction }) => {
   );
 };
 
+const AssistantVisualAnswer = ({ message }) => {
+  const guide = message.matchId ? ASSISTANT_GUIDES[message.matchId] : null;
+  const screenshots = message.matchId ? (ASSISTANT_SCREENSHOTS[message.matchId] || []) : [];
+  const compactText = truncateText(getCompactText(message.text), 320);
+
+  if (!guide) {
+    const lines = normalizeAssistantText(message.text).split('\n');
+    const visibleLines = lines.slice(0, 8).join('\n');
+    const hiddenLines = lines.slice(8).join('\n');
+
+    return (
+      <div className="fd-assistant-compact-answer">
+        {formatMessageText(visibleLines)}
+        {hiddenLines.trim() && (
+          <details className="fd-assistant-details">
+            <summary>Mehr anzeigen</summary>
+            {formatMessageText(hiddenLines)}
+          </details>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="fd-assistant-visual-answer">
+      {compactText && (
+        <p className="fd-assistant-brief">{compactText}</p>
+      )}
+      {screenshots.length > 0 && (
+        <div className="fd-assistant-screenshot-grid" aria-label="Passende Software-Bilder">
+          {screenshots.slice(0, 2).map((shot) => (
+            <figure key={shot.src} className="fd-assistant-screenshot-card">
+              <img src={shot.src} alt={shot.alt} loading="lazy" />
+              <figcaption>{shot.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      )}
+      <div className="fd-assistant-flow" aria-label="Schnellweg">
+        {guide.quick.slice(0, 5).map((step, index) => (
+          <div key={`${message.id}-quick-${step}`} className="fd-assistant-flow-step">
+            <span className="fd-assistant-flow-index">{index + 1}</span>
+            <strong>{step}</strong>
+          </div>
+        ))}
+      </div>
+      <details className="fd-assistant-details">
+        <summary>Detaillierten Weg anzeigen</summary>
+        <ol className="fd-assistant-detail-list">
+          {guide.detailed.map((step) => (
+            <li key={`${message.id}-detail-${step}`}>{step}</li>
+          ))}
+        </ol>
+      </details>
+      <details className="fd-assistant-details muted">
+        <summary>Textantwort anzeigen</summary>
+        {formatMessageText(message.text)}
+      </details>
+    </div>
+  );
+};
+
 const AssistantTab = ({
   appState = null,
   onJumpToTab = () => {},
@@ -162,7 +306,7 @@ const AssistantTab = ({
     {
       id: 'welcome',
       role: 'assistant',
-      text: 'AIRDOX Flight-Deck-Assistent bereit.\n\nIch helfe bei Workspace, Import, Analytics, Deploy, Datenbank und Monitoring. Ich kann Status prüfen, Schritte erklären, passende Tabs öffnen und konkrete Fehlerwege vorschlagen.\n\nStell eine Frage oder wähle einen operativen Einstieg oben.',
+      text: 'Bereit. Frag mich nach einem Ziel oder wähle oben einen Einstieg. Ich zeige zuerst kurze Schritte; Details bleiben einklappbar.',
       source: 'system',
       actions: [],
       timestamp: Date.now(),
@@ -222,6 +366,8 @@ const AssistantTab = ({
     let finalText = typeof localResult === 'string' ? localResult : localResult.text;
     let finalSource = typeof localResult === 'string' ? 'local' : (localResult.source || 'local');
     let finalActions = typeof localResult === 'string' ? [] : (localResult.actions || []);
+    let finalMatchId = typeof localResult === 'string' ? '' : (localResult.matchId || '');
+    let finalMatchTitle = typeof localResult === 'string' ? '' : (localResult.matchTitle || '');
 
     // Try backend assistant (Wiki + Ollama)
     try {
@@ -234,10 +380,14 @@ const AssistantTab = ({
           if (backendSource.startsWith('ollama:') || backendSource === 'wiki') {
             finalText = backendText;
             finalSource = backendSource;
+            finalMatchId = '';
+            finalMatchTitle = '';
           } else if (typeof localResult !== 'string' && localResult.source === 'fallback') {
             // Backend had something, local didn't — use backend
             finalText = backendText;
             finalSource = backendSource;
+            finalMatchId = '';
+            finalMatchTitle = '';
           }
         }
       }
@@ -253,6 +403,8 @@ const AssistantTab = ({
       text: finalText,
       source: finalSource,
       actions: finalActions,
+      matchId: finalMatchId,
+      matchTitle: finalMatchTitle,
       timestamp: Date.now(),
     };
 
@@ -341,9 +493,11 @@ const AssistantTab = ({
                   <Bot size={16} />
                 </div>
               )}
-              <div className="fd-assistant-bubble">
-                <div className="fd-assistant-bubble-content">
-                  {formatMessageText(message.text)}
+                <div className="fd-assistant-bubble">
+                  <div className="fd-assistant-bubble-content">
+                  {message.role === 'assistant'
+                    ? <AssistantVisualAnswer message={message} />
+                    : formatMessageText(message.text)}
                 </div>
                 {message.role === 'assistant' && (
                   <div className="fd-assistant-meta">

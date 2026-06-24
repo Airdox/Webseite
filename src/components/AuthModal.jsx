@@ -9,7 +9,12 @@ import {
     resolveApiOrigin,
 } from '../utils/apiResponse';
 import { apiErrorMessage, requestApiJson } from '../utils/apiClient';
-import { setStorageItem, STORAGE_KEYS } from '../utils/websiteContracts';
+import {
+    dispatchWindowEvent,
+    setStorageItem,
+    STORAGE_KEYS,
+    WINDOW_EVENTS,
+} from '../utils/websiteContracts';
 import { buildAuthPayload, getAllowedOAuthProviders, validateRegistrationCaptcha } from './authModalUtils';
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
@@ -31,6 +36,15 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
     const oauthMessageReceivedRef = useRef(false);
     const modalBodyRef = useRef(null);
     const [showRegisterScrollHint, setShowRegisterScrollHint] = useState(false);
+
+    const completeAuthenticatedSession = useCallback((token, delay = 700) => {
+        setStorageItem(STORAGE_KEYS.authToken, token);
+        dispatchWindowEvent(WINDOW_EVENTS.loginSuccess);
+        setSuccess(t('auth.loginSuccess'));
+        setTimeout(() => {
+            onClose();
+        }, delay);
+    }, [onClose]);
 
     const clearPopupCheckInterval = useCallback(() => {
         if (popupCheckIntervalRef.current !== null) {
@@ -127,12 +141,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                 setError(data.error || t('auth.oauthFailed'));
                 return;
             }
-            setStorageItem(STORAGE_KEYS.authToken, data.token);
-            setSuccess(t('auth.loginSuccess'));
-            setTimeout(() => {
-                onClose();
-                window.location.reload();
-            }, 700);
+            completeAuthenticatedSession(data.token);
         };
 
         window.addEventListener('message', onMessage);
@@ -140,7 +149,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
             window.removeEventListener('message', onMessage);
             resetSocialAuthState();
         };
-    }, [onClose, clearPopupCheckInterval, resetSocialAuthState]);
+    }, [clearPopupCheckInterval, completeAuthenticatedSession, resetSocialAuthState]);
 
     useEffect(() => {
         if (!isOpen || mode !== 'register') {
@@ -174,10 +183,12 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
         };
     }, [isOpen, mode]);
 
-    const switchMode = (nextMode) => {
+    const switchMode = (nextMode, { preserveStatus = false } = {}) => {
         setMode(nextMode);
-        setError('');
-        setSuccess('');
+        if (!preserveStatus) {
+            setError('');
+            setSuccess('');
+        }
         setCaptchaToken('');
         setCaptchaStatus('idle');
         resetSocialAuthState();
@@ -264,15 +275,10 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
             }
 
             if (mode === 'login') {
-                setStorageItem(STORAGE_KEYS.authToken, data.token);
-                setSuccess(t('auth.loginSuccess'));
-                setTimeout(() => {
-                    onClose();
-                    window.location.reload(); // Simple way to refresh UI state
-                }, 1500);
+                completeAuthenticatedSession(data.token, 900);
             } else {
                 setSuccess(t('auth.registrationSuccess'));
-                switchMode('login');
+                switchMode('login', { preserveStatus: true });
             }
         } catch (err) {
             setError(err.message);

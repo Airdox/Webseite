@@ -16,9 +16,10 @@ const template = readText('docs/brand/templates/airdox-epk.template.html');
 const bioHtml = (content.bio || []).map((entry) => `<p>${entry}</p>`).join('\n');
 const highlightsHtml = `<ul>${(content.highlights || []).map((entry) => `<li>${entry}</li>`).join('')}</ul>`;
 const bookingHtml = `
-<p><strong>Set Length:</strong> ${content.booking?.setLength || '-'}</p>
+<p><strong>Set-Länge:</strong> ${content.booking?.setLength || '-'}</p>
 <p><strong>Format:</strong> ${content.booking?.format || '-'}</p>
-<p><strong>Contact:</strong> ${content.booking?.contact || '-'}</p>
+<p><strong>Technisches Minimum:</strong> ${content.booking?.minimumSetup || '-'}</p>
+<p><strong>Kontakt:</strong> <a href="mailto:${content.booking?.contact || ''}">${content.booking?.contact || '-'}</a></p>
 `;
 const linksHtml = `<ul>${(content.links || []).map((entry) => `<li><a href="${entry.url}">${entry.label}</a></li>`).join('')}</ul>`;
 

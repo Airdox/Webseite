@@ -6,7 +6,7 @@ export const AUDIO_MAX_PARTS = 25;
 
 const AUDIO_API_BASE = (import.meta.env?.VITE_AUDIO_API_BASE || '').replace(/\/+$/, '');
 
-export const getAudioApiBase = () => getRuntimeApiBase(AUDIO_API_BASE, { useProductionForMobile: false });
+export const getAudioApiBase = () => getRuntimeApiBase(AUDIO_API_BASE);
 
 export const getAuthToken = () => {
     try {

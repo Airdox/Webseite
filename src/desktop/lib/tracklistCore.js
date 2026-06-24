@@ -542,8 +542,13 @@ export const buildCanonicalTracklist = ({
   tracks = [],
   createdAt = new Date().toISOString(),
   audioDurationSeconds = null,
+  dedupeWindowSeconds = 45,
 } = {}) => {
-  const canonicalTracks = tracks
+  const inputTracks = (Number.isFinite(dedupeWindowSeconds) && dedupeWindowSeconds > 0)
+    ? dedupeTracks(tracks, dedupeWindowSeconds)
+    : tracks;
+
+  const canonicalTracks = inputTracks
     .map(toCanonicalTrack)
     .filter((track) => track.time && (track.artist || track.title));
   const validation = validateTracks(canonicalTracks, { audioDurationSeconds });

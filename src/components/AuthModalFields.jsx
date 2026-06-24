@@ -20,7 +20,7 @@ const AuthModalFields = ({
                     type="text"
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
-                    placeholder="your_dj_name"
+                    placeholder="user"
                     autoComplete="username"
                     required
                 />
@@ -49,6 +49,8 @@ const AuthModalFields = ({
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="••••••••"
                 autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                minLength={mode === 'register' ? 12 : undefined}
+                maxLength={128}
                 required
             />
         </div>

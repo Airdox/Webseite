@@ -180,8 +180,9 @@ router.post('/api/register', async (request, env) => {
 
 router.get('/api/oauth/config', async (request, env) => {
     const providers = [];
-    if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) providers.push('google');
-    if (env.FACEBOOK_APP_ID && env.FACEBOOK_APP_SECRET) providers.push('facebook');
+    const allowDevSocialAuth = isDevSocialAuthBypassEnabled(env, request);
+    if ((env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) || allowDevSocialAuth) providers.push('google');
+    if ((env.FACEBOOK_APP_ID && env.FACEBOOK_APP_SECRET) || allowDevSocialAuth) providers.push('facebook');
 
     return jsonResponse({ ok: true, providers }, { headers: corsHeaders });
 });

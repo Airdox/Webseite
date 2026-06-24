@@ -48,18 +48,31 @@ const Visualizer = () => {
                 const bottomY = canvas.height;
                 const topY = bottomY - barHeight;
 
+                const isIndustrial = document.documentElement.dataset.designMode === 'industrial';
+
                 const barGradient = ctx.createLinearGradient(0, topY, 0, bottomY);
-                barGradient.addColorStop(0, `rgba(255, 104, 208, ${0.22 + intensity * 0.45})`);
-                barGradient.addColorStop(0.5, `rgba(0, 245, 255, ${0.2 + intensity * 0.55})`);
-                barGradient.addColorStop(1, `rgba(144, 255, 203, ${0.16 + intensity * 0.5})`);
+                if (isIndustrial) {
+                    barGradient.addColorStop(0, `rgba(255, 85, 0, ${0.4 + intensity * 0.5})`);
+                    barGradient.addColorStop(0.5, `rgba(255, 136, 0, ${0.3 + intensity * 0.6})`);
+                    barGradient.addColorStop(1, `rgba(255, 85, 0, ${0.1 + intensity * 0.3})`);
+                } else {
+                    barGradient.addColorStop(0, `rgba(255, 104, 208, ${0.22 + intensity * 0.45})`);
+                    barGradient.addColorStop(0.5, `rgba(0, 245, 255, ${0.2 + intensity * 0.55})`);
+                    barGradient.addColorStop(1, `rgba(144, 255, 203, ${0.16 + intensity * 0.5})`);
+                }
 
                 ctx.fillStyle = barGradient;
                 ctx.fillRect(x, topY, barWidth, barHeight);
 
                 const mirrorHeight = barHeight * 0.35;
                 const mirrorGradient = ctx.createLinearGradient(0, 0, 0, mirrorHeight);
-                mirrorGradient.addColorStop(0, `rgba(186, 127, 255, ${0.05 + intensity * 0.2})`);
-                mirrorGradient.addColorStop(1, `rgba(0, 245, 255, ${0.03 + intensity * 0.15})`);
+                if (isIndustrial) {
+                    mirrorGradient.addColorStop(0, `rgba(255, 85, 0, ${0.1 + intensity * 0.2})`);
+                    mirrorGradient.addColorStop(1, `rgba(255, 136, 0, ${0.03 + intensity * 0.1})`);
+                } else {
+                    mirrorGradient.addColorStop(0, `rgba(186, 127, 255, ${0.05 + intensity * 0.2})`);
+                    mirrorGradient.addColorStop(1, `rgba(0, 245, 255, ${0.03 + intensity * 0.15})`);
+                }
                 ctx.fillStyle = mirrorGradient;
                 ctx.fillRect(x, 0, barWidth, mirrorHeight);
 

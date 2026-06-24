@@ -25,7 +25,7 @@ class AirdoxLLM:
     def compile_knowledge(self, raw_content: str, existing_wiki_context: str) -> Dict[str, str]:
         system_prompt = """Du bist der AIRDOX Wiki Compiler. Deine Aufgabe ist es, Rohdaten in das Wiki zu integrieren.
         Entscheide, ob eine neue Seite erstellt werden muss oder eine bestehende erweitert wird.
-        Verwende [[Wikilinks]], um Wissen zu vernetzen. Jede neue Information muss mindestens zwei Links enthalten.
+        Verwende Obsidian-Wiki-Links, um Wissen zu vernetzen. Jede neue Information muss mindestens zwei Links enthalten.
         Antworte im JSON-Format: {"action": "create"|"update", "title": "SeitenTitel", "content": "Markdown Inhalt"}"""
         
         user_prompt = f"Rohdaten:\n{raw_content}\n\nBestehender Kontext:\n{existing_wiki_context}"
