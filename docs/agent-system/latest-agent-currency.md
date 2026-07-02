@@ -1,14 +1,14 @@
 # AIRDOX Agenten-Aktualitaetsbericht
 
-Erstellt: 2026-06-24T20:36:17.978Z
+Erstellt: 2026-07-01T13:45:59.398Z
 Owner: Mentor
-Status: warn
+Status: pass
 
 ## Ueberblick
 
 - Gepruefte Agenten: 8
-- Pass: 7
-- Warnungen: 1
+- Pass: 8
+- Warnungen: 0
 
 ## Agenten
 
@@ -20,7 +20,7 @@ Status: warn
 | Guardian | PASS | Security, CI, runtime quality and risk | - |
 | Manni | PASS | Growth, booking conversion and social platform practice | - |
 | Repository | PASS | Source control, GitHub governance and release hygiene | - |
-| Refactor | WARN | Architecture simplification and maintainability | 2 source(s) unreachable or changed. |
+| Refactor | PASS | Architecture simplification and maintainability | - |
 | Mentor | PASS | Learning loops and agent improvement process | - |
 
 ## Quellenchecks
@@ -66,8 +66,8 @@ Status: warn
 ### Refactor
 
 - PASS https://martinfowler.com/refactoring/ (200)
-- WARN https://web.dev/articles/fast (AbortError)
-- WARN https://nodejs.org/en/learn/diagnostics/user-journey (AbortError)
+- PASS https://web.dev/articles/fast (200)
+- PASS https://nodejs.org/en/learn/diagnostics/user-journey (200)
 
 ### Mentor
 

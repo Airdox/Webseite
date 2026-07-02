@@ -126,7 +126,36 @@ TIKTOK_CLIENT_SECRET
 TIKTOK_REFRESH_TOKEN
 ```
 
-Bis dahin ist das Paket veroeffentlichungsbereit, der Plattform-Upload bleibt aber manuell.
+Bis dahin ist das Paket veroeffentlichungsbereit, der Plattform-Upload bleibt aber manuell. TikTok Direct Post ist nach App-Freigabe verfuegbar, sobald der gespeicherte User-Token nach der Freigabe neu mit `video.publish` autorisiert wurde.
+
+## TikTok Direct Post
+
+Status pruefen:
+
+```powershell
+npm run social:tiktok:check
+npm run social:tiktok:check:init
+```
+
+Wenn der Check `scope_not_authorized` meldet oder der Token nur `video.upload` enthaelt, OAuth erneut ausfuehren und den neuen `TIKTOK_REFRESH_TOKEN` speichern:
+
+```powershell
+npm run social:tiktok:oauth:init
+```
+
+Trockenlauf mit finalem Asset:
+
+```powershell
+npm run social:tiktok:publish -- --video="path/to/reel.mp4" --caption="AIRDOX. Full set: www.airdox.info #airdox #techno" --privacy=SELF_ONLY --dry-run
+```
+
+Finaler Upload erst nach ausdruecklichem OK fuer Video, Caption, Zielplattform, Privacy, Timing und Landing-URL:
+
+```powershell
+npm run social:tiktok:publish -- --video="path/to/reel.mp4" --caption="AIRDOX. Full set: www.airdox.info #airdox #techno" --privacy=PUBLIC_TO_EVERYONE --confirm-approved --poll
+```
+
+Danach die Live-URL in `docs/agent-system/social-post-ledger.json` eintragen und `npm run social:ledger:write` ausfuehren.
 
 ## Meta Business Suite Kopier-/Einfuegepaket
 
@@ -165,5 +194,5 @@ Offizielles Meta-Graph-API-Publishing bleibt optional und startet erst, wenn das
 2. `npm run social:youtube:dry` und `npm run social:youtube:render:test` verwenden, um Quellenzuordnung und visuelles Encoding zu pruefen.
 3. `npm run social:youtube:publish -- --privacy=unlisted` verwenden, wenn YouTube-OAuth-Variablen konfiguriert sind und automatischer Upload gewuenscht ist.
 YouTube-Verhalten: Standard ist Full-Set-Upload mit gebrandetem AIRDOX-Visual. `npm run social:youtube:publish:short -- --privacy=unlisted` nur verwenden, wenn explizit ein Short-Form-Reel-Upload gewuenscht ist.
-4. Manuell zu Instagram/Facebook/TikTok hochladen, solange Meta-/TikTok-API-Zugriff blockiert ist.
-5. Meta und TikTok spaeter ueber offizielle App-/OAuth-Flows ergaenzen.
+4. TikTok per Direct Post veroeffentlichen, wenn der neu autorisierte Token `video.publish` enthaelt und der konkrete Post freigegeben wurde.
+5. Instagram/Facebook manuell oder ueber Meta Graph veroeffentlichen, je nachdem ob Meta-Credentials vorhanden sind.

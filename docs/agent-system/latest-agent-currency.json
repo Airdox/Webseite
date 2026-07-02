@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-06-24T20:36:17.978Z",
+  "generatedAt": "2026-07-01T13:45:59.398Z",
   "owner": "Mentor",
   "purpose": "Agent source currency and continuous learning check",
   "maxRunbookAgeDays": 45,
   "summary": {
     "agentsChecked": 8,
-    "warnCount": 1,
-    "passCount": 7,
-    "status": "warn"
+    "warnCount": 0,
+    "passCount": 8,
+    "status": "pass"
   },
   "agents": [
     {
@@ -19,14 +19,14 @@
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
-          "ageDays": 24,
+          "ageDays": 30,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/agent-system/reports/operations/OPERATING_MODEL.md",
           "exists": true,
-          "ageDays": 18,
+          "ageDays": 25,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         }
@@ -48,7 +48,7 @@
           "url": "https://web.dev/articles",
           "ok": true,
           "status": 200,
-          "finalUrl": "https://web.dev/discover"
+          "finalUrl": "https://web.dev/discover?hl=tr"
         },
         {
           "url": "https://developer.mozilla.org/en-US/docs/Web",
@@ -71,14 +71,14 @@
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
-          "ageDays": 24,
+          "ageDays": 30,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/brand/AIRDOX_CORPORATE_DESIGN.md",
           "exists": true,
-          "ageDays": 24,
+          "ageDays": 30,
           "committedAt": "2026-05-17T05:17:12+02:00",
           "fresh": true
         }
@@ -117,14 +117,14 @@
         {
           "filePath": "docs/WINDOWS_FLIGHTDECK.md",
           "exists": true,
-          "ageDays": 24,
+          "ageDays": 30,
           "committedAt": "2026-05-03T04:19:02+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/FLIGHT_DECK_TUTORIAL.md",
           "exists": true,
-          "ageDays": 24,
+          "ageDays": 30,
           "committedAt": "2026-05-03T04:19:02+02:00",
           "fresh": true
         }
@@ -163,14 +163,14 @@
         {
           "filePath": "docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
-          "ageDays": 18,
+          "ageDays": 25,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md",
           "exists": true,
-          "ageDays": 24,
+          "ageDays": 30,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         }
@@ -215,14 +215,14 @@
         {
           "filePath": "docs/agent-system/reports/campaigns/MANNI_GROWTH_PLAYBOOK.md",
           "exists": true,
-          "ageDays": 18,
+          "ageDays": 25,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
-          "ageDays": 18,
+          "ageDays": 25,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         }
@@ -232,7 +232,7 @@
           "url": "https://ads.tiktok.com/business/creativecenter/",
           "ok": true,
           "status": 200,
-          "finalUrl": "https://ads.tiktok.com/creative/creativeCenter?rid=y0depl4jrk"
+          "finalUrl": "https://ads.tiktok.com/creative/creativeCenter?rid=fztf4grzji7"
         },
         {
           "url": "https://creators.instagram.com/",
@@ -261,7 +261,7 @@
         {
           "filePath": "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md",
           "exists": true,
-          "ageDays": 24,
+          "ageDays": 30,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         }
@@ -294,15 +294,13 @@
     {
       "agent": "Refactor",
       "domain": "Architecture simplification and maintainability",
-      "status": "warn",
-      "warnings": [
-        "2 source(s) unreachable or changed."
-      ],
+      "status": "pass",
+      "warnings": [],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/operations/REFACTOR_OPTIMIZATION_LOOP.md",
           "exists": true,
-          "ageDays": 19,
+          "ageDays": 26,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         }
@@ -316,21 +314,20 @@
         },
         {
           "url": "https://web.dev/articles/fast",
-          "ok": false,
-          "status": null,
-          "error": "AbortError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://web.dev/explore/fast?hl=zh-cn"
         },
         {
           "url": "https://nodejs.org/en/learn/diagnostics/user-journey",
-          "ok": false,
-          "status": null,
-          "error": "AbortError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://nodejs.org/learn/diagnostics/user-journey"
         }
       ],
       "nextActions": [
-        "Mentor reviews failed or stale items.",
-        "Update the affected runbook or replace the source with a stronger primary source.",
-        "If the gap caused a project defect, add a test or quality gate."
+        "Keep current cadence.",
+        "Recheck on next scheduled Mentor currency run."
       ]
     },
     {
@@ -342,14 +339,14 @@
         {
           "filePath": "docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
-          "ageDays": 18,
+          "ageDays": 25,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
-          "ageDays": 18,
+          "ageDays": 25,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         }

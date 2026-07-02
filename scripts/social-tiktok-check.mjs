@@ -172,7 +172,7 @@ if (!result.creatorInfo.ok) {
   result.verdict = 'blocked';
   result.nextAction = scopeChecks.videoPublish
     ? 'Creator info failed despite video.publish scope. Check TikTok app review status and log_id in TikTok support.'
-    : 'Re-authorize TikTok OAuth after the app is approved for video.publish or video.upload. Current token cannot post.';
+    : 'The app can be approved while the stored user token is still old. Re-run TikTok OAuth with video.publish, replace TIKTOK_REFRESH_TOKEN, then run social:tiktok:check:init again.';
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
   process.exit(1);
 }
@@ -207,7 +207,7 @@ result.verdict = hasFlag('--init-only')
   ? 'posting_init_ready_no_media_uploaded'
   : 'posting_scope_ready_no_live_post_attempted';
 result.nextAction = hasFlag('--init-only')
-  ? 'A real uploader can now send the approved MP4 to the returned upload URL, after explicit user approval.'
-  : 'Run again with --init-only for a no-media-upload initialization proof, then implement/execute the real uploader after explicit user approval.';
+  ? 'Direct post readiness is proven without media upload. Use npm run social:tiktok:publish -- --video=<mp4> --caption="<approved caption>" --privacy=<option> --dry-run before the final approved run.'
+  : 'Run again with --init-only for a no-media-upload initialization proof, then dry-run the Direct Post uploader after explicit user approval.';
 
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);

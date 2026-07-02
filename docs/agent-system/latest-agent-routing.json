@@ -1,28 +1,40 @@
 {
-  "generatedAt": "2026-06-24T20:54:33.850Z",
+  "generatedAt": "2026-07-01T13:48:36.372Z",
   "source": "git-status",
-  "changedFileCount": 31,
+  "changedFileCount": 49,
   "changedFiles": [
+    "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md",
     "docs/agent-system/AGENT_TRAINING_CATALOG.json",
     "docs/agent-system/AGENT_TRAINING_CATALOG.md",
     "docs/agent-system/MENTOR_POSTMORTEM_BANK.json",
     "docs/agent-system/MENTOR_POSTMORTEM_BANK.md",
     "docs/agent-system/latest-agent-currency.json",
     "docs/agent-system/latest-agent-currency.md",
+    "docs/agent-system/latest-agent-dependency-radar.json",
+    "docs/agent-system/latest-agent-dependency-radar.md",
     "docs/agent-system/latest-agent-quality-chain.json",
     "docs/agent-system/latest-agent-quality-chain.md",
     "docs/agent-system/latest-agent-routing.json",
     "docs/agent-system/latest-agent-routing.md",
+    "docs/agent-system/latest-agent-system-health.json",
+    "docs/agent-system/latest-agent-system-health.md",
     "docs/agent-system/latest-audience-intelligence.json",
     "docs/agent-system/latest-audience-intelligence.md",
     "docs/agent-system/latest-audit.json",
     "docs/agent-system/latest-audit.md",
+    "docs/agent-system/latest-background-cycle.json",
+    "docs/agent-system/latest-designer-portfolio.json",
+    "docs/agent-system/latest-designer-portfolio.md",
     "docs/agent-system/latest-guardian-risk-summary.json",
     "docs/agent-system/latest-guardian-risk-summary.md",
+    "docs/agent-system/latest-job-run.json",
+    "docs/agent-system/latest-job-run.md",
     "docs/agent-system/latest-mentor-agent-education.json",
     "docs/agent-system/latest-mentor-agent-education.md",
     "docs/agent-system/latest-notebooklm-brief.json",
     "docs/agent-system/latest-notebooklm-brief.md",
+    "docs/agent-system/latest-refactor-website-opportunities.json",
+    "docs/agent-system/latest-refactor-website-opportunities.md",
     "docs/agent-system/latest-repository-monitor.json",
     "docs/agent-system/latest-repository-monitor.md",
     "docs/agent-system/latest-website-profitability.json",
@@ -32,8 +44,14 @@
     "docs/agent-system/manni-reel-draft-pack.md",
     "docs/agent-system/manni-reel-queue.json",
     "docs/agent-system/manni-reel-weekly-plan.md",
-    "src/data/__tests__/musicSets.test.js",
-    "src/data/musicSets.js"
+    "docs/agent-system/reports/operations/AIRDOX_FREE_SOCIAL_AUTOMATION.md",
+    "package.json",
+    "scripts/social-post-ledger.mjs",
+    "scripts/social-tiktok-check.mjs",
+    "scripts/social-tiktok-oauth-init.mjs",
+    "docs/agent-system/designer-portfolio-output/",
+    "docs/agent-system/reports/operations/TIKTOK_DIRECT_POST_STATUS_2026-06-25.md",
+    "scripts/social-tiktok-publish.mjs"
   ],
   "assignments": [
     {
@@ -46,8 +64,7 @@
         "docs/agent-system/latest-website-profitability.md",
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md",
-        "src/data/musicSets.js"
+        "docs/agent-system/manni-reel-weekly-plan.md"
       ],
       "rules": [
         "audience-intelligence"
@@ -65,27 +82,54 @@
       ]
     },
     {
+      "agent": "Designer",
+      "role": "review",
+      "files": [
+        "docs/agent-system/latest-designer-portfolio.json",
+        "docs/agent-system/latest-designer-portfolio.md"
+      ],
+      "rules": [
+        "visual-quality"
+      ]
+    },
+    {
       "agent": "Guardian",
       "role": "review",
       "files": [
         "docs/agent-system/latest-agent-currency.json",
         "docs/agent-system/latest-agent-currency.md",
+        "docs/agent-system/latest-agent-dependency-radar.json",
+        "docs/agent-system/latest-agent-dependency-radar.md",
         "docs/agent-system/latest-agent-quality-chain.json",
         "docs/agent-system/latest-agent-quality-chain.md",
         "docs/agent-system/latest-agent-routing.json",
         "docs/agent-system/latest-agent-routing.md",
+        "docs/agent-system/latest-agent-system-health.json",
+        "docs/agent-system/latest-agent-system-health.md",
         "docs/agent-system/latest-audit.json",
         "docs/agent-system/latest-audit.md",
+        "docs/agent-system/latest-background-cycle.json",
         "docs/agent-system/latest-guardian-risk-summary.json",
         "docs/agent-system/latest-guardian-risk-summary.md",
+        "docs/agent-system/latest-job-run.json",
+        "docs/agent-system/latest-job-run.md",
         "docs/agent-system/latest-mentor-agent-education.json",
         "docs/agent-system/latest-mentor-agent-education.md",
+        "docs/agent-system/latest-refactor-website-opportunities.json",
+        "docs/agent-system/latest-refactor-website-opportunities.md",
         "docs/agent-system/latest-repository-monitor.json",
         "docs/agent-system/latest-repository-monitor.md",
         "docs/agent-system/latest-wiki-sync-audit.json",
-        "docs/agent-system/latest-wiki-sync-audit.md"
+        "docs/agent-system/latest-wiki-sync-audit.md",
+        "package.json",
+        "scripts/social-post-ledger.mjs",
+        "scripts/social-tiktok-check.mjs",
+        "scripts/social-tiktok-oauth-init.mjs",
+        "scripts/social-tiktok-publish.mjs"
       ],
-      "rules": []
+      "rules": [
+        "quality-security"
+      ]
     },
     {
       "agent": "Manni",
@@ -93,7 +137,11 @@
       "files": [
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md"
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "scripts/social-post-ledger.mjs",
+        "scripts/social-tiktok-check.mjs",
+        "scripts/social-tiktok-oauth-init.mjs",
+        "scripts/social-tiktok-publish.mjs"
       ],
       "rules": [
         "growth-conversion"
@@ -105,16 +153,25 @@
       "files": [
         "docs/agent-system/latest-agent-currency.json",
         "docs/agent-system/latest-agent-currency.md",
+        "docs/agent-system/latest-agent-dependency-radar.json",
+        "docs/agent-system/latest-agent-dependency-radar.md",
         "docs/agent-system/latest-agent-quality-chain.json",
         "docs/agent-system/latest-agent-quality-chain.md",
         "docs/agent-system/latest-agent-routing.json",
         "docs/agent-system/latest-agent-routing.md",
+        "docs/agent-system/latest-agent-system-health.json",
+        "docs/agent-system/latest-agent-system-health.md",
         "docs/agent-system/latest-audit.json",
         "docs/agent-system/latest-audit.md",
+        "docs/agent-system/latest-background-cycle.json",
         "docs/agent-system/latest-guardian-risk-summary.json",
         "docs/agent-system/latest-guardian-risk-summary.md",
+        "docs/agent-system/latest-job-run.json",
+        "docs/agent-system/latest-job-run.md",
         "docs/agent-system/latest-mentor-agent-education.json",
         "docs/agent-system/latest-mentor-agent-education.md",
+        "docs/agent-system/latest-refactor-website-opportunities.json",
+        "docs/agent-system/latest-refactor-website-opportunities.md",
         "docs/agent-system/latest-repository-monitor.json",
         "docs/agent-system/latest-repository-monitor.md",
         "docs/agent-system/latest-wiki-sync-audit.json",
@@ -126,58 +183,69 @@
       "agent": "Mentor",
       "role": "review",
       "files": [
+        "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md",
         "docs/agent-system/AGENT_TRAINING_CATALOG.json",
         "docs/agent-system/AGENT_TRAINING_CATALOG.md",
         "docs/agent-system/MENTOR_POSTMORTEM_BANK.json",
         "docs/agent-system/MENTOR_POSTMORTEM_BANK.md",
+        "docs/agent-system/designer-portfolio-output/",
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md"
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "docs/agent-system/reports/operations/AIRDOX_FREE_SOCIAL_AUTOMATION.md",
+        "docs/agent-system/reports/operations/TIKTOK_DIRECT_POST_STATUS_2026-06-25.md"
       ],
       "rules": [
         "learning-documentation"
       ]
     },
     {
-      "agent": "Refactor",
-      "role": "implementation_support",
+      "agent": "Winnie",
+      "role": "primary",
       "files": [
-        "src/data/__tests__/musicSets.test.js",
-        "src/data/musicSets.js"
+        "package.json"
       ],
       "rules": [
-        "refactor-architecture"
+        "desktop-flightdeck"
       ]
     }
   ],
   "unmatchedFiles": [
     "docs/agent-system/latest-agent-currency.json",
     "docs/agent-system/latest-agent-currency.md",
+    "docs/agent-system/latest-agent-dependency-radar.json",
+    "docs/agent-system/latest-agent-dependency-radar.md",
     "docs/agent-system/latest-agent-quality-chain.json",
     "docs/agent-system/latest-agent-quality-chain.md",
     "docs/agent-system/latest-agent-routing.json",
     "docs/agent-system/latest-agent-routing.md",
+    "docs/agent-system/latest-agent-system-health.json",
+    "docs/agent-system/latest-agent-system-health.md",
     "docs/agent-system/latest-audit.json",
     "docs/agent-system/latest-audit.md",
+    "docs/agent-system/latest-background-cycle.json",
     "docs/agent-system/latest-guardian-risk-summary.json",
     "docs/agent-system/latest-guardian-risk-summary.md",
+    "docs/agent-system/latest-job-run.json",
+    "docs/agent-system/latest-job-run.md",
     "docs/agent-system/latest-mentor-agent-education.json",
     "docs/agent-system/latest-mentor-agent-education.md",
+    "docs/agent-system/latest-refactor-website-opportunities.json",
+    "docs/agent-system/latest-refactor-website-opportunities.md",
     "docs/agent-system/latest-repository-monitor.json",
     "docs/agent-system/latest-repository-monitor.md",
     "docs/agent-system/latest-wiki-sync-audit.json",
     "docs/agent-system/latest-wiki-sync-audit.md"
   ],
   "recommendedGates": [
-    "manual:refactor-website-patch-proposal before code changes",
     "npm run agent:audit -- --strict",
     "npm run agent:jobs:validate -- --strict-warnings",
     "npm run agent:notebooklm:brief",
     "npm run audience:intelligence",
     "npm run build",
-    "npm run guardian:risk",
-    "npm run refactor:website:opportunities",
-    "npm run test -- --run",
+    "npm run designer:visual:check -- --strict",
+    "npm run desktop:test:logic",
+    "npm run guardian:risk -- --strict",
     "npm run website:profitability"
   ]
 }

@@ -1,6 +1,6 @@
 # Manni Reel Draft Pack
 
-Erstellt: 2026-06-24T20:53:51.424Z
+Erstellt: 2026-07-01T13:48:28.855Z
 Scenario: A - Organischer Engine-Aufbau
 
 Status: Draft creation is active. Nothing is published, boosted, or sent live without personal user OK.

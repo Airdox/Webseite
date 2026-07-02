@@ -3,10 +3,13 @@ import { randomBytes } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import dotenv from 'dotenv';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-dotenv.config({ path: join(root, '.env'), quiet: true });
+for (const envPath of ['.env', '.env.local', '.env.social.local']) {
+  dotenv.config({ path: join(root, envPath), quiet: true, override: true });
+}
 
 const args = process.argv.slice(2);
 
@@ -16,8 +19,20 @@ const getArg = (name, fallback = '') => {
   return raw ? raw.slice(prefix.length).trim() : fallback;
 };
 
-const clientKey = process.env.TIKTOK_CLIENT_KEY || getArg('--client-key');
-const clientSecret = process.env.TIKTOK_CLIENT_SECRET || getArg('--client-secret');
+const getUserEnv = (key) => {
+  if (process.platform !== 'win32') return '';
+  const result = spawnSync('powershell', [
+    '-NoProfile',
+    '-Command',
+    `[Environment]::GetEnvironmentVariable('${key.replaceAll("'", "''")}','User')`,
+  ], { encoding: 'utf8' });
+  return result.status === 0 ? String(result.stdout || '').trim() : '';
+};
+
+const getEnv = (key) => process.env[key] || getUserEnv(key);
+
+const clientKey = getEnv('TIKTOK_CLIENT_KEY') || getArg('--client-key');
+const clientSecret = getEnv('TIKTOK_CLIENT_SECRET') || getArg('--client-secret');
 const redirectUri = getArg('--redirect-uri', 'https://airdox.info/oauth/tiktok/callback');
 const scope = getArg('--scope', 'user.info.basic,video.upload,video.publish');
 const callbackUrl = getArg('--callback-url');

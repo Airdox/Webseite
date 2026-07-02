@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-24T20:49:26.109Z",
+  "generatedAt": "2026-07-01T13:46:30.835Z",
   "agent": "audience-intelligence",
   "model": {
     "currency": "EUR",
@@ -8,26 +8,26 @@
   },
   "summary": {
     "eventSource": "neon:analytics_logs",
-    "totalRawEvents": 293,
-    "totalConsentedEvents": 293,
+    "totalRawEvents": 373,
+    "totalConsentedEvents": 373,
     "rejectedEvents": 0,
     "privacyRejectedEvents": 0,
-    "estimatedGrossValue": 457.95,
+    "estimatedGrossValue": 493.35,
     "totalCost": 552,
-    "estimatedNetValue": -94.05,
-    "roi": -0.1704,
+    "estimatedNetValue": -58.65,
+    "roi": -0.1062,
     "profitabilityStatus": "unprofitable",
     "funnel": {
-      "routeViews": 89,
-      "setPlays": 99,
+      "routeViews": 117,
+      "setPlays": 115,
       "newsletterSignups": 0,
       "bookingClicks": 4,
       "contactSubmits": 0
     },
     "conversionRates": {
-      "engagedPlayRate": 1.1124,
+      "engagedPlayRate": 0.9829,
       "newsletterRate": 0,
-      "bookingIntentRate": 0.0449,
+      "bookingIntentRate": 0.0342,
       "contactRate": 0
     },
     "valueByEvent": [
@@ -37,19 +37,19 @@
       },
       {
         "key": "set_play",
-        "value": 148.5
+        "value": 172.5
+      },
+      {
+        "key": "tracklist_open",
+        "value": 12
       },
       {
         "key": "route_view",
-        "value": 4.45
+        "value": 5.85
       },
       {
         "key": "share_click",
         "value": 3
-      },
-      {
-        "key": "tracklist_open",
-        "value": 2
       },
       {
         "key": "section_view",
@@ -63,19 +63,19 @@
     "valueByRoute": [
       {
         "key": "/",
-        "value": 455.75
+        "value": 490.85
       },
       {
         "key": "/en/",
         "value": 1.55
       },
       {
-        "key": "/stark/sets",
-        "value": 0.4
+        "key": "/#set-recording_2026_06_21-5",
+        "value": 0.45
       },
       {
-        "key": "/#set-recording_2026_06_21-5",
-        "value": 0.2
+        "key": "/stark/sets",
+        "value": 0.45
       },
       {
         "key": "/#set-recording_2026_06_02",
@@ -85,7 +85,7 @@
     "valueByCampaign": [
       {
         "key": "unknown",
-        "value": 457.95
+        "value": 493.35
       }
     ],
     "supportedEvents": [

@@ -1,6 +1,6 @@
 # AIRDOX Repository-Monitor
 
-Erstellt: 2026-06-24T20:36:01.581Z
+Erstellt: 2026-07-01T13:45:54.865Z
 Agent: Repository
 Repository: D:\webseeite-main
 Branch: codex/guardian-scope-cleanup
@@ -10,8 +10,8 @@ Branch: codex/guardian-scope-cleanup
 - Checks: 6
 - Fehler: 0
 - Warnungen: 3
-- Offene Pfade: 8
-- Unerwartete offene Pfade: 8
+- Offene Pfade: 49
+- Unerwartete offene Pfade: 48
 - Baseline offene Pfade: 80
 - Versionierte generierte Artefakte (Review): 0
 
@@ -21,21 +21,61 @@ Branch: codex/guardian-scope-cleanup
 | --- | --- | --- |
 | branch-naming | WARN | Aktueller Branch: codex/guardian-scope-cleanup |
 | required-governance-files | PASS | Gefundene Governance-Dateien: 3/3 |
-| working-tree-cleanliness-total | WARN | 8 uncommitted Pfade insgesamt. |
-| working-tree-cleanliness | WARN | 8 unerwartete uncommitted Pfade (8 gesamt, 80 baseline) |
+| working-tree-cleanliness-total | WARN | 49 uncommitted Pfade insgesamt. |
+| working-tree-cleanliness | WARN | 48 unerwartete uncommitted Pfade (49 gesamt, 80 baseline) |
 | tracked-generated-artifacts | PASS | 0 potentiell generierte Artefaktpfade sind versioniert. |
 | root-html-duplication | PASS | 0 zusaetzliche Root-HTML-Dateien erkannt. |
 
 ## Unerwartete offene Pfade
 
+- M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
+- M docs/agent-system/AGENT_TRAINING_CATALOG.json
+- M docs/agent-system/AGENT_TRAINING_CATALOG.md
+- M docs/agent-system/MENTOR_POSTMORTEM_BANK.json
+- M docs/agent-system/MENTOR_POSTMORTEM_BANK.md
+- M docs/agent-system/latest-agent-currency.json
+- M docs/agent-system/latest-agent-currency.md
+- M docs/agent-system/latest-agent-dependency-radar.json
+- M docs/agent-system/latest-agent-dependency-radar.md
 - M docs/agent-system/latest-agent-quality-chain.json
 - M docs/agent-system/latest-agent-quality-chain.md
 - M docs/agent-system/latest-agent-routing.json
 - M docs/agent-system/latest-agent-routing.md
+- M docs/agent-system/latest-agent-system-health.json
+- M docs/agent-system/latest-agent-system-health.md
+- M docs/agent-system/latest-audience-intelligence.json
+- M docs/agent-system/latest-audience-intelligence.md
+- M docs/agent-system/latest-audit.json
+- M docs/agent-system/latest-audit.md
+- M docs/agent-system/latest-background-cycle.json
+- M docs/agent-system/latest-designer-portfolio.json
+- M docs/agent-system/latest-designer-portfolio.md
+- M docs/agent-system/latest-guardian-risk-summary.json
+- M docs/agent-system/latest-guardian-risk-summary.md
+- M docs/agent-system/latest-job-run.json
+- M docs/agent-system/latest-job-run.md
+- M docs/agent-system/latest-mentor-agent-education.json
+- M docs/agent-system/latest-mentor-agent-education.md
+- M docs/agent-system/latest-notebooklm-brief.json
+- M docs/agent-system/latest-notebooklm-brief.md
+- M docs/agent-system/latest-refactor-website-opportunities.json
+- M docs/agent-system/latest-refactor-website-opportunities.md
+- M docs/agent-system/latest-repository-monitor.json
+- M docs/agent-system/latest-repository-monitor.md
+- M docs/agent-system/latest-website-profitability.json
+- M docs/agent-system/latest-website-profitability.md
 - M docs/agent-system/latest-wiki-sync-audit.json
 - M docs/agent-system/latest-wiki-sync-audit.md
-- M src/data/__tests__/musicSets.test.js
-- M src/data/musicSets.js
+- M docs/agent-system/manni-reel-draft-pack.md
+- M docs/agent-system/manni-reel-queue.json
+- M docs/agent-system/manni-reel-weekly-plan.md
+- M docs/agent-system/reports/operations/AIRDOX_FREE_SOCIAL_AUTOMATION.md
+- M scripts/social-post-ledger.mjs
+- M scripts/social-tiktok-check.mjs
+- M scripts/social-tiktok-oauth-init.mjs
+- ?? docs/agent-system/designer-portfolio-output/
+- ?? docs/agent-system/reports/operations/TIKTOK_DIRECT_POST_STATUS_2026-06-25.md
+- ?? scripts/social-tiktok-publish.mjs
 
 ## Baseline fuer offene Pfade
 
@@ -122,14 +162,55 @@ Branch: codex/guardian-scope-cleanup
 
 ## Alle offenen Pfade
 
+- M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
+- M docs/agent-system/AGENT_TRAINING_CATALOG.json
+- M docs/agent-system/AGENT_TRAINING_CATALOG.md
+- M docs/agent-system/MENTOR_POSTMORTEM_BANK.json
+- M docs/agent-system/MENTOR_POSTMORTEM_BANK.md
+- M docs/agent-system/latest-agent-currency.json
+- M docs/agent-system/latest-agent-currency.md
+- M docs/agent-system/latest-agent-dependency-radar.json
+- M docs/agent-system/latest-agent-dependency-radar.md
 - M docs/agent-system/latest-agent-quality-chain.json
 - M docs/agent-system/latest-agent-quality-chain.md
 - M docs/agent-system/latest-agent-routing.json
 - M docs/agent-system/latest-agent-routing.md
+- M docs/agent-system/latest-agent-system-health.json
+- M docs/agent-system/latest-agent-system-health.md
+- M docs/agent-system/latest-audience-intelligence.json
+- M docs/agent-system/latest-audience-intelligence.md
+- M docs/agent-system/latest-audit.json
+- M docs/agent-system/latest-audit.md
+- M docs/agent-system/latest-background-cycle.json
+- M docs/agent-system/latest-designer-portfolio.json
+- M docs/agent-system/latest-designer-portfolio.md
+- M docs/agent-system/latest-guardian-risk-summary.json
+- M docs/agent-system/latest-guardian-risk-summary.md
+- M docs/agent-system/latest-job-run.json
+- M docs/agent-system/latest-job-run.md
+- M docs/agent-system/latest-mentor-agent-education.json
+- M docs/agent-system/latest-mentor-agent-education.md
+- M docs/agent-system/latest-notebooklm-brief.json
+- M docs/agent-system/latest-notebooklm-brief.md
+- M docs/agent-system/latest-refactor-website-opportunities.json
+- M docs/agent-system/latest-refactor-website-opportunities.md
+- M docs/agent-system/latest-repository-monitor.json
+- M docs/agent-system/latest-repository-monitor.md
+- M docs/agent-system/latest-website-profitability.json
+- M docs/agent-system/latest-website-profitability.md
 - M docs/agent-system/latest-wiki-sync-audit.json
 - M docs/agent-system/latest-wiki-sync-audit.md
-- M src/data/__tests__/musicSets.test.js
-- M src/data/musicSets.js
+- M docs/agent-system/manni-reel-draft-pack.md
+- M docs/agent-system/manni-reel-queue.json
+- M docs/agent-system/manni-reel-weekly-plan.md
+- M docs/agent-system/reports/operations/AIRDOX_FREE_SOCIAL_AUTOMATION.md
+- M package.json
+- M scripts/social-post-ledger.mjs
+- M scripts/social-tiktok-check.mjs
+- M scripts/social-tiktok-oauth-init.mjs
+- ?? docs/agent-system/designer-portfolio-output/
+- ?? docs/agent-system/reports/operations/TIKTOK_DIRECT_POST_STATUS_2026-06-25.md
+- ?? scripts/social-tiktok-publish.mjs
 
 ## Versionierte generierte Artefakte
 
@@ -137,6 +218,8 @@ Branch: codex/guardian-scope-cleanup
 
 ## Letzte Commits
 
+- 76647ef Refresh agent system reports
+- 4159007 Fix latest set hero indicator
 - 87ab297 chore: daily autopush 2026-06-24 22:31 +02:00
 - f6698db fix(manifest): keep only one 2026-06-21 set (recording_2026_06_21-5) and three prior sets; point file to existing R2 key
 - 7a0a6ef feat(flightdeck): publish recording_2026_06_21-5
@@ -145,6 +228,4 @@ Branch: codex/guardian-scope-cleanup
 - 3220e1e test: clean up process imports for web quality
 - 703cd0b chore(agent-system): snapshot scoped reports and flightdeck fixes
 - 1d64571 chore: daily autopush 2026-06-06 01:53 +02:00
-- d958d77 feat(flightdeck): publish recording_2026_06_02
-- 6af7582 chore: daily autopush 2026-06-02 02:12 +02:00
 

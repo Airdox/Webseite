@@ -1,12 +1,12 @@
 # AIRDOX Wiki Sync Audit
 
-Erstellt: 2026-06-24T20:54:52.506Z
+Erstellt: 2026-07-01T13:48:47.464Z
 Status: warn
 
 ## Ueberblick
 
-- Geaenderte Dateien: 34
-- Content / project files: 34
+- Geaenderte Dateien: 47
+- Content / project files: 46
 - Wiki / Assistant knowledge files: 0
 - Owner: Master Controller -> Wiki Maintainer
 
@@ -35,12 +35,19 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 - docs/agent-system/latest-audience-intelligence.md
 - docs/agent-system/latest-audit.json
 - docs/agent-system/latest-audit.md
+- docs/agent-system/latest-background-cycle.json
+- docs/agent-system/latest-designer-portfolio.json
+- docs/agent-system/latest-designer-portfolio.md
 - docs/agent-system/latest-guardian-risk-summary.json
 - docs/agent-system/latest-guardian-risk-summary.md
+- docs/agent-system/latest-job-run.json
+- docs/agent-system/latest-job-run.md
 - docs/agent-system/latest-mentor-agent-education.json
 - docs/agent-system/latest-mentor-agent-education.md
 - docs/agent-system/latest-notebooklm-brief.json
 - docs/agent-system/latest-notebooklm-brief.md
+- docs/agent-system/latest-refactor-website-opportunities.json
+- docs/agent-system/latest-refactor-website-opportunities.md
 - docs/agent-system/latest-repository-monitor.json
 - docs/agent-system/latest-repository-monitor.md
 - docs/agent-system/latest-website-profitability.json
@@ -48,8 +55,13 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 - docs/agent-system/manni-reel-draft-pack.md
 - docs/agent-system/manni-reel-queue.json
 - docs/agent-system/manni-reel-weekly-plan.md
-- src/data/__tests__/musicSets.test.js
-- src/data/musicSets.js
+- docs/agent-system/reports/operations/AIRDOX_FREE_SOCIAL_AUTOMATION.md
+- package.json
+- scripts/social-post-ledger.mjs
+- scripts/social-tiktok-check.mjs
+- scripts/social-tiktok-oauth-init.mjs
+- docs/agent-system/reports/operations/TIKTOK_DIRECT_POST_STATUS_2026-06-25.md
+- scripts/social-tiktok-publish.mjs
 
 ## Knowledge Files
 

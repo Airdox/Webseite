@@ -51,7 +51,7 @@ const statusAction = (platform, status) => {
     : 'Run API upload after platform publishing scope is confirmed.';
   if (status === 'blocked') {
     if (platform === 'instagram' || platform === 'facebook') return 'Use Meta Business Suite manually or add Meta Graph credentials.';
-    if (platform === 'tiktok') return 'Use manual TikTok upload until Content Posting API review is approved.';
+    if (platform === 'tiktok') return 'Run TikTok OAuth/check, then use the Direct Post API after explicit approval.';
     return 'Resolve missing OAuth/API credential before live upload.';
   }
   return 'Keep as draft until explicit approval or live URL is logged.';

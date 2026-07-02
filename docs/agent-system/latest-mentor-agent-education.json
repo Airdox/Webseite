@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-24T20:48:22.725Z",
+  "generatedAt": "2026-07-01T13:46:24.432Z",
   "owner": "Mentor",
   "purpose": "Operationalisiert Agentenbildung ueber Scorecard, Trainingskatalog und Fehler-zu-Gate-Bank.",
   "summary": {
     "agentsChecked": 8,
-    "agentsAtOrAboveTarget": 6,
-    "blockers": 1,
-    "status": "warn"
+    "agentsAtOrAboveTarget": 7,
+    "blockers": 0,
+    "status": "pass"
   },
   "scorecard": [
     {
@@ -107,11 +107,11 @@
     },
     {
       "agent": "Refactor",
-      "level": "L2",
+      "level": "L3",
       "targetLevel": "L3",
-      "weakestDimension": "Quellenfrische",
+      "weakestDimension": "Ausfuehrungsqualitaet",
       "auditScore": 92,
-      "sourceStatus": "warn",
+      "sourceStatus": "pass",
       "openTrainingItems": 3,
       "openPostmortemItems": 0,
       "nextTraining": "Zu breiten Umbau stoppen",
@@ -125,8 +125,8 @@
       "agent": "Repository",
       "level": "L3",
       "targetLevel": "L3",
-      "weakestDimension": "Uebergabequalitaet",
-      "auditScore": 100,
+      "weakestDimension": "Ausfuehrungsqualitaet",
+      "auditScore": 92,
       "sourceStatus": "pass",
       "openTrainingItems": 3,
       "openPostmortemItems": 0,

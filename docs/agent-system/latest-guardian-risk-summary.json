@@ -1,14 +1,21 @@
 {
-  "generatedAt": "2026-06-24T20:54:00.317Z",
+  "generatedAt": "2026-07-01T13:48:30.587Z",
   "riskLevel": "medium",
   "ok": true,
   "blockers": [],
   "warnings": [
-    "27 uncommitted paths are present; review scope before release.",
+    "49 uncommitted paths are present; review scope before release.",
+    "5 critical-path files changed: package.json, scripts/social-post-ledger.mjs, scripts/social-tiktok-check.mjs, scripts/social-tiktok-oauth-init.mjs, scripts/social-tiktok-publish.mjs",
     "Master Controller review is recommended by routing."
   ],
-  "changedFileCount": 27,
-  "criticalFiles": [],
+  "changedFileCount": 49,
+  "criticalFiles": [
+    "package.json",
+    "scripts/social-post-ledger.mjs",
+    "scripts/social-tiktok-check.mjs",
+    "scripts/social-tiktok-oauth-init.mjs",
+    "scripts/social-tiktok-publish.mjs"
+  ],
   "checks": {
     "jobValidation": {
       "ok": true,
@@ -16,22 +23,22 @@
     },
     "routing": {
       "ok": true,
-      "assignmentCount": 6,
+      "assignmentCount": 8,
       "recommendedGates": [
-        "manual:refactor-website-patch-proposal before code changes",
         "npm run agent:audit -- --strict",
         "npm run agent:jobs:validate -- --strict-warnings",
+        "npm run agent:notebooklm:brief",
         "npm run audience:intelligence",
         "npm run build",
-        "npm run guardian:risk",
-        "npm run refactor:website:opportunities",
-        "npm run test -- --run",
+        "npm run designer:visual:check -- --strict",
+        "npm run desktop:test:logic",
+        "npm run guardian:risk -- --strict",
         "npm run website:profitability"
       ]
     },
     "latestAudit": {
       "available": true,
-      "score": 97
+      "score": 96
     }
   }
 }

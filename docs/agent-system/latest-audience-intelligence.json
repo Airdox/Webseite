@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-24T20:48:51.625Z",
+  "generatedAt": "2026-07-01T13:46:28.604Z",
   "agent": "audience-intelligence",
   "privacy": {
     "mode": "consented-aggregate",
@@ -18,21 +18,25 @@
   },
   "summary": {
     "eventSource": "neon:analytics_logs",
-    "totalRawEvents": 293,
-    "totalConsentedEvents": 293,
+    "totalRawEvents": 373,
+    "totalConsentedEvents": 373,
     "rejectedEvents": 0,
     "byType": [
       {
-        "key": "set_play",
-        "value": 99
+        "key": "route_view",
+        "value": 117
       },
       {
-        "key": "route_view",
-        "value": 89
+        "key": "set_play",
+        "value": 115
       },
       {
         "key": "section_view",
-        "value": 89
+        "value": 115
+      },
+      {
+        "key": "tracklist_open",
+        "value": 12
       },
       {
         "key": "cta_view",
@@ -43,10 +47,6 @@
         "value": 4
       },
       {
-        "key": "tracklist_open",
-        "value": 2
-      },
-      {
         "key": "share_click",
         "value": 1
       }
@@ -54,19 +54,19 @@
     "topRoutes": [
       {
         "key": "/",
-        "value": 5060
+        "value": 6178
+      },
+      {
+        "key": "/#set-recording_2026_06_21-5",
+        "value": 45
       },
       {
         "key": "/stark/sets",
-        "value": 40
+        "value": 45
       },
       {
         "key": "/en/",
         "value": 40
-      },
-      {
-        "key": "/#set-recording_2026_06_21-5",
-        "value": 20
       },
       {
         "key": "/#set-recording_2026_06_02",
@@ -76,27 +76,27 @@
     "topContent": [
       {
         "key": "recording_2026_06_02",
-        "value": 1375
+        "value": 1635
       },
       {
         "key": "recording_2026_05_24",
         "value": 1220
       },
       {
+        "key": "recording_2026_06_21-5",
+        "value": 949
+      },
+      {
         "key": "home",
-        "value": 520
+        "value": 664
+      },
+      {
+        "key": "page",
+        "value": 540
       },
       {
         "key": "recording_2026_06_21-3",
         "value": 514
-      },
-      {
-        "key": "recording_2026_06_21-5",
-        "value": 444
-      },
-      {
-        "key": "page",
-        "value": 405
       },
       {
         "key": "recording_2026_06_21-2",
@@ -111,24 +111,24 @@
         "value": 104
       },
       {
-        "key": "recording_2026_06_21-4",
-        "value": 70
+        "key": "music",
+        "value": 88
       }
     ],
     "topCampaigns": [
       {
         "key": "unknown",
-        "value": 5165
+        "value": 6313
       }
     ],
     "topReferrers": [
       {
         "key": "search",
-        "value": 3295
+        "value": 3985
       },
       {
         "key": "direct",
-        "value": 1865
+        "value": 2323
       },
       {
         "key": "social",
@@ -138,26 +138,26 @@
     "topDevices": [
       {
         "key": "desktop",
-        "value": 3058
+        "value": 3364
       },
       {
         "key": "mobile",
-        "value": 1971
+        "value": 2513
       },
       {
         "key": "tablet",
-        "value": 136
+        "value": 436
       }
     ],
     "intentSegments": {
       "booking_intent": 360,
-      "fan_intent": 3465,
+      "fan_intent": 4025,
       "sharing_intent": 45,
-      "discovery_intent": 1157
+      "discovery_intent": 1505
     },
     "journeyStats": {
-      "sessions": 40,
-      "sessionsWithPlay": 31,
+      "sessions": 60,
+      "sessionsWithPlay": 40,
       "sessionsWithNewsletter": 0,
       "sessionsWithBooking": 2
     }
@@ -166,13 +166,13 @@
     {
       "priority": "high",
       "title": "CTA-Pfad auf / staerken",
-      "reason": "Diese Route hat mit 5060 gewichteten Signalpunkten die staerkste Audience-Aktivitaet.",
+      "reason": "Diese Route hat mit 6178 gewichteten Signalpunkten die staerkste Audience-Aktivitaet.",
       "action": "Kontextuelle CTAs fuer Set-Play, Newsletter-Anmeldung, Booking und Sharing ergaenzen oder pruefen."
     },
     {
       "priority": "high",
       "title": "Top-Inhalt wiederverwenden: recording_2026_06_02",
-      "reason": "Dieser Inhalt fuehrt das Audience-Interesse aktuell mit 1375 gewichteten Signalpunkten an.",
+      "reason": "Dieser Inhalt fuehrt das Audience-Interesse aktuell mit 1635 gewichteten Signalpunkten an.",
       "action": "Aus diesem Inhalt Social-Captions, Newsletter-Copy, SEO-Beschreibung und Booking-Winkel ableiten."
     },
     {
