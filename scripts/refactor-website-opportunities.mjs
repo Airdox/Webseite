@@ -53,7 +53,7 @@ const slug = (value) => value.replace(/[^a-z0-9]+/gi, '-').toLowerCase().replace
 const apiFiles = sourceFiles
   .filter((file) => file.fetchCount > 0 || file.apiBaseCount > 0)
   .filter((file) => (
-    /src\/components\/(AuthModal|Newsletter|VIPSection|BookingSection)\.jsx/.test(file.path)
+    /src\/components\/(Newsletter|BookingSection)\.jsx/.test(file.path)
     || (/src\/contexts\/AudioContext\.jsx/.test(file.path) && file.apiBaseCount > 0)
     || /src\/utils\/stats-sync\.js/.test(file.path)
   ))

@@ -310,7 +310,7 @@ const SetCard = ({
                 </div>
 
                 {seekableTracks.length > 0 && (
-                    <div className={`vip-tracklist ${isCollapsed ? 'collapsed' : ''}`}>
+                    <div className={`set-tracklist ${isCollapsed ? 'collapsed' : ''}`}>
                         <button
                             type="button"
                             className="tracklist-toggle"

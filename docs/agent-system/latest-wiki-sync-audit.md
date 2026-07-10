@@ -1,12 +1,12 @@
 # AIRDOX Wiki Sync Audit
 
-Erstellt: 2026-07-01T13:48:47.464Z
+Generated: 2026-07-09T20:10:00.871Z
 Status: warn
 
-## Ueberblick
+## Summary
 
-- Geaenderte Dateien: 47
-- Content / project files: 46
+- Changed files: 44
+- Content / project files: 41
 - Wiki / Assistant knowledge files: 0
 - Owner: Master Controller -> Wiki Maintainer
 
@@ -38,6 +38,8 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 - docs/agent-system/latest-background-cycle.json
 - docs/agent-system/latest-designer-portfolio.json
 - docs/agent-system/latest-designer-portfolio.md
+- docs/agent-system/latest-designer-visual-quality.json
+- docs/agent-system/latest-designer-visual-quality.md
 - docs/agent-system/latest-guardian-risk-summary.json
 - docs/agent-system/latest-guardian-risk-summary.md
 - docs/agent-system/latest-job-run.json
@@ -55,17 +57,10 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 - docs/agent-system/manni-reel-draft-pack.md
 - docs/agent-system/manni-reel-queue.json
 - docs/agent-system/manni-reel-weekly-plan.md
-- docs/agent-system/reports/operations/AIRDOX_FREE_SOCIAL_AUTOMATION.md
-- package.json
-- scripts/social-post-ledger.mjs
-- scripts/social-tiktok-check.mjs
-- scripts/social-tiktok-oauth-init.mjs
-- docs/agent-system/reports/operations/TIKTOK_DIRECT_POST_STATUS_2026-06-25.md
-- scripts/social-tiktok-publish.mjs
 
 ## Knowledge Files
 
-- Keine
+- None
 
 ## Gates
 

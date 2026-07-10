@@ -32,7 +32,7 @@ export const TABLE_DEFINITIONS = {
     editable: true,
   },
   users: {
-    label: 'VIP Users',
+    label: 'Users',
     primaryKey: 'id',
     searchableColumns: ['username', 'email'],
     columns: ['id', 'username', 'email', 'created_at'],

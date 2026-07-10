@@ -2,7 +2,6 @@ export const STORAGE_KEYS = {
     analyticsData: 'airdox-analytics-data',
     analyticsConsent: 'airdox-analytics-enabled',
     marketingConsent: 'airdox-marketing-enabled',
-    authToken: 'airdox_token',
     globalStats: 'airdox_global_stats',
     offlineStatsQueue: 'airdox_offline_queue',
     sessionId: 'airdox_sid',
@@ -14,8 +13,6 @@ export const WINDOW_EVENTS = {
     analyticsConsentChanged: 'analytics-consent-changed',
     audienceSignal: 'airdox:audience-signal',
     bookingPrefill: 'airdox_booking_prefill',
-    loginSuccess: 'airdox_login_success',
-    logout: 'airdox_logout',
     statsUpdated: 'airdox_stats_updated',
 };
 

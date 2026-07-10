@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-01T13:45:57.383Z",
+  "generatedAt": "2026-07-10T04:03:50.430Z",
   "repository": "D:\\webseeite-main",
   "controller": {
     "name": "Master Controller",
@@ -7,9 +7,9 @@
   },
   "summary": {
     "averageScore": 96,
-    "dirtyPathCount": 49,
-    "testFileCount": 44,
-    "cssFileCount": 22
+    "dirtyPathCount": 132,
+    "testFileCount": 40,
+    "cssFileCount": 19
   },
   "gate": {
     "status": "pass",
@@ -202,7 +202,7 @@
           "label": "Ausreichende Testdateien",
           "status": "pass",
           "weight": 1.5,
-          "detail": "44 Test-/Spec-Dateien gefunden."
+          "detail": "40 Test-/Spec-Dateien gefunden."
         },
         {
           "label": "Worker/API-Testsignale",
@@ -220,7 +220,7 @@
           "label": "Arbeitsbaum sauber",
           "status": "warn",
           "weight": 1.5,
-          "detail": "49 uncommitted Pfade gefunden; vor Releases klaeren."
+          "detail": "132 uncommitted Pfade gefunden; vor Releases klaeren."
         },
         {
           "label": "Env-Beispiel vorhanden",
@@ -232,7 +232,7 @@
       "nextActions": [
         "Guardian-Strict-Gate fuer Releases verwenden: npm run agent:audit -- --strict plus build/test/lint.",
         "Bekannte Alt-Lintfehler als debt register dokumentieren und schrittweise abbauen.",
-        "Security-Checks fuer Booking, Auth und Analytics als gezielte Tests ergaenzen."
+        "Security-Checks fuer Booking, Newsletter und Analytics als gezielte Tests ergaenzen."
       ]
     },
     {
@@ -251,7 +251,7 @@
           "label": "Conversion-Sektionen vorhanden",
           "status": "pass",
           "weight": 1.5,
-          "detail": "EPK, Booking, Newsletter und VIP sind als Website-Sektionen vorhanden."
+          "detail": "EPK, Booking und Newsletter sind als Website-Sektionen vorhanden."
         },
         {
           "label": "Social Sharing Assets",
@@ -293,13 +293,13 @@
           "label": "Merch-/Community-Flache",
           "status": "pass",
           "weight": 1,
-          "detail": "Newsletter/VIP bieten Ansatzpunkte fuer Community oder Merch."
+          "detail": "Der Newsletter bietet Ansatzpunkte fuer Community oder Merch."
         }
       ],
       "nextActions": [
         "EPK als klare Download-/Presseseite mit aktuellen Assets und Tech-Rider erweitern.",
         "Kampagnenkalender fuer Releases, Sets, Newsletter und Social Clips im Wiki fuehren.",
-        "Conversion Events fuer Booking, Newsletter, VIP und Set-Play sichtbar auswerten."
+        "Conversion Events fuer Booking, Newsletter und Set-Play sichtbar auswerten."
       ]
     },
     {
@@ -538,7 +538,7 @@
           "label": "Arbeitsbaum releasebereit",
           "status": "warn",
           "weight": 1.5,
-          "detail": "49 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+          "detail": "132 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
         },
         {
           "label": "Einziges Deployment-Target",

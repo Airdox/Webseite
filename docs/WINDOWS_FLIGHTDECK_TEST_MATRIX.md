@@ -18,7 +18,7 @@ Die Desktop-App wird auf drei Ebenen abgesichert:
 | Flight Deck Settings | `DesktopControls.test.jsx` | Workspace-Button, Textfelder, Publish-Position-Dropdown, Toggles, Save-Action |
 | Set Import | `DesktopApp.test.jsx`, `DesktopControls.test.jsx`, `desktop-flightdeck.spec.js` | Demo-Import, Windows-Dateipfade per Drop, Draft-Felder, Tracklist, Publish, Go Live, Logs |
 | Batch Import | `DesktopControls.test.jsx`, `desktop-flightdeck.spec.js` | Datei-Auswahl, Queue-Auswahl, Start, Pause, Retry, Entfernen, Clear Completed, Live-Aktion |
-| Data Explorer | `DesktopControls.test.jsx`, `DesktopApp.test.jsx`, `flightdeck-quality.spec.js` | Tabellen-Dropdown, Suche, Live-ohne-VIP-Filter, CSV/JSON Export, Row-Save/Delete, VIP-User, Sessions, Read-only-SQL-Blockierung im Browser |
+| Data Explorer | `DesktopControls.test.jsx`, `DesktopApp.test.jsx`, `flightdeck-quality.spec.js` | Tabellen-Dropdown, Suche, Live-Filter, CSV/JSON Export, Row-Save/Delete, User, Sessions, Read-only-SQL-Blockierung im Browser |
 | Analytics | `AdminFeatures.test.jsx`, `flightdeck-quality.spec.js` | Keine Mock-Analytics als echte Werte, Filterpayload, Datumspresets, Report-Export |
 | Advanced Settings | `AdminFeatures.test.jsx`, `desktop-flightdeck.spec.js` | Dirty-State, Save-Payload, Reset, Deploy Strategy, Theme |
 | System Monitor | `AdminFeatures.test.jsx`, `desktop-flightdeck.spec.js` | Refresh, Cache löschen, Optimieren, Warnungen, Ressourcenanzeige |

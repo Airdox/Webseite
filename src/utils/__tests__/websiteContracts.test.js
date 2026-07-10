@@ -14,7 +14,7 @@ describe('website contracts', () => {
     it('keeps public storage keys stable', () => {
         expect(STORAGE_KEYS.globalStats).toBe('airdox_global_stats');
         expect(STORAGE_KEYS.offlineStatsQueue).toBe('airdox_offline_queue');
-        expect(STORAGE_KEYS.authToken).toBe('airdox_token');
+        expect(STORAGE_KEYS.sessionId).toBe('airdox_sid');
     });
 
     it('reads and writes JSON storage safely', () => {
@@ -24,11 +24,11 @@ describe('website contracts', () => {
     });
 
     it('wraps primitive storage access behind stable keys', () => {
-        setStorageItem(STORAGE_KEYS.authToken, 'tok_123');
+        setStorageItem(STORAGE_KEYS.sessionId, 'sid_123');
 
-        expect(getStorageItem(STORAGE_KEYS.authToken)).toBe('tok_123');
-        removeStorageItem(STORAGE_KEYS.authToken);
-        expect(getStorageItem(STORAGE_KEYS.authToken)).toBe('');
+        expect(getStorageItem(STORAGE_KEYS.sessionId)).toBe('sid_123');
+        removeStorageItem(STORAGE_KEYS.sessionId);
+        expect(getStorageItem(STORAGE_KEYS.sessionId)).toBe('');
     });
 
     it('dispatches stable window events with detail', () => {

@@ -92,6 +92,9 @@ scripts/render-airdox-reference-style-video.mjs
 docs/agent-system/social-auto-output/
 docs/agent-system/visual-templates/social/social-auto-output/
 docs/agent-system/visual-templates/inbox/
+docs/agent-system/designer-portfolio-output/
+docs/auth-workflow-proof/
+public/airdox-analytics-report.html
 docs/agent-system/reports/proof/
 docs/agent-system/download.png
 .codex-devserver/

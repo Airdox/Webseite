@@ -44,7 +44,7 @@ export const ASSISTANT_KNOWLEDGE = [
     id: 'explorer',
     title: 'Data Explorer',
     keywords: ['data explorer', 'sql', 'query', 'readonly', 'table', 'track_stats', 'tabelle', 'daten', 'export'],
-    answer: 'Data Explorer — Datenbank direkt abfragen:\n\nTabellen:\n• track_stats: Plays, Likes, Dislikes pro Set\n• analytics_logs: Alle Events mit Geo/Device\n• users: VIP-User Verwaltung\n• sessions: Aktive Login-Sessions\n• subscribers: Newsletter-Abonnenten\n• bookings: Booking-Anfragen\n\nFunktionen:\n• Tabelle wählen → Daten laden\n• Suche: Freitext-Filter über alle Spalten\n• Export: CSV oder JSON\n• SQL: Read-only Queries (SELECT/WITH/EXPLAIN)\n• Inline-Edit: track_stats und subscribers direkt bearbeiten\n• VIP-Admin: User anlegen, Passwort reset, Session revoke',
+    answer: 'Data Explorer — Datenbank direkt abfragen:\n\nTabellen:\n• track_stats: Plays, Likes, Dislikes pro Set\n• analytics_logs: Alle Events mit Geo/Device\n• users: User Verwaltung\n• sessions: Aktive Sessions\n• subscribers: Newsletter-Abonnenten\n• bookings: Booking-Anfragen\n\nFunktionen:\n• Tabelle wählen → Daten laden\n• Suche: Freitext-Filter über alle Spalten\n• Export: CSV oder JSON\n• SQL: Read-only Queries (SELECT/WITH/EXPLAIN)\n• Inline-Edit: track_stats und subscribers direkt bearbeiten\n• User-Admin: User anlegen, Passwort reset, Session revoke',
     actions: ['navigate:explorer'],
   },
   {
@@ -90,7 +90,7 @@ export const ASSISTANT_KNOWLEDGE = [
     id: 'flightdeck-map',
     title: 'Flight Deck Tab-Landkarte',
     keywords: ['tabs', 'bereiche', 'übersicht tabs', 'wo finde ich', 'was gibt es', 'navigation', 'landkarte', 'aufbau', 'module'],
-    answer: 'Flight Deck Landkarte:\n\nBetrieb:\n• Overview: Systemlage, Snapshot, Git, Manifest, Top Sets, Recent Analytics\n• Flight Deck: Workspace, Pipeline-Grundlagen, Publish-Automation\n\nPublish:\n• Set Import: einzelnes Set vorbereiten und publizieren\n• Batch Import: mehrere Sets als Queue vorbereiten und live stellen\n• Marketing Manager: Manni-Entwürfe, Freigaben und externe Aktionen trennen\n• Design Agent: Visuals, Reels, Photoshop-Handoff und Transfer Packs\n\nDaten:\n• Analytics: Plays, Views, Länder, Geräte, Engagement, Top Sets\n• Data Explorer: Tabellen, Exporte, VIP-User, Sessions, Read-only SQL\n\nSystem:\n• Advanced Settings: Pfade, Build/Deploy, Git, Live Updates, Toggles\n• System Monitor: CPU/RAM/Disk/Prozesse, Cache, lokale Last\n• Tutorial: geführte Szenarien und Checklisten\n• AI Assistant: Fragen stellen, Status lesen und Tabs öffnen',
+    answer: 'Flight Deck Landkarte:\n\nBetrieb:\n• Overview: Systemlage, Snapshot, Git, Manifest, Top Sets, Recent Analytics\n• Flight Deck: Workspace, Pipeline-Grundlagen, Publish-Automation\n\nPublish:\n• Set Import: einzelnes Set vorbereiten und publizieren\n• Batch Import: mehrere Sets als Queue vorbereiten und live stellen\n• Marketing Manager: Manni-Entwürfe, Freigaben und externe Aktionen trennen\n• Design Agent: Visuals, Reels, Photoshop-Handoff und Transfer Packs\n\nDaten:\n• Analytics: Plays, Views, Länder, Geräte, Engagement, Top Sets\n• Data Explorer: Tabellen, Exporte, User, Sessions, Read-only SQL\n\nSystem:\n• Advanced Settings: Pfade, Build/Deploy, Git, Live Updates, Toggles\n• System Monitor: CPU/RAM/Disk/Prozesse, Cache, lokale Last\n• Tutorial: geführte Szenarien und Checklisten\n• AI Assistant: Fragen stellen, Status lesen und Tabs öffnen',
   },
   {
     id: 'go-live-preflight',
@@ -109,7 +109,7 @@ export const ASSISTANT_KNOWLEDGE = [
     id: 'data-model',
     title: 'Datenmodell und Tabellen',
     keywords: ['datenmodell', 'tabellen', 'tables', 'welche tabellen', 'track_stats', 'analytics_logs', 'bookings', 'subscribers', 'users', 'sessions', 'datenbank schema'],
-    answer: 'Wichtige Tabellen im Data Explorer:\n\n• track_stats: id, plays, likes, dislikes, last_played_at. Bearbeitbar für Set-Statistiken.\n• analytics_logs: event_type, item_id, session_id, country, city, region, device_type, browser, os, referrer, created_at. Nicht direkt editieren.\n• bookings: Booking-Anfragen mit name, email, event, message, created_at.\n• subscribers: Newsletter-Adressen mit email, status, created_at. Inline bearbeitbar.\n• users: VIP-User mit username, email, created_at.\n• sessions: aktive/alte Sessions mit user_id, username, email, created_at, expires_at.\n\nRead-only SQL erlaubt nur SELECT, WITH und EXPLAIN. Schreibende Statements sind blockiert.',
+    answer: 'Wichtige Tabellen im Data Explorer:\n\n• track_stats: id, plays, likes, dislikes, last_played_at. Bearbeitbar für Set-Statistiken.\n• analytics_logs: event_type, item_id, session_id, country, city, region, device_type, browser, os, referrer, created_at. Nicht direkt editieren.\n• bookings: Booking-Anfragen mit name, email, event, message, created_at.\n• subscribers: Newsletter-Adressen mit email, status, created_at. Inline bearbeitbar.\n• users: User mit username, email, created_at.\n• sessions: aktive/alte Sessions mit user_id, username, email, created_at, expires_at.\n\nRead-only SQL erlaubt nur SELECT, WITH und EXPLAIN. Schreibende Statements sind blockiert.',
     actions: ['navigate:explorer'],
   },
   {
@@ -123,7 +123,7 @@ export const ASSISTANT_KNOWLEDGE = [
     id: 'publish-pipeline',
     title: 'Publish Pipeline und Logs',
     keywords: ['pipeline', 'publish log', 'logs', 'upload', 'manifest', 'build', 'deploy', 'verify', 'commit', 'push', 'live pipeline', 'alles ausführen'],
-    answer: 'Publish Pipeline:\n\n1) Preflight: Workspace, Settings, Draft und Manifest prüfen.\n2) Upload: Audio nach Cloudflare R2 hochladen, wenn aktiviert.\n3) Manifest: src/data/musicSets.js aktualisieren.\n4) Stats Seed: fehlende track_stats-Zeile anlegen, wenn aktiviert.\n5) Build: Vite-Frontend bauen.\n6) Deploy: Wrangler/Cloudflare deployen.\n7) Verify: Live-Ausgabe gegen Set-ID und Track-Tokens prüfen.\n8) Git: optional Commit und Push.\n\nWenn der Publish Log fehlschlägt, ist der Schrittname entscheidend. Ein Upload-Fehler ist meist R2/Credentials, ein Build-Fehler Code/Dependencies, ein Deploy-Fehler Cloudflare/Auth, ein Verify-Fehler Live-Bundle oder falsche Set-Daten.',
+    answer: 'Publish Pipeline:\n\n1) Preflight: Workspace, Settings, Draft und Manifest prüfen.\n2) Upload: Audio nach Cloudflare R2 hochladen, wenn aktiviert.\n3) Manifest: src/data/musicSets.js aktualisieren.\n4) Stats Seed: fehlende track_stats-Zeile anlegen, wenn aktiviert.\n5) Build: Vite-Frontend bauen.\n6) Deploy: Wrangler/Cloudflare deployen.\n7) Verify: Live-Ausgabe gegen Set-ID und Track-Tokens prüfen.\n8) Git: optional Commit und Push.\n\nWenn der Publish Log fehlschlägt, ist der Schrittname entscheidend. Ein Upload-Fehler ist meist R2/Credentials, ein Build-Fehler Code/Dependencies, ein Deploy-Fehler Cloudflare, ein Verify-Fehler Live-Bundle oder falsche Set-Daten.',
     actions: ['navigate:import'],
   },
   {
@@ -168,10 +168,10 @@ export const ASSISTANT_KNOWLEDGE = [
     actions: ['navigate:tutorial'],
   },
   {
-    id: 'vip-users',
-    title: 'VIP User verwalten',
-    keywords: ['vip', 'user', 'benutzer', 'passwort', 'login', 'session', 'zugang', 'mitglied'],
-    answer: 'VIP User Management:\n\n1) Öffne Data Explorer → Tabelle "users"\n2) "VIP User anlegen": Username, Email, Passwort eingeben\n3) Passwort Reset: Neues Passwort setzen für bestehende User\n4) Sessions: Aktive Login-Sessions sehen und widerrufen\n\nVIP-User haben Zugang zu:\n• Exklusiven Downloads älterer Sets\n• Premium-Inhalten hinter dem VIP-Gate\n• Vollständigem Archiv',
+    id: 'user-admin',
+    title: 'User verwalten',
+    keywords: ['user', 'user', 'benutzer', 'passwort', 'session', 'session', 'konto', 'mitglied'],
+    answer: 'User Management:\n\n1) Öffne Data Explorer → Tabelle "users"\n2) "User anlegen": Username, Email, Passwort eingeben\n3) Passwort Reset: Neues Passwort setzen für bestehende User\n4) Sessions: Aktive Sessions sehen und widerrufen\n\nUser haben Konto zu:\n• Exklusiven Downloads älterer Sets\n• Archiv- und Bonus-Inhalten\n• Vollständigem Archiv',
     actions: ['navigate:explorer'],
   },
   {
@@ -202,7 +202,7 @@ export const ASSISTANT_KNOWLEDGE = [
     id: 'overview-dashboard',
     title: 'Overview Dashboard',
     keywords: ['overview', 'dashboard', 'überblick', 'status', 'kennzahlen', 'metriken'],
-    answer: 'Overview Dashboard:\n\nZeigt den Live-Zustand deiner AIRDOX-Plattform:\n\n• Sets im Manifest: Anzahl publizierter Sets\n• Analytics Events: Gesamtzahl der Event-Logs\n• VIP User: Registrierte Premium-Nutzer\n• Sessions: Aktive Login-Sessions\n\nCommand Center:\n• Repository Status (clean/dirty)\n• Manifest Health (fehlende Stats)\n• Letztes Analytics-Signal\n\n• Top Sets: Tabelle der meistgespielten Sets\n• Recent Analytics: Neueste Events mit Geo/Device\n\nAktionen: Refresh, Demo Import, Analytics, Stats Sync',
+    answer: 'Overview Dashboard:\n\nZeigt den Live-Zustand deiner AIRDOX-Plattform:\n\n• Sets im Manifest: Anzahl publizierter Sets\n• Analytics Events: Gesamtzahl der Event-Logs\n• User: Registrierte Nutzer\n• Sessions: Aktive Sessions\n\nCommand Center:\n• Repository Status (clean/dirty)\n• Manifest Health (fehlende Stats)\n• Letztes Analytics-Signal\n\n• Top Sets: Tabelle der meistgespielten Sets\n• Recent Analytics: Neueste Events mit Geo/Device\n\nAktionen: Refresh, Demo Import, Analytics, Stats Sync',
     actions: ['navigate:overview'],
   },
   {

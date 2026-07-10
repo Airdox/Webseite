@@ -59,7 +59,7 @@ const run = async () => {
   }
 
   for (const k of keys) {
-    const key = k.startsWith(prefix) ? k : `${prefix.replace(/\/g, '')}${k}`;
+    const key = k.startsWith(prefix) ? k : `${prefix.replace(/\/+$/g, '')}/${k}`;
     try {
       await client.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
       console.log(`deleted: ${key}`);

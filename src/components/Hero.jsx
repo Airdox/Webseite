@@ -11,7 +11,7 @@ import { getCurrentLocale, t } from '../utils/i18n';
 import { sets } from '../data/musicSets';
 import { formatSetDate, getLatestSet } from '../lib/set-access';
 
-const Hero = ({ designMode = 'classic' }) => {
+const Hero = () => {
     const [loaded, setLoaded] = useState(false);
     const heroRef = useRef(null);
 
@@ -89,23 +89,11 @@ const Hero = ({ designMode = 'classic' }) => {
                 <div className="hero-tagline">
                     <div className="tagline-line"></div>
                     <p className="tagline-text">
-                        {designMode === 'industrial' ? (
-                            <>
-                                <span>[CTRL_01 // UNDERGROUND]</span>
-                                <span className="separator">▪</span>
-                                <span>[CTRL_02 // STARK_SOUND]</span>
-                                <span className="separator">▪</span>
-                                <span>[CTRL_03 // KINETIC]</span>
-                            </>
-                        ) : (
-                            <>
-                                <span>{t('hero.tagline.1')}</span>
-                                <span className="separator">◆</span>
-                                <span>{t('hero.tagline.2')}</span>
-                                <span className="separator">◆</span>
-                                <span>{t('hero.tagline.3')}</span>
-                            </>
-                        )}
+                        <span>{t('hero.tagline.1')}</span>
+                        <span className="separator">◆</span>
+                        <span>{t('hero.tagline.2')}</span>
+                        <span className="separator">◆</span>
+                        <span>{t('hero.tagline.3')}</span>
                     </p>
                     <div className="tagline-line"></div>
                 </div>

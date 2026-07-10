@@ -100,7 +100,7 @@ Vorhandene neue Scripts:
 - CSV-/JSON-Export
 - Bearbeitung von `track_stats`
 - Bearbeitung von `subscribers`
-- Anlegen und Passwort-Reset von VIP-Usern
+- Anlegen und Passwort-Reset von Usern
 - Session-Revoke
 - Read-only SQL fuer `SELECT`, `WITH`, `EXPLAIN`
 
@@ -184,7 +184,7 @@ Erfolgreich ausgefuehrt:
 
 Wichtig:
 
-- Das globale Repo-`lint` ist weiterhin rot, aber wegen bereits bestehender Altfehler ausserhalb des neuen Flight-Deck-Scopes, unter anderem in `.wrangler`, `Navigation.jsx`, `Magnetic.jsx`, `VIPSection.jsx`, `stats-sync.js` und weiteren vorhandenen Dateien.
+- Das globale Repo-`lint` ist weiterhin rot, aber wegen bereits bestehender Altfehler ausserhalb des neuen Flight-Deck-Scopes, unter anderem in `.wrangler`, `Navigation.jsx`, `Magnetic.jsx`, `stats-sync.js` und weiteren vorhandenen Dateien.
 - Falls die Umgebungsvariable `ELECTRON_RUN_AS_NODE` gesetzt ist, fehlen im Main-Prozess APIs wie `ipcMain.handle`. `desktop:dev` und `desktop:start` entfernen diese Variable deshalb explizit vor dem Start.
 
 ## Windows-Artefakte

@@ -191,7 +191,7 @@ const OverviewTab = ({
         />
         <MetricCard
           icon={ShieldCheck}
-          label="VIP User"
+          label="User"
           value={counts.users_count}
           tone="blue"
           subtitle="Registriert"
@@ -201,7 +201,7 @@ const OverviewTab = ({
           label="Sessions"
           value={counts.sessions_count}
           tone="slate"
-          subtitle="Aktive Logins"
+          subtitle="Aktive Sessions"
         />
       </div>
 

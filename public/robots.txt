@@ -3,12 +3,11 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 Disallow: /desktop/
-Disallow: /vip/
 
 # Agent and AI crawler policy
 # Public AIRDOX artist, music, EPK and booking pages may be indexed for search,
-# recommendations and AI answer engines. API, admin, desktop and VIP surfaces
-# remain excluded above.
+# recommendations and AI answer engines. API, admin and desktop surfaces remain
+# excluded above.
 User-agent: GPTBot
 Allow: /
 User-agent: ChatGPT-User

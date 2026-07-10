@@ -1,13 +1,13 @@
 # AIRDOX Refactor-Website-Chancen
 
-Erstellt: 2026-07-01T13:48:48.962Z
+Erstellt: 2026-07-10T04:00:48.056Z
 Agent: Refactor
 
 ## Ueberblick
 
-- Gepruefte Quelldateien: 66
-- Chancen: 2
-- Hohe Prioritaet: 1
+- Gepruefte Quelldateien: 55
+- Chancen: 1
+- Hohe Prioritaet: 0
 
 ## Betriebsregeln
 
@@ -23,6 +23,5 @@ Agent: Refactor
 
 | Prioritaet | Bereich | ID | Beleg | Aktion | Validierung | Dateien |
 | --- | --- | --- | --- | --- | --- | --- |
-| high | maintainability | large-file-src-components-industrialdashboard-jsx | 888 Zeilen / 48352 Bytes. | Nur die naechste nutzer- oder service-sichtbare Teileinheit extrahieren, die einen fokussierten Test bekommen kann. Freigabe: pending_user_ok; Job: refactor-website-patch-proposal. | Den naechstliegenden Komponenten-/Unit-Test plus npm run build ausfuehren. | src/components/IndustrialDashboard.jsx |
 | medium | maintainability | large-file-src-components-setcard-jsx | 387 Zeilen / 16765 Bytes. | Nur die naechste nutzer- oder service-sichtbare Teileinheit extrahieren, die einen fokussierten Test bekommen kann. Freigabe: pending_user_ok; Job: refactor-website-patch-proposal. | Den naechstliegenden Komponenten-/Unit-Test plus npm run build ausfuehren. | src/components/SetCard.jsx |
 

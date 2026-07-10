@@ -1,6 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { toPart000, toPlayableSrc } from '../audioSources';
-import { STORAGE_KEYS } from '../../utils/websiteContracts';
 
 describe('audio source helpers', () => {
     afterEach(() => {
@@ -13,13 +12,11 @@ describe('audio source helpers', () => {
         expect(toPlayableSrc('/sets/live_full.mp3')).toContain('/api/audio/live_full.mp3');
     });
 
-    it('appends auth tokens without changing the audio filename', () => {
-        localStorage.setItem(STORAGE_KEYS.authToken, 'tok_123');
-
+    it('does not append access tokens to public audio URLs', () => {
         const src = toPlayableSrc('/sets/live_full.mp3');
 
         expect(src).toContain('/api/audio/live_full.mp3');
-        expect(src).toContain('token=tok_123');
+        expect(src).not.toContain('token=');
     });
 
     it('routes mobile app audio playback to the production stream API', () => {

@@ -1,21 +1,8 @@
-import { normalizeAudioBaseFilename, partitionSetsByAccess } from '../lib/set-access.js';
+import { normalizeAudioBaseFilename } from '../lib/set-access.js';
 
 const sanitizeFilename = (filename) => {
     const decoded = decodeURIComponent(filename);
     return decoded.replace(/[/\\:*?"<>|]/g, '');
-};
-
-const getAuthTokenFromRequest = (request, url) => {
-    const queryToken = url.searchParams.get('token');
-    if (queryToken) return queryToken;
-
-    const headerToken = request.headers.get('x-airdox-token');
-    if (headerToken) return headerToken;
-
-    const authorization = request.headers.get('Authorization') || '';
-    const bearerMatch = authorization.match(/^Bearer\s+(.+)$/i);
-    if (bearerMatch?.[1]) return bearerMatch[1].trim();
-    return '';
 };
 
 const getRequestHeader = (request, name) => {
@@ -41,18 +28,9 @@ const createAudioError = (corsHeaders) => (status, message, extra = {}) => new R
 export const registerAudioRoute = (router, {
     corsHeaders,
     sets,
-    handleAuthRequest,
 }) => {
-    const { publicSets } = partitionSetsByAccess(sets);
     const knownAudioBases = new Set(sets.map((set) => normalizeAudioBaseFilename(set.file)).filter(Boolean));
-    const publicAudioBases = new Set(publicSets.map((set) => normalizeAudioBaseFilename(set.file)).filter(Boolean));
     const audioError = createAudioError(corsHeaders);
-
-    const isVipOnlyAudio = (filename) => {
-        const base = normalizeAudioBaseFilename(filename);
-        if (!base || !knownAudioBases.has(base)) return false;
-        return !publicAudioBases.has(base);
-    };
 
     const isKnownSetAudio = (filename) => {
         const base = normalizeAudioBaseFilename(filename);
@@ -82,21 +60,6 @@ export const registerAudioRoute = (router, {
 
         if (!isKnownSetAudio(safeFilename)) {
             return audioError(404, 'Audio file not found', { requested: safeFilename });
-        }
-
-        if (isVipOnlyAudio(safeFilename)) {
-            const token = getAuthTokenFromRequest(request, url);
-            if (!token) {
-                return audioError(401, 'VIP access requires login token');
-            }
-
-            const sessionResult = await handleAuthRequest({
-                body: { action: 'validate', token },
-                env,
-            });
-            if (sessionResult.status !== 200 || !sessionResult.body?.ok) {
-                return audioError(401, 'Invalid or expired VIP session');
-            }
         }
 
         const range = getRequestHeader(request, 'Range');

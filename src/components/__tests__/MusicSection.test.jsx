@@ -120,7 +120,7 @@ describe('MusicSection Synchronisation', () => {
             expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/api/stats'));
         });
 
-        expect(container.querySelector('.vip-tracklist')).toBeNull();
+        expect(container.querySelector('.set-tracklist')).toBeNull();
         expect(screen.queryByText('SCRIPT - Substance')).toBeNull();
     });
 

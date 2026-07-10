@@ -1221,13 +1221,13 @@ const DesktopApp = () => {
             await runAsyncAction(() => flightDeckApi.deleteRecords({ workspaceRoot: settingsDraft?.workspaceRoot, table: tableName, ids: [id] }), `${tableName} Eintrag geloescht.`);
             await refreshTable(tableName);
           }}
-          onCreateVipUser={async (payload) => {
-            await runAsyncAction(() => flightDeckApi.createVipUser({ workspaceRoot: settingsDraft?.workspaceRoot, ...payload }), `VIP User ${payload.username} angelegt.`);
+          onCreateUser={async (payload) => {
+            await runAsyncAction(() => flightDeckApi.createUser({ workspaceRoot: settingsDraft?.workspaceRoot, ...payload }), `User ${payload.username} angelegt.`);
             await refreshTable(tableName);
           }}
-          onResetVipPassword={async (payload) => {
-            if (!confirmRiskyAction(`Passwort fuer ${payload.username || payload.email || 'VIP User'} wirklich zuruecksetzen?`)) return;
-            await runAsyncAction(() => flightDeckApi.resetVipPassword({ workspaceRoot: settingsDraft?.workspaceRoot, ...payload }), 'VIP Passwort ersetzt.');
+          onResetUserPassword={async (payload) => {
+            if (!confirmRiskyAction(`Passwort fuer ${payload.username || payload.email || 'User'} wirklich zuruecksetzen?`)) return;
+            await runAsyncAction(() => flightDeckApi.resetUserPassword({ workspaceRoot: settingsDraft?.workspaceRoot, ...payload }), 'User Passwort ersetzt.');
           }}
           onRevokeSession={async (sessionId) => {
             if (!confirmRiskyAction(`Session ${sessionId} wirklich widerrufen?`)) return;

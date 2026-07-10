@@ -14,7 +14,7 @@ const QUESTIONS = [
   'Welche ENV Variablen braucht die Datenbank?',
   'Wie nutze ich Data Explorer richtig?',
   'Welche SQL sind im Explorer erlaubt?',
-  'Wie lege ich VIP User an?',
+  'Wie lege ich User an?',
   'Wie setze ich ein Passwort zurück?',
   'Wie widerrufe ich Sessions?',
   'Wie exportiere ich Tabellen als CSV?',

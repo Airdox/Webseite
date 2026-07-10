@@ -10,11 +10,11 @@ import SetImportTab from '../components/SetImportTab.jsx';
 const tableRows = {
   track_stats: [
     { id: 'public_april_set', plays: 18, likes: 3, dislikes: 0, last_played_at: null },
-    { id: 'vip_archive_set', plays: 3, likes: 1, dislikes: 0, last_played_at: null },
+    { id: 'archive_december_set', plays: 3, likes: 1, dislikes: 0, last_played_at: null },
     { id: 'public_may_set', plays: 12, likes: 2, dislikes: 0, last_played_at: null },
   ],
   subscribers: [
-    { id: 1, email: 'vip@airdox.info', status: 'active', created_at: '2026-05-01T10:00:00.000Z' },
+    { id: 1, email: 'fan@airdox.info', status: 'active', created_at: '2026-05-01T10:00:00.000Z' },
   ],
   users: [
     { id: 7, username: 'manni', email: 'manni@airdox.info', created_at: '2026-05-02T10:00:00.000Z' },
@@ -62,7 +62,7 @@ const setsForAccessFilter = [
   { id: 'public_april_set', title: 'Public April', publishedAt: '2026-04-20' },
   { id: 'public_march_set', title: 'Public March', publishedAt: '2026-03-20' },
   { id: 'public_february_set', title: 'Public February', publishedAt: '2026-02-20' },
-  { id: 'vip_archive_set', title: 'VIP Archive', publishedAt: '2025-12-20' },
+  { id: 'archive_december_set', title: 'Archive December', publishedAt: '2025-12-20' },
 ];
 
 const renderDataExplorerHarness = ({
@@ -101,8 +101,8 @@ const renderDataExplorerHarness = ({
         onSaveTrackStats={handlers.onSaveTrackStats || vi.fn()}
         onSaveSubscriber={handlers.onSaveSubscriber || vi.fn()}
         onDeleteRow={handlers.onDeleteRow || vi.fn()}
-        onCreateVipUser={handlers.onCreateVipUser || vi.fn()}
-        onResetVipPassword={handlers.onResetVipPassword || vi.fn()}
+        onCreateUser={handlers.onCreateUser || vi.fn()}
+        onResetUserPassword={handlers.onResetUserPassword || vi.fn()}
         onRevokeSession={handlers.onRevokeSession || vi.fn()}
         onRunQuery={handlers.onRunQuery || vi.fn()}
       />
@@ -126,13 +126,13 @@ describe('DataExplorerTab controls', () => {
     renderDataExplorerHarness({ handlers });
 
     fireEvent.change(screen.getByLabelText('Tabelle'), { target: { value: 'subscribers' } });
-    expect(screen.getByText('vip@airdox.info')).toBeInTheDocument();
+    expect(screen.getByText('fan@airdox.info')).toBeInTheDocument();
 
     fireEvent.change(screen.getByPlaceholderText('Filtern...'), { target: { value: 'missing' } });
-    expect(screen.queryByText('vip@airdox.info')).not.toBeInTheDocument();
+    expect(screen.queryByText('fan@airdox.info')).not.toBeInTheDocument();
 
-    fireEvent.change(screen.getByPlaceholderText('Filtern...'), { target: { value: 'vip@airdox.info' } });
-    expect(screen.getByText('vip@airdox.info')).toBeInTheDocument();
+    fireEvent.change(screen.getByPlaceholderText('Filtern...'), { target: { value: 'fan@airdox.info' } });
+    expect(screen.getByText('fan@airdox.info')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /^CSV$/i }));
     fireEvent.click(screen.getByRole('button', { name: /^JSON$/i }));
@@ -151,12 +151,12 @@ describe('DataExplorerTab controls', () => {
     renderDataExplorerHarness({ handlers });
 
     expect(screen.getByText('public_may_set')).toBeInTheDocument();
-    expect(screen.getByText('vip_archive_set')).toBeInTheDocument();
+    expect(screen.getByText('archive_december_set')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /Live \(ohne VIP\)/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Live$/i }));
     expect(screen.getByText('public_may_set')).toBeInTheDocument();
     expect(screen.getByText('public_april_set')).toBeInTheDocument();
-    expect(screen.queryByText('vip_archive_set')).not.toBeInTheDocument();
+    expect(screen.getByText('archive_december_set')).toBeInTheDocument();
     expect(screen.getByText('public_may_set').compareDocumentPosition(screen.getByText('public_april_set'))).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
 
     fireEvent.click(screen.getByRole('button', { name: /Alle Sets/i }));
@@ -177,11 +177,11 @@ describe('DataExplorerTab controls', () => {
     expect(handlers.onDeleteRow).toHaveBeenCalledWith('public_may_set');
   });
 
-  it('runs subscriber, VIP user, session and booking admin actions with the expected payloads', () => {
+  it('runs subscriber, user, session and booking admin actions with the expected payloads', () => {
     const handlers = {
       onSaveSubscriber: vi.fn(),
-      onCreateVipUser: vi.fn(),
-      onResetVipPassword: vi.fn(),
+      onCreateUser: vi.fn(),
+      onResetUserPassword: vi.fn(),
       onRevokeSession: vi.fn(),
       onDeleteRow: vi.fn(),
     };
@@ -190,14 +190,14 @@ describe('DataExplorerTab controls', () => {
     fireEvent.change(screen.getByLabelText('Tabelle'), { target: { value: 'subscribers' } });
     fireEvent.change(screen.getByLabelText('Status'), { target: { value: 'paused' } });
     fireEvent.click(screen.getByRole('button', { name: /Save Subscriber/i }));
-    expect(handlers.onSaveSubscriber).toHaveBeenCalledWith({ id: 1, email: 'vip@airdox.info', status: 'paused' });
+    expect(handlers.onSaveSubscriber).toHaveBeenCalledWith({ id: 1, email: 'fan@airdox.info', status: 'paused' });
 
     fireEvent.change(screen.getByLabelText('Tabelle'), { target: { value: 'users' } });
     fireEvent.change(screen.getByLabelText('Username'), { target: { value: 'captain' } });
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'captain@airdox.info' } });
     fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'secret-123' } });
     fireEvent.click(screen.getByRole('button', { name: /Create User/i }));
-    expect(handlers.onCreateVipUser).toHaveBeenCalledWith({
+    expect(handlers.onCreateUser).toHaveBeenCalledWith({
       username: 'captain',
       email: 'captain@airdox.info',
       password: 'secret-123',
@@ -205,7 +205,7 @@ describe('DataExplorerTab controls', () => {
 
     fireEvent.change(screen.getByLabelText('Neues Passwort'), { target: { value: 'next-secret' } });
     fireEvent.click(screen.getByRole('button', { name: /Reset/i }));
-    expect(handlers.onResetVipPassword).toHaveBeenCalledWith({ userId: 7, password: 'next-secret' });
+    expect(handlers.onResetUserPassword).toHaveBeenCalledWith({ userId: 7, password: 'next-secret' });
 
     fireEvent.click(screen.getByRole('button', { name: /Delete manni/i }));
     expect(handlers.onDeleteRow).toHaveBeenCalledWith(7);

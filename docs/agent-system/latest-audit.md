@@ -1,18 +1,18 @@
-# AIRDOX Agenten-Audit
+# AIRDOX Agent Audit
 
-Erstellt: 2026-07-01T13:45:57.383Z
+Generated: 2026-07-10T04:03:50.430Z
 Repository: D:\webseeite-main
 Controller: Master Controller
 
-## Ueberblick
+## Summary
 
-- Durchschnittsscore: 96/100
-- Gate-Status: pass
-- Testdateien: 44
-- CSS-Dateien: 22
-- Offene Pfade: 49
+- Average score: 96/100
+- Gate status: pass
+- Test files: 40
+- CSS files: 19
+- Uncommitted paths: 132
 
-## Agenten-Scores
+## Agent Scores
 
 | Agent | Score | Mission |
 | --- | ---: | --- |
@@ -39,7 +39,7 @@ Controller: Master Controller
 - PASS: HTML-Entry-Drift begrenzt - Warnung, wenn mehrere root HTML-Kopien SEO/Head-Drift erzeugen koennen.
 - PASS: Website E2E-Abdeckung - Sanity- und Navigation-Playwright-Specs sind vorhanden.
 
-Naechste Aktionen:
+Next actions:
 - Sitemap-lastmod bei Content-Releases automatisiert aktualisieren.
 - Core-Web-Vitals-Messung als Playwright/Lighthouse-Gate ergaenzen.
 - Visuelle Regression fuer Hero, Music und Booking etablieren.
@@ -58,7 +58,7 @@ Naechste Aktionen:
 - PASS: Desktop Service-Sicherheit getestet - Manifest-Parsing und shellfreie Prozessaufrufe haben fokussierte Service-Tests.
 - PASS: Windows-Dokumentation vorhanden - docs/WINDOWS_FLIGHTDECK.md beschreibt Stand, Nutzung und Teststatus.
 
-Naechste Aktionen:
+Next actions:
 - Sandbox-Start des echten Electron Flight Decks mit desktop:test:e2e nachweisen.
 - Build-, Deploy- und Git-Kommandos im Windows Tool auf erlaubte Befehle/Argumente begrenzen.
 - Design-Render- und Publish-Pipeline-Fehler mit reproduzierbaren Fixtures abdecken.
@@ -68,33 +68,33 @@ Naechste Aktionen:
 - PASS: Standard Quality Scripts - Build, Lint, Unit- und E2E-Tests sind in package.json verankert.
 - PASS: Test Runner konfiguriert - Vitest und Playwright sind konfiguriert.
 - PASS: ESLint konfiguriert - ESLint Flat Config ist vorhanden.
-- PASS: Ausreichende Testdateien - 44 Test-/Spec-Dateien gefunden.
+- PASS: Ausreichende Testdateien - 40 Test-/Spec-Dateien gefunden.
 - PASS: Worker/API-Testsignale - Server-/API-Code ist vorhanden; dedizierte Testsignale werden geprueft.
 - PASS: Web-CI-Gate vorhanden - Warnung, wenn GitHub Actions kein Web-Lint/Test/Build-Gate enthaelt.
-- WARN: Arbeitsbaum sauber - 49 uncommitted Pfade gefunden; vor Releases klaeren.
+- WARN: Arbeitsbaum sauber - 132 uncommitted Pfade gefunden; vor Releases klaeren.
 - PASS: Env-Beispiel vorhanden - .env.example ist fuer sichere Konfiguration vorhanden.
 
-Naechste Aktionen:
+Next actions:
 - Guardian-Strict-Gate fuer Releases verwenden: npm run agent:audit -- --strict plus build/test/lint.
 - Bekannte Alt-Lintfehler als debt register dokumentieren und schrittweise abbauen.
-- Security-Checks fuer Booking, Auth und Analytics als gezielte Tests ergaenzen.
+- Security-Checks fuer Booking, Newsletter und Analytics als gezielte Tests ergaenzen.
 
 ## Manni
 
 - PASS: Brand Story dokumentiert - README dokumentiert AIRDOX, Website und Flight-Deck-Rahmen.
-- PASS: Conversion-Sektionen vorhanden - EPK, Booking, Newsletter und VIP sind als Website-Sektionen vorhanden.
+- PASS: Conversion-Sektionen vorhanden - EPK, Booking und Newsletter sind als Website-Sektionen vorhanden.
 - PASS: Social Sharing Assets - OG/Twitter-Basis ist vorhanden.
 - PASS: Social Profile Signale - JSON-LD verweist auf Social-/Music-Profile.
 - PASS: EPK ohne Platzhalter-Aktionen - Warnung, wenn EPK-Downloads nur per alert/Placeholder reagieren.
 - PASS: Newsletter API geroutet - Warnung, wenn Newsletter-Frontend keinen Worker-Route-Anker hat.
 - PASS: Sitemap fuer Suchmaschinen - Sitemap ist vorhanden und auf airdox.info ausgerichtet.
 - PASS: Mehrsprachigkeit als Reichweitenhebel - Englische Variante und hreflang sind vorhanden.
-- PASS: Merch-/Community-Flache - Newsletter/VIP bieten Ansatzpunkte fuer Community oder Merch.
+- PASS: Merch-/Community-Flache - Der Newsletter bietet Ansatzpunkte fuer Community oder Merch.
 
-Naechste Aktionen:
+Next actions:
 - EPK als klare Download-/Presseseite mit aktuellen Assets und Tech-Rider erweitern.
 - Kampagnenkalender fuer Releases, Sets, Newsletter und Social Clips im Wiki fuehren.
-- Conversion Events fuer Booking, Newsletter, VIP und Set-Play sichtbar auswerten.
+- Conversion Events fuer Booking, Newsletter und Set-Play sichtbar auswerten.
 
 ## Designer
 
@@ -107,7 +107,7 @@ Naechste Aktionen:
 - PASS: UI-Brandflaechen gepflegt - Warnung, wenn zentrale Brandflaechen fuer visuelle Konsistenz fehlen.
 - PASS: Social-Link-Signale gepflegt - Warnung, wenn Kern-Social-Links nicht konsistent verankert sind.
 
-Naechste Aktionen:
+Next actions:
 - Hook-Varianten je Reel in 3 visuellen Stilen planen und A/B-testen.
 - Statische Reel-Entwuerfe als creative_static_risk markieren und mit Equalizer, Waveform, Parallax-Still oder Kinetic Type ueberarbeiten.
 - Thumbnail- und First-Frame-Bibliothek fuer wiedererkennbare Social-Branding-Signale aufbauen.
@@ -125,7 +125,7 @@ Naechste Aktionen:
 - PASS: Entwicklerhandbuch vorhanden - Admin Suite Developer Guide beschreibt Erweiterungsmuster.
 - PASS: Assistant-Testsignale - Assistant-Logik hat Testsignale.
 
-Naechste Aktionen:
+Next actions:
 - Entscheidungen und Audit-Ergebnisse nach groesseren Aenderungen in docs/agent-system protokollieren.
 - Lernluecken aus fehlgeschlagenen Checks direkt in Backlog-Eintraege uebersetzen.
 - Agenten-Briefings quartalsweise anhand echter Projekterfahrung schaerfen.
@@ -141,7 +141,7 @@ Naechste Aktionen:
 - PASS: Deployment-Ziel konsolidiert - Nur wrangler.jsonc als einziges Deployment-Target vorhanden.
 - PASS: Dependency-Footprint kontrolliert - 12 Runtime-Abhaengigkeiten gefunden.
 
-Naechste Aktionen:
+Next actions:
 - Grosse Komponenten schrittweise in getestete Subkomponenten schneiden.
 - Deployment-Targets eindeutig priorisieren und historische Konfigs entfernen oder dokumentieren.
 - Freie Shell-/Import-Pfade im Desktop-Tool durch strukturierte APIs und Allowlists ersetzen.
@@ -154,11 +154,11 @@ Naechste Aktionen:
 - PASS: Branching-Hinweise vorhanden - Warnung, wenn Branch-Namensschema nicht klar dokumentiert ist.
 - PASS: Commit-Konvention dokumentiert - Warnung, wenn Commit-Typen nicht klar festgelegt sind.
 - PASS: Change-Tracking vorhanden - Warnung, wenn Entscheidungen oder Audit-Historie fehlen.
-- WARN: Arbeitsbaum releasebereit - 49 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
+- WARN: Arbeitsbaum releasebereit - 132 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen.
 - PASS: Einziges Deployment-Target - Nur Cloudflare (wrangler.jsonc) als Deployment-Target vorhanden.
 - PASS: Gefaehrdete Artefaktordner ignoriert - Warnung, wenn Build-/Wrangler-/Release-Artefakte nicht sauber ignoriert werden.
 
-Naechste Aktionen:
+Next actions:
 - Branch-Schutzregeln in GitHub mit Pflicht-Checks aus web-quality und agent:audit verknuepfen.
 - Release-Branches zeitlich begrenzen und nach Abschluss mergen oder schliessen.
 - Mehrdeutige Deployment-Strategien reduzieren und einen primaeren Pfad festlegen.

@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Download, ExternalLink, KeyRound, RotateCcw, Search, Trash2, Filter } from 'lucide-react';
 import { TABLE_DEFINITIONS, TABLE_NAMES } from '../lib/tableDefinitions.js';
-import { partitionSetsByAccess } from '../../lib/set-access.js';
 
 const formatCell = (value) => {
   if (value === null || value === undefined || value === '') return 'n/a';
@@ -148,7 +147,7 @@ const UserAdmin = ({ rows, onCreate, onDelete, onResetPassword }) => {
         }}
       >
         <div className="fd-section-head">
-          <h3>VIP User anlegen</h3>
+          <h3>User anlegen</h3>
           <span>Admin Action</span>
         </div>
         <div className="fd-inline-form">
@@ -253,8 +252,8 @@ const DataExplorerTab = ({
   onSaveTrackStats,
   onSaveSubscriber,
   onDeleteRow,
-  onCreateVipUser,
-  onResetVipPassword,
+  onCreateUser,
+  onResetUserPassword,
   onRevokeSession,
   onRunQuery = () => {},
   sets = [],
@@ -263,22 +262,22 @@ const DataExplorerTab = ({
   const [filterMode, setFilterMode] = useState('all'); // 'all' or 'live'
   const [queryFeedback, setQueryFeedback] = useState(null);
 
-  const { publicSets, publicIdSet } = useMemo(() => partitionSetsByAccess(sets), [sets]);
-  const publicSetRank = useMemo(() => new Map(
-    publicSets.map((set, index) => [set.id, index]),
-  ), [publicSets]);
+  const manifestIdSet = useMemo(() => new Set(sets.map((set) => set.id)), [sets]);
+  const manifestSetRank = useMemo(() => new Map(
+    sets.map((set, index) => [set.id, index]),
+  ), [sets]);
 
   const activeFilteredRows = useMemo(() => {
     if (tableName !== 'track_stats' || filterMode === 'all') return filteredRows;
     return filteredRows
-      .filter(row => publicIdSet.has(row.id))
+      .filter(row => manifestIdSet.has(row.id))
       .sort((left, right) => {
-        const leftRank = publicSetRank.get(left.id) ?? Number.MAX_SAFE_INTEGER;
-        const rightRank = publicSetRank.get(right.id) ?? Number.MAX_SAFE_INTEGER;
+        const leftRank = manifestSetRank.get(left.id) ?? Number.MAX_SAFE_INTEGER;
+        const rightRank = manifestSetRank.get(right.id) ?? Number.MAX_SAFE_INTEGER;
         if (leftRank !== rightRank) return leftRank - rightRank;
         return String(left.id).localeCompare(String(right.id));
       });
-  }, [filteredRows, tableName, filterMode, publicIdSet, publicSetRank]);
+  }, [filteredRows, tableName, filterMode, manifestIdSet, manifestSetRank]);
 
   const runReadonlyQuery = async () => {
     if (!isElectron) {
@@ -328,7 +327,7 @@ const DataExplorerTab = ({
             disabled={tableName !== 'track_stats'}
           >
             <Filter size={16} />
-            Live (ohne VIP)
+            Live
           </button>
         </div>
       </section>
@@ -352,7 +351,7 @@ const DataExplorerTab = ({
       )}
 
       {tableName === 'users' && (
-        <UserAdmin rows={activeFilteredRows} onCreate={onCreateVipUser} onDelete={onDeleteRow} onResetPassword={onResetVipPassword} />
+        <UserAdmin rows={activeFilteredRows} onCreate={onCreateUser} onDelete={onDeleteRow} onResetPassword={onResetUserPassword} />
       )}
 
       {tableName === 'sessions' && (

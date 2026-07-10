@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-01T13:46:30.835Z",
+  "generatedAt": "2026-07-09T20:10:15.243Z",
   "agent": "audience-intelligence",
   "model": {
     "currency": "EUR",
@@ -8,86 +8,31 @@
   },
   "summary": {
     "eventSource": "neon:analytics_logs",
-    "totalRawEvents": 373,
-    "totalConsentedEvents": 373,
+    "totalRawEvents": 0,
+    "totalConsentedEvents": 0,
     "rejectedEvents": 0,
     "privacyRejectedEvents": 0,
-    "estimatedGrossValue": 493.35,
+    "estimatedGrossValue": 0,
     "totalCost": 552,
-    "estimatedNetValue": -58.65,
-    "roi": -0.1062,
-    "profitabilityStatus": "unprofitable",
+    "estimatedNetValue": -552,
+    "roi": -1,
+    "profitabilityStatus": "no_measurement_data",
     "funnel": {
-      "routeViews": 117,
-      "setPlays": 115,
+      "routeViews": 0,
+      "setPlays": 0,
       "newsletterSignups": 0,
-      "bookingClicks": 4,
+      "bookingClicks": 0,
       "contactSubmits": 0
     },
     "conversionRates": {
-      "engagedPlayRate": 0.9829,
+      "engagedPlayRate": 0,
       "newsletterRate": 0,
-      "bookingIntentRate": 0.0342,
+      "bookingIntentRate": 0,
       "contactRate": 0
     },
-    "valueByEvent": [
-      {
-        "key": "booking_click",
-        "value": 300
-      },
-      {
-        "key": "set_play",
-        "value": 172.5
-      },
-      {
-        "key": "tracklist_open",
-        "value": 12
-      },
-      {
-        "key": "route_view",
-        "value": 5.85
-      },
-      {
-        "key": "share_click",
-        "value": 3
-      },
-      {
-        "key": "section_view",
-        "value": 0
-      },
-      {
-        "key": "cta_view",
-        "value": 0
-      }
-    ],
-    "valueByRoute": [
-      {
-        "key": "/",
-        "value": 490.85
-      },
-      {
-        "key": "/en/",
-        "value": 1.55
-      },
-      {
-        "key": "/#set-recording_2026_06_21-5",
-        "value": 0.45
-      },
-      {
-        "key": "/stark/sets",
-        "value": 0.45
-      },
-      {
-        "key": "/#set-recording_2026_06_02",
-        "value": 0.05
-      }
-    ],
-    "valueByCampaign": [
-      {
-        "key": "unknown",
-        "value": 493.35
-      }
-    ],
+    "valueByEvent": [],
+    "valueByRoute": [],
+    "valueByCampaign": [],
     "supportedEvents": [
       "contact_submit",
       "booking_click",
@@ -109,10 +54,16 @@
   },
   "recommendations": [
     {
-      "priority": "medium",
-      "owner": "Manni",
-      "title": "Strengthen fan capture",
-      "action": "Pair the top content with a newsletter offer and a measurable campaign parameter."
+      "priority": "high",
+      "owner": "Webbie",
+      "title": "Enable consented website event export",
+      "action": "Verify route_view, set_play, newsletter_signup, booking_click, contact_submit, and epk_download reach the audience event store."
+    },
+    {
+      "priority": "high",
+      "owner": "Audience Intelligence",
+      "title": "Do not optimize ROI without data",
+      "action": "Keep the profitability status as no_measurement_data until at least one consented event source exists."
     }
   ]
 }

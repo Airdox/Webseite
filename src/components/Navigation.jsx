@@ -3,14 +3,14 @@ import { Moon, Sun } from 'lucide-react';
 import { t, getCurrentLocale } from '../utils/i18n';
 import './Navigation.css';
 
-const Navigation = ({ onOpenAuth = () => {}, theme = 'dark', onToggleTheme = () => {}, designMode = 'classic', onToggleDesignMode = () => {} }) => {
+const Navigation = ({ theme = 'dark', onToggleTheme = () => {} }) => {
     const [scrolled, setScrolled] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
     const [activeSection, setActiveSection] = useState('home');
     const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
-        const sectionIds = ['home', 'bio', 'press', 'music', 'vip', 'booking'];
+        const sectionIds = ['home', 'bio', 'press', 'music', 'booking'];
         let rafId = null;
 
         const handleScroll = () => {
@@ -69,7 +69,6 @@ const Navigation = ({ onOpenAuth = () => {}, theme = 'dark', onToggleTheme = () 
         { id: 'bio', label: t('nav.about') },
         { id: 'press', label: t('nav.epk') },
         { id: 'music', label: t('nav.music') },
-        { id: 'vip', label: t('nav.vip') },
         { id: 'booking', label: t('nav.booking') },
     ];
 
@@ -115,27 +114,6 @@ const Navigation = ({ onOpenAuth = () => {}, theme = 'dark', onToggleTheme = () 
                         ))}
                     </div>
 
-                    {/* Design Mode Switcher Control */}
-                    <div className="design-switch" title={designMode === 'classic' ? t('nav.design.industrial') : t('nav.design.classic')}>
-                        <button
-                            type="button"
-                            className={`design-switch-btn ${designMode === 'classic' ? 'active' : ''}`}
-                            onClick={() => onToggleDesignMode('classic')}
-                            aria-label={t('nav.design.classic')}
-                        >
-                            {t('nav.design.classic')}
-                        </button>
-                        <button
-                            type="button"
-                            className={`design-switch-btn ${designMode === 'industrial' ? 'active' : ''}`}
-                            onClick={() => onToggleDesignMode('industrial')}
-                            aria-label={t('nav.design.industrial')}
-                        >
-                            {t('nav.design.industrial')}
-                        </button>
-                        <span className={`design-switch-bg slide-${designMode}`}></span>
-                    </div>
-
                     <label className="theme-switch" title={isLightTheme ? t('nav.theme.dark') : t('nav.theme.light')}>
                         <input
                             type="checkbox"
@@ -171,20 +149,6 @@ const Navigation = ({ onOpenAuth = () => {}, theme = 'dark', onToggleTheme = () 
 
                     {/* CTA Buttons */}
                     <div className="nav-ctas">
-                        <button
-                            type="button"
-                            className="nav-action-btn nav-action-login interactive"
-                            onClick={() => onOpenAuth('login')}
-                        >
-                            {t('nav.login')}
-                        </button>
-                        <button
-                            type="button"
-                            className="nav-action-btn nav-action-register interactive"
-                            onClick={() => onOpenAuth('register')}
-                        >
-                            {t('nav.register')}
-                        </button>
                         <a
                             href="mailto:airdox82@gmail.com"
                             className="nav-action-btn nav-action-contact interactive"
@@ -231,31 +195,6 @@ const Navigation = ({ onOpenAuth = () => {}, theme = 'dark', onToggleTheme = () 
                     ))}
 
                     <div className="mobile-menu-footer">
-                        <div className="mobile-auth-btns">
-                            <button onClick={() => onOpenAuth('login')} className="btn btn-secondary">{t('nav.login')}</button>
-                            <button onClick={() => onOpenAuth('register')} className="btn btn-primary">{t('nav.joinVip')}</button>
-                        </div>
-                        {/* Mobile Design Mode Switcher Control */}
-                        <div className="design-switch design-switch-mobile" title={designMode === 'classic' ? t('nav.design.industrial') : t('nav.design.classic')}>
-                            <button
-                                type="button"
-                                className={`design-switch-btn ${designMode === 'classic' ? 'active' : ''}`}
-                                onClick={() => onToggleDesignMode('classic')}
-                                aria-label={t('nav.design.classic')}
-                            >
-                                {t('nav.design.classic')}
-                            </button>
-                            <button
-                                type="button"
-                                className={`design-switch-btn ${designMode === 'industrial' ? 'active' : ''}`}
-                                onClick={() => onToggleDesignMode('industrial')}
-                                aria-label={t('nav.design.industrial')}
-                            >
-                                {t('nav.design.industrial')}
-                            </button>
-                            <span className={`design-switch-bg slide-${designMode}`}></span>
-                        </div>
-
                         <label className="theme-switch theme-switch-mobile" title={isLightTheme ? t('nav.theme.dark') : t('nav.theme.light')}>
                             <input
                                 type="checkbox"

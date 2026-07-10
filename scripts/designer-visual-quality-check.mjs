@@ -275,7 +275,7 @@ async function runVisualChecks() {
           const durationEl = card.querySelector('.set-duration');
           const metaEl = card.querySelector('.set-meta');
           const actionsEl = card.querySelector('.set-actions');
-          const tracklistEl = card.querySelector('.vip-tracklist');
+          const tracklistEl = card.querySelector('.set-tracklist');
 
           const dateText = normalize(dateEl?.textContent || '');
           const durationText = normalize(durationEl?.textContent || '');

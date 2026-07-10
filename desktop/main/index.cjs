@@ -392,16 +392,16 @@ ipcMain.handle('flightdeck:delete-records', async (_event, payload) => {
   return deleteRecords(workspaceRoot, payload?.table, payload?.ids);
 });
 
-ipcMain.handle('flightdeck:create-vip-user', async (_event, payload) => {
-  const { createVipUser } = await getServices();
+ipcMain.handle('flightdeck:create-user', async (_event, payload) => {
+  const { createUser } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
-  return createVipUser(workspaceRoot, payload);
+  return createUser(workspaceRoot, payload);
 });
 
-ipcMain.handle('flightdeck:reset-vip-password', async (_event, payload) => {
-  const { resetVipPassword } = await getServices();
+ipcMain.handle('flightdeck:reset-user-password', async (_event, payload) => {
+  const { resetUserPassword } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
-  return resetVipPassword(workspaceRoot, payload);
+  return resetUserPassword(workspaceRoot, payload);
 });
 
 ipcMain.handle('flightdeck:revoke-session', async (_event, payload) => {

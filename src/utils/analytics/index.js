@@ -379,7 +379,7 @@ class Analytics {
 
         const downloadsByCategory = {
             public: downloads.filter((d) => d.category === 'public').length,
-            vip: downloads.filter((d) => d.category === 'vip').length
+            archive: downloads.filter((d) => d.category === 'archive').length
         };
 
         const audioByTrack = {};

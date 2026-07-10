@@ -44,47 +44,6 @@ export const ensureInitialized = async (sql) => {
             `;
 
             await sql`
-                CREATE TABLE IF NOT EXISTS users (
-                    id SERIAL PRIMARY KEY,
-                    username TEXT NOT NULL UNIQUE,
-                    email TEXT NOT NULL UNIQUE,
-                    password TEXT NOT NULL,
-                    salt TEXT NOT NULL,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                );
-            `;
-
-            await sql`
-                ALTER TABLE users
-                ADD COLUMN IF NOT EXISTS email TEXT UNIQUE;
-            `;
-
-            await sql`
-                CREATE TABLE IF NOT EXISTS sessions (
-                    id TEXT PRIMARY KEY,
-                    user_id INTEGER NOT NULL REFERENCES users(id),
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    expires_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '7 days')
-                );
-            `;
-
-            await sql`
-                CREATE TABLE IF NOT EXISTS auth_attempts (
-                    id SERIAL PRIMARY KEY,
-                    action TEXT NOT NULL,
-                    ip_address TEXT,
-                    identifier TEXT,
-                    success BOOLEAN DEFAULT FALSE,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                );
-            `;
-
-            await sql`
-                CREATE INDEX IF NOT EXISTS idx_auth_attempts_ip_action_created_at
-                ON auth_attempts (ip_address, action, created_at DESC);
-            `;
-
-            await sql`
                 CREATE TABLE IF NOT EXISTS analytics_logs (
                     id SERIAL PRIMARY KEY,
                     event_type TEXT NOT NULL,

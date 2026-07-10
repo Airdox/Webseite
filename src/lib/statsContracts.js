@@ -20,22 +20,6 @@ export const VALID_UPDATE_TYPES = new Set([
 ]);
 
 export const PLAY_DEBOUNCE_SECONDS = 20;
-export const REGISTER_RATE_LIMIT_WINDOW_MINUTES = 60;
-export const REGISTER_RATE_LIMIT_MAX_ATTEMPTS = 8;
-export const REGISTER_SUCCESS_WINDOW_HOURS = 24;
-export const REGISTER_SUCCESS_MAX_PER_IP = 3;
-export const REGISTER_IDENTIFIER_WINDOW_MINUTES = 60;
-export const REGISTER_IDENTIFIER_MAX_ATTEMPTS = 5;
-export const PASSWORD_MIN_LENGTH = 12;
-export const PASSWORD_MAX_LENGTH = 128;
-export const PASSWORD_HASH_ALGORITHM = 'pbkdf2_sha256';
-export const PASSWORD_HASH_ITERATIONS = 210000;
-export const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
-export const TURNSTILE_VERIFY_TIMEOUT_MS = 8000;
-export const TURNSTILE_MAX_TOKEN_LENGTH = 4096;
-export const TURNSTILE_REGISTER_ACTION = 'register';
-
-export const SOCIAL_PROVIDERS = new Set(['google', 'facebook']);
 
 export const VALID_AUDIENCE_EVENTS = new Set([
     'route_view',

@@ -135,7 +135,7 @@ const ERROR_EXPLAINERS = [
     id: 'database',
     pattern: /(database|datenbank|neon|postgres|track_stats|connection|fetch failed)/i,
     title: 'Datenbank ist nicht erreichbar oder Stats konnten nicht geschrieben werden',
-    cause: 'Analytics, VIP-Daten oder track_stats brauchen eine funktionierende Neon/Postgres-Verbindung.',
+    cause: 'Analytics, User-Daten oder track_stats brauchen eine funktionierende Neon/Postgres-Verbindung.',
     steps: [
       'Prüfe die .env im Workspace: DATABASE_URL oder NEON_DATABASE_URL muss gesetzt sein.',
       'Prüfe Internet/VPN/Firewall.',
@@ -295,7 +295,7 @@ export const buildStatusSummary = (appState = {}) => {
     const { counts, manifestSummary } = appState.snapshot;
     parts.push(`📊 ${manifestSummary?.totalSets || 0} Sets im Manifest`);
     parts.push(`📈 ${counts?.analytics_logs_count || 0} Analytics Events`);
-    parts.push(`👤 ${counts?.users_count || 0} VIP User`);
+    parts.push(`👤 ${counts?.users_count || 0} User`);
     if (manifestSummary?.missingStats?.length > 0) {
       parts.push(`⚠️ ${manifestSummary.missingStats.length} Sets ohne track_stats`);
     }

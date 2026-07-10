@@ -1,20 +1,28 @@
 {
-  "generatedAt": "2026-07-01T13:48:30.587Z",
+  "generatedAt": "2026-07-10T04:03:47.931Z",
   "riskLevel": "medium",
   "ok": true,
   "blockers": [],
   "warnings": [
-    "49 uncommitted paths are present; review scope before release.",
-    "5 critical-path files changed: package.json, scripts/social-post-ledger.mjs, scripts/social-tiktok-check.mjs, scripts/social-tiktok-oauth-init.mjs, scripts/social-tiktok-publish.mjs",
+    "132 uncommitted paths are present; review scope before release.",
+    "13 critical-path files changed: desktop/main/index.cjs, desktop/main/preload.cjs, desktop/main/services/database.mjs, scripts/agent-audit.mjs, scripts/capture-auth-workflow-proof.mjs, scripts/designer-visual-quality-check.mjs, scripts/r2-delete.mjs, scripts/refactor-website-opportunities.mjs, ...",
     "Master Controller review is recommended by routing."
   ],
-  "changedFileCount": 49,
+  "changedFileCount": 132,
   "criticalFiles": [
-    "package.json",
-    "scripts/social-post-ledger.mjs",
-    "scripts/social-tiktok-check.mjs",
-    "scripts/social-tiktok-oauth-init.mjs",
-    "scripts/social-tiktok-publish.mjs"
+    "desktop/main/index.cjs",
+    "desktop/main/preload.cjs",
+    "desktop/main/services/database.mjs",
+    "scripts/agent-audit.mjs",
+    "scripts/capture-auth-workflow-proof.mjs",
+    "scripts/designer-visual-quality-check.mjs",
+    "scripts/r2-delete.mjs",
+    "scripts/refactor-website-opportunities.mjs",
+    "src/server/__tests__/oauthUtils.test.js",
+    "src/server/__tests__/worker.test.js",
+    "src/server/audioRoutes.js",
+    "src/server/oauthUtils.js",
+    "src/server/worker.js"
   ],
   "checks": {
     "jobValidation": {
@@ -23,8 +31,9 @@
     },
     "routing": {
       "ok": true,
-      "assignmentCount": 8,
+      "assignmentCount": 12,
       "recommendedGates": [
+        "manual:refactor-website-patch-proposal before code changes",
         "npm run agent:audit -- --strict",
         "npm run agent:jobs:validate -- --strict-warnings",
         "npm run agent:notebooklm:brief",
@@ -32,8 +41,14 @@
         "npm run build",
         "npm run designer:visual:check -- --strict",
         "npm run desktop:test:logic",
+        "npm run guardian:risk",
         "npm run guardian:risk -- --strict",
-        "npm run website:profitability"
+        "npm run lint",
+        "npm run refactor:website:opportunities",
+        "npm run repository:monitor:strict",
+        "npm run test -- --run",
+        "npm run website:profitability",
+        "npx vitest run src/desktop/lib/__tests__/assistantCoverage.test.js"
       ]
     },
     "latestAudit": {

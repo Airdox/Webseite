@@ -61,7 +61,7 @@ const ASSISTANT_SCREENSHOTS = {
   'data-model': [SHARED_SCREENSHOTS.dataExplorer],
   'export-data': [SHARED_SCREENSHOTS.dataExplorer],
   'subscriber-management': [SHARED_SCREENSHOTS.dataExplorer],
-  'vip-users': [SHARED_SCREENSHOTS.dataExplorer],
+  'user-admin': [SHARED_SCREENSHOTS.dataExplorer],
   monitor: [SHARED_SCREENSHOTS.workbench],
   batch: [SHARED_SCREENSHOTS.workbench],
   'design-agent': [SHARED_SCREENSHOTS.workbench],

@@ -42,7 +42,7 @@ export const ASSISTANT_GUIDES = {
       'Bei Upload-Fehlern R2 und .env prüfen.',
       'Bei Manifest-Fehlern Draft-ID, Datei und Schreibrechte prüfen.',
       'Bei Build-Fehlern npm run build manuell ausführen und die erste Fehlermeldung beheben.',
-      'Bei Deploy-Fehlern Wrangler/Auth/Cloudflare prüfen.',
+      'Bei Deploy-Fehlern Wrangler und Cloudflare prüfen.',
       'Bei Verify-Fehlern Live-Seite, Set-ID und Track-Tokens kontrollieren.',
     ],
   },
@@ -62,13 +62,13 @@ export const ASSISTANT_GUIDES = {
       'Die Connection-URL muss vollständig sein und sslmode=require enthalten, wenn Neon es braucht.',
       'Neon-Dashboard öffnen und prüfen, ob die Datenbank schläft oder Credentials geändert wurden.',
       'Firewall, VPN und Internet prüfen.',
-      'Flight Deck bleibt für lokale Arbeit nutzbar, aber Analytics, VIP, Sessions und Stats können fehlen.',
+      'Flight Deck bleibt für lokale Arbeit nutzbar, aber Analytics, User, Sessions und Stats können fehlen.',
     ],
   },
   explorer: {
     quick: ['Data Explorer öffnen.', 'Tabelle wählen.', 'Suche/Filter nutzen.', 'Änderung oder Export ausführen.'],
     detailed: [
-      'track_stats für Set-Metriken, subscribers für Newsletter, users/sessions für VIP-Zugänge nutzen.',
+      'track_stats für Set-Metriken, subscribers für Newsletter, users/sessions für User-Konten nutzen.',
       'Vor Inline-Änderungen die konkrete Zeile über Suche eingrenzen.',
       'Read-only SQL nur für SELECT/WITH/EXPLAIN verwenden.',
       'Für externe Auswertung CSV exportieren, für technische Weiterverarbeitung JSON exportieren.',
@@ -147,7 +147,7 @@ export const ASSISTANT_GUIDES = {
     detailed: [
       'track_stats für Set-Metriken verwenden.',
       'analytics_logs für Ereignisse und Ursachenanalyse verwenden.',
-      'users und sessions für VIP-Zugänge verwenden.',
+      'users und sessions für User-Konten verwenden.',
       'subscribers und bookings für Kontakt- und Newsletter-Arbeit verwenden.',
       'Schreibende Änderungen nur über die vorgesehenen UI-Aktionen durchführen.',
     ],
@@ -231,11 +231,11 @@ export const ASSISTANT_GUIDES = {
       'Tour danach im Tutorial-Tab erneut starten oder abhaken.',
     ],
   },
-  'vip-users': {
+  'user-admin': {
     quick: ['Data Explorer öffnen.', 'users oder sessions wählen.', 'User anlegen oder Session widerrufen.'],
     detailed: [
-      'Für neue Zugänge users öffnen und Username, Email und Passwort setzen.',
-      'Für Login-Probleme Passwort resetten.',
+      'Für neue Konten users öffnen und Username, Email und Passwort setzen.',
+      'Für Session- oder Passwortprobleme Passwort resetten.',
       'Für aktive Zugriffe sessions öffnen und betroffene Session widerrufen.',
       'Nach Änderungen Refresh drücken und prüfen, ob die Zeile aktualisiert wurde.',
     ],

@@ -119,7 +119,6 @@
       "paths": [
         "src/components/BookingSection.jsx",
         "src/components/Newsletter.jsx",
-        "src/components/VIPSection.jsx",
         "src/components/EPKSection.jsx",
         "docs/agent-system/MANNI_*.md",
         "docs/agent-system/SOCIAL_PROMOTION_*.md",

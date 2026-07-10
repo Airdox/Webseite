@@ -25,7 +25,7 @@ Empfohlene gefuehrte Touren im Tool:
 - `Erste produktive Session`
 - `Szenario 2: Auswertung der Datenbank nach verschiedenen Kriterien`
 - `Szenario: Ein neues Set sauber veroeffentlichen`
-- `Szenario: VIP-User und Sessions verwalten`
+- `Szenario: User und Sessions verwalten`
 - `Szenario: Performance- oder Laufzeitproblem eingrenzen`
 
 ## Empfohlene Reihenfolge fuer den Alltag
@@ -67,7 +67,7 @@ Hier klaerst du vor jeder weiteren Aktion, ob du auf einem belastbaren Ausgangsz
 
 - `Refresh`: Laedt Snapshot, Git-Status und juengste Daten neu.
 - `Stats Sync`: Zieht fehlende `track_stats` fuer Manifest-IDs nach.
-- Metrik-Karten: `Sets im Manifest`, `Analytics Events`, `VIP User`, `Sessions`.
+- Metrik-Karten: `Sets im Manifest`, `Analytics Events`, `Users`, `Sessions`.
 - `Top Sets`: Ranking mit `plays`, `likes`, `last_played_at`.
 - `Git / Runtime`: Branch, Dirty-Status, Status, Bookings, Subscribers.
 - `Recent Analytics`: juengste Events mit Land, Geraet und Browser.
@@ -160,7 +160,7 @@ Der Data Explorer ist die Arbeitsflaeche fuer Rohdaten, Tabellenpflege, Exporte 
 - `analytics_logs`: Rohereignisse.
 - `bookings`: Buchungsanfragen.
 - `subscribers`: Newsletter-/Interessentenstatus.
-- `users`: VIP- oder Admin-User.
+- `users`: administrativ verwaltete Nutzer.
 - `sessions`: Aktive oder gespeicherte Sessions.
 
 ### Schritt fuer Schritt
@@ -191,7 +191,7 @@ Der Data Explorer ist die Arbeitsflaeche fuer Rohdaten, Tabellenpflege, Exporte 
 
 #### `users`
 
-- VIP-User anlegen
+- User anlegen
 - Passwort zuruecksetzen
 - User loeschen
 
@@ -441,7 +441,7 @@ Pruefe:
 - ob der Workspace wirklich geladen ist
 - `Sets im Manifest`
 - `Analytics Events`
-- `VIP User`
+- `Users`
 - `Sessions`
 - `Top Sets`
 - `Recent Analytics`

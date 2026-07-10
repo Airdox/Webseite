@@ -80,7 +80,7 @@ export const TUTORIAL_SECTIONS = [
       {
         name: 'Metrik-Karten',
         area: 'Mitte',
-        purpose: 'Fassen Manifest-Sets, Analytics-Events, VIP-User und Sessions zusammen.',
+        purpose: 'Fassen Manifest-Sets, Analytics-Events, User und Sessions zusammen.',
         howToUse: 'Lies die vier Karten zuerst gemeinsam, nicht isoliert. Eine unplausible Kombination ist oft wichtiger als eine einzelne Zahl.',
       },
       {
@@ -113,7 +113,7 @@ export const TUTORIAL_SECTIONS = [
       {
         title: '2. Metrik-Karten als Plausibilitaetscheck nutzen',
         detail: 'Die Karten zeigen, ob Manifest, Analytics und Admin-Daten in einem glaubwuerdigen Verhaeltnis stehen.',
-        action: 'Vergleiche `Sets im Manifest`, `Analytics Events`, `VIP User` und `Sessions` miteinander und mit deinem aktuellen Arbeitsziel.',
+        action: 'Vergleiche `Sets im Manifest`, `Analytics Events`, `User` und `Sessions` miteinander und mit deinem aktuellen Arbeitsziel.',
         expected: 'Du erkennst sofort, ob ueberhaupt aktuelle Daten geladen sind und ob die Datenbasis grob plausibel wirkt.',
         warning: 'Viele Sets im Manifest bei gleichzeitig leeren Stats oder Analytics sind ein Signal fuer fehlende Synchronisierung, nicht fuer echtes Nutzungsverhalten.',
       },
@@ -331,7 +331,7 @@ export const TUTORIAL_SECTIONS = [
       'Filtert tabellenweit ueber die Suchleiste.',
       'Exportiert die aktuelle Auswahl als CSV oder JSON.',
       'Erlaubt Inline-Bearbeitung in `track_stats` und `subscribers`.',
-      'Erlaubt VIP-User-Anlage, Passwort-Reset und Session-Revoke.',
+      'Erlaubt User-Anlage, Passwort-Reset und Session-Revoke.',
       'Fuehrt ausschliesslich Read-only SQL ueber `SELECT`, `WITH` oder `EXPLAIN` aus.',
     ],
     controls: [
@@ -374,7 +374,7 @@ export const TUTORIAL_SECTIONS = [
       {
         name: 'User Admin',
         area: 'users',
-        purpose: 'Legt VIP-User an, setzt Passwoerter zurueck und loescht User.',
+        purpose: 'Legt User an, setzt Passwoerter zurueck und loescht User.',
         howToUse: 'Dokumentiere administrative Eingriffe, vor allem Passwort-Resets und Kontoloeschungen.',
       },
       {
@@ -422,7 +422,7 @@ export const TUTORIAL_SECTIONS = [
       {
         title: '5. subscribers, users und sessions administrativ behandeln',
         detail: 'Diese Tabellen sind weniger Analyse, mehr Betrieb.',
-        action: 'Pflege Statuswerte, lege VIP-User an, setze Passwoerter zurueck oder widerrufe Sessions nur mit klarer Absicht.',
+        action: 'Pflege Statuswerte, lege User an, setze Passwoerter zurueck oder widerrufe Sessions nur mit klarer Absicht.',
         expected: 'Administrative Daten sind sauber und fuer Support oder Security nachvollziehbar.',
         warning: 'Gerade Passwort-Reset und User-Loeschung gehoeren nicht in hektische Nebenhandlungen.',
       },
@@ -1463,7 +1463,7 @@ export const TUTORIAL_TOURS = {
         description: 'Vor jeder fachlichen Auswertung muss klar sein, ob aktuelle Daten ueberhaupt geladen sind.',
         actions: [
           'Pruefe Workspace, Branch und ob der Workspace wirklich geladen ist.',
-          'Lies `Sets im Manifest`, `Analytics Events`, `VIP User` und `Sessions`.',
+          'Lies `Sets im Manifest`, `Analytics Events`, `User` und `Sessions`.',
           'Schaue auf `Top Sets` und `Recent Analytics`.',
         ],
         expectedResults: [
@@ -1540,7 +1540,7 @@ export const TUTORIAL_TOURS = {
         description: 'Nicht jede Analyse braucht diese Tabellen, aber bei Reporting oder Betriebskontrolle koennen sie relevant sein.',
         actions: [
           'Pruefe `subscribers`, wenn du Status oder Pflegezustand bewerten willst.',
-          'Pruefe `users`, wenn VIP- oder Admin-Zugaenge Teil der Systemkontrolle sind.',
+          'Pruefe `users`, wenn User- oder Admin-Zugaenge Teil der Systemkontrolle sind.',
           'Pruefe `sessions`, wenn du aktive oder verdaechtige Sitzungen bewerten willst.',
         ],
         expectedResults: [
@@ -1674,7 +1674,7 @@ export const TUTORIAL_TOURS = {
   },
   adminMaintenance: {
     id: 'adminMaintenance',
-    title: 'Szenario: VIP-User und Sessions verwalten',
+    title: 'Szenario: User und Sessions verwalten',
     description: 'Die gefuehrte Tour fuer administrative Kontrollen an Users, Subscribers und Sessions.',
     estimatedTime: '5-7 Min',
     intent: 'Administration',
@@ -1684,9 +1684,9 @@ export const TUTORIAL_TOURS = {
         title: '1. Overview: Administrativen Zustand lesen',
         tabId: 'overview',
         checklistId: 'overview',
-        description: 'Pruefe zuerst VIP-User- und Session-Zahlen auf Plausibilitaet.',
+        description: 'Pruefe zuerst User- und Session-Zahlen auf Plausibilitaet.',
         actions: [
-          'Lies `VIP User` und `Sessions` in den Metrik-Karten.',
+          'Lies `User` und `Sessions` in den Metrik-Karten.',
           'Pruefe Git- und Runtime-Kontext.',
         ],
         expectedResults: [
@@ -1695,7 +1695,7 @@ export const TUTORIAL_TOURS = {
       },
       {
         id: 'admin-users',
-        title: '2. Explorer: VIP-User verwalten',
+        title: '2. Explorer: User verwalten',
         tabId: 'explorer',
         checklistId: 'explorer',
         description: 'Lege User an, loesche alte Konten oder setze Passwoerter zurueck.',
@@ -1705,7 +1705,7 @@ export const TUTORIAL_TOURS = {
           'Fuehre nur bewusst administrative Aktionen aus.',
         ],
         expectedResults: [
-          'VIP-Zugaenge sind sauber gepflegt.',
+          'User-Konten sind sauber gepflegt.',
         ],
       },
       {

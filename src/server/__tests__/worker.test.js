@@ -1,13 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const handleSubscribeRequest = vi.fn();
-const handleAuthRequest = vi.fn();
 const handleAudienceEventRequest = vi.fn();
 
 vi.mock('../../lib/stats-logic.js', () => ({
     handleStatsRequest: vi.fn(),
     handleBookingRequest: vi.fn(),
-    handleAuthRequest,
     handleSubscribeRequest,
     handleAudienceEventRequest,
 }));
@@ -15,7 +13,6 @@ vi.mock('../../lib/stats-logic.js', () => ({
 describe('worker API routing', () => {
     beforeEach(() => {
         handleSubscribeRequest.mockReset();
-        handleAuthRequest.mockReset();
         handleAudienceEventRequest.mockReset();
     });
 
@@ -77,36 +74,64 @@ describe('worker API routing', () => {
         });
     });
 
-    it('exposes social providers for localhost dev social auth bypass', async () => {
+    it('does not expose removed auth and OAuth routes', async () => {
         const { default: worker } = await import('../worker.js');
-        const response = await worker.fetch(
-            new Request('http://localhost:8787/api/oauth/config'),
-            { ALLOW_DEV_SOCIAL_AUTH: 'true' },
-            {},
-        );
-        const body = await response.json();
-
-        expect(response.status).toBe(200);
-        expect(body).toEqual({ ok: true, providers: ['google', 'facebook'] });
+        for (const request of [
+            new Request('https://airdox.test/api/auth', { method: 'POST' }),
+            new Request('https://airdox.test/api/login', { method: 'POST' }),
+            new Request('https://airdox.test/api/register', { method: 'POST' }),
+            new Request('https://airdox.test/api/oauth/config'),
+            new Request('https://airdox.test/api/oauth/start'),
+            new Request('https://airdox.test/api/oauth/callback/google'),
+        ]) {
+            const response = await worker.fetch(request, {}, {});
+            expect(response.status).toBe(404);
+        }
     });
 
-    it('does not expose dev social providers on non-localhost origins', async () => {
+    it('serves TikTok review legal URLs directly before static assets', async () => {
+        const assetsFetch = vi.fn();
         const { default: worker } = await import('../worker.js');
-        const response = await worker.fetch(
-            new Request('https://airdox.test/api/oauth/config'),
-            { ALLOW_DEV_SOCIAL_AUTH: 'true' },
-            {},
-        );
-        const body = await response.json();
 
-        expect(response.status).toBe(200);
-        expect(body).toEqual({ ok: true, providers: [] });
+        for (const path of ['/terms-of-service', '/privacy-policy']) {
+            const response = await worker.fetch(
+                new Request(`https://airdox.test${path}`),
+                { ASSETS: { fetch: assetsFetch } },
+                {},
+            );
+
+            expect(response.status).toBe(200);
+            expect(response.headers.get('Content-Type')).toContain('text/html');
+            expect(response.headers.get('Location')).toBeNull();
+            expect(await response.text()).toContain('AIRDOX');
+        }
+
+        expect(assetsFetch).not.toHaveBeenCalled();
+    });
+
+    it('answers TikTok review HEAD checks without redirects', async () => {
+        const assetsFetch = vi.fn();
+        const { default: worker } = await import('../worker.js');
+
+        for (const path of ['/terms-of-service', '/privacy-policy']) {
+            const response = await worker.fetch(
+                new Request(`https://airdox.test${path}`, { method: 'HEAD' }),
+                { ASSETS: { fetch: assetsFetch } },
+                {},
+            );
+
+            expect(response.status).toBe(200);
+            expect(response.headers.get('Content-Type')).toContain('text/html');
+            expect(response.headers.get('Location')).toBeNull();
+        }
+
+        expect(assetsFetch).not.toHaveBeenCalled();
     });
 
     it('blocks direct full-file audio downloads without a Range header', async () => {
         const { default: worker } = await import('../worker.js');
         const response = await worker.fetch(
-            new Request('https://airdox.test/api/audio/recording_2026_05_07-2.mp3'),
+            new Request('https://airdox.test/api/audio/recording_2026_05_07_FULL.mp3'),
             {},
             {},
         );
@@ -131,7 +156,7 @@ describe('worker API routing', () => {
 
         const response = await worker.fetch(
             {
-                url: 'https://airdox.test/api/audio?file=recording_2026_05_07-2.mp3',
+                url: 'https://airdox.test/api/audio?file=recording_2026_05_07_FULL.mp3',
                 method: 'GET',
                 headers,
             },
@@ -143,8 +168,8 @@ describe('worker API routing', () => {
         expect(response.headers.get('Content-Range')).toBe('bytes 0-4/10');
         expect(response.headers.get('Content-Disposition')).toBe('inline');
         expect(await response.text()).toBe('abcde');
-        expect(get).toHaveBeenCalledWith('public/recording_2026_05_07-2.mp3');
-        expect(get).toHaveBeenCalledWith('public/recording_2026_05_07-2.mp3', {
+        expect(get).toHaveBeenCalledWith('public/recording_2026_05_07_FULL.mp3');
+        expect(get).toHaveBeenCalledWith('public/recording_2026_05_07_FULL.mp3', {
             range: { offset: 0, length: 5 },
         });
     });
@@ -165,7 +190,7 @@ describe('worker API routing', () => {
         expect(get).not.toHaveBeenCalled();
     });
 
-    it('requires a valid VIP token before streaming archive audio', async () => {
+    it('does not treat removed archive audio as streamable content', async () => {
         const get = vi.fn();
         const { default: worker } = await import('../worker.js');
 
@@ -177,8 +202,7 @@ describe('worker API routing', () => {
             {},
         );
 
-        expect(response.status).toBe(401);
+        expect(response.status).toBe(404);
         expect(get).not.toHaveBeenCalled();
-        expect(handleAuthRequest).not.toHaveBeenCalled();
     });
 });

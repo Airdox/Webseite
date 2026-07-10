@@ -245,7 +245,7 @@ export const deleteRecords = async (workspaceRoot, table, ids) => {
   }
 };
 
-export const createVipUser = async (workspaceRoot, { username, email, password }) => {
+export const createUser = async (workspaceRoot, { username, email, password }) => {
   await ensureInitialized(workspaceRoot);
   const sql = await getSql(workspaceRoot);
   const salt = randomBytes(16).toString('hex');
@@ -258,7 +258,7 @@ export const createVipUser = async (workspaceRoot, { username, email, password }
   return created;
 };
 
-export const resetVipPassword = async (workspaceRoot, { userId, password }) => {
+export const resetUserPassword = async (workspaceRoot, { userId, password }) => {
   await ensureInitialized(workspaceRoot);
   const sql = await getSql(workspaceRoot);
   const salt = randomBytes(16).toString('hex');

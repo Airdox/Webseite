@@ -8,7 +8,6 @@ import {
     VALID_UPDATE_TYPES,
 } from './statsContracts.js';
 import { ensureInitialized, getSqlClient } from './statsDatabase.js';
-export { handleAuthRequest } from './authRequestHandler.js';
 
 // --- STATS HANDLER ---
 export const handleStatsRequest = async ({

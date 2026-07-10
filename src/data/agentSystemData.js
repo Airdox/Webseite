@@ -119,8 +119,8 @@ export const agents = [
             en: 'Build, lint, Vitest, Playwright, CI gate, and clean tree status are checked.',
         },
         next: {
-            de: 'Booking, Auth und Analytics gezielt mit Security-Tests absichern.',
-            en: 'Add targeted security tests for booking, auth, and analytics.',
+            de: 'Booking, Audio-Streaming und Analytics gezielt mit Security-Tests absichern.',
+            en: 'Add targeted security tests for booking, audio streaming, and analytics.',
         },
     },
     {
@@ -132,8 +132,8 @@ export const agents = [
             en: 'Promotion, branding, EPK, community, PR campaigns, social reach operations, conversion, and memorability.',
         },
         proof: {
-            de: 'EPK, Booking, Newsletter, VIP, Social-Meta, Reels, Stories, Community-Reaktionen und Mehrsprachigkeit werden als Reichweitenhebel bewertet.',
-            en: 'EPK, booking, newsletter, VIP, social meta, Reels, Stories, community replies, and multilingual reach are scored.',
+            de: 'EPK, Booking, Newsletter, Social-Meta, Reels, Stories, Community-Reaktionen und Mehrsprachigkeit werden als Reichweitenhebel bewertet.',
+            en: 'EPK, booking, newsletter, social meta, Reels, Stories, community replies, and multilingual reach are scored.',
         },
         next: {
             de: 'Instagram-/Facebook-Reels, Stories, Kommentare, Collab-Anfragen und kleine Boost-Tests als freigabepflichtige Reach-Ops planen.',

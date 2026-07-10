@@ -1,25 +1,24 @@
-# AIRDOX Agenten-Qualitaetskette
+# AIRDOX Agent Quality Chain
 
-Erstellt: 2026-07-01T13:48:38.431Z
+Generated: 2026-07-09T20:09:57.764Z
 
-## Ueberblick
+## Summary
 
-- Geaenderte Dateien: 16
-- Geaenderte Testdateien: 0
-- Pflichten: 1
-- Hinweise: 1
+- Changed files: 11
+- Test files changed: 0
+- Obligations: 0
+- Alerts: 0
 
-## Pflichten
+## Obligations
 
-| ID | Owner | QA | Status | Erforderlicher Nachlauf | Gates |
+| ID | Owner | QA | Status | Required Follow-Up | Gates |
 | --- | --- | --- | --- | --- | --- |
-| script-api-quality-chain | Guardian | Guardian | validation_required | Guardian must run or request the narrow command that proves the changed script path. | `npm run agent:jobs:validate`<br>`npm run agent:audit -- --strict` |
 
-## Geaenderte Testdateien
+## Changed Test Files
 
-- Keine
+- None
 
-## Hinweise
+## Alerts
 
-- info: Guardian -> Guardian: Guardian must run or request the narrow command that proves the changed script path.
+- None
 

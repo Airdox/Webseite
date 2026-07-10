@@ -4,7 +4,6 @@ import './MusicSection.css';
 import { t } from '../utils/i18n';
 
 import { sets } from '../data/musicSets';
-import { partitionSetsByAccess } from '../lib/set-access';
 import { scrollToSetHash } from '../lib/set-links';
 import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { statsSync } from '../utils/stats-sync';
@@ -14,14 +13,13 @@ import useVinylAnimation from '../hooks/useVinylAnimation';
 import SetCard from './SetCard';
 import { parseTrackTimeToSeconds } from '../utils/timeUtils';
 import {
-    getStorageItem,
     readStorageJson,
     STORAGE_KEYS,
     WINDOW_EVENTS,
     writeStorageJson,
 } from '../utils/websiteContracts';
 
-const { publicSets } = partitionSetsByAccess(sets);
+const publicSets = sets;
 const FEATURED_SET_ID = 'recording_2026_05_24';
 
 const readAnimationModes = () => readStorageJson(STORAGE_KEYS.setAnimationModes, {});
@@ -241,18 +239,6 @@ const MusicSection = () => {
     const getSetStats = (setId) => globalStats[setId] || { plays: 0, likes: 0, dislikes: 0 };
     const getUserVote = (setId) => userVotes[setId];
 
-    const [isLoggedIn, setIsLoggedIn] = useState(!!getStorageItem(STORAGE_KEYS.authToken, ''));
-
-    useEffect(() => {
-        const checkLogin = () => setIsLoggedIn(!!getStorageItem(STORAGE_KEYS.authToken, ''));
-        window.addEventListener(WINDOW_EVENTS.loginSuccess, checkLogin);
-        window.addEventListener(WINDOW_EVENTS.logout, checkLogin);
-        return () => {
-            window.removeEventListener(WINDOW_EVENTS.loginSuccess, checkLogin);
-            window.removeEventListener(WINDOW_EVENTS.logout, checkLogin);
-        };
-    }, []);
-
     return (
         <section className="music-section section" id="music" ref={sectionRef}>
             <div className="container">
@@ -324,7 +310,6 @@ const MusicSection = () => {
                                 animationMode={animationModes[set.id] || 'billiard'}
                                 stats={stats}
                                 userVote={userVote}
-                                isLoggedIn={isLoggedIn}
                                 onPlayClick={handlePlayClick}
                                 onTrackClick={handleTrackClick}
                                 onAnimationModeChange={handleAnimationModeChange}

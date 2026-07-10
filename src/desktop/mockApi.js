@@ -62,7 +62,7 @@ const defaultTables = {
   subscribers: [
     {
       id: 1,
-      email: 'vip@airdox.info',
+      email: 'fan@airdox.info',
       status: 'active',
       created_at: '2026-05-18T12:00:00.000Z',
     },
@@ -494,14 +494,14 @@ export const mockFlightDeckApi = {
     saveJson(TABLES_KEY, tables);
     return true;
   },
-  async createVipUser(payload) {
+  async createUser(payload) {
     const tables = loadTables();
     const row = { id: nextId(tables.users), username: payload.username, email: payload.email, created_at: new Date().toISOString() };
     tables.users.unshift(row);
     saveJson(TABLES_KEY, tables);
     return row;
   },
-  async resetVipPassword() {
+  async resetUserPassword() {
     return true;
   },
   async revokeSession(payload) {
@@ -591,7 +591,7 @@ export const mockFlightDeckApi = {
     if (q.includes('skill') || q.includes('update') || q.includes('refactor') || q.includes('mai 2026') || q.includes('wiki') || q.includes('neu')) {
       return {
         source: 'local-13-recent-updates-may-2026.md',
-        answer: `Wiki-Treffer:\nAus local-13-recent-updates-may-2026.md: # Flight Deck Local Knowledge: Systemaktualisierungen Mai 2026\n\nStand: 22. Mai 2026\n\n1. Neue KI-Agenten-Skills (.agents/skills/):\n- airdox-social-publisher: Automatisches Herausschneiden von Teasern/Reels/Stories.\n- airdox-youtube-manager: Rendert Visualizer-Videos und automatisiert YouTube-Uploads.\n- airdox-brand-assets: Validiert und generiert brandkonforme SVGs.\n- airdox-epk-generator: Kompiliert das Electronic Press Kit als HTML und PDF.\n- airdox-tracklist-automation: Rekordbox-CUE-Import und MP3-Konvertierung.\n- airdox-quality-check: Gatekeeper für Lints, Tests und Audits.\n\n2. Refactoring der React-Komponenten:\n- Decomposition von GlobalPlayer und Hero in kleinere Subkomponenten.\n- Behebung des mobilen Vinyl-Cover-Animationsfehlers in SetCard.\n\n3. Upgrades im Data Explorer:\n- Filterknöpfe "Alle Sets" und "Live" zur gezielten VIP-Set-Ausblendung.\n\n4. Cloudflare Migration:\n- Vollständige Entfernung von Vercel und Netlify.`,
+        answer: `Wiki-Treffer:\nAus local-13-recent-updates-may-2026.md: # Flight Deck Local Knowledge: Systemaktualisierungen Mai 2026\n\nStand: 22. Mai 2026\n\n1. Neue KI-Agenten-Skills (.agents/skills/):\n- airdox-social-publisher: Automatisches Herausschneiden von Teasern/Reels/Stories.\n- airdox-youtube-manager: Rendert Visualizer-Videos und automatisiert YouTube-Uploads.\n- airdox-brand-assets: Validiert und generiert brandkonforme SVGs.\n- airdox-epk-generator: Kompiliert das Electronic Press Kit als HTML und PDF.\n- airdox-tracklist-automation: Rekordbox-CUE-Import und MP3-Konvertierung.\n- airdox-quality-check: Gatekeeper für Lints, Tests und Audits.\n\n2. Refactoring der React-Komponenten:\n- Decomposition von GlobalPlayer und Hero in kleinere Subkomponenten.\n- Behebung des mobilen Vinyl-Cover-Animationsfehlers in SetCard.\n\n3. Upgrades im Data Explorer:\n- Filterknöpfe "Alle Sets" und "Live" zur gezielten Archiv-Set-Filterung.\n\n4. Cloudflare Migration:\n- Vollständige Entfernung von Vercel und Netlify.`,
         actions: [],
       };
     }

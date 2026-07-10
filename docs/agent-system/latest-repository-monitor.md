@@ -1,38 +1,51 @@
-# AIRDOX Repository-Monitor
+# AIRDOX Repository Monitor
 
-Erstellt: 2026-07-01T13:45:54.865Z
+Generated: 2026-07-10T04:03:46.167Z
 Agent: Repository
 Repository: D:\webseeite-main
 Branch: codex/guardian-scope-cleanup
 
-## Ueberblick
+## Summary
 
 - Checks: 6
-- Fehler: 0
-- Warnungen: 3
-- Offene Pfade: 49
-- Unerwartete offene Pfade: 48
-- Baseline offene Pfade: 80
-- Versionierte generierte Artefakte (Review): 0
+- Failures: 0
+- Warnings: 3
+- Uncommitted paths: 132
+- Unexpected uncommitted paths: 128
+- Baseline uncommitted paths: 80
+- Tracked generated artifacts (review): 0
 
 ## Checks
 
-| Check | Stufe | Detail |
+| Check | Level | Detail |
 | --- | --- | --- |
 | branch-naming | WARN | Aktueller Branch: codex/guardian-scope-cleanup |
 | required-governance-files | PASS | Gefundene Governance-Dateien: 3/3 |
-| working-tree-cleanliness-total | WARN | 49 uncommitted Pfade insgesamt. |
-| working-tree-cleanliness | WARN | 48 unerwartete uncommitted Pfade (49 gesamt, 80 baseline) |
+| working-tree-cleanliness-total | WARN | 132 uncommitted Pfade insgesamt. |
+| working-tree-cleanliness | WARN | 128 unerwartete uncommitted Pfade (132 gesamt, 80 baseline) |
 | tracked-generated-artifacts | PASS | 0 potentiell generierte Artefaktpfade sind versioniert. |
 | root-html-duplication | PASS | 0 zusaetzliche Root-HTML-Dateien erkannt. |
 
-## Unerwartete offene Pfade
+## Unexpected Dirty Paths
 
+- M .gitignore
+- M desktop/main/index.cjs
+- M desktop/main/preload.cjs
+- M desktop/main/services/database.mjs
+- M docs/FLIGHT_DECK_TUTORIAL.md
+- M docs/WINDOWS_FLIGHTDECK.md
+- M docs/WINDOWS_FLIGHTDECK_TEST_MATRIX.md
 - M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - M docs/agent-system/AGENT_TRAINING_CATALOG.json
 - M docs/agent-system/AGENT_TRAINING_CATALOG.md
 - M docs/agent-system/MENTOR_POSTMORTEM_BANK.json
 - M docs/agent-system/MENTOR_POSTMORTEM_BANK.md
+- M docs/agent-system/agent-routing-rules.json
+- D  docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-01/01-airdox-block-assembly.svg
+- D  docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-01/02-airdox-stencil-industrial.svg
+- D  docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-01/03-daumenkino-wildstyle-controlled.svg
+- D  docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-01/04-fragment-glitch-type-drop.svg
+- D  docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-01/05-portrait-logo-lightgate.svg
 - M docs/agent-system/latest-agent-currency.json
 - M docs/agent-system/latest-agent-currency.md
 - M docs/agent-system/latest-agent-dependency-radar.json
@@ -50,6 +63,8 @@ Branch: codex/guardian-scope-cleanup
 - M docs/agent-system/latest-background-cycle.json
 - M docs/agent-system/latest-designer-portfolio.json
 - M docs/agent-system/latest-designer-portfolio.md
+- M docs/agent-system/latest-designer-visual-quality.json
+- M docs/agent-system/latest-designer-visual-quality.md
 - M docs/agent-system/latest-guardian-risk-summary.json
 - M docs/agent-system/latest-guardian-risk-summary.md
 - M docs/agent-system/latest-job-run.json
@@ -69,15 +84,80 @@ Branch: codex/guardian-scope-cleanup
 - M docs/agent-system/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
 - M docs/agent-system/manni-reel-weekly-plan.md
-- M docs/agent-system/reports/operations/AIRDOX_FREE_SOCIAL_AUTOMATION.md
-- M scripts/social-post-ledger.mjs
-- M scripts/social-tiktok-check.mjs
-- M scripts/social-tiktok-oauth-init.mjs
-- ?? docs/agent-system/designer-portfolio-output/
-- ?? docs/agent-system/reports/operations/TIKTOK_DIRECT_POST_STATUS_2026-06-25.md
-- ?? scripts/social-tiktok-publish.mjs
+- D  docs/auth-workflow-proof/01-login-modal-social-options.png
+- D  docs/auth-workflow-proof/02-registration-form-captcha-verified.png
+- D  docs/auth-workflow-proof/03-registration-success-login-ready.png
+- D  docs/auth-workflow-proof/04-password-login-success.png
+- D  docs/auth-workflow-proof/05-authenticated-vip-user-password-login.png
+- D  docs/auth-workflow-proof/06-authenticated-vip-user-google-social-login.png
+- D  docs/auth-workflow-proof/07-authenticated-vip-user-facebook-social-login.png
+- D  docs/auth-workflow-proof/README.md
+- M public/_redirects
+- D  public/airdox-analytics-report.html
+- M public/llms.txt
+- D public/privacy-policy/index.html
+- D public/terms-of-service/index.html
+- M scripts/agent-audit.mjs
+- D  scripts/capture-auth-workflow-proof.mjs
+- M scripts/designer-visual-quality-check.mjs
+- M scripts/r2-delete.mjs
+- M scripts/refactor-website-opportunities.mjs
+- M src/App.jsx
+- D src/components/AuthModal.css
+- D src/components/AuthModal.jsx
+- D src/components/AuthModalFields.jsx
+- D src/components/AuthSocialButtons.jsx
+- D src/components/AuthSocialProviderIcon.jsx
+- D src/components/IndustrialDashboard.css
+- D src/components/IndustrialDashboard.jsx
+- M src/components/MusicSection.css
+- M src/components/MusicSection.jsx
+- M src/components/Navigation.css
+- M src/components/Navigation.jsx
+- M src/components/SetCard.jsx
+- D src/components/TurnstileCaptcha.jsx
+- D src/components/VIPSection.css
+- D src/components/VIPSection.jsx
+- M src/components/Visualizer.jsx
+- D src/components/__tests__/AuthModal.test.jsx
+- M src/components/__tests__/MusicSection.test.jsx
+- D src/components/__tests__/authModalUtils.test.js
+- D src/components/authModalUtils.js
+- M src/contexts/__tests__/audioSources.test.js
+- M src/contexts/audioSources.js
+- M src/data/__tests__/musicSets.test.js
+- M src/data/agentSystemData.js
+- M src/desktop/DesktopApp.jsx
+- M src/desktop/__tests__/DesktopControls.test.jsx
+- M src/desktop/components/AssistantTab.jsx
+- M src/desktop/components/DataExplorerTab.jsx
+- M src/desktop/components/OverviewTab.jsx
+- M src/desktop/lib/__tests__/assistantCoverage.test.js
+- M src/desktop/lib/assistantEngine.js
+- M src/desktop/lib/assistantGuides.js
+- M src/desktop/lib/assistantKnowledge.js
+- M src/desktop/lib/tableDefinitions.js
+- M src/desktop/lib/tutorialContent.js
+- D src/lib/__tests__/authHelpers.test.js
+- M src/lib/__tests__/set-access.test.js
+- D src/lib/authHelpers.js
+- D src/lib/authRequestHandler.js
+- M src/lib/set-access.js
+- M src/lib/stats-logic.js
+- M src/lib/statsContracts.js
+- M src/lib/statsDatabase.js
+- D src/server/__tests__/oauthUtils.test.js
+- M src/server/__tests__/worker.test.js
+- M src/server/audioRoutes.js
+- D src/server/oauthUtils.js
+- M src/server/worker.js
+- M src/styles/global.css
+- M src/utils/__tests__/websiteContracts.test.js
+- M src/utils/analytics/index.js
+- M src/utils/i18nMessages.js
+- M src/utils/websiteContracts.js
 
-## Baseline fuer offene Pfade
+## Dirty Baseline Paths
 
 - M .env.example
 - M README.md
@@ -160,13 +240,26 @@ Branch: codex/guardian-scope-cleanup
 - ?? scripts/master-controller-gate.mjs
 - ?? scripts/repository-monitor.mjs
 
-## Alle offenen Pfade
+## All Dirty Paths
 
+- M .gitignore
+- M desktop/main/index.cjs
+- M desktop/main/preload.cjs
+- M desktop/main/services/database.mjs
+- M docs/FLIGHT_DECK_TUTORIAL.md
+- M docs/WINDOWS_FLIGHTDECK.md
+- M docs/WINDOWS_FLIGHTDECK_TEST_MATRIX.md
 - M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - M docs/agent-system/AGENT_TRAINING_CATALOG.json
 - M docs/agent-system/AGENT_TRAINING_CATALOG.md
 - M docs/agent-system/MENTOR_POSTMORTEM_BANK.json
 - M docs/agent-system/MENTOR_POSTMORTEM_BANK.md
+- M docs/agent-system/agent-routing-rules.json
+- D  docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-01/01-airdox-block-assembly.svg
+- D  docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-01/02-airdox-stencil-industrial.svg
+- D  docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-01/03-daumenkino-wildstyle-controlled.svg
+- D  docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-01/04-fragment-glitch-type-drop.svg
+- D  docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-01/05-portrait-logo-lightgate.svg
 - M docs/agent-system/latest-agent-currency.json
 - M docs/agent-system/latest-agent-currency.md
 - M docs/agent-system/latest-agent-dependency-radar.json
@@ -184,6 +277,8 @@ Branch: codex/guardian-scope-cleanup
 - M docs/agent-system/latest-background-cycle.json
 - M docs/agent-system/latest-designer-portfolio.json
 - M docs/agent-system/latest-designer-portfolio.md
+- M docs/agent-system/latest-designer-visual-quality.json
+- M docs/agent-system/latest-designer-visual-quality.md
 - M docs/agent-system/latest-guardian-risk-summary.json
 - M docs/agent-system/latest-guardian-risk-summary.md
 - M docs/agent-system/latest-job-run.json
@@ -203,21 +298,90 @@ Branch: codex/guardian-scope-cleanup
 - M docs/agent-system/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
 - M docs/agent-system/manni-reel-weekly-plan.md
-- M docs/agent-system/reports/operations/AIRDOX_FREE_SOCIAL_AUTOMATION.md
-- M package.json
-- M scripts/social-post-ledger.mjs
-- M scripts/social-tiktok-check.mjs
-- M scripts/social-tiktok-oauth-init.mjs
-- ?? docs/agent-system/designer-portfolio-output/
-- ?? docs/agent-system/reports/operations/TIKTOK_DIRECT_POST_STATUS_2026-06-25.md
-- ?? scripts/social-tiktok-publish.mjs
+- D  docs/auth-workflow-proof/01-login-modal-social-options.png
+- D  docs/auth-workflow-proof/02-registration-form-captcha-verified.png
+- D  docs/auth-workflow-proof/03-registration-success-login-ready.png
+- D  docs/auth-workflow-proof/04-password-login-success.png
+- D  docs/auth-workflow-proof/05-authenticated-vip-user-password-login.png
+- D  docs/auth-workflow-proof/06-authenticated-vip-user-google-social-login.png
+- D  docs/auth-workflow-proof/07-authenticated-vip-user-facebook-social-login.png
+- D  docs/auth-workflow-proof/README.md
+- M eslint.config.js
+- M public/_redirects
+- D  public/airdox-analytics-report.html
+- M public/llms.txt
+- D public/privacy-policy/index.html
+- M public/robots.txt
+- D public/terms-of-service/index.html
+- M scripts/agent-audit.mjs
+- D  scripts/capture-auth-workflow-proof.mjs
+- M scripts/designer-visual-quality-check.mjs
+- M scripts/r2-delete.mjs
+- M scripts/refactor-website-opportunities.mjs
+- M src/App.jsx
+- D src/components/AuthModal.css
+- D src/components/AuthModal.jsx
+- D src/components/AuthModalFields.jsx
+- D src/components/AuthSocialButtons.jsx
+- D src/components/AuthSocialProviderIcon.jsx
+- M src/components/Hero.jsx
+- D src/components/IndustrialDashboard.css
+- D src/components/IndustrialDashboard.jsx
+- M src/components/MusicSection.css
+- M src/components/MusicSection.jsx
+- M src/components/Navigation.css
+- M src/components/Navigation.jsx
+- M src/components/SetCard.jsx
+- D src/components/TurnstileCaptcha.jsx
+- D src/components/VIPSection.css
+- D src/components/VIPSection.jsx
+- M src/components/Visualizer.jsx
+- D src/components/__tests__/AuthModal.test.jsx
+- M src/components/__tests__/MusicSection.test.jsx
+- D src/components/__tests__/authModalUtils.test.js
+- D src/components/authModalUtils.js
+- M src/contexts/__tests__/audioSources.test.js
+- M src/contexts/audioSources.js
+- M src/data/__tests__/musicSets.test.js
+- M src/data/agentSystemData.js
+- M src/desktop/DesktopApp.jsx
+- M src/desktop/__tests__/DesktopControls.test.jsx
+- M src/desktop/components/AssistantTab.jsx
+- M src/desktop/components/DataExplorerTab.jsx
+- M src/desktop/components/OverviewTab.jsx
+- M src/desktop/lib/__tests__/assistantCoverage.test.js
+- M src/desktop/lib/assistantEngine.js
+- M src/desktop/lib/assistantGuides.js
+- M src/desktop/lib/assistantKnowledge.js
+- M src/desktop/lib/tableDefinitions.js
+- M src/desktop/lib/tutorialContent.js
+- M src/desktop/mockApi.js
+- D src/lib/__tests__/authHelpers.test.js
+- M src/lib/__tests__/set-access.test.js
+- D src/lib/authHelpers.js
+- D src/lib/authRequestHandler.js
+- M src/lib/set-access.js
+- M src/lib/stats-logic.js
+- M src/lib/statsContracts.js
+- M src/lib/statsDatabase.js
+- D src/server/__tests__/oauthUtils.test.js
+- M src/server/__tests__/worker.test.js
+- M src/server/audioRoutes.js
+- D src/server/oauthUtils.js
+- M src/server/worker.js
+- M src/styles/global.css
+- M src/utils/__tests__/websiteContracts.test.js
+- M src/utils/analytics/index.js
+- M src/utils/i18nMessages.js
+- M src/utils/websiteContracts.js
 
-## Versionierte generierte Artefakte
+## Tracked Generated Artifacts
 
-- Keine
+- none
 
-## Letzte Commits
+## Recent Commits
 
+- cf03914 chore: daily autopush 2026-07-02 02:32 +02:00
 - 76647ef Refresh agent system reports
 - 4159007 Fix latest set hero indicator
 - 87ab297 chore: daily autopush 2026-06-24 22:31 +02:00
@@ -227,5 +391,4 @@ Branch: codex/guardian-scope-cleanup
 - ff66782 Deduplicate musicSets: keep single FeTe de la Music entry
 - 3220e1e test: clean up process imports for web quality
 - 703cd0b chore(agent-system): snapshot scoped reports and flightdeck fixes
-- 1d64571 chore: daily autopush 2026-06-06 01:53 +02:00
 

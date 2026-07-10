@@ -13,7 +13,7 @@ const MONTHS = {
   DEC: 11,
 };
 
-export const PUBLIC_SET_COUNT = 4;
+export const PUBLIC_SET_COUNT = Number.POSITIVE_INFINITY;
 const toTimestamp = (value) => {
   if (!value) return Number.NaN;
   const parsed = Date.parse(String(value));
@@ -99,31 +99,35 @@ export const partitionSetsByAccess = (allSets = [], publicCount = PUBLIC_SET_COU
       return left.index - right.index;
     });
 
+  const resolvedPublicCount = publicCount === Number.POSITIVE_INFINITY
+    ? ranked.length
+    : Math.max(0, Number(publicCount) || 0);
+
   const publicIdSet = new Set(
     ranked
-      .slice(0, Math.max(0, Number(publicCount) || 0))
+      .slice(0, resolvedPublicCount)
       .map((entry) => entry.set?.id)
       .filter(Boolean),
   );
-  const vipIdSet = new Set(
+  const restrictedIdSet = new Set(
     ranked
-      .slice(Math.max(0, Number(publicCount) || 0))
+      .slice(resolvedPublicCount)
       .map((entry) => entry.set?.id)
       .filter(Boolean),
   );
 
   const publicSets = [];
-  const vipSets = [];
+  const restrictedSets = [];
 
   for (const set of allSets) {
     if (publicIdSet.has(set?.id)) {
       publicSets.push(set);
     } else {
-      vipSets.push(set);
+      restrictedSets.push(set);
     }
   }
 
-  return { publicSets, vipSets, publicIdSet, vipIdSet };
+  return { publicSets, restrictedSets, publicIdSet, restrictedIdSet };
 };
 
 export const isPublicSet = (set, publicIdSet) => Boolean(set?.id && publicIdSet?.has(set.id));
@@ -141,11 +145,9 @@ export const normalizeAudioFilename = (filename = '') => {
 export const normalizeAudioBaseFilename = (filename = '') => normalizeAudioFilename(filename)
   .replace(/_part\d{3}(?=\.mp3$)/i, '')
   .replace(/_full(?=\.mp3$)/i, '');
-export const buildAudioApiHref = (filename = '', token = '') => {
+export const buildAudioApiHref = (filename = '') => {
   const trimmed = String(filename || '').trim();
   if (!trimmed) return '/api/audio';
   const encodedFile = encodeURIComponent(trimmed);
-  if (!token) return `/api/audio/${encodedFile}`;
-  const params = new URLSearchParams({ token });
-  return `/api/audio/${encodedFile}?${params.toString()}`;
+  return `/api/audio/${encodedFile}`;
 };

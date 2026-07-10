@@ -196,7 +196,7 @@ const agents = [
     [
       'Guardian-Strict-Gate fuer Releases verwenden: npm run agent:audit -- --strict plus build/test/lint.',
       'Bekannte Alt-Lintfehler als debt register dokumentieren und schrittweise abbauen.',
-      'Security-Checks fuer Booking, Auth und Analytics als gezielte Tests ergaenzen.',
+      'Security-Checks fuer Booking, Newsletter und Analytics als gezielte Tests ergaenzen.',
     ],
   ),
   agent(
@@ -209,20 +209,19 @@ const agents = [
         'src/components/EPKSection.jsx',
         'src/components/BookingSection.jsx',
         'src/components/Newsletter.jsx',
-        'src/components/VIPSection.jsx',
-      ].every(exists), 'EPK, Booking, Newsletter und VIP sind als Website-Sektionen vorhanden.', { weight: 1.5 }),
+      ].every(exists), 'EPK, Booking und Newsletter sind als Website-Sektionen vorhanden.', { weight: 1.5 }),
       check('Social Sharing Assets', exists('public/og-image.png') && /twitter:card/.test(read('index.html')), 'OG/Twitter-Basis ist vorhanden.'),
       optional('Social Profile Signale', /sameAs/.test(read('index.html')) && /instagram|soundcloud/i.test(read('index.html')), 'JSON-LD verweist auf Social-/Music-Profile.'),
       optional('EPK ohne Platzhalter-Aktionen', !/alert\s*\(/.test(read('src/components/EPKSection.jsx')), 'Warnung, wenn EPK-Downloads nur per alert/Placeholder reagieren.'),
       optional('Newsletter API geroutet', /api\/subscribe|subscribe/i.test(read('src/server/worker.js')), 'Warnung, wenn Newsletter-Frontend keinen Worker-Route-Anker hat.'),
       check('Sitemap fuer Suchmaschinen', exists('public/sitemap.xml') && /https:\/\/airdox\.info/.test(read('public/sitemap.xml')), 'Sitemap ist vorhanden und auf airdox.info ausgerichtet.'),
       optional('Mehrsprachigkeit als Reichweitenhebel', exists('en/index.html') && /hreflang="en"/.test(read('index.html')), 'Englische Variante und hreflang sind vorhanden.'),
-      optional('Merch-/Community-Flache', /merch|community|newsletter|vip/i.test(read('src/components/Newsletter.jsx') + read('src/components/VIPSection.jsx')), 'Newsletter/VIP bieten Ansatzpunkte fuer Community oder Merch.'),
+      optional('Merch-/Community-Flache', /merch|community|newsletter/i.test(read('src/components/Newsletter.jsx')), 'Der Newsletter bietet Ansatzpunkte fuer Community oder Merch.'),
     ],
     [
       'EPK als klare Download-/Presseseite mit aktuellen Assets und Tech-Rider erweitern.',
       'Kampagnenkalender fuer Releases, Sets, Newsletter und Social Clips im Wiki fuehren.',
-      'Conversion Events fuer Booking, Newsletter, VIP und Set-Play sichtbar auswerten.',
+      'Conversion Events fuer Booking, Newsletter und Set-Play sichtbar auswerten.',
     ],
   ),
   agent(
