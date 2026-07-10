@@ -294,7 +294,7 @@
     background: rgba(0, 245, 255, 0.05);
     border: 1px solid rgba(0, 245, 255, 0.2);
     border-radius: var(--border-radius-full);
-    margin-bottom: var(--space-8);
+    margin: calc(var(--space-6) * -0.35) 0 var(--space-6);
     opacity: 0;
     animation: fadeInUp 0.8s 0.2s forwards;
 }
@@ -324,7 +324,7 @@
     font-size: var(--text-hero);
     font-weight: 900;
     line-height: 0.9;
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-3);
     letter-spacing: -0.03em;
     /* Title animation timing (AIRDOX = 6 letters) */
     --title-letter-count: 6;

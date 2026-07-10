@@ -99,6 +99,7 @@ docs/agent-system/reports/proof/
 docs/agent-system/download.png
 .codex-devserver/
 .codex-remote-attachments/
+.playwright-cli/
 # Python cache
 __pycache__/
 *.py[cod]

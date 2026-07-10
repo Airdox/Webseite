@@ -114,6 +114,7 @@ const Navigation = ({ theme = 'dark', onToggleTheme = () => {} }) => {
                         ))}
                     </div>
 
+                    <div className="nav-utilities">
                     <label className="theme-switch" title={isLightTheme ? t('nav.theme.dark') : t('nav.theme.light')}>
                         <input
                             type="checkbox"
@@ -146,16 +147,6 @@ const Navigation = ({ theme = 'dark', onToggleTheme = () => {} }) => {
                             EN
                         </a>
                     </div>
-
-                    {/* CTA Buttons */}
-                    <div className="nav-ctas">
-                        <a
-                            href="mailto:airdox82@gmail.com"
-                            className="nav-action-btn nav-action-contact interactive"
-                            onClick={() => trackNav('contact_email')}
-                        >
-                            {t('nav.contact')}
-                        </a>
                     </div>
 
                     {/* Mobile Menu Button */}

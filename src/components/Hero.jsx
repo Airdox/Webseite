@@ -76,14 +76,13 @@ const Hero = () => {
 
             {/* Main Content */}
             <div className={`hero-content ${loaded ? 'loaded' : ''}`}>
-                {/* Pre-title Badge */}
+                {/* Main Title */}
+                <HeroTitle title={TITLE} loaded={loaded} />
+
                 <div className="hero-badge">
                     <span className="badge-dot"></span>
                     <span className="badge-text">{t('hero.badge')}</span>
                 </div>
-
-                {/* Main Title */}
-                <HeroTitle title={TITLE} loaded={loaded} />
 
                 {/* Tagline */}
                 <div className="hero-tagline">
