@@ -34,7 +34,7 @@ const getEnv = (key) => process.env[key] || getUserEnv(key);
 const clientKey = getEnv('TIKTOK_CLIENT_KEY') || getArg('--client-key');
 const clientSecret = getEnv('TIKTOK_CLIENT_SECRET') || getArg('--client-secret');
 const redirectUri = getArg('--redirect-uri', 'https://airdox.info/oauth/tiktok/callback');
-const scope = getArg('--scope', 'user.info.basic,video.upload,video.publish');
+const scope = getArg('--scope', 'user.info.basic,video.publish');
 const callbackUrl = getArg('--callback-url');
 const codeArg = getArg('--code');
 const state = getArg('--state', randomBytes(16).toString('hex'));

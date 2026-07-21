@@ -3,6 +3,7 @@ import {
   CircleAlert, Database, LayoutDashboard, RadioTower, UploadCloud,
   BarChart3, Settings2, Package, Activity, BookOpen, Rocket, Bot,
   RefreshCw, Gauge, ListChecks, Sparkles, Palette, ArrowLeft,
+  AudioWaveform,
 } from 'lucide-react';
 import { flightDeckApi } from './api.js';
 import OverviewTab from './components/OverviewTab.jsx';
@@ -17,6 +18,7 @@ import TutorialTab from './components/TutorialTab.jsx';
 import AssistantTab from './components/AssistantTab.jsx';
 import ManniApprovalTab from './components/ManniApprovalTab.jsx';
 import DesignAgentTab from './components/DesignAgentTab.jsx';
+import AudioMasteringTab from './components/AudioMasteringTab.jsx';
 import GuidedTutorialOverlay from './components/GuidedTutorialOverlay.jsx';
 import { TUTORIAL_TOURS } from './lib/tutorialContent.js';
 import { formatFlightDeckErrorHelp } from './lib/assistantEngine.js';
@@ -78,6 +80,13 @@ const TABS = [
     group: 'publish',
     icon: Package,
     description: 'Mehrere Sets als Queue vorbereiten und kontrolliert live stellen.',
+  },
+  {
+    id: 'audio-mastering',
+    label: 'Audio Mastering',
+    group: 'publish',
+    icon: AudioWaveform,
+    description: 'Live-Sets analysieren, klanglich optimieren und technisch verifiziert exportieren.',
   },
   {
     id: 'marketing',
@@ -292,6 +301,14 @@ const DesktopApp = () => {
   const [isBatchRunning, setIsBatchRunning] = useState(false);
   const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
   const batchCancelRef = useRef(false);
+  const [audioProfiles, setAudioProfiles] = useState({});
+  const [audioSourcePath, setAudioSourcePath] = useState('');
+  const [audioConfig, setAudioConfig] = useState({ profileId: 'liveBalanced' });
+  const [audioAnalysis, setAudioAnalysis] = useState(null);
+  const [audioResult, setAudioResult] = useState(null);
+  const [audioProgress, setAudioProgress] = useState(0);
+  const [audioBusy, setAudioBusy] = useState(false);
+  const audioJobIdRef = useRef('');
   const designStudioOpenedRef = useRef(false);
   const [systemStats, setSystemStats] = useState({});
   const [manniCampaignState, setManniCampaignState] = useState(null);
@@ -474,6 +491,22 @@ const DesktopApp = () => {
   useEffect(() => {
     refreshState();
   }, []);
+
+  useEffect(() => {
+    if (activeTab !== 'audio-mastering' || Object.keys(audioProfiles).length) return;
+    flightDeckApi.getAudioMasteringProfiles()
+      .then((profiles) => {
+        setAudioProfiles(profiles || {});
+        const standard = profiles?.liveBalanced;
+        if (standard) setAudioConfig({ ...standard, profileId: 'liveBalanced' });
+      })
+      .catch((error) => setNotice({ tone: 'error', message: error.message }));
+  }, [activeTab, audioProfiles]);
+
+  useEffect(() => flightDeckApi.onAudioMasteringProgress?.((update) => {
+    if (!audioJobIdRef.current || update?.jobId !== audioJobIdRef.current) return;
+    setAudioProgress(Number(update.progress || 0));
+  }), []);
 
   useEffect(() => {
     markTutorialVisited(activeTab);
@@ -1172,6 +1205,61 @@ const DesktopApp = () => {
     window.location.assign(`${window.location.pathname || '/desktop.html'}`);
   }, []);
 
+  const selectAudioForMastering = async () => {
+    const selected = await runAsyncAction(() => flightDeckApi.pickAudioMasteringFile());
+    if (!selected) return;
+    setAudioSourcePath(selected);
+    setAudioAnalysis(null);
+    setAudioResult(null);
+    setAudioProgress(0);
+  };
+
+  const analyzeAudioForMastering = async () => {
+    setAudioBusy(true);
+    try {
+      const result = await flightDeckApi.analyzeAudio({ sourcePath: audioSourcePath, config: audioConfig });
+      setAudioAnalysis(result);
+      setAudioResult(null);
+      setAudioProgress(0);
+      setNotice({ tone: 'success', message: 'Audioanalyse abgeschlossen. Zielwerte und Quelldaten sind geprüft.' });
+    } catch (error) {
+      setNotice({ tone: 'error', message: error.message });
+    } finally {
+      setAudioBusy(false);
+    }
+  };
+
+  const renderAudioMaster = async () => {
+    const jobId = `audio-${Date.now()}`;
+    audioJobIdRef.current = jobId;
+    setAudioBusy(true);
+    setAudioProgress(0);
+    try {
+      const result = await flightDeckApi.masterAudio({
+        jobId,
+        sourcePath: audioSourcePath,
+        workspaceRoot: settingsDraft?.workspaceRoot,
+        config: audioConfig,
+      });
+      setAudioResult({ ...result, playbackUrl: result.outputPlaybackUrl });
+      setAudioProgress(100);
+      setNotice({ tone: 'success', message: `Mastering verifiziert: ${result.outputPath}` });
+    } catch (error) {
+      setNotice({ tone: 'error', message: error.message });
+    } finally {
+      audioJobIdRef.current = '';
+      setAudioBusy(false);
+    }
+  };
+
+  const resetAudioMastering = () => {
+    const standard = audioProfiles.liveBalanced;
+    setAudioConfig(standard ? { ...standard, profileId: 'liveBalanced' } : { profileId: 'liveBalanced' });
+    setAudioAnalysis(null);
+    setAudioResult(null);
+    setAudioProgress(0);
+  };
+
   const renderTab = () => {
     if (activeTab === 'overview') {
       return (
@@ -1266,6 +1354,40 @@ const DesktopApp = () => {
           publishLogs={publishLogs}
           lastPublish={lastPublish}
           publishStatus={publishStatus}
+        />
+      );
+    }
+
+    if (activeTab === 'audio-mastering') {
+      return (
+        <AudioMasteringTab
+          sourcePath={audioSourcePath}
+          analysis={audioAnalysis}
+          result={audioResult}
+          config={audioConfig}
+          profiles={audioProfiles}
+          busy={audioBusy}
+          progress={audioProgress}
+          onSelect={selectAudioForMastering}
+          onAnalyze={analyzeAudioForMastering}
+          onRender={renderAudioMaster}
+          onCancel={() => flightDeckApi.cancelAudioMastering({ jobId: audioJobIdRef.current })}
+          onReveal={() => flightDeckApi.revealPath({ filePath: audioResult?.outputPath })}
+          onReset={resetAudioMastering}
+          onConfigChange={(field, value) => {
+            setAudioConfig((current) => ({ ...current, [field]: value }));
+            setAudioAnalysis(null);
+            setAudioResult(null);
+            setAudioProgress(0);
+          }}
+          onProfileChange={(profileId) => {
+            const profile = audioProfiles[profileId];
+            if (!profile) return;
+            setAudioConfig({ ...profile, profileId });
+            setAudioAnalysis(null);
+            setAudioResult(null);
+            setAudioProgress(0);
+          }}
         />
       );
     }

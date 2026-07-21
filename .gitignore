@@ -66,6 +66,13 @@ playwright-report/
 test-results/
 output/playwright/
 
+# Local test coverage and review artifacts
+coverage/
+coverage-desktop/
+artifacts/
+.codex/
+NUL
+
 # Local temporary debug artifacts
 tmp-*
 .tmp_liveinspect/

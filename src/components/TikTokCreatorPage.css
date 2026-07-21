@@ -1,0 +1,66 @@
+.tiktok-creator-page {
+    min-height: 100vh;
+    padding: 0 clamp(1.25rem, 5vw, 5rem) 3rem;
+    color: var(--text-primary);
+    background:
+        radial-gradient(circle at 15% 20%, rgba(0, 245, 255, 0.14), transparent 32rem),
+        radial-gradient(circle at 85% 45%, rgba(255, 0, 170, 0.12), transparent 34rem),
+        var(--bg-void);
+}
+
+.tiktok-creator-header { max-width: 1100px; margin: 0 auto; min-height: 88px; display: flex; align-items: center; justify-content: space-between; }
+.tiktok-creator-brand { color: var(--text-primary); font: 800 1.4rem/1 var(--font-heading); letter-spacing: .16em; text-decoration: none; }
+.tiktok-creator-home, .tiktok-creator-footer a { color: var(--neon-cyan); text-underline-offset: .25rem; }
+.tiktok-creator-hero { max-width: 850px; margin: clamp(4rem, 10vw, 8rem) auto 3rem; text-align: center; }
+.tiktok-creator-kicker { color: var(--neon-cyan); font: 700 .78rem/1.3 var(--font-mono); letter-spacing: .15em; text-transform: uppercase; }
+.tiktok-creator-hero h1 { margin: 1.25rem 0; font: 700 clamp(2.4rem, 7vw, 5.5rem)/.98 var(--font-heading); letter-spacing: -.045em; }
+.tiktok-creator-hero > p:last-child { max-width: 710px; margin: 0 auto; color: var(--text-secondary); font-size: 1.1rem; line-height: 1.75; }
+.tiktok-creator-steps { max-width: 1100px; margin: 0 auto 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.tiktok-creator-steps article, .tiktok-creator-card, .tiktok-creator-safety { border: 1px solid var(--border-medium); border-radius: var(--border-radius-lg); background: var(--bg-glass-strong); box-shadow: var(--shadow-soft); backdrop-filter: var(--blur-glass); }
+.tiktok-creator-steps article { padding: 1.5rem; }
+.tiktok-creator-steps article > span { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; color: #001014; background: var(--neon-cyan); font-weight: 800; }
+.tiktok-creator-steps h2 { margin: 1rem 0 .5rem; font-size: 1.15rem; }
+.tiktok-creator-steps p, .tiktok-creator-safety p, .tiktok-creator-card p { color: var(--text-secondary); line-height: 1.65; }
+.tiktok-creator-card, .tiktok-creator-safety { max-width: 760px; margin: 1rem auto; padding: clamp(1.4rem, 4vw, 2.5rem); }
+.tiktok-creator-card h2, .tiktok-creator-safety h2 { margin-bottom: .65rem; font-size: clamp(1.4rem, 3vw, 2rem); }
+.tiktok-creator-account { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center; padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-medium); }
+.tiktok-creator-account img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
+.tiktok-creator-account small, .tiktok-creator-account strong { display: block; }
+.tiktok-creator-account small { color: var(--text-muted); margin-bottom: .2rem; }
+.tiktok-creator-account span { display: block; margin-top: .25rem; color: var(--text-muted); font-size: .85rem; }
+.tiktok-creator-button { display: inline-flex; justify-content: center; margin-top: 1.2rem; padding: .95rem 1.35rem; border: 0; border-radius: var(--border-radius-full); color: #001014; background: var(--neon-cyan); font: 800 .95rem/1 var(--font-body); text-decoration: none; cursor: pointer; }
+.tiktok-creator-button:disabled { opacity: .45; cursor: not-allowed; }
+.tiktok-creator-link-button { border: 0; color: var(--neon-cyan); background: transparent; text-decoration: underline; text-underline-offset: .25rem; cursor: pointer; }
+.tiktok-creator-file { display: block; padding: 1.25rem; border: 1px dashed var(--border-glow); border-radius: var(--border-radius-md); }
+.tiktok-creator-file > span, .tiktok-creator-file small { display: block; }
+.tiktok-creator-file > span { margin-bottom: .75rem; font-weight: 700; }
+.tiktok-creator-file small { margin-top: .65rem; color: var(--text-muted); }
+.tiktok-creator-file input { width: 100%; color: var(--text-secondary); }
+.tiktok-creator-preview { display: block; width: min(100%, 420px); max-height: 520px; margin: 1.25rem auto; border: 1px solid var(--border-medium); border-radius: var(--border-radius-md); background: #000; }
+.tiktok-creator-field { display: grid; gap: .55rem; margin-top: 1.25rem; }
+.tiktok-creator-field > span, .tiktok-creator-fieldset legend { font-weight: 700; }
+.tiktok-creator-field textarea, .tiktok-creator-field select { width: 100%; padding: .85rem 1rem; border: 1px solid var(--border-medium); border-radius: var(--border-radius-sm); color: var(--text-primary); background: rgba(4, 8, 14, .85); font: inherit; box-sizing: border-box; }
+.tiktok-creator-field small, .tiktok-creator-fieldset small { color: var(--text-muted); }
+.tiktok-creator-fieldset { margin: 1.25rem 0 0; padding: 1rem 1.15rem 1.15rem; border: 1px solid var(--border-medium); border-radius: var(--border-radius-md); }
+.tiktok-creator-fieldset .tiktok-creator-check { margin-top: .75rem; }
+.tiktok-creator-subchoices { margin: .85rem 0 0 1.8rem; padding-left: 1rem; border-left: 2px solid var(--border-glow); }
+.tiktok-creator-subchoices p { margin: 0; font-size: .9rem; }
+.tiktok-creator-subchoices .tiktok-creator-disclosure-label { margin-top: .9rem; color: var(--neon-cyan); font-weight: 700; }
+.tiktok-creator-check { display: flex; align-items: flex-start; gap: .7rem; margin-top: 1.25rem; color: var(--text-secondary); line-height: 1.5; }
+.tiktok-creator-check input { width: 1.1rem; height: 1.1rem; margin-top: .15rem; accent-color: var(--neon-cyan); }
+.tiktok-creator-check input:disabled + span { opacity: .5; }
+.tiktok-creator-check a { color: var(--neon-cyan); }
+.tiktok-creator-declaration { padding: 1rem; border: 1px solid var(--border-glow); border-radius: var(--border-radius-sm); }
+.tiktok-creator-processing-note { margin: 1.25rem 0 0; font-size: .9rem; }
+.tiktok-creator-inline-error { color: #ff6f91 !important; }
+.tiktok-creator-success, .tiktok-creator-error, .tiktok-creator-notice { margin-top: 1.25rem; padding: 1rem; border-radius: var(--border-radius-sm); }
+.tiktok-creator-success { background: rgba(0, 255, 136, .1); border: 1px solid rgba(0, 255, 136, .25); }
+.tiktok-creator-error { background: rgba(255, 0, 80, .1); border: 1px solid rgba(255, 0, 80, .25); }
+.tiktok-creator-footer { max-width: 760px; margin: 2rem auto 0; display: flex; justify-content: center; gap: 1.5rem; color: var(--text-muted); }
+
+@media (max-width: 720px) {
+    .tiktok-creator-steps { grid-template-columns: 1fr; }
+    .tiktok-creator-account { grid-template-columns: auto 1fr; }
+    .tiktok-creator-account .tiktok-creator-link-button { grid-column: 1 / -1; justify-self: start; }
+    .tiktok-creator-footer { flex-wrap: wrap; }
+}

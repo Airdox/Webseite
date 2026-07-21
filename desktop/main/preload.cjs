@@ -10,6 +10,16 @@ contextBridge.exposeInMainWorld('flightDeckApi', {
   createMarketingDraftRequest: (payload) => ipcRenderer.invoke('flightdeck:create-marketing-draft-request', payload),
   selectWorkspace: () => ipcRenderer.invoke('flightdeck:select-workspace'),
   pickImportFiles: () => ipcRenderer.invoke('flightdeck:pick-import-files'),
+  getAudioMasteringProfiles: () => ipcRenderer.invoke('flightdeck:get-audio-mastering-profiles'),
+  pickAudioMasteringFile: () => ipcRenderer.invoke('flightdeck:pick-audio-mastering-file'),
+  analyzeAudio: (payload) => ipcRenderer.invoke('flightdeck:analyze-audio', payload),
+  masterAudio: (payload) => ipcRenderer.invoke('flightdeck:master-audio', payload),
+  cancelAudioMastering: (payload) => ipcRenderer.invoke('flightdeck:cancel-audio-mastering', payload),
+  onAudioMasteringProgress: (callback) => {
+    const listener = (_event, update) => callback(update);
+    ipcRenderer.on('flightdeck:audio-mastering-progress', listener);
+    return () => ipcRenderer.removeListener('flightdeck:audio-mastering-progress', listener);
+  },
   prepareImport: (payload) => ipcRenderer.invoke('flightdeck:prepare-import', payload),
   publishSet: (payload) => ipcRenderer.invoke('flightdeck:publish-set', payload),
   listTable: (payload) => ipcRenderer.invoke('flightdeck:list-table', payload),

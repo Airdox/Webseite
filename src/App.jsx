@@ -20,6 +20,7 @@ import SetNotification from './components/SetNotification';
 import CookieBanner from './components/CookieBanner';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import AtmosphericBackground from './components/AtmosphericBackground';
+import TikTokCreatorPage from './components/TikTokCreatorPage';
 import { audienceEvents } from './utils/audienceSignals';
 import './styles/global.css';
 
@@ -53,6 +54,7 @@ function App() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [theme, setTheme] = useState(getInitialTheme);
   const trackedSectionsRef = useRef(new Set());
+  const isTikTokCreatorPage = typeof window !== 'undefined' && window.location.pathname === '/tiktok-creator';
 
   const toggleTheme = () => setTheme((current) => (current === 'light' ? 'dark' : 'light'));
 
@@ -175,6 +177,7 @@ function App() {
   return (
     <ToastProvider>
       <AudioProvider>
+        {isTikTokCreatorPage ? <TikTokCreatorPage /> : <>
         <LoadingScreen progress={loadingProgress} isLoaded={!loading} />
         <div className="app">
           <SmoothScroll>
@@ -202,6 +205,7 @@ function App() {
           </SmoothScroll>
           <CookieBanner />
         </div>
+        </>}
       </AudioProvider>
     </ToastProvider>
   );

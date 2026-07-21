@@ -2,6 +2,22 @@
 
 Dieses Log speichert strategische Entscheidungen des Multi-Agenten-Systems. Kurze Eintraege sind beabsichtigt: Datum, Kontext, Entscheidung, Risiko, Recheck.
 
+## 2026-07-10 - Evidenzpflicht fuer Berichte
+
+Kontext:
+- Nutzeranforderung: Berichte muessen einen realen, nachvollziehbaren Bezug zu ihren Quellen haben; Platzhalter, ausgedachte Kennzahlen und scheinbare Fakten ohne Beleg sind nicht akzeptabel.
+
+Entscheidung:
+- `REPORTING_EVIDENCE_POLICY.md` ist fuer alle Agentenberichte verbindlich.
+- Datenbank-, Manifest-, Agentenreport- und Interpretationsdaten werden getrennt gekennzeichnet.
+- Fehlende Daten bleiben als Datenluecke sichtbar; sie duerfen nicht durch angenommene Werte oder ausformulierte Geschichten ersetzt werden.
+
+Risiko:
+- Strikte Evidenzpflicht kann Berichte kuerzer machen, wenn die Datenbasis nicht reicht. Das ist beabsichtigt und sicherer als eine scheinbar vollstaendige Darstellung.
+
+Recheck:
+- Vor jeder Berichtsausgabe Quelle, Abfragezeit und Berechnungsweg jeder Kennzahl pruefen.
+
 ## 2026-06-06 - Mentor-Agentenbildung wird operativer Monatsprozess
 
 Kontext:

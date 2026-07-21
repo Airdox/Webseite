@@ -32,14 +32,20 @@
   </url>
   <url>
     <loc>https://airdox.info/privacy-policy</loc>
-    <lastmod>2026-06-01</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://airdox.info/terms-of-service</loc>
-    <lastmod>2026-06-01</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://airdox.info/tiktok-creator</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

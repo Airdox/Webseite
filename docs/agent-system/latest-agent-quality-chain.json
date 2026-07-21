@@ -1,21 +1,54 @@
 {
-  "generatedAt": "2026-07-09T20:09:57.764Z",
+  "generatedAt": "2026-07-21T08:49:26.299Z",
   "controller": "Master Controller",
   "job": "agent-quality-chain",
   "purpose": "Turn changed code into explicit test, validation, and owner follow-up obligations.",
-  "changedFileCount": 11,
+  "changedFileCount": 44,
   "changedFiles": [
+    ".env.example",
+    "desktop/main/index.cjs",
+    "desktop/main/preload.cjs",
     "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md",
     "docs/agent-system/AGENT_TRAINING_CATALOG.json",
     "docs/agent-system/AGENT_TRAINING_CATALOG.md",
+    "docs/agent-system/DECISION_LOG.md",
     "docs/agent-system/MENTOR_POSTMORTEM_BANK.json",
     "docs/agent-system/MENTOR_POSTMORTEM_BANK.md",
     "docs/agent-system/manni-reel-draft-pack.md",
     "docs/agent-system/manni-reel-queue.json",
     "docs/agent-system/manni-reel-weekly-plan.md",
-    "docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-02/",
-    "docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-04/",
-    "docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-09/"
+    "package-lock.json",
+    "package.json",
+    "public/privacy-policy.html",
+    "public/sitemap.xml",
+    "public/terms-of-service.html",
+    "scripts/social-tiktok-oauth-init.mjs",
+    "src/App.jsx",
+    "src/components/Footer.jsx",
+    "src/data/__tests__/musicSets.test.js",
+    "src/data/musicSets.js",
+    "src/desktop/DesktopApp.jsx",
+    "src/desktop/desktop.css",
+    "src/desktop/mockApi.js",
+    "src/server/__tests__/worker.test.js",
+    "src/server/legalPages.js",
+    "src/server/worker.js",
+    ".codex/",
+    "NUL",
+    "artifacts/",
+    "coverage-desktop/",
+    "coverage/",
+    "desktop/main/services/audioMastering.mjs",
+    "docs/agent-system/REPORTING_EVIDENCE_POLICY.md",
+    "e2e/flightdeck-audio-mastering.spec.js",
+    "src/components/TikTokCreatorPage.css",
+    "src/components/TikTokCreatorPage.jsx",
+    "src/desktop/__tests__/AudioMasteringService.test.js",
+    "src/desktop/__tests__/AudioMasteringTab.test.jsx",
+    "src/desktop/components/AudioMasteringTab.jsx",
+    "src/server/__tests__/tiktokCreator.test.js",
+    "src/server/tiktokCreator.js",
+    "vitest.desktop.config.js"
   ],
   "routingAssignments": [
     {
@@ -28,7 +61,8 @@
         "docs/agent-system/latest-website-profitability.md",
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md"
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "src/data/musicSets.js"
       ],
       "rules": [
         "audience-intelligence"
@@ -50,9 +84,14 @@
       "role": "review",
       "files": [
         "docs/agent-system/latest-designer-portfolio.json",
-        "docs/agent-system/latest-designer-portfolio.md"
+        "docs/agent-system/latest-designer-portfolio.md",
+        "src/components/TikTokCreatorPage.css",
+        "src/desktop/__tests__/AudioMasteringTab.test.jsx",
+        "src/desktop/components/AudioMasteringTab.jsx",
+        "src/desktop/desktop.css"
       ],
       "rules": [
+        "desktop-experience-design",
         "visual-quality"
       ]
     },
@@ -60,6 +99,12 @@
       "agent": "Guardian",
       "role": "review",
       "files": [
+        ".codex/",
+        ".env.example",
+        "NUL",
+        "artifacts/",
+        "coverage-desktop/",
+        "coverage/",
         "docs/agent-system/latest-agent-currency.json",
         "docs/agent-system/latest-agent-currency.md",
         "docs/agent-system/latest-agent-dependency-radar.json",
@@ -86,9 +131,21 @@
         "docs/agent-system/latest-repository-monitor.json",
         "docs/agent-system/latest-repository-monitor.md",
         "docs/agent-system/latest-wiki-sync-audit.json",
-        "docs/agent-system/latest-wiki-sync-audit.md"
+        "docs/agent-system/latest-wiki-sync-audit.md",
+        "e2e/flightdeck-audio-mastering.spec.js",
+        "package-lock.json",
+        "package.json",
+        "scripts/social-tiktok-oauth-init.mjs",
+        "src/server/__tests__/tiktokCreator.test.js",
+        "src/server/__tests__/worker.test.js",
+        "src/server/legalPages.js",
+        "src/server/tiktokCreator.js",
+        "src/server/worker.js",
+        "vitest.desktop.config.js"
       ],
-      "rules": []
+      "rules": [
+        "quality-security"
+      ]
     },
     {
       "agent": "Manni",
@@ -96,7 +153,8 @@
       "files": [
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md"
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "scripts/social-tiktok-oauth-init.mjs"
       ],
       "rules": [
         "growth-conversion"
@@ -106,6 +164,12 @@
       "agent": "Master Controller",
       "role": "review",
       "files": [
+        ".codex/",
+        ".env.example",
+        "NUL",
+        "artifacts/",
+        "coverage-desktop/",
+        "coverage/",
         "docs/agent-system/latest-agent-currency.json",
         "docs/agent-system/latest-agent-currency.md",
         "docs/agent-system/latest-agent-dependency-radar.json",
@@ -132,7 +196,9 @@
         "docs/agent-system/latest-repository-monitor.json",
         "docs/agent-system/latest-repository-monitor.md",
         "docs/agent-system/latest-wiki-sync-audit.json",
-        "docs/agent-system/latest-wiki-sync-audit.md"
+        "docs/agent-system/latest-wiki-sync-audit.md",
+        "e2e/flightdeck-audio-mastering.spec.js",
+        "vitest.desktop.config.js"
       ],
       "rules": []
     },
@@ -143,11 +209,10 @@
         "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md",
         "docs/agent-system/AGENT_TRAINING_CATALOG.json",
         "docs/agent-system/AGENT_TRAINING_CATALOG.md",
+        "docs/agent-system/DECISION_LOG.md",
         "docs/agent-system/MENTOR_POSTMORTEM_BANK.json",
         "docs/agent-system/MENTOR_POSTMORTEM_BANK.md",
-        "docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-02/",
-        "docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-04/",
-        "docs/agent-system/designer-portfolio-output/sissygut-airdox-portfolio-2026-07-09/",
+        "docs/agent-system/REPORTING_EVIDENCE_POLICY.md",
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
         "docs/agent-system/manni-reel-weekly-plan.md"
@@ -155,9 +220,205 @@
       "rules": [
         "learning-documentation"
       ]
+    },
+    {
+      "agent": "Refactor",
+      "role": "implementation_support",
+      "files": [
+        "desktop/main/services/audioMastering.mjs",
+        "src/components/Footer.jsx",
+        "src/components/TikTokCreatorPage.jsx",
+        "src/data/__tests__/musicSets.test.js",
+        "src/data/musicSets.js",
+        "src/desktop/DesktopApp.jsx",
+        "src/desktop/__tests__/AudioMasteringService.test.js",
+        "src/desktop/__tests__/AudioMasteringTab.test.jsx",
+        "src/desktop/components/AudioMasteringTab.jsx",
+        "src/desktop/mockApi.js",
+        "src/server/__tests__/tiktokCreator.test.js",
+        "src/server/__tests__/worker.test.js",
+        "src/server/legalPages.js",
+        "src/server/tiktokCreator.js",
+        "src/server/worker.js"
+      ],
+      "rules": [
+        "refactor-architecture"
+      ]
+    },
+    {
+      "agent": "Webbie",
+      "role": "primary",
+      "files": [
+        "public/privacy-policy.html",
+        "public/sitemap.xml",
+        "public/terms-of-service.html",
+        "src/App.jsx",
+        "src/components/Footer.jsx",
+        "src/components/TikTokCreatorPage.css",
+        "src/components/TikTokCreatorPage.jsx"
+      ],
+      "rules": [
+        "website-experience"
+      ]
+    },
+    {
+      "agent": "Winnie",
+      "role": "primary",
+      "files": [
+        "desktop/main/index.cjs",
+        "desktop/main/preload.cjs",
+        "desktop/main/services/audioMastering.mjs",
+        "package.json",
+        "src/desktop/DesktopApp.jsx",
+        "src/desktop/__tests__/AudioMasteringService.test.js",
+        "src/desktop/__tests__/AudioMasteringTab.test.jsx",
+        "src/desktop/components/AudioMasteringTab.jsx",
+        "src/desktop/desktop.css",
+        "src/desktop/mockApi.js"
+      ],
+      "rules": [
+        "desktop-flightdeck"
+      ]
     }
   ],
-  "testFiles": [],
-  "obligations": [],
-  "alerts": []
+  "testFiles": [
+    "src/data/__tests__/musicSets.test.js",
+    "src/server/__tests__/worker.test.js",
+    "e2e/flightdeck-audio-mastering.spec.js",
+    "src/desktop/__tests__/AudioMasteringService.test.js",
+    "src/desktop/__tests__/AudioMasteringTab.test.jsx",
+    "src/server/__tests__/tiktokCreator.test.js"
+  ],
+  "obligations": [
+    {
+      "id": "website-ui-quality-chain",
+      "owner": "Webbie",
+      "qaAgent": "Guardian",
+      "designAgent": "Designer",
+      "status": "test_changes_present",
+      "scope": [
+        "src/App.jsx",
+        "src/components/Footer.jsx",
+        "src/components/TikTokCreatorPage.css",
+        "src/components/TikTokCreatorPage.jsx"
+      ],
+      "reason": "Website/UI files changed; user-facing behavior must not rely on manual inspection only.",
+      "requiredGates": [
+        "npm run lint",
+        "npm run test -- --run",
+        "npm run build"
+      ],
+      "requiredFollowUp": "Guardian must verify that changed tests cover the changed UI path.",
+      "userTouchpoint": "Only ask user if expected behavior or content is ambiguous.",
+      "expectedNearbyTests": [
+        "src/components/__tests__",
+        "src/__tests__",
+        "e2e"
+      ]
+    },
+    {
+      "id": "desktop-ui-quality-chain",
+      "owner": "Winnie",
+      "qaAgent": "Guardian",
+      "designAgent": "Designer",
+      "status": "test_changes_present",
+      "scope": [
+        "desktop/main/index.cjs",
+        "desktop/main/preload.cjs",
+        "src/desktop/DesktopApp.jsx",
+        "src/desktop/desktop.css",
+        "src/desktop/mockApi.js",
+        "desktop/main/services/audioMastering.mjs",
+        "src/desktop/__tests__/AudioMasteringService.test.js",
+        "src/desktop/__tests__/AudioMasteringTab.test.jsx",
+        "src/desktop/components/AudioMasteringTab.jsx"
+      ],
+      "reason": "Desktop/Flight Deck UI changed; logic tests and, for visible changes, E2E proof must follow.",
+      "requiredGates": [
+        "npm run desktop:test:logic",
+        "npm run desktop:test:e2e"
+      ],
+      "requiredFollowUp": "Guardian must verify that Desktop tests cover the changed tab/menu/control behavior.",
+      "userTouchpoint": "Only ask user if workflow intent or acceptance criteria are unclear.",
+      "expectedNearbyTests": [
+        "src/desktop/__tests__/DesktopApp.test.jsx",
+        "src/desktop/__tests__/DesktopControls.test.jsx",
+        "e2e/desktop-flightdeck.spec.js"
+      ]
+    },
+    {
+      "id": "script-api-quality-chain",
+      "owner": "Guardian",
+      "qaAgent": "Guardian",
+      "designAgent": "",
+      "status": "test_changes_present",
+      "scope": [
+        "desktop/main/index.cjs",
+        "desktop/main/preload.cjs",
+        "scripts/social-tiktok-oauth-init.mjs",
+        "src/server/__tests__/worker.test.js",
+        "src/server/legalPages.js",
+        "src/server/worker.js",
+        "desktop/main/services/audioMastering.mjs",
+        "src/server/__tests__/tiktokCreator.test.js",
+        "src/server/tiktokCreator.js"
+      ],
+      "reason": "Scripts/server/desktop main logic changed; command validation or tests must prove behavior.",
+      "requiredGates": [
+        "npm run agent:jobs:validate",
+        "npm run agent:audit -- --strict"
+      ],
+      "requiredFollowUp": "Guardian must run or request the narrow command that proves the changed script path.",
+      "userTouchpoint": "Only ask user for credentials or live-system approval if a validation needs external access.",
+      "expectedNearbyTests": [
+        "scripts",
+        "src/desktop/__tests__",
+        "docs/agent-system/latest-job-run.md"
+      ]
+    },
+    {
+      "id": "user-facing-change-watch",
+      "owner": "Master Controller",
+      "qaAgent": "Guardian",
+      "designAgent": "Designer",
+      "status": "watch",
+      "scope": [
+        "desktop/main/index.cjs",
+        "desktop/main/preload.cjs",
+        "docs/agent-system/DECISION_LOG.md",
+        "package-lock.json",
+        "public/privacy-policy.html",
+        "public/terms-of-service.html",
+        "src/App.jsx",
+        "src/data/musicSets.js",
+        "src/desktop/DesktopApp.jsx",
+        "src/desktop/desktop.css",
+        "src/server/legalPages.js",
+        "src/server/worker.js",
+        "src/desktop/__tests__/AudioMasteringTab.test.jsx",
+        "src/desktop/components/AudioMasteringTab.jsx"
+      ],
+      "reason": "A menu, navigation, tab, section, button, modal, or visible feature may have changed.",
+      "requiredGates": [
+        "route-specific test",
+        "visual/safe-area review when visible"
+      ],
+      "requiredFollowUp": "Responsible primary agent must confirm tests exist for the new entry point and failure path.",
+      "userTouchpoint": "Ask user for acceptance only after a working preview or clear behavior summary exists.",
+      "expectedNearbyTests": [
+        "src/desktop/__tests__/DesktopApp.test.jsx",
+        "src/desktop/__tests__/DesktopControls.test.jsx",
+        "e2e/desktop-flightdeck.spec.js"
+      ]
+    }
+  ],
+  "alerts": [
+    {
+      "id": "user-facing-change-watch",
+      "owner": "Master Controller",
+      "qaAgent": "Guardian",
+      "severity": "info",
+      "message": "Responsible primary agent must confirm tests exist for the new entry point and failure path."
+    }
+  ]
 }

@@ -1,28 +1,26 @@
 {
-  "generatedAt": "2026-07-10T04:03:47.931Z",
+  "generatedAt": "2026-07-21T08:42:53.078Z",
   "riskLevel": "medium",
   "ok": true,
   "blockers": [],
   "warnings": [
-    "132 uncommitted paths are present; review scope before release.",
-    "13 critical-path files changed: desktop/main/index.cjs, desktop/main/preload.cjs, desktop/main/services/database.mjs, scripts/agent-audit.mjs, scripts/capture-auth-workflow-proof.mjs, scripts/designer-visual-quality-check.mjs, scripts/r2-delete.mjs, scripts/refactor-website-opportunities.mjs, ...",
+    "79 uncommitted paths are present; review scope before release.",
+    "11 critical-path files changed: desktop/main/index.cjs, desktop/main/preload.cjs, package-lock.json, package.json, scripts/social-tiktok-oauth-init.mjs, src/server/__tests__/worker.test.js, src/server/legalPages.js, src/server/worker.js, ...",
     "Master Controller review is recommended by routing."
   ],
-  "changedFileCount": 132,
+  "changedFileCount": 79,
   "criticalFiles": [
     "desktop/main/index.cjs",
     "desktop/main/preload.cjs",
-    "desktop/main/services/database.mjs",
-    "scripts/agent-audit.mjs",
-    "scripts/capture-auth-workflow-proof.mjs",
-    "scripts/designer-visual-quality-check.mjs",
-    "scripts/r2-delete.mjs",
-    "scripts/refactor-website-opportunities.mjs",
-    "src/server/__tests__/oauthUtils.test.js",
+    "package-lock.json",
+    "package.json",
+    "scripts/social-tiktok-oauth-init.mjs",
     "src/server/__tests__/worker.test.js",
-    "src/server/audioRoutes.js",
-    "src/server/oauthUtils.js",
-    "src/server/worker.js"
+    "src/server/legalPages.js",
+    "src/server/worker.js",
+    "desktop/main/services/audioMastering.mjs",
+    "src/server/__tests__/tiktokCreator.test.js",
+    "src/server/tiktokCreator.js"
   ],
   "checks": {
     "jobValidation": {
@@ -31,7 +29,7 @@
     },
     "routing": {
       "ok": true,
-      "assignmentCount": 12,
+      "assignmentCount": 10,
       "recommendedGates": [
         "manual:refactor-website-patch-proposal before code changes",
         "npm run agent:audit -- --strict",
@@ -45,10 +43,8 @@
         "npm run guardian:risk -- --strict",
         "npm run lint",
         "npm run refactor:website:opportunities",
-        "npm run repository:monitor:strict",
         "npm run test -- --run",
-        "npm run website:profitability",
-        "npx vitest run src/desktop/lib/__tests__/assistantCoverage.test.js"
+        "npm run website:profitability"
       ]
     },
     "latestAudit": {

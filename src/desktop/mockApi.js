@@ -427,6 +427,24 @@ export const mockFlightDeckApi = {
   async pickImportFiles() {
     return [];
   },
+  async getAudioMasteringProfiles() {
+    throw new Error('Audio-Mastering benötigt die Electron-Desktop-App und lokales FFmpeg.');
+  },
+  async pickAudioMasteringFile() {
+    throw new Error('Dateiauswahl für Audio-Mastering ist nur in der Electron-Desktop-App verfügbar.');
+  },
+  async analyzeAudio() {
+    throw new Error('Reale Audioanalyse ist im Browser deaktiviert. Starte die Electron-Desktop-App.');
+  },
+  async masterAudio() {
+    throw new Error('Reales Audio-Mastering ist im Browser deaktiviert. Starte die Electron-Desktop-App.');
+  },
+  async cancelAudioMastering() {
+    return false;
+  },
+  onAudioMasteringProgress() {
+    return () => {};
+  },
   async prepareImport() {
     return {
       draft: {

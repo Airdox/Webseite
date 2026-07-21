@@ -190,19 +190,29 @@ describe('worker API routing', () => {
         expect(get).not.toHaveBeenCalled();
     });
 
-    it('does not treat removed archive audio as streamable content', async () => {
-        const get = vi.fn();
+    it('streams archived public audio through byte ranges', async () => {
+        const get = vi.fn(async (key, options) => {
+            if (options?.range) return { key, size: 10, body: 'abcde' };
+            return { key, size: 10, body: '0123456789' };
+        });
         const { default: worker } = await import('../worker.js');
 
+        const headers = {
+            get: (name) => (String(name).toLowerCase() === 'range' ? 'bytes=0-4' : null),
+            entries: () => [['range', 'bytes=0-4']][Symbol.iterator](),
+        };
         const response = await worker.fetch(
-            new Request('https://airdox.test/api/audio/Airdox_REC_2026_03_15.mp3', {
-                headers: { range: 'bytes=0-4' },
-            }),
+            {
+                url: 'https://airdox.test/api/audio?file=Airdox_REC_2026_03_15.mp3',
+                method: 'GET',
+                headers,
+            },
             { PUBLIC: { get } },
             {},
         );
 
-        expect(response.status).toBe(404);
-        expect(get).not.toHaveBeenCalled();
+        expect(response.status).toBe(206);
+        expect(await response.text()).toBe('abcde');
+        expect(get).toHaveBeenCalledWith('public/Airdox_REC_2026_03_15.mp3');
     });
 });
