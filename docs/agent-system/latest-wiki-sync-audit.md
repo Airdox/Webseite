@@ -1,12 +1,12 @@
 # AIRDOX Wiki Sync Audit
 
-Generated: 2026-07-09T20:10:00.871Z
+Erstellt: 2026-07-21T08:52:48.601Z
 Status: warn
 
-## Summary
+## Ueberblick
 
-- Changed files: 44
-- Content / project files: 41
+- Geaenderte Dateien: 77
+- Content / project files: 64
 - Wiki / Assistant knowledge files: 0
 - Owner: Master Controller -> Wiki Maintainer
 
@@ -16,9 +16,12 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 
 ## Content Files
 
+- desktop/main/index.cjs
+- desktop/main/preload.cjs
 - docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - docs/agent-system/AGENT_TRAINING_CATALOG.json
 - docs/agent-system/AGENT_TRAINING_CATALOG.md
+- docs/agent-system/DECISION_LOG.md
 - docs/agent-system/MENTOR_POSTMORTEM_BANK.json
 - docs/agent-system/MENTOR_POSTMORTEM_BANK.md
 - docs/agent-system/latest-agent-currency.json
@@ -57,10 +60,30 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 - docs/agent-system/manni-reel-draft-pack.md
 - docs/agent-system/manni-reel-queue.json
 - docs/agent-system/manni-reel-weekly-plan.md
+- package.json
+- scripts/social-tiktok-oauth-init.mjs
+- src/components/Footer.jsx
+- src/data/__tests__/musicSets.test.js
+- src/data/musicSets.js
+- src/desktop/DesktopApp.jsx
+- src/desktop/desktop.css
+- src/desktop/mockApi.js
+- src/server/__tests__/worker.test.js
+- src/server/legalPages.js
+- src/server/worker.js
+- desktop/main/services/audioMastering.mjs
+- docs/agent-system/REPORTING_EVIDENCE_POLICY.md
+- src/components/TikTokCreatorPage.css
+- src/components/TikTokCreatorPage.jsx
+- src/desktop/__tests__/AudioMasteringService.test.js
+- src/desktop/__tests__/AudioMasteringTab.test.jsx
+- src/desktop/components/AudioMasteringTab.jsx
+- src/server/__tests__/tiktokCreator.test.js
+- src/server/tiktokCreator.js
 
 ## Knowledge Files
 
-- None
+- Keine
 
 ## Gates
 

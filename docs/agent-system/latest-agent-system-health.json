@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T20:17:24.882Z",
+  "generatedAt": "2026-07-21T08:55:39.764Z",
   "controller": "Master Controller",
   "job": "agent-system-health",
   "summary": {
@@ -9,8 +9,8 @@
     "manualJobCount": 23,
     "externalLiveJobCount": 5,
     "reportCount": 5,
-    "staleReportCount": 2,
-    "alertCount": 2
+    "staleReportCount": 1,
+    "alertCount": 1
   },
   "automation": {
     "npmBackgroundScript": true,
@@ -31,34 +31,34 @@
     {
       "id": "background-cycle",
       "path": "docs/agent-system/latest-background-cycle.json",
-      "generatedAt": "2026-07-07T13:45:41.975Z",
+      "generatedAt": "2026-07-21T01:45:42.145Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
-      "ageHours": 30.53,
-      "status": "stale"
+      "ageHours": 7.17,
+      "status": "fresh"
     },
     {
       "id": "job-run",
       "path": "docs/agent-system/latest-job-run.json",
-      "generatedAt": "2026-07-08T20:15:47.696Z",
+      "generatedAt": "2026-07-21T07:59:20.028Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
-      "ageHours": 0.03,
+      "ageHours": 0.94,
       "status": "fresh"
     },
     {
       "id": "audit",
       "path": "docs/agent-system/latest-audit.json",
-      "generatedAt": "2026-07-08T20:15:49.876Z",
+      "generatedAt": "2026-07-21T08:15:53.166Z",
       "warnAfterHours": 24,
       "failAfterHours": 72,
-      "ageHours": 0.03,
+      "ageHours": 0.66,
       "status": "fresh"
     },
     {
       "id": "dependency-radar",
       "path": "docs/agent-system/latest-agent-dependency-radar.json",
-      "generatedAt": "2026-07-08T20:17:24.242Z",
+      "generatedAt": "2026-07-21T08:55:33.949Z",
       "warnAfterHours": 12,
       "failAfterHours": 30,
       "ageHours": 0,
@@ -70,7 +70,7 @@
       "generatedAt": "2026-05-24T04:52:19.782Z",
       "warnAfterHours": 168,
       "failAfterHours": 336,
-      "ageHours": 1095.42,
+      "ageHours": 1396.06,
       "status": "stale"
     }
   ],
@@ -86,14 +86,8 @@
   "alerts": [
     {
       "severity": "action",
-      "id": "background-cycle-stale",
-      "message": "background-cycle is stale (30.53h old).",
-      "nextAction": "Run npm run agents:background:deep and inspect failed steps."
-    },
-    {
-      "severity": "action",
       "id": "task-queue-stale",
-      "message": "task-queue is stale (1095.42h old).",
+      "message": "task-queue is stale (1396.06h old).",
       "nextAction": "Run npm run agents:background:deep and inspect failed steps."
     }
   ]

@@ -1,76 +1,76 @@
-# AIRDOX Agent Currency Report
+# AIRDOX Agenten-Aktualitaetsbericht
 
-Generated: 2026-07-09T20:10:09.028Z
+Erstellt: 2026-07-21T08:17:14.833Z
 Owner: Mentor
 Status: warn
 
-## Summary
+## Ueberblick
 
-- Agents checked: 8
-- Pass: 0
-- Warn: 8
+- Gepruefte Agenten: 8
+- Pass: 3
+- Warnungen: 5
 
-## Agents
+## Agenten
 
-| Agent | Status | Domain | Warnings |
+| Agent | Status | Domaene | Warnungen |
 | --- | --- | --- | --- |
-| Webbie | WARN | Frontend architecture and web performance | 4 source(s) unreachable or changed. |
-| Designer | WARN | Visual quality, accessibility, UX evidence | 3 source(s) unreachable or changed. |
-| Winnie | WARN | Windows desktop, Electron and local automation | 3 source(s) unreachable or changed. |
-| Guardian | WARN | Security, CI, runtime quality and risk | 4 source(s) unreachable or changed. |
-| Manni | WARN | Growth, booking conversion and social platform practice | 3 source(s) unreachable or changed. |
-| Repository | WARN | Source control, GitHub governance and release hygiene | 3 source(s) unreachable or changed. |
-| Refactor | WARN | Architecture simplification and maintainability | 3 source(s) unreachable or changed. |
-| Mentor | WARN | Learning loops and agent improvement process | 2 source(s) unreachable or changed. |
+| Webbie | WARN | Frontend architecture and web performance | 1 runbook(s) older than 45 days.<br>1 source(s) unreachable or changed. |
+| Designer | WARN | Visual quality, accessibility, UX evidence | 2 runbook(s) older than 45 days. |
+| Winnie | PASS | Windows desktop, Electron and local automation | - |
+| Guardian | WARN | Security, CI, runtime quality and risk | 1 runbook(s) older than 45 days. |
+| Manni | PASS | Growth, booking conversion and social platform practice | - |
+| Repository | WARN | Source control, GitHub governance and release hygiene | 1 runbook(s) older than 45 days. |
+| Refactor | WARN | Architecture simplification and maintainability | 1 runbook(s) older than 45 days. |
+| Mentor | PASS | Learning loops and agent improvement process | - |
 
-## Source Checks
+## Quellenchecks
 
 ### Webbie
 
-- WARN https://react.dev/ (TypeError)
-- WARN https://vite.dev/guide/ (TypeError)
-- WARN https://web.dev/articles (TypeError)
-- WARN https://developer.mozilla.org/en-US/docs/Web (TypeError)
+- PASS https://react.dev/ (200)
+- PASS https://vite.dev/guide/ (200)
+- PASS https://web.dev/articles (200)
+- WARN https://developer.mozilla.org/en-US/docs/Web (AbortError)
 
 ### Designer
 
-- WARN https://www.w3.org/WAI/standards-guidelines/wcag/ (TypeError)
-- WARN https://web.dev/learn/accessibility/ (TypeError)
-- WARN https://web.dev/learn/performance/ (TypeError)
+- PASS https://www.w3.org/WAI/standards-guidelines/wcag/ (200)
+- PASS https://web.dev/learn/accessibility/ (200)
+- PASS https://web.dev/learn/performance/ (200)
 
 ### Winnie
 
-- WARN https://www.electronjs.org/docs/latest/ (TypeError)
-- WARN https://playwright.dev/docs/intro (TypeError)
-- WARN https://learn.microsoft.com/en-us/windows/apps/ (TypeError)
+- PASS https://www.electronjs.org/docs/latest/ (200)
+- PASS https://playwright.dev/docs/intro (200)
+- PASS https://learn.microsoft.com/en-us/windows/apps/ (200)
 
 ### Guardian
 
-- WARN https://owasp.org/www-project-top-ten/ (TypeError)
-- WARN https://docs.github.com/en/actions (TypeError)
-- WARN https://developers.cloudflare.com/workers/ (TypeError)
-- WARN https://nodejs.org/en/learn/getting-started/security-best-practices (TypeError)
+- PASS https://owasp.org/www-project-top-ten/ (200)
+- PASS https://docs.github.com/en/actions (200)
+- PASS https://developers.cloudflare.com/workers/ (200)
+- PASS https://nodejs.org/en/learn/getting-started/security-best-practices (200)
 
 ### Manni
 
-- WARN https://ads.tiktok.com/business/creativecenter/ (TypeError)
-- WARN https://creators.instagram.com/ (TypeError)
-- WARN https://support.google.com/youtube/answer/10059070 (TypeError)
+- PASS https://ads.tiktok.com/business/creativecenter/ (200)
+- PASS https://creators.instagram.com/ (200)
+- PASS https://support.google.com/youtube/answer/10059070 (200)
 
 ### Repository
 
-- WARN https://git-scm.com/docs (TypeError)
-- WARN https://docs.github.com/en/repositories (TypeError)
-- WARN https://docs.github.com/en/pull-requests (TypeError)
+- PASS https://git-scm.com/docs (200)
+- PASS https://docs.github.com/en/repositories (200)
+- PASS https://docs.github.com/en/pull-requests (200)
 
 ### Refactor
 
-- WARN https://martinfowler.com/refactoring/ (TypeError)
-- WARN https://web.dev/articles/fast (TypeError)
-- WARN https://nodejs.org/en/learn/diagnostics/user-journey (TypeError)
+- PASS https://martinfowler.com/refactoring/ (200)
+- PASS https://web.dev/articles/fast (200)
+- PASS https://nodejs.org/en/learn/diagnostics/user-journey (200)
 
 ### Mentor
 
-- WARN https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows (TypeError)
-- WARN https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows (TypeError)
+- PASS https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows (200)
+- PASS https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows (200)
 

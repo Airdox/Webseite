@@ -1,21 +1,21 @@
-# AIRDOX Guardian Risk Summary
+# AIRDOX Guardian-Risikobericht
 
-Generated: 2026-07-10T04:03:47.931Z
-Risk: MEDIUM
-Blockers: 0
-Warnings: 3
+Erstellt: 2026-07-21T08:42:53.078Z
+Risiko: MEDIUM
+Blocker: 0
+Warnungen: 3
 
-## Blockers
+## Blocker
 
-- None
+- Keine
 
-## Warnings
+## Warnungen
 
-- 132 uncommitted paths are present; review scope before release.
-- 13 critical-path files changed: desktop/main/index.cjs, desktop/main/preload.cjs, desktop/main/services/database.mjs, scripts/agent-audit.mjs, scripts/capture-auth-workflow-proof.mjs, scripts/designer-visual-quality-check.mjs, scripts/r2-delete.mjs, scripts/refactor-website-opportunities.mjs, ...
+- 79 uncommitted paths are present; review scope before release.
+- 11 critical-path files changed: desktop/main/index.cjs, desktop/main/preload.cjs, package-lock.json, package.json, scripts/social-tiktok-oauth-init.mjs, src/server/__tests__/worker.test.js, src/server/legalPages.js, src/server/worker.js, ...
 - Master Controller review is recommended by routing.
 
-## Recommended Gates
+## Empfohlene Gates
 
 - `manual:refactor-website-patch-proposal before code changes`
 - `npm run agent:audit -- --strict`
@@ -29,8 +29,6 @@ Warnings: 3
 - `npm run guardian:risk -- --strict`
 - `npm run lint`
 - `npm run refactor:website:opportunities`
-- `npm run repository:monitor:strict`
 - `npm run test -- --run`
 - `npm run website:profitability`
-- `npx vitest run src/desktop/lib/__tests__/assistantCoverage.test.js`
 

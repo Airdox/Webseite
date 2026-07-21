@@ -1,6 +1,6 @@
 # AIRDOX Agenten-Trainingskatalog
 
-Erstellt: 2026-07-09T20:10:12.581Z
+Erstellt: 2026-07-21T08:21:50.142Z
 Owner: Mentor
 
 ## Webbie

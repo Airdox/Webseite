@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-09T20:10:09.028Z",
+  "generatedAt": "2026-07-21T08:17:14.833Z",
   "owner": "Mentor",
   "purpose": "Agent source currency and continuous learning check",
   "maxRunbookAgeDays": 45,
   "summary": {
     "agentsChecked": 8,
-    "warnCount": 8,
-    "passCount": 0,
+    "warnCount": 5,
+    "passCount": 3,
     "status": "warn"
   },
   "agents": [
@@ -15,20 +15,21 @@
       "domain": "Frontend architecture and web performance",
       "status": "warn",
       "warnings": [
-        "4 source(s) unreachable or changed."
+        "1 runbook(s) older than 45 days.",
+        "1 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
-          "ageDays": 39,
+          "ageDays": 50,
           "committedAt": "2026-06-06T12:12:03+02:00",
-          "fresh": true
+          "fresh": false
         },
         {
           "filePath": "docs/agent-system/reports/operations/OPERATING_MODEL.md",
           "exists": true,
-          "ageDays": 33,
+          "ageDays": 45,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         }
@@ -36,27 +37,27 @@
       "sources": [
         {
           "url": "https://react.dev/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://react.dev/"
         },
         {
           "url": "https://vite.dev/guide/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://vite.dev/guide/"
         },
         {
           "url": "https://web.dev/articles",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://web.dev/discover?hl=id"
         },
         {
           "url": "https://developer.mozilla.org/en-US/docs/Web",
           "ok": false,
           "status": null,
-          "error": "TypeError"
+          "error": "AbortError"
         }
       ],
       "nextActions": [
@@ -70,42 +71,42 @@
       "domain": "Visual quality, accessibility, UX evidence",
       "status": "warn",
       "warnings": [
-        "3 source(s) unreachable or changed."
+        "2 runbook(s) older than 45 days."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
-          "ageDays": 39,
+          "ageDays": 50,
           "committedAt": "2026-06-06T12:12:03+02:00",
-          "fresh": true
+          "fresh": false
         },
         {
           "filePath": "docs/brand/AIRDOX_CORPORATE_DESIGN.md",
           "exists": true,
-          "ageDays": 39,
+          "ageDays": 50,
           "committedAt": "2026-05-17T05:17:12+02:00",
-          "fresh": true
+          "fresh": false
         }
       ],
       "sources": [
         {
           "url": "https://www.w3.org/WAI/standards-guidelines/wcag/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://www.w3.org/WAI/standards-guidelines/wcag/"
         },
         {
           "url": "https://web.dev/learn/accessibility/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://web.dev/learn/accessibility/"
         },
         {
           "url": "https://web.dev/learn/performance/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://web.dev/learn/performance/"
         }
       ],
       "nextActions": [
@@ -117,50 +118,47 @@
     {
       "agent": "Winnie",
       "domain": "Windows desktop, Electron and local automation",
-      "status": "warn",
-      "warnings": [
-        "3 source(s) unreachable or changed."
-      ],
+      "status": "pass",
+      "warnings": [],
       "runbooks": [
         {
           "filePath": "docs/WINDOWS_FLIGHTDECK.md",
           "exists": true,
-          "ageDays": 39,
-          "committedAt": "2026-05-03T04:19:02+02:00",
+          "ageDays": 11,
+          "committedAt": "2026-07-10T06:07:23+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/FLIGHT_DECK_TUTORIAL.md",
           "exists": true,
-          "ageDays": 39,
-          "committedAt": "2026-05-03T04:19:02+02:00",
+          "ageDays": 11,
+          "committedAt": "2026-07-10T06:07:23+02:00",
           "fresh": true
         }
       ],
       "sources": [
         {
           "url": "https://www.electronjs.org/docs/latest/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://www.electronjs.org/docs/latest/"
         },
         {
           "url": "https://playwright.dev/docs/intro",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://playwright.dev/docs/intro"
         },
         {
           "url": "https://learn.microsoft.com/en-us/windows/apps/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://learn.microsoft.com/en-us/windows/apps/"
         }
       ],
       "nextActions": [
-        "Mentor reviews failed or stale items.",
-        "Update the affected runbook or replace the source with a stronger primary source.",
-        "If the gap caused a project defect, add a test or quality gate."
+        "Keep current cadence.",
+        "Recheck on next scheduled Mentor currency run."
       ]
     },
     {
@@ -168,48 +166,48 @@
       "domain": "Security, CI, runtime quality and risk",
       "status": "warn",
       "warnings": [
-        "4 source(s) unreachable or changed."
+        "1 runbook(s) older than 45 days."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
-          "ageDays": 33,
+          "ageDays": 45,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md",
           "exists": true,
-          "ageDays": 39,
+          "ageDays": 50,
           "committedAt": "2026-06-06T12:12:03+02:00",
-          "fresh": true
+          "fresh": false
         }
       ],
       "sources": [
         {
           "url": "https://owasp.org/www-project-top-ten/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://owasp.org/www-project-top-ten/"
         },
         {
           "url": "https://docs.github.com/en/actions",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://docs.github.com/en/actions"
         },
         {
           "url": "https://developers.cloudflare.com/workers/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://developers.cloudflare.com/workers/"
         },
         {
           "url": "https://nodejs.org/en/learn/getting-started/security-best-practices",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://nodejs.org/learn/getting-started/security-best-practices"
         }
       ],
       "nextActions": [
@@ -221,22 +219,20 @@
     {
       "agent": "Manni",
       "domain": "Growth, booking conversion and social platform practice",
-      "status": "warn",
-      "warnings": [
-        "3 source(s) unreachable or changed."
-      ],
+      "status": "pass",
+      "warnings": [],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/campaigns/MANNI_GROWTH_PLAYBOOK.md",
           "exists": true,
-          "ageDays": 33,
+          "ageDays": 45,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
-          "ageDays": 33,
+          "ageDays": 45,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         }
@@ -244,27 +240,26 @@
       "sources": [
         {
           "url": "https://ads.tiktok.com/business/creativecenter/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://ads.tiktok.com/creative/creativeCenter?rid=fuzfmeetd2v"
         },
         {
           "url": "https://creators.instagram.com/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://creators.instagram.com/"
         },
         {
           "url": "https://support.google.com/youtube/answer/10059070",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://support.google.com/youtube/answer/10059070"
         }
       ],
       "nextActions": [
-        "Mentor reviews failed or stale items.",
-        "Update the affected runbook or replace the source with a stronger primary source.",
-        "If the gap caused a project defect, add a test or quality gate."
+        "Keep current cadence.",
+        "Recheck on next scheduled Mentor currency run."
       ]
     },
     {
@@ -272,35 +267,35 @@
       "domain": "Source control, GitHub governance and release hygiene",
       "status": "warn",
       "warnings": [
-        "3 source(s) unreachable or changed."
+        "1 runbook(s) older than 45 days."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md",
           "exists": true,
-          "ageDays": 39,
+          "ageDays": 50,
           "committedAt": "2026-06-06T12:12:03+02:00",
-          "fresh": true
+          "fresh": false
         }
       ],
       "sources": [
         {
           "url": "https://git-scm.com/docs",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://git-scm.com/docs"
         },
         {
           "url": "https://docs.github.com/en/repositories",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://docs.github.com/en/repositories"
         },
         {
           "url": "https://docs.github.com/en/pull-requests",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://docs.github.com/en/pull-requests"
         }
       ],
       "nextActions": [
@@ -314,35 +309,35 @@
       "domain": "Architecture simplification and maintainability",
       "status": "warn",
       "warnings": [
-        "3 source(s) unreachable or changed."
+        "1 runbook(s) older than 45 days."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/operations/REFACTOR_OPTIMIZATION_LOOP.md",
           "exists": true,
-          "ageDays": 34,
+          "ageDays": 46,
           "committedAt": "2026-06-06T12:12:03+02:00",
-          "fresh": true
+          "fresh": false
         }
       ],
       "sources": [
         {
           "url": "https://martinfowler.com/refactoring/",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://refactoring.com/"
         },
         {
           "url": "https://web.dev/articles/fast",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://web.dev/explore/fast"
         },
         {
           "url": "https://nodejs.org/en/learn/diagnostics/user-journey",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://nodejs.org/learn/diagnostics/user-journey"
         }
       ],
       "nextActions": [
@@ -354,22 +349,20 @@
     {
       "agent": "Mentor",
       "domain": "Learning loops and agent improvement process",
-      "status": "warn",
-      "warnings": [
-        "2 source(s) unreachable or changed."
-      ],
+      "status": "pass",
+      "warnings": [],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
-          "ageDays": 33,
+          "ageDays": 45,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
-          "ageDays": 33,
+          "ageDays": 45,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": true
         }
@@ -377,21 +370,20 @@
       "sources": [
         {
           "url": "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows"
         },
         {
           "url": "https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows",
-          "ok": false,
-          "status": null,
-          "error": "TypeError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://docs.github.com/en/actions/how-tos"
         }
       ],
       "nextActions": [
-        "Mentor reviews failed or stale items.",
-        "Update the affected runbook or replace the source with a stronger primary source.",
-        "If the gap caused a project defect, add a test or quality gate."
+        "Keep current cadence.",
+        "Recheck on next scheduled Mentor currency run."
       ]
     }
   ]

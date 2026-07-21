@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T20:10:14.110Z",
+  "generatedAt": "2026-07-21T08:23:14.403Z",
   "agent": "audience-intelligence",
   "privacy": {
     "mode": "consented-aggregate",
@@ -18,34 +18,172 @@
   },
   "summary": {
     "eventSource": "neon:analytics_logs",
-    "totalRawEvents": 0,
-    "totalConsentedEvents": 0,
+    "totalRawEvents": 402,
+    "totalConsentedEvents": 402,
     "rejectedEvents": 0,
-    "byType": [],
-    "topRoutes": [],
-    "topContent": [],
-    "topCampaigns": [],
-    "topReferrers": [],
-    "topDevices": [],
+    "byType": [
+      {
+        "key": "route_view",
+        "value": 130
+      },
+      {
+        "key": "section_view",
+        "value": 123
+      },
+      {
+        "key": "set_play",
+        "value": 123
+      },
+      {
+        "key": "tracklist_open",
+        "value": 12
+      },
+      {
+        "key": "cta_view",
+        "value": 9
+      },
+      {
+        "key": "booking_click",
+        "value": 4
+      },
+      {
+        "key": "share_click",
+        "value": 1
+      }
+    ],
+    "topRoutes": [
+      {
+        "key": "/",
+        "value": 6572
+      },
+      {
+        "key": "/#set-recording_2026_06_21-5",
+        "value": 45
+      },
+      {
+        "key": "/stark/sets",
+        "value": 45
+      },
+      {
+        "key": "/en/",
+        "value": 40
+      },
+      {
+        "key": "/tiktok-creator",
+        "value": 15
+      },
+      {
+        "key": "/#set-recording_2026_06_02",
+        "value": 5
+      }
+    ],
+    "topContent": [
+      {
+        "key": "recording_2026_06_02",
+        "value": 1635
+      },
+      {
+        "key": "recording_2026_05_24",
+        "value": 1220
+      },
+      {
+        "key": "recording_2026_06_21-5",
+        "value": 984
+      },
+      {
+        "key": "home",
+        "value": 720
+      },
+      {
+        "key": "page",
+        "value": 605
+      },
+      {
+        "key": "recording_2026_06_21-3",
+        "value": 514
+      },
+      {
+        "key": "recording_2026_06_21-2",
+        "value": 245
+      },
+      {
+        "key": "booking",
+        "value": 112
+      },
+      {
+        "key": "recording_2026_06_21-6",
+        "value": 105
+      },
+      {
+        "key": "music",
+        "value": 88
+      }
+    ],
+    "topCampaigns": [
+      {
+        "key": "unknown",
+        "value": 6722
+      }
+    ],
+    "topReferrers": [
+      {
+        "key": "search",
+        "value": 4269
+      },
+      {
+        "key": "direct",
+        "value": 2448
+      },
+      {
+        "key": "social",
+        "value": 5
+      }
+    ],
+    "topDevices": [
+      {
+        "key": "desktop",
+        "value": 3663
+      },
+      {
+        "key": "mobile",
+        "value": 2623
+      },
+      {
+        "key": "tablet",
+        "value": 436
+      }
+    ],
     "intentSegments": {
-      "booking_intent": 0,
-      "fan_intent": 0,
-      "sharing_intent": 0,
-      "discovery_intent": 0
+      "booking_intent": 360,
+      "fan_intent": 4305,
+      "sharing_intent": 45,
+      "discovery_intent": 1634
     },
     "journeyStats": {
-      "sessions": 0,
-      "sessionsWithPlay": 0,
+      "sessions": 71,
+      "sessionsWithPlay": 43,
       "sessionsWithNewsletter": 0,
-      "sessionsWithBooking": 0
+      "sessionsWithBooking": 2
     }
   },
   "recommendations": [
     {
       "priority": "high",
-      "title": "Consent-basierte Audience-Events erfassen",
-      "reason": "Es wurden keine consent-basierten Analytics-Events gefunden; Empfehlungen basieren daher nur auf Readiness.",
-      "action": "Route-, CTA-, Set-Play-, Newsletter-, Booking- und Share-Events in einen consent-bewussten Analytics-Export fuehren."
+      "title": "CTA-Pfad auf / staerken",
+      "reason": "Diese Route hat mit 6572 gewichteten Signalpunkten die staerkste Audience-Aktivitaet.",
+      "action": "Kontextuelle CTAs fuer Set-Play, Newsletter-Anmeldung, Booking und Sharing ergaenzen oder pruefen."
+    },
+    {
+      "priority": "high",
+      "title": "Top-Inhalt wiederverwenden: recording_2026_06_02",
+      "reason": "Dieser Inhalt fuehrt das Audience-Interesse aktuell mit 1635 gewichteten Signalpunkten an.",
+      "action": "Aus diesem Inhalt Social-Captions, Newsletter-Copy, SEO-Beschreibung und Booking-Winkel ableiten."
+    },
+    {
+      "priority": "medium",
+      "title": "Newsletter-Capture nach Musik-Engagement ergaenzen",
+      "reason": "Nutzer spielen Sets, aber es ist kein Newsletter-Signal vorhanden.",
+      "action": "Nach relevantem Play oder Tracklist-Engagement einen kontextuellen Newsletter-CTA zeigen."
     }
   ]
 }

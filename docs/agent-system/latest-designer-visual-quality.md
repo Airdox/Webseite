@@ -1,6 +1,6 @@
 # AIRDOX Designer Visual Quality Report
 
-Erstellt: 2026-07-04T10:44:21.334Z
+Erstellt: 2026-07-14T05:30:58.253Z
 Agent: Designer
 Base URL: http://127.0.0.1:4173
 Status: pass
@@ -17,7 +17,7 @@ Status: pass
 
 | Check | Stufe | Detail |
 | --- | --- | --- |
-| desktop-set-cards-visible | PASS | desktop: 4 Set-Cards sichtbar. |
+| desktop-set-cards-visible | PASS | desktop: 6 Set-Cards sichtbar. |
 | desktop-horizontal-overflow | PASS | desktop: Kein horizontaler Overflow. |
 | desktop-technical-ui-text | PASS | desktop: Keine technischen Lade-/Debugtexte im sichtbaren UI. |
 | desktop-meta-readability | PASS | desktop: Datum und Dauer sind sauber getrennt. |
@@ -25,7 +25,7 @@ Status: pass
 | desktop-de-language-months | PASS | desktop: Monatslabels sind mit deutscher Seite konsistent. |
 | desktop-de-language-ui | PASS | desktop: Keine auffaelligen englischen UI-Texte gefunden. |
 | desktop-layout-overlaps | PASS | desktop: Keine Ueberlappungen in geprueften Set-Cards. |
-| mobile-set-cards-visible | PASS | mobile: 4 Set-Cards sichtbar. |
+| mobile-set-cards-visible | PASS | mobile: 6 Set-Cards sichtbar. |
 | mobile-horizontal-overflow | PASS | mobile: Kein horizontaler Overflow. |
 | mobile-technical-ui-text | PASS | mobile: Keine technischen Lade-/Debugtexte im sichtbaren UI. |
 | mobile-meta-readability | PASS | mobile: Datum und Dauer sind sauber getrennt. |

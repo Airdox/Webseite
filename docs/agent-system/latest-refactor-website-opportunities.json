@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-10T04:00:48.056Z",
+  "generatedAt": "2026-07-21T08:54:17.271Z",
   "controller": "Master Controller",
   "agent": "Refactor",
   "job": "refactor-website-opportunities",
   "purpose": "Turn Refactor from passive review into small, measurable website improvements.",
   "summary": {
-    "scannedFiles": 55,
-    "opportunityCount": 1,
+    "scannedFiles": 57,
+    "opportunityCount": 3,
     "highPriorityCount": 0
   },
   "rules": [
@@ -19,6 +19,46 @@
     "Immer nur einen Website-Flow bevorzugen: Musik, Booking, Newsletter, VIP/Auth oder Stats."
   ],
   "opportunities": [
+    {
+      "id": "large-file-src-server-tiktokcreator-js",
+      "priority": "medium",
+      "area": "maintainability",
+      "files": [
+        "src/server/tiktokCreator.js"
+      ],
+      "evidence": "556 Zeilen / 28301 Bytes.",
+      "action": "Nur die naechste nutzer- oder service-sichtbare Teileinheit extrahieren, die einen fokussierten Test bekommen kann.",
+      "validation": "Den naechstliegenden Komponenten-/Unit-Test plus npm run build ausfuehren.",
+      "approval": {
+        "status": "pending_user_ok",
+        "requiredBeforeExecution": true,
+        "requiredBy": [
+          "User"
+        ],
+        "proposalJob": "refactor-website-patch-proposal",
+        "executionJob": "approved-small-refactor-patch"
+      }
+    },
+    {
+      "id": "large-file-src-components-tiktokcreatorpage-jsx",
+      "priority": "medium",
+      "area": "maintainability",
+      "files": [
+        "src/components/TikTokCreatorPage.jsx"
+      ],
+      "evidence": "286 Zeilen / 18541 Bytes.",
+      "action": "Nur die naechste nutzer- oder service-sichtbare Teileinheit extrahieren, die einen fokussierten Test bekommen kann.",
+      "validation": "Den naechstliegenden Komponenten-/Unit-Test plus npm run build ausfuehren.",
+      "approval": {
+        "status": "pending_user_ok",
+        "requiredBeforeExecution": true,
+        "requiredBy": [
+          "User"
+        ],
+        "proposalJob": "refactor-website-patch-proposal",
+        "executionJob": "approved-small-refactor-patch"
+      }
+    },
     {
       "id": "large-file-src-components-setcard-jsx",
       "priority": "medium",
