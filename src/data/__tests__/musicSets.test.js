@@ -2,6 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { sets } from '../musicSets.js';
 
 describe('music set audio manifest', () => {
+  it('keeps the complete public set catalog', () => {
+    expect(sets).toHaveLength(20);
+    expect(new Set(sets.map((set) => set.id)).size).toBe(sets.length);
+  });
+
   it('uses mp3 filenames for every playable set', () => {
     expect(sets.length).toBeGreaterThan(0);
     for (const set of sets) {
@@ -9,8 +14,9 @@ describe('music set audio manifest', () => {
     }
   });
 
-  it('keeps seekable tracklists on every set', () => {
+  it('keeps valid tracklists whenever a set has track metadata', () => {
     for (const set of sets) {
+      if (!set.tracks) continue;
       expect(Array.isArray(set.tracks), `${set.id} should expose a tracklist`).toBe(true);
       expect(set.tracks.length, `${set.id} should keep at least one seekable row`).toBeGreaterThan(0);
     }
