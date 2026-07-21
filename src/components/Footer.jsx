@@ -29,6 +29,7 @@ const Footer = () => {
     ];
 
     const legalLinks = [
+        { name: 'TikTok Creator Tool', url: '/tiktok-creator' },
         { name: 'Privacy Policy', url: '/privacy-policy' },
         { name: 'Terms of Service', url: '/terms-of-service' },
     ];

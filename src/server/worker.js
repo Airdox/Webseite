@@ -5,6 +5,16 @@ import { sets } from '../data/musicSets.js';
 import { renderPrivacyPolicy, renderTermsOfService } from './legalPages.js';
 import { registerAudioRoute } from './audioRoutes.js';
 import { handlerResultResponse, invalidRequestResponse, jsonResponse } from './httpResponses.js';
+import {
+    handleTikTokConfig,
+    handleTikTokCreatorInfo,
+    handleTikTokDisconnect,
+    handleTikTokOAuthCallback,
+    handleTikTokOAuthStart,
+    handleTikTokSession,
+    handleTikTokPublish,
+    handleTikTokPublishStatus,
+} from './tiktokCreator.js';
 
 const router = new Router();
 
@@ -93,6 +103,16 @@ router.post('/api/audience-events', async (request, env) => {
     }
 });
 
+// Public creator workflow: a creator reviews the current TikTok account and
+// every post setting before explicitly authorizing a Direct Post submission.
+router.get('/api/tiktok/config', handleTikTokConfig);
+router.get('/api/tiktok/oauth/start', handleTikTokOAuthStart);
+router.get('/api/tiktok/session', handleTikTokSession);
+router.get('/api/tiktok/creator-info', handleTikTokCreatorInfo);
+router.post('/api/tiktok/publish', handleTikTokPublish);
+router.post('/api/tiktok/publish/status', handleTikTokPublishStatus);
+router.post('/api/tiktok/disconnect', handleTikTokDisconnect);
+
 export default {
     async fetch(request, env, ctx) {
         const url = new URL(request.url);
@@ -103,6 +123,9 @@ export default {
         }
 
         if (request.method === 'GET' || request.method === 'HEAD') {
+            if (url.pathname === '/oauth/tiktok/callback' && request.method === 'GET') {
+                return handleTikTokOAuthCallback(request, env);
+            }
             if (url.pathname === '/privacy-policy' || url.pathname === '/privacy-policy.html' || url.pathname === '/privacy') {
                 return renderPrivacyPolicy();
             }
