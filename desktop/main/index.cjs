@@ -20,6 +20,7 @@ const PACKAGED_DESKTOP_URL = 'app://flightdeck/desktop.html';
 let mainWindow = null;
 let designStudioWindow = null;
 let servicesPromise = null;
+const audioMasteringJobs = new Map();
 
 const getServices = async () => {
   if (!servicesPromise) {
@@ -30,7 +31,8 @@ const getServices = async () => {
       import('./services/state.mjs'),
       import('./services/workspace.mjs'),
       import('./services/manniApproval.mjs'),
-    ]).then(([database, manifest, pipeline, state, workspace, manniApproval]) => ({
+      import('./services/audioMastering.mjs'),
+    ]).then(([database, manifest, pipeline, state, workspace, manniApproval, audioMastering]) => ({
       ...database,
       readSets: manifest.readSets,
       prepareImportBundle: pipeline.prepareImportBundle,
@@ -42,6 +44,9 @@ const getServices = async () => {
       getManniCampaignState: manniApproval.getManniCampaignState,
       updateManniOperationApproval: manniApproval.updateManniOperationApproval,
       createMarketingDraftRequest: manniApproval.createMarketingDraftRequest,
+      analyzeAudio: audioMastering.analyzeAudio,
+      masterAudio: audioMastering.masterAudio,
+      audioMasteringProfiles: audioMastering.AUDIO_MASTERING_PROFILES,
     }));
   }
 
@@ -343,6 +348,58 @@ ipcMain.handle('flightdeck:pick-import-files', async () => {
     title: 'Select audio, cover and tracklist files',
   });
   return result.canceled ? [] : result.filePaths;
+});
+
+ipcMain.handle('flightdeck:get-audio-mastering-profiles', async () => {
+  const { audioMasteringProfiles } = await getServices();
+  return audioMasteringProfiles;
+});
+
+ipcMain.handle('flightdeck:pick-audio-mastering-file', async () => {
+  const result = await dialog.showOpenDialog(mainWindow, {
+    properties: ['openFile'],
+    title: 'Live-Set für Audio-Optimierung auswählen',
+    filters: [{ name: 'Audio', extensions: ['wav', 'flac', 'aiff', 'aif', 'mp3', 'm4a', 'aac'] }],
+  });
+  return result.canceled || !result.filePaths[0] ? null : result.filePaths[0];
+});
+
+ipcMain.handle('flightdeck:analyze-audio', async (_event, payload) => {
+  const { analyzeAudio } = await getServices();
+  const result = await analyzeAudio({ sourcePath: payload?.sourcePath, config: payload?.config || {} });
+  return { ...result, playbackUrl: pathToFileURL(result.sourcePath).toString() };
+});
+
+ipcMain.handle('flightdeck:master-audio', async (_event, payload) => {
+  const { masterAudio } = await getServices();
+  const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
+  const jobId = String(payload?.jobId || `audio-${Date.now()}`);
+  if (audioMasteringJobs.has(jobId)) throw new Error('Dieser Audio-Job läuft bereits.');
+  const controller = new AbortController();
+  audioMasteringJobs.set(jobId, controller);
+  try {
+    const result = await masterAudio({
+      sourcePath: payload?.sourcePath,
+      outputDirectory: path.join(workspaceRoot, 'release', 'audio-mastering'),
+      config: payload?.config || {},
+      signal: controller.signal,
+      onProgress: (progress) => mainWindow?.webContents.send('flightdeck:audio-mastering-progress', { jobId, progress }),
+    });
+    return {
+      ...result,
+      inputPlaybackUrl: pathToFileURL(result.sourcePath).toString(),
+      outputPlaybackUrl: pathToFileURL(result.outputPath).toString(),
+    };
+  } finally {
+    audioMasteringJobs.delete(jobId);
+  }
+});
+
+ipcMain.handle('flightdeck:cancel-audio-mastering', async (_event, payload) => {
+  const controller = audioMasteringJobs.get(String(payload?.jobId || ''));
+  if (!controller) return false;
+  controller.abort();
+  return true;
 });
 
 ipcMain.handle('flightdeck:prepare-import', async (_event, payload) => {
