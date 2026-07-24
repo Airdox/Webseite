@@ -6258,17 +6258,19 @@ input[type="range"] {
   }
 
   [data-ui-version="orbital-command-v1"] .fd-workspace-actions .fd-command-button {
-    width: 32px;
-    padding: 0;
+    width: auto;
+    min-width: max-content;
+    padding: 0 8px;
     justify-content: center;
-    overflow: hidden;
-    color: transparent;
-    gap: 0;
+    color: #aebcc1;
+    gap: 5px;
+    font-size: 0.64rem;
+    white-space: nowrap;
   }
 
   [data-ui-version="orbital-command-v1"] .fd-workspace-actions .fd-command-button svg {
     flex: 0 0 auto;
-    color: #aebcc1;
+    color: currentColor;
   }
 
   [data-ui-version="orbital-command-v1"] .fd-ops-brief {

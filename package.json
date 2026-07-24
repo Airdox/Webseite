@@ -1,7 +1,7 @@
 {
   "name": "airdox-web",
   "private": true,
-  "version": "0.1.41",
+  "version": "0.1.42",
   "main": "desktop/main/index.cjs",
   "type": "module",
   "scripts": {
