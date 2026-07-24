@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import DesktopApp from '../DesktopApp.jsx';
 import { flightDeckApi } from '../api.js';
@@ -21,12 +21,189 @@ describe('DesktopApp', () => {
     Object.assign(flightDeckApi, mockFlightDeckApi);
   });
 
-  it('renders the overview in mock mode', async () => {
+  it('renders the Orbital overview from the desktop API', async () => {
     render(<DesktopApp />);
     await screen.findByRole('heading', { name: 'Flight Deck' });
-    await screen.findByText('Workspace verbunden');
-    expect(screen.getByText('Mock API')).toBeInTheDocument();
+    const globalHealth = await screen.findByLabelText('Globaler Systemstatus');
+    expect(within(globalHealth).getByText('Verbunden')).toBeInTheDocument();
+    expect(document.querySelector('[data-ui-version="orbital-command-v1"]')).toBeInTheDocument();
     expect(screen.getByText('Operations Overview')).toBeInTheDocument();
+  }, 30000);
+
+  it('loads an empty monitor response only once instead of looping indefinitely', async () => {
+    const getSystemStats = vi.fn().mockResolvedValue({});
+    Object.assign(flightDeckApi, { getSystemStats });
+    render(<DesktopApp />);
+
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+    fireEvent.click(screen.getByRole('button', { name: 'System Monitor', exact: true }));
+    await screen.findAllByRole('heading', { name: 'System Monitor' });
+    await waitFor(() => expect(getSystemStats).toHaveBeenCalledTimes(1));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(getSystemStats).toHaveBeenCalledTimes(1);
+  }, 30000);
+
+  it('shows live phase and percentage updates while a real audio analysis request is pending', async () => {
+    let progressListener;
+    let resolveAnalysis;
+    const analyzeAudio = vi.fn(() => new Promise((resolve) => {
+      resolveAnalysis = resolve;
+    }));
+    Object.assign(flightDeckApi, {
+      getAudioMasteringProfiles: vi.fn().mockResolvedValue({
+        liveBalanced: {
+          id: 'liveBalanced',
+          name: 'Live Set – Druckvoll & Klar',
+          description: 'Standard',
+          profileId: 'liveBalanced',
+          targetLufs: -14,
+        },
+      }),
+      getAudioOutputFormats: vi.fn().mockResolvedValue([
+        {
+          id: 'mp3',
+          name: 'MP3 – 320 kbit/s',
+          extension: 'mp3',
+          lossless: false,
+        },
+      ]),
+      pickAudioMasteringFile: vi.fn().mockResolvedValue('D:\\Gigs\\long-live-set.wav'),
+      analyzeAudio,
+      onAudioMasteringProgress: vi.fn((callback) => {
+        progressListener = callback;
+        return () => {};
+      }),
+    });
+    render(<DesktopApp />);
+
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+    fireEvent.click(screen.getByRole('button', { name: 'Audio Mastering', exact: true }));
+    await screen.findByRole('heading', { name: 'Live-Set Optimierung' });
+    fireEvent.click(screen.getAllByRole('button', { name: /Audio wählen/i })[0]);
+    await screen.findByText('D:\\Gigs\\long-live-set.wav');
+    fireEvent.click(screen.getByRole('button', { name: 'Analysieren' }));
+
+    await screen.findByRole('button', { name: 'Analysiere… 1%' });
+    const payload = analyzeAudio.mock.calls[0][0];
+    expect(payload).toMatchObject({
+      sourcePath: 'D:\\Gigs\\long-live-set.wav',
+      jobId: expect.stringMatching(/^audio-analysis-/),
+    });
+
+    act(() => progressListener({
+      jobId: payload.jobId,
+      operation: 'analysis',
+      progress: 37,
+      phase: 'Loudness messen',
+      message: 'Signal wird vollständig gelesen · FFmpeg 32%',
+    }));
+    expect(screen.getByRole('status', { name: 'Audio-Verarbeitungsstatus' })).toHaveTextContent('Loudness messen');
+    expect(screen.getByRole('progressbar', { name: 'Audio-Verarbeitungsfortschritt' })).toHaveAttribute('aria-valuenow', '37');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Overview', exact: true }));
+    expect(screen.getByRole('status', { name: 'Laufende Audio-Verarbeitung' })).toHaveTextContent('Loudness messen');
+    expect(screen.getByRole('status', { name: 'Laufende Audio-Verarbeitung' })).toHaveTextContent('37%');
+    fireEvent.click(screen.getByRole('button', { name: 'Zum Audio Lab' }));
+    await screen.findByRole('heading', { name: 'Live-Set Optimierung' });
+
+    await act(async () => {
+      resolveAnalysis({
+        sourcePath: 'D:\\Gigs\\long-live-set.wav',
+        playbackUrl: 'file:///D:/Gigs/long-live-set.wav',
+        probe: { duration: 4388, codec: 'pcm_s16le', sampleRate: 44100, channels: 2 },
+        loudness: { input_i: '-15.2', input_tp: '-0.7' },
+      });
+    });
+    await waitFor(() => expect(
+      screen.getByRole('status', { name: 'Audio-Verarbeitungsstatus' }),
+    ).toHaveTextContent('Analyse abgeschlossen'));
+    expect(screen.getByRole('progressbar', { name: 'Audio-Verarbeitungsfortschritt' })).toHaveAttribute('aria-valuenow', '100');
+    expect(screen.getByRole('button', { name: 'Erneut analysieren' })).toBeEnabled();
+  }, 30000);
+
+  it('lets the user choose a real save folder and sends it through the explicit save workflow', async () => {
+    const masteringProfile = {
+      id: 'liveBalanced',
+      name: 'Live Set – Druckvoll & Klar',
+      description: 'Standard',
+      targetLufs: -14,
+      truePeak: -1.2,
+      loudnessRange: 9,
+      highpassHz: 28,
+      bassGainDb: 1.2,
+      mudCutDb: -1,
+      presenceGainDb: 0.8,
+      trebleGainDb: 1.4,
+      compressorThresholdDb: -18,
+      compressorRatio: 1.65,
+      attackMs: 24,
+      releaseMs: 260,
+      makeupDb: 0.8,
+      stereoWidth: 1,
+      outputFormat: 'wav',
+      sampleRate: 48000,
+    };
+    const measuredScore = {
+      scoreAvailable: true,
+      score: 82,
+      grade: { label: 'Technisch gut' },
+      confidence: { level: 'hoch', percent: 90 },
+      breakdown: {},
+      disclaimer: 'Technischer Orientierungswert.',
+    };
+    const masterAudio = vi.fn().mockResolvedValue({
+      sourcePath: 'D:\\Gigs\\set.wav',
+      outputPath: 'D:\\Masters\\set-mastered.wav',
+      outputPlaybackUrl: 'app://flightdeck/audio/master-token',
+      input: {},
+      output: { qualityScore: measuredScore, loudness: {} },
+    });
+    Object.assign(flightDeckApi, {
+      getAudioMasteringProfiles: vi.fn().mockResolvedValue({ liveBalanced: masteringProfile }),
+      getAudioOutputFormats: vi.fn().mockResolvedValue([
+        {
+          id: 'wav', name: 'WAV – 24-Bit PCM', extension: 'wav', lossless: true,
+        },
+      ]),
+      pickAudioMasteringFile: vi.fn().mockResolvedValue('D:\\Gigs\\set.wav'),
+      pickAudioMasteringOutputDirectory: vi.fn().mockResolvedValue('D:\\Masters'),
+      analyzeAudio: vi.fn().mockResolvedValue({
+        sourcePath: 'D:\\Gigs\\set.wav',
+        playbackUrl: 'app://flightdeck/audio/source-token',
+        probe: {
+          duration: 60, codec: 'pcm_s24le', sampleRate: 48000, channels: 2,
+        },
+        loudness: { input_i: '-16', input_tp: '-1' },
+        qualityScore: measuredScore,
+        predictedQualityScore: {
+          ...measuredScore,
+          predicted: true,
+          scoreRange: { min: 84, max: 96 },
+        },
+      }),
+      masterAudio,
+    });
+
+    render(<DesktopApp />);
+    await screen.findByRole('heading', { name: 'Flight Deck' });
+    fireEvent.click(screen.getByRole('button', { name: 'Audio Mastering', exact: true }));
+    await screen.findByRole('heading', { name: 'Live-Set Optimierung' });
+    fireEvent.click(screen.getAllByRole('button', { name: 'Audio wählen' })[0]);
+    await screen.findByText('D:\\Gigs\\set.wav');
+    fireEvent.click(screen.getByRole('button', { name: 'Speicherort wählen' }));
+    await screen.findByText('D:\\Masters');
+    fireEvent.click(screen.getByRole('button', { name: 'Analysieren', exact: true }));
+    await screen.findByRole('button', { name: 'Jetzt Master erstellen & speichern' });
+    fireEvent.click(screen.getByRole('button', { name: 'Jetzt Master erstellen & speichern' }));
+
+    await waitFor(() => expect(masterAudio).toHaveBeenCalledWith(expect.objectContaining({
+      sourcePath: 'D:\\Gigs\\set.wav',
+      outputDirectory: 'D:\\Masters',
+    })));
+    await screen.findByText(/Master gespeichert und verifiziert:/i);
+    expect(screen.getByRole('region', { name: 'Nächster Mastering-Schritt' })).toHaveTextContent(
+      'Dein Master ist gespeichert.',
+    );
   }, 30000);
 
   it('offers a return action from the standalone Design Studio window', async () => {
@@ -497,7 +674,8 @@ describe('DesktopApp', () => {
 
     render(<DesktopApp />);
     await screen.findByRole('heading', { name: 'Flight Deck' });
-    await screen.findByText('Workspace verbunden');
+    const globalHealth = await screen.findByLabelText('Globaler Systemstatus');
+    expect(within(globalHealth).getByText('Verbunden')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /Set Import/i }));
     fireEvent.change(screen.getByLabelText(/^ID$/i), { target: { value: 'manual_set' } });
@@ -612,8 +790,9 @@ describe('DesktopApp', () => {
 
     render(<DesktopApp />);
     await screen.findByRole('heading', { name: 'Flight Deck' });
+    const nav = screen.getByRole('navigation', { name: 'Flight Deck tabs' });
 
-    fireEvent.click(screen.getByRole('button', { name: /Marketing Manager/i }));
+    fireEvent.click(within(nav).getByRole('button', { name: 'Marketing Manager' }));
     await screen.findByRole('heading', { name: 'Marketing Manager' });
     fireEvent.click(screen.getByRole('button', { name: /Freigaben & Ausspielung/i }));
     await screen.findByRole('button', { name: /OPS-IG-01/i });
@@ -708,8 +887,9 @@ describe('DesktopApp', () => {
 
     render(<DesktopApp />);
     await screen.findByRole('heading', { name: 'Flight Deck' });
-    fireEvent.click(screen.getByRole('button', { name: /Marketing Manager/i }));
-    await screen.findByRole('heading', { name: 'Marketing Manager' });
+    const nav = screen.getByRole('navigation', { name: 'Flight Deck tabs' });
+    fireEvent.click(within(nav).getByRole('button', { name: 'Marketing Manager' }));
+    await screen.findByPlaceholderText(/Kampagne Booking Push/i);
 
     fireEvent.change(screen.getByPlaceholderText(/Kampagne Booking Push/i), { target: { value: 'Booking Push Berlin' } });
     fireEvent.change(screen.getByPlaceholderText(/Welche Wirkung soll der Entwurf erzielen/i), { target: { value: 'Mehr Booking-Anfragen' } });

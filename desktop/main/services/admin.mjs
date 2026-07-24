@@ -1,5 +1,6 @@
 import os from 'node:os';
-import { performance } from 'node:perf_hooks';
+import { statfsSync } from 'node:fs';
+import path from 'node:path';
 
 /**
  * Analytics Service
@@ -31,20 +32,20 @@ export async function getAnalyticsData(db, workspaceRoot) {
 
     const eventsByType = {};
     eventLogs.rows?.forEach((row) => {
-      eventsByType[row.event_type] = row.count;
+      eventsByType[row.event_type] = Number(row.count) || 0;
     });
 
     const topSets = stats.rows?.map((row) => ({
       id: row.id,
-      plays: row.plays || 0,
-      likes: row.likes || 0,
-      dislikes: row.dislikes || 0,
+      plays: Number(row.plays) || 0,
+      likes: Number(row.likes) || 0,
+      dislikes: Number(row.dislikes) || 0,
       lastPlayedAt: row.last_played_at,
     })) || [];
 
     const topCountries = geoData.rows?.map((row) => ({
       code: row.country,
-      count: row.count,
+      count: Number(row.count) || 0,
     })) || [];
 
     const totalViews = Object.values(eventsByType).reduce((sum, count) => sum + count, 0);
@@ -63,7 +64,7 @@ export async function getAnalyticsData(db, workspaceRoot) {
 
     const deviceTypeBreakdown = {};
     deviceData.rows?.forEach((row) => {
-      deviceTypeBreakdown[row.device_type] = row.count;
+      deviceTypeBreakdown[row.device_type] = Number(row.count) || 0;
     });
 
     // Hourly distribution
@@ -78,7 +79,7 @@ export async function getAnalyticsData(db, workspaceRoot) {
     hourlyData.rows?.forEach((row) => {
       const hour = parseInt(row.hour, 10);
       if (hour >= 0 && hour < 24) {
-        hourlyDistribution[hour] = row.count;
+        hourlyDistribution[hour] = Number(row.count) || 0;
       }
     });
 
@@ -180,11 +181,13 @@ function calculateCpuUsage() {
 
 function getDiskInfo() {
   try {
-    // This is a simplified version. In production, use diskusage or similar
+    const stats = statfsSync(process.cwd(), { bigint: true });
+    const total = Number(stats.blocks * stats.bsize);
+    const free = Number(stats.bavail * stats.bsize);
     return {
-      total: 1000000000000, // 1TB placeholder
-      free: 500000000000, // 500GB placeholder
-      percentUsed: 50,
+      total,
+      free,
+      percentUsed: total > 0 ? ((total - free) / total) * 100 : 0,
     };
   } catch {
     return { total: 0, free: 0, percentUsed: 0 };
@@ -193,19 +196,16 @@ function getDiskInfo() {
 
 function getProcessInfo() {
   try {
-    // In production, use ps module or similar
-    // This is a simplified mock
-    const processes = [];
-
-    // Mock process data
-    const mockProcesses = [
-      { name: 'node', type: 'app', memory: 150000000, status: 'running' },
-      { name: 'electron', type: 'main', memory: 200000000, status: 'running' },
-      { name: 'postgres', type: 'db', memory: 300000000, status: 'running' },
-      { name: 'npm', type: 'build', memory: 50000000, status: 'running' },
-    ];
-
-    return mockProcesses;
+    const memory = process.memoryUsage();
+    return [{
+      pid: process.pid,
+      name: path.basename(process.execPath),
+      type: process.versions.electron ? 'main' : 'app',
+      memory: memory.rss,
+      heapUsed: memory.heapUsed,
+      uptimeSeconds: process.uptime(),
+      status: 'running',
+    }];
   } catch {
     return [];
   }
@@ -236,11 +236,20 @@ function generateSystemWarnings(usedMemory, totalMemory, cpuUsage) {
  * Cache Management
  */
 
-export function clearCache() {
-  // Implementation for cache clearing
+export async function clearCache({ clearHttpCache } = {}) {
+  if (typeof clearHttpCache !== 'function') {
+    return {
+      cleared: false,
+      message: 'Kein aktiver Electron-Cache verfügbar',
+      operations: [],
+    };
+  }
+
+  await clearHttpCache();
   return {
     cleared: true,
     message: 'Cache geleert',
+    operations: ['http-cache-cleared'],
   };
 }
 
@@ -248,11 +257,36 @@ export function clearCache() {
  * System Optimization
  */
 
-export function optimizeSystem() {
-  // Implementation for system optimization
+export async function optimizeSystem({ clearHttpCache, flushStorage } = {}) {
+  const before = process.memoryUsage();
+  const operations = [];
+
+  if (typeof clearHttpCache === 'function') {
+    await clearHttpCache();
+    operations.push('http-cache-cleared');
+  }
+  if (typeof flushStorage === 'function') {
+    await flushStorage();
+    operations.push('storage-flushed');
+  }
+  if (typeof global.gc === 'function') {
+    global.gc();
+    operations.push('garbage-collection');
+  }
+
+  const after = process.memoryUsage();
   return {
-    optimized: true,
-    message: 'System optimiert',
+    optimized: operations.length > 0,
+    message: operations.length > 0
+      ? 'System-Caches optimiert'
+      : 'Keine sichere Optimierungsaktion verfügbar',
+    operations,
+    memory: {
+      beforeRss: before.rss,
+      afterRss: after.rss,
+      beforeHeapUsed: before.heapUsed,
+      afterHeapUsed: after.heapUsed,
+    },
   };
 }
 

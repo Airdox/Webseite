@@ -1,17 +1,17 @@
 # AIRDOX Repository-Monitor
 
-Erstellt: 2026-07-21T08:03:20.187Z
+Erstellt: 2026-07-24T01:45:49.424Z
 Agent: Repository
 Repository: D:\webseeite-main
-Branch: codex/guardian-scope-cleanup
+Branch: codex/repository-order-2026-07
 
 ## Ueberblick
 
 - Checks: 6
 - Fehler: 0
 - Warnungen: 3
-- Offene Pfade: 79
-- Unerwartete offene Pfade: 75
+- Offene Pfade: 78
+- Unerwartete offene Pfade: 76
 - Baseline offene Pfade: 80
 - Versionierte generierte Artefakte (Review): 0
 
@@ -19,10 +19,10 @@ Branch: codex/guardian-scope-cleanup
 
 | Check | Stufe | Detail |
 | --- | --- | --- |
-| branch-naming | WARN | Aktueller Branch: codex/guardian-scope-cleanup |
+| branch-naming | WARN | Aktueller Branch: codex/repository-order-2026-07 |
 | required-governance-files | PASS | Gefundene Governance-Dateien: 3/3 |
-| working-tree-cleanliness-total | WARN | 79 uncommitted Pfade insgesamt. |
-| working-tree-cleanliness | WARN | 75 unerwartete uncommitted Pfade (79 gesamt, 80 baseline) |
+| working-tree-cleanliness-total | WARN | 78 uncommitted Pfade insgesamt. |
+| working-tree-cleanliness | WARN | 76 unerwartete uncommitted Pfade (78 gesamt, 80 baseline) |
 | tracked-generated-artifacts | PASS | 0 potentiell generierte Artefaktpfade sind versioniert. |
 | root-html-duplication | PASS | 0 zusaetzliche Root-HTML-Dateien erkannt. |
 
@@ -30,10 +30,11 @@ Branch: codex/guardian-scope-cleanup
 
 - M desktop/main/index.cjs
 - M desktop/main/preload.cjs
+- M desktop/main/services/admin.mjs
+- M desktop/main/services/audioMastering.mjs
 - M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - M docs/agent-system/AGENT_TRAINING_CATALOG.json
 - M docs/agent-system/AGENT_TRAINING_CATALOG.md
-- M docs/agent-system/DECISION_LOG.md
 - M docs/agent-system/MENTOR_POSTMORTEM_BANK.json
 - M docs/agent-system/MENTOR_POSTMORTEM_BANK.md
 - M docs/agent-system/latest-agent-currency.json
@@ -53,8 +54,6 @@ Branch: codex/guardian-scope-cleanup
 - M docs/agent-system/latest-background-cycle.json
 - M docs/agent-system/latest-designer-portfolio.json
 - M docs/agent-system/latest-designer-portfolio.md
-- M docs/agent-system/latest-designer-visual-quality.json
-- M docs/agent-system/latest-designer-visual-quality.md
 - M docs/agent-system/latest-guardian-risk-summary.json
 - M docs/agent-system/latest-guardian-risk-summary.md
 - M docs/agent-system/latest-job-run.json
@@ -74,35 +73,37 @@ Branch: codex/guardian-scope-cleanup
 - M docs/agent-system/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
 - M docs/agent-system/manni-reel-weekly-plan.md
+- M e2e/desktop-flightdeck.spec.js
+- M e2e/flightdeck-audio-mastering.spec.js
+- M e2e/flightdeck-quality.spec.js
 - M package-lock.json
-- M public/privacy-policy.html
-- M public/terms-of-service.html
-- M scripts/social-tiktok-oauth-init.mjs
-- M src/App.jsx
-- M src/components/Footer.jsx
-- M src/data/__tests__/musicSets.test.js
-- M src/data/musicSets.js
 - M src/desktop/DesktopApp.jsx
+- M src/desktop/__tests__/AudioMasteringService.test.js
+- M src/desktop/__tests__/AudioMasteringTab.test.jsx
+- M src/desktop/__tests__/DesktopApp.test.jsx
+- M src/desktop/components/AudioMasteringTab.jsx
+- M src/desktop/components/OverviewTab.jsx
 - M src/desktop/desktop.css
-- M src/server/__tests__/worker.test.js
-- M src/server/legalPages.js
-- M src/server/worker.js
-- ?? .codex/
-- ?? NUL
-- ?? artifacts/
-- ?? coverage-desktop/
-- ?? coverage/
-- ?? desktop/main/services/audioMastering.mjs
-- ?? docs/agent-system/REPORTING_EVIDENCE_POLICY.md
-- ?? e2e/flightdeck-audio-mastering.spec.js
-- ?? src/components/TikTokCreatorPage.css
-- ?? src/components/TikTokCreatorPage.jsx
-- ?? src/desktop/__tests__/AudioMasteringService.test.js
-- ?? src/desktop/__tests__/AudioMasteringTab.test.jsx
-- ?? src/desktop/components/AudioMasteringTab.jsx
-- ?? src/server/__tests__/tiktokCreator.test.js
-- ?? src/server/tiktokCreator.js
-- ?? vitest.desktop.config.js
+- M vitest.desktop.config.js
+- ?? desktop/main/services/audioFormats.mjs
+- ?? desktop/main/services/audioQualityScore.mjs
+- ?? docs/WINDOWS_FLIGHTDECK_TEST_RESULTS_2026-07-23.md
+- ?? e2e/flightdeck-electron-system.spec.js
+- ?? e2e/flightdeck-orbital-command.spec.js
+- ?? src/desktop/__tests__/AdminService.test.js
+- ?? src/desktop/__tests__/AssistantService.test.js
+- ?? src/desktop/__tests__/AudioFormats.test.js
+- ?? src/desktop/__tests__/AudioQualityScore.test.js
+- ?? src/desktop/__tests__/ExtendedComponentCoverage.test.jsx
+- ?? src/desktop/__tests__/GuidedDesignPhases.test.jsx
+- ?? src/desktop/__tests__/MainBootstrap.test.js
+- ?? src/desktop/__tests__/ManniApprovalService.test.js
+- ?? src/desktop/__tests__/OrbitalCommand.test.jsx
+- ?? src/desktop/__tests__/OrbitalOverview.test.jsx
+- ?? src/desktop/__tests__/PipelineService.test.js
+- ?? src/desktop/__tests__/R2Service.test.js
+- ?? src/desktop/__tests__/StateService.test.js
+- ?? src/desktop/components/overview.css
 
 ## Baseline fuer offene Pfade
 
@@ -189,13 +190,13 @@ Branch: codex/guardian-scope-cleanup
 
 ## Alle offenen Pfade
 
-- M .env.example
 - M desktop/main/index.cjs
 - M desktop/main/preload.cjs
+- M desktop/main/services/admin.mjs
+- M desktop/main/services/audioMastering.mjs
 - M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - M docs/agent-system/AGENT_TRAINING_CATALOG.json
 - M docs/agent-system/AGENT_TRAINING_CATALOG.md
-- M docs/agent-system/DECISION_LOG.md
 - M docs/agent-system/MENTOR_POSTMORTEM_BANK.json
 - M docs/agent-system/MENTOR_POSTMORTEM_BANK.md
 - M docs/agent-system/latest-agent-currency.json
@@ -215,8 +216,6 @@ Branch: codex/guardian-scope-cleanup
 - M docs/agent-system/latest-background-cycle.json
 - M docs/agent-system/latest-designer-portfolio.json
 - M docs/agent-system/latest-designer-portfolio.md
-- M docs/agent-system/latest-designer-visual-quality.json
-- M docs/agent-system/latest-designer-visual-quality.md
 - M docs/agent-system/latest-guardian-risk-summary.json
 - M docs/agent-system/latest-guardian-risk-summary.md
 - M docs/agent-system/latest-job-run.json
@@ -236,38 +235,39 @@ Branch: codex/guardian-scope-cleanup
 - M docs/agent-system/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
 - M docs/agent-system/manni-reel-weekly-plan.md
+- M e2e/desktop-flightdeck.spec.js
+- M e2e/flightdeck-audio-mastering.spec.js
+- M e2e/flightdeck-quality.spec.js
 - M package-lock.json
 - M package.json
-- M public/privacy-policy.html
-- M public/sitemap.xml
-- M public/terms-of-service.html
-- M scripts/social-tiktok-oauth-init.mjs
-- M src/App.jsx
-- M src/components/Footer.jsx
-- M src/data/__tests__/musicSets.test.js
-- M src/data/musicSets.js
 - M src/desktop/DesktopApp.jsx
+- M src/desktop/__tests__/AudioMasteringService.test.js
+- M src/desktop/__tests__/AudioMasteringTab.test.jsx
+- M src/desktop/__tests__/DesktopApp.test.jsx
+- M src/desktop/components/AudioMasteringTab.jsx
+- M src/desktop/components/OverviewTab.jsx
 - M src/desktop/desktop.css
 - M src/desktop/mockApi.js
-- M src/server/__tests__/worker.test.js
-- M src/server/legalPages.js
-- M src/server/worker.js
-- ?? .codex/
-- ?? NUL
-- ?? artifacts/
-- ?? coverage-desktop/
-- ?? coverage/
-- ?? desktop/main/services/audioMastering.mjs
-- ?? docs/agent-system/REPORTING_EVIDENCE_POLICY.md
-- ?? e2e/flightdeck-audio-mastering.spec.js
-- ?? src/components/TikTokCreatorPage.css
-- ?? src/components/TikTokCreatorPage.jsx
-- ?? src/desktop/__tests__/AudioMasteringService.test.js
-- ?? src/desktop/__tests__/AudioMasteringTab.test.jsx
-- ?? src/desktop/components/AudioMasteringTab.jsx
-- ?? src/server/__tests__/tiktokCreator.test.js
-- ?? src/server/tiktokCreator.js
-- ?? vitest.desktop.config.js
+- M vitest.desktop.config.js
+- ?? desktop/main/services/audioFormats.mjs
+- ?? desktop/main/services/audioQualityScore.mjs
+- ?? docs/WINDOWS_FLIGHTDECK_TEST_RESULTS_2026-07-23.md
+- ?? e2e/flightdeck-electron-system.spec.js
+- ?? e2e/flightdeck-orbital-command.spec.js
+- ?? src/desktop/__tests__/AdminService.test.js
+- ?? src/desktop/__tests__/AssistantService.test.js
+- ?? src/desktop/__tests__/AudioFormats.test.js
+- ?? src/desktop/__tests__/AudioQualityScore.test.js
+- ?? src/desktop/__tests__/ExtendedComponentCoverage.test.jsx
+- ?? src/desktop/__tests__/GuidedDesignPhases.test.jsx
+- ?? src/desktop/__tests__/MainBootstrap.test.js
+- ?? src/desktop/__tests__/ManniApprovalService.test.js
+- ?? src/desktop/__tests__/OrbitalCommand.test.jsx
+- ?? src/desktop/__tests__/OrbitalOverview.test.jsx
+- ?? src/desktop/__tests__/PipelineService.test.js
+- ?? src/desktop/__tests__/R2Service.test.js
+- ?? src/desktop/__tests__/StateService.test.js
+- ?? src/desktop/components/overview.css
 
 ## Versionierte generierte Artefakte
 
@@ -275,14 +275,14 @@ Branch: codex/guardian-scope-cleanup
 
 ## Letzte Commits
 
+- 6774048 docs(agents): refresh governance and evidence reports
+- d7678b7 content(music): refresh published set catalog
+- ec7b12d feat(web): add TikTok creator workflow
+- b6a6a6e feat(desktop): add audio mastering workspace
+- eaea410 chore(repo): ignore local generated artifacts
 - 26cb11b fix: separate hero and navigation controls
 - b88ea53 refactor: remove legacy VIP access and generated artifacts
 - cf03914 chore: daily autopush 2026-07-02 02:32 +02:00
 - 76647ef Refresh agent system reports
 - 4159007 Fix latest set hero indicator
-- 87ab297 chore: daily autopush 2026-06-24 22:31 +02:00
-- f6698db fix(manifest): keep only one 2026-06-21 set (recording_2026_06_21-5) and three prior sets; point file to existing R2 key
-- 7a0a6ef feat(flightdeck): publish recording_2026_06_21-5
-- 2cb003c Remove duplicate set recording_2026_06_21-2 (keep only FeTe de la Music)
-- ff66782 Deduplicate musicSets: keep single FeTe de la Music entry
 

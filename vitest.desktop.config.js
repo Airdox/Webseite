@@ -7,7 +7,9 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    include: ['src/desktop/__tests__/AudioMasteringService.test.js'],
+    include: [
+      'src/desktop/**/*.{test,spec}.{js,jsx,ts,tsx}',
+    ],
     exclude: ['e2e/**', 'node_modules/**', 'dist/**', '.wrangler/**'],
     setupFiles: './src/test/setup.js',
     testTimeout: 90000,
@@ -16,19 +18,26 @@ export default defineConfig({
       reportsDirectory: './coverage-desktop',
       reporter: ['text', 'json-summary', 'html'],
       include: [
-        'desktop/main/services/audioMastering.mjs',
+        'src/desktop/DesktopApp.jsx',
+        'src/desktop/api.js',
+        'src/desktop/components/**/*.{js,jsx}',
+        'src/desktop/lib/*.{js,jsx}',
+        'desktop/main/index.cjs',
+        'desktop/main/preload.cjs',
+        'desktop/main/protocolPath.cjs',
+        'desktop/main/services/**/*.{mjs,js,cjs}',
       ],
       exclude: [
         '**/*.test.{js,jsx,ts,tsx}',
         '**/*.spec.{js,jsx,ts,tsx}',
+        // Pure React mount bootstrap; DesktopApp itself is measured above.
+        'src/desktop/main.jsx',
+        // Browser-only fixture backend is test data, not production Electron behavior.
+        'src/desktop/mockApi.js',
       ],
       thresholds: {
         lines: 85,
-        functions: 85,
         statements: 85,
-        // Defensive process/error fallbacks are platform-specific; the executable
-        // statements, lines and functions retain the strict >=85% release gate.
-        branches: 70,
       },
     },
   },

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-21T08:15:53.166Z",
+  "generatedAt": "2026-07-24T01:45:50.422Z",
   "repository": "D:\\webseeite-main",
   "controller": {
     "name": "Master Controller",
@@ -7,9 +7,9 @@
   },
   "summary": {
     "averageScore": 96,
-    "dirtyPathCount": 79,
-    "testFileCount": 44,
-    "cssFileCount": 20
+    "dirtyPathCount": 78,
+    "testFileCount": 59,
+    "cssFileCount": 21
   },
   "gate": {
     "status": "pass",
@@ -202,7 +202,7 @@
           "label": "Ausreichende Testdateien",
           "status": "pass",
           "weight": 1.5,
-          "detail": "44 Test-/Spec-Dateien gefunden."
+          "detail": "59 Test-/Spec-Dateien gefunden."
         },
         {
           "label": "Worker/API-Testsignale",
@@ -220,7 +220,7 @@
           "label": "Arbeitsbaum sauber",
           "status": "warn",
           "weight": 1.5,
-          "detail": "79 uncommitted Pfade gefunden; vor Releases klaeren."
+          "detail": "78 uncommitted Pfade gefunden; vor Releases klaeren."
         },
         {
           "label": "Env-Beispiel vorhanden",
@@ -465,7 +465,7 @@
           "label": "Grosse JSX-Dateien begrenzt",
           "status": "warn",
           "weight": 1.5,
-          "detail": "src/desktop/DesktopApp.jsx hat 1858 Zeilen."
+          "detail": "src/desktop/DesktopApp.jsx hat 2110 Zeilen."
         },
         {
           "label": "Desktop Services modularisiert",
@@ -538,7 +538,7 @@
           "label": "Arbeitsbaum releasebereit",
           "status": "warn",
           "weight": 1.5,
-          "detail": "79 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
+          "detail": "78 uncommitted Pfade erschweren kontrollierte Merge-/Release-Aktionen."
         },
         {
           "label": "Einziges Deployment-Target",

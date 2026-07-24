@@ -1,7 +1,7 @@
 {
   "name": "airdox-web",
   "private": true,
-  "version": "0.1.35",
+  "version": "0.1.41",
   "main": "desktop/main/index.cjs",
   "type": "module",
   "scripts": {
@@ -22,7 +22,7 @@
     "desktop:test": "vitest run src/desktop/__tests__",
     "desktop:test:logic": "vitest run src/desktop/lib/__tests__ src/desktop/__tests__",
     "desktop:test:coverage": "node -e \"require('node:fs').mkdirSync('coverage-desktop/.tmp',{recursive:true})\" && vitest run --config vitest.desktop.config.js --coverage",
-    "desktop:test:e2e": "npm run build && playwright test e2e/desktop-flightdeck.spec.js e2e/flightdeck-quality.spec.js e2e/flightdeck-assistant.spec.js e2e/flightdeck-audio-mastering.spec.js",
+    "desktop:test:e2e": "npm run build && playwright test e2e/desktop-flightdeck.spec.js e2e/flightdeck-quality.spec.js e2e/flightdeck-assistant.spec.js e2e/flightdeck-audio-mastering.spec.js e2e/flightdeck-electron-system.spec.js e2e/flightdeck-orbital-command.spec.js",
     "desktop:test:proof": "node scratch/capture-analytics-filter-proof.mjs",
     "desktop:test:all": "npm run desktop:test:logic && npm run desktop:test:e2e",
     "tracklist:auto": "node scripts/generate-mixcloud-tracklists.mjs",

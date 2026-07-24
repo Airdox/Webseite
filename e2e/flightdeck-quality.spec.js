@@ -19,7 +19,7 @@ test.describe('Flight Deck Quality', () => {
     await expect(page.getByText('NO SQL MOCK')).toBeVisible();
 
     await page.getByLabel('Tabelle').selectOption('subscribers');
-    await expect(page.getByText('vip@airdox.info')).toBeVisible();
+    await expect(page.getByText('fan@airdox.info')).toBeVisible();
 
     const downloadPromise = page.waitForEvent('download');
     await page.getByRole('button', { name: /^JSON$/i }).click();
@@ -30,7 +30,7 @@ test.describe('Flight Deck Quality', () => {
     const content = await readFile(filePath, 'utf8');
     const rows = JSON.parse(content);
     expect(rows).toEqual(expect.arrayContaining([
-      expect.objectContaining({ email: 'vip@airdox.info', status: 'active' }),
+      expect.objectContaining({ email: 'fan@airdox.info', status: 'active' }),
     ]));
   });
 });

@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-21T08:17:14.833Z",
+  "generatedAt": "2026-07-24T01:45:51.880Z",
   "owner": "Mentor",
   "purpose": "Agent source currency and continuous learning check",
   "maxRunbookAgeDays": 45,
   "summary": {
     "agentsChecked": 8,
-    "warnCount": 5,
-    "passCount": 3,
+    "warnCount": 8,
+    "passCount": 0,
     "status": "warn"
   },
   "agents": [
@@ -15,23 +15,23 @@
       "domain": "Frontend architecture and web performance",
       "status": "warn",
       "warnings": [
-        "1 runbook(s) older than 45 days.",
+        "2 runbook(s) older than 45 days.",
         "1 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
-          "ageDays": 50,
+          "ageDays": 53,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         },
         {
           "filePath": "docs/agent-system/reports/operations/OPERATING_MODEL.md",
           "exists": true,
-          "ageDays": 45,
+          "ageDays": 48,
           "committedAt": "2026-06-06T12:12:03+02:00",
-          "fresh": true
+          "fresh": false
         }
       ],
       "sources": [
@@ -43,21 +43,21 @@
         },
         {
           "url": "https://vite.dev/guide/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://vite.dev/guide/"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://web.dev/articles",
           "ok": true,
           "status": 200,
-          "finalUrl": "https://web.dev/discover?hl=id"
+          "finalUrl": "https://web.dev/discover?hl=pl"
         },
         {
           "url": "https://developer.mozilla.org/en-US/docs/Web",
-          "ok": false,
-          "status": null,
-          "error": "AbortError"
+          "ok": true,
+          "status": 200,
+          "finalUrl": "https://developer.mozilla.org/en-US/docs/Web"
         }
       ],
       "nextActions": [
@@ -77,14 +77,14 @@
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
-          "ageDays": 50,
+          "ageDays": 53,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         },
         {
           "filePath": "docs/brand/AIRDOX_CORPORATE_DESIGN.md",
           "exists": true,
-          "ageDays": 50,
+          "ageDays": 53,
           "committedAt": "2026-05-17T05:17:12+02:00",
           "fresh": false
         }
@@ -118,20 +118,22 @@
     {
       "agent": "Winnie",
       "domain": "Windows desktop, Electron and local automation",
-      "status": "pass",
-      "warnings": [],
+      "status": "warn",
+      "warnings": [
+        "1 source(s) unreachable or changed."
+      ],
       "runbooks": [
         {
           "filePath": "docs/WINDOWS_FLIGHTDECK.md",
           "exists": true,
-          "ageDays": 11,
+          "ageDays": 14,
           "committedAt": "2026-07-10T06:07:23+02:00",
           "fresh": true
         },
         {
           "filePath": "docs/FLIGHT_DECK_TUTORIAL.md",
           "exists": true,
-          "ageDays": 11,
+          "ageDays": 14,
           "committedAt": "2026-07-10T06:07:23+02:00",
           "fresh": true
         }
@@ -151,14 +153,15 @@
         },
         {
           "url": "https://learn.microsoft.com/en-us/windows/apps/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://learn.microsoft.com/en-us/windows/apps/"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         }
       ],
       "nextActions": [
-        "Keep current cadence.",
-        "Recheck on next scheduled Mentor currency run."
+        "Mentor reviews failed or stale items.",
+        "Update the affected runbook or replace the source with a stronger primary source.",
+        "If the gap caused a project defect, add a test or quality gate."
       ]
     },
     {
@@ -166,20 +169,21 @@
       "domain": "Security, CI, runtime quality and risk",
       "status": "warn",
       "warnings": [
-        "1 runbook(s) older than 45 days."
+        "2 runbook(s) older than 45 days.",
+        "1 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
-          "ageDays": 45,
+          "ageDays": 48,
           "committedAt": "2026-06-06T12:12:03+02:00",
-          "fresh": true
+          "fresh": false
         },
         {
           "filePath": "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md",
           "exists": true,
-          "ageDays": 50,
+          "ageDays": 53,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         }
@@ -205,9 +209,9 @@
         },
         {
           "url": "https://nodejs.org/en/learn/getting-started/security-best-practices",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://nodejs.org/learn/getting-started/security-best-practices"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         }
       ],
       "nextActions": [
@@ -219,22 +223,24 @@
     {
       "agent": "Manni",
       "domain": "Growth, booking conversion and social platform practice",
-      "status": "pass",
-      "warnings": [],
+      "status": "warn",
+      "warnings": [
+        "2 runbook(s) older than 45 days."
+      ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/campaigns/MANNI_GROWTH_PLAYBOOK.md",
           "exists": true,
-          "ageDays": 45,
+          "ageDays": 48,
           "committedAt": "2026-06-06T12:12:03+02:00",
-          "fresh": true
+          "fresh": false
         },
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
-          "ageDays": 45,
+          "ageDays": 48,
           "committedAt": "2026-06-06T12:12:03+02:00",
-          "fresh": true
+          "fresh": false
         }
       ],
       "sources": [
@@ -242,7 +248,7 @@
           "url": "https://ads.tiktok.com/business/creativecenter/",
           "ok": true,
           "status": 200,
-          "finalUrl": "https://ads.tiktok.com/creative/creativeCenter?rid=fuzfmeetd2v"
+          "finalUrl": "https://ads.tiktok.com/creative/creativeCenter?rid=v88stcfj6vd"
         },
         {
           "url": "https://creators.instagram.com/",
@@ -258,8 +264,9 @@
         }
       ],
       "nextActions": [
-        "Keep current cadence.",
-        "Recheck on next scheduled Mentor currency run."
+        "Mentor reviews failed or stale items.",
+        "Update the affected runbook or replace the source with a stronger primary source.",
+        "If the gap caused a project defect, add a test or quality gate."
       ]
     },
     {
@@ -273,7 +280,7 @@
         {
           "filePath": "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md",
           "exists": true,
-          "ageDays": 50,
+          "ageDays": 53,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         }
@@ -309,13 +316,14 @@
       "domain": "Architecture simplification and maintainability",
       "status": "warn",
       "warnings": [
-        "1 runbook(s) older than 45 days."
+        "1 runbook(s) older than 45 days.",
+        "2 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/operations/REFACTOR_OPTIMIZATION_LOOP.md",
           "exists": true,
-          "ageDays": 46,
+          "ageDays": 48,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         }
@@ -323,9 +331,9 @@
       "sources": [
         {
           "url": "https://martinfowler.com/refactoring/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://refactoring.com/"
+          "ok": false,
+          "status": null,
+          "error": "AbortError"
         },
         {
           "url": "https://web.dev/articles/fast",
@@ -335,9 +343,9 @@
         },
         {
           "url": "https://nodejs.org/en/learn/diagnostics/user-journey",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://nodejs.org/learn/diagnostics/user-journey"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         }
       ],
       "nextActions": [
@@ -349,22 +357,24 @@
     {
       "agent": "Mentor",
       "domain": "Learning loops and agent improvement process",
-      "status": "pass",
-      "warnings": [],
+      "status": "warn",
+      "warnings": [
+        "2 runbook(s) older than 45 days."
+      ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
-          "ageDays": 45,
+          "ageDays": 48,
           "committedAt": "2026-06-06T12:12:03+02:00",
-          "fresh": true
+          "fresh": false
         },
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
-          "ageDays": 45,
+          "ageDays": 48,
           "committedAt": "2026-06-06T12:12:03+02:00",
-          "fresh": true
+          "fresh": false
         }
       ],
       "sources": [
@@ -382,8 +392,9 @@
         }
       ],
       "nextActions": [
-        "Keep current cadence.",
-        "Recheck on next scheduled Mentor currency run."
+        "Mentor reviews failed or stale items.",
+        "Update the affected runbook or replace the source with a stronger primary source.",
+        "If the gap caused a project defect, add a test or quality gate."
       ]
     }
   ]

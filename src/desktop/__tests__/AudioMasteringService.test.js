@@ -22,6 +22,7 @@ describe('audio mastering profiles', () => {
   it('offers complete, immutable profiles that all pass validation', () => {
     expect(Object.keys(AUDIO_MASTERING_PROFILES)).toEqual([
       'liveBalanced',
+      'spatial3d',
       'transparent',
       'clubPressure',
       'streamingSafe',
@@ -65,12 +66,19 @@ describe('audio mastering profiles', () => {
     });
   });
 
-  it.each(['mp3', 'wav', 'flac'])('accepts the supported %s output format', (outputFormat) => {
+  it.each(['mp3', 'wav', 'flac', 'ogg', 'opus', 'aac', 'aiff', 'alac'])(
+    'accepts the supported %s output format',
+    (outputFormat) => {
     expect(validateMasteringConfig({ outputFormat }).outputFormat).toBe(outputFormat);
+    },
+  );
+
+  it.each([undefined, '', 'wma', 'mp4', null])('falls back to mp3 for unsupported format %s', (outputFormat) => {
+    expect(validateMasteringConfig({ outputFormat }).outputFormat).toBe('mp3');
   });
 
-  it.each([undefined, '', 'aac', 'MP3', null])('falls back to mp3 for unsupported format %s', (outputFormat) => {
-    expect(validateMasteringConfig({ outputFormat }).outputFormat).toBe('mp3');
+  it('normalizes supported format case and whitespace', () => {
+    expect(validateMasteringConfig({ outputFormat: '  AAC ' }).outputFormat).toBe('aac');
   });
 });
 
@@ -89,6 +97,7 @@ describe('audio mastering parameter validation', () => {
     attackMs: [5, 100],
     releaseMs: [80, 600],
     makeupDb: [0, 3],
+    stereoWidth: [1, 2],
     sampleRate: [44100, 48000],
   };
 
@@ -176,15 +185,22 @@ describe('loudnorm measurement parsing', () => {
 
 describe('output safety helpers', () => {
   it.each([
-    ['mp3', ['-c:a', 'libmp3lame', '-b:a', '320k', '-id3v2_version', '3']],
-    ['wav', ['-c:a', 'pcm_s24le']],
-    ['flac', ['-c:a', 'flac', '-compression_level', '8']],
+    ['mp3', ['-c:a', 'libmp3lame', '-b:a', '320k', '-id3v2_version', '3', '-f', 'mp3']],
+    ['wav', ['-c:a', 'pcm_s24le', '-f', 'wav']],
+    ['flac', ['-c:a', 'flac', '-compression_level', '8', '-f', 'flac']],
+    ['ogg', ['-c:a', 'libvorbis', '-q:a', '8', '-f', 'ogg']],
+    ['opus', ['-c:a', 'libopus', '-b:a', '256k', '-vbr', 'on', '-compression_level', '10', '-f', 'opus']],
+    ['aac', ['-c:a', 'aac', '-b:a', '320k', '-movflags', '+faststart', '-f', 'ipod']],
+    ['aiff', ['-c:a', 'pcm_s24be', '-f', 'aiff']],
+    ['alac', ['-c:a', 'alac', '-movflags', '+faststart', '-f', 'ipod']],
   ])('maps %s to its production codec arguments', (format, expected) => {
     expect(_internal.outputCodecArgs(format)).toEqual(expected);
   });
 
   it('uses mp3 encoding as a safe codec fallback', () => {
-    expect(_internal.outputCodecArgs('aac')).toEqual(['-c:a', 'libmp3lame', '-b:a', '320k', '-id3v2_version', '3']);
+    expect(_internal.outputCodecArgs('wma')).toEqual([
+      '-c:a', 'libmp3lame', '-b:a', '320k', '-id3v2_version', '3', '-f', 'mp3',
+    ]);
   });
 
   it.each([
@@ -213,18 +229,58 @@ describe('real FFmpeg mastering pipeline', () => {
         '-c:a', 'pcm_s24le', sourcePath,
       ]);
       const config = { profileId: 'transparent', outputFormat: 'wav' };
-      const analysis = await analyzeAudio({ sourcePath, config });
+      const analysisProgress = [];
+      const analysis = await analyzeAudio({
+        sourcePath,
+        config,
+        onProgress: (progress, detail) => analysisProgress.push({ progress, ...detail }),
+      });
       expect(analysis.probe).toMatchObject({ codec: 'pcm_s24le', sampleRate: 48000, channels: 2 });
       expect(Number(analysis.loudness.input_i)).toBeLessThan(0);
+      expect(analysis.qualityScore).toMatchObject({
+        scoreAvailable: true,
+        confidence: { level: 'hoch' },
+      });
+      expect(analysis.qualityScore).not.toHaveProperty('predicted');
+      expect(analysis.predictedQualityScore).toMatchObject({
+        scoreAvailable: true,
+        predicted: true,
+        scoreRange: { min: expect.any(Number), max: expect.any(Number) },
+      });
+      expect(analysisProgress[0]).toMatchObject({ progress: 1, operation: 'analysis', phase: 'Audioquelle prüfen' });
+      expect(analysisProgress.some((entry) => entry.phase === 'Loudness messen')).toBe(true);
+      expect(analysisProgress.at(-1)).toMatchObject({ progress: 100, phase: 'Analyse abgeschlossen' });
+      const reportedValues = analysisProgress.map((entry) => entry.progress);
+      expect(reportedValues).toEqual([...reportedValues].sort((a, b) => a - b));
+
+      const abortedController = new AbortController();
+      abortedController.abort();
+      const abortStartedAt = Date.now();
+      await expect(_internal.measureAudio(sourcePath, analysis.config, false, {
+        duration: analysis.probe.duration,
+        signal: abortedController.signal,
+        onProgress: () => {},
+      })).rejects.toThrow(/abgebrochen/i);
+      expect(Date.now() - abortStartedAt).toBeLessThan(1000);
 
       const progress = [];
-      const first = await masterAudio({ sourcePath, outputDirectory, config, onProgress: (value) => progress.push(value) });
+      const first = await masterAudio({
+        sourcePath,
+        outputDirectory,
+        config,
+        onProgress: (value, detail) => progress.push({ value, ...detail }),
+      });
       expect(first.outputPath).toMatch(/gig-source-mastered\.wav$/);
       await expect(access(first.outputPath)).resolves.toBeUndefined();
       const report = JSON.parse(await readFile(`${first.outputPath}.mastering.json`, 'utf8'));
       expect(report.config).toMatchObject({ profileId: 'transparent', outputFormat: 'wav' });
       expect(report.output.probe.duration).toBeCloseTo(analysis.probe.duration, 1);
-      expect(progress).toContain(100);
+      expect(report.output.qualityScore).toMatchObject({
+        scoreAvailable: true,
+        confidence: { level: 'hoch' },
+      });
+      expect(progress.some((entry) => entry.phase === 'Master rendern')).toBe(true);
+      expect(progress.at(-1)).toMatchObject({ value: 100, phase: 'Mastering abgeschlossen' });
 
       const second = await masterAudio({ sourcePath, outputDirectory, config });
       expect(second.outputPath).toMatch(/gig-source-mastered-v2\.wav$/);
@@ -237,4 +293,71 @@ describe('real FFmpeg mastering pipeline', () => {
     await expect(analyzeAudio({ sourcePath: '' })).rejects.toThrow('Keine Audioquelle ausgewählt.');
     await expect(analyzeAudio({ sourcePath: path.join(tmpdir(), 'airdox-does-not-exist.wav') })).rejects.toThrow();
   });
+
+  it('does not award fake source resolution when a low-bitrate MP3 is upsampled to WAV', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'airdox-mastering-provenance-'));
+    const sourcePath = path.join(root, 'low-resolution-source.mp3');
+    try {
+      await execFileAsync('ffmpeg', [
+        '-hide_banner', '-loglevel', 'error', '-y', '-f', 'lavfi',
+        '-i', 'sine=frequency=997:duration=1',
+        '-ar', '22050', '-ac', '2', '-c:a', 'libmp3lame', '-b:a', '64k',
+        sourcePath,
+      ]);
+      const report = await masterAudio({
+        sourcePath,
+        outputDirectory: path.join(root, 'output'),
+        config: { profileId: 'transparent', outputFormat: 'wav', sampleRate: 48000 },
+      });
+
+      expect(report.input.probe).toMatchObject({ codec: 'mp3', sampleRate: 22050 });
+      expect(report.output.probe).toMatchObject({ codec: 'pcm_s24le', sampleRate: 48000 });
+      expect(report.output.qualityScore.breakdown.sourceResolution).toMatchObject({
+        score: report.input.qualityScore.breakdown.sourceResolution.score,
+        value: {
+          codec: 'mp3',
+          source: { codec: 'mp3' },
+          output: { codec: 'pcm_s24le' },
+        },
+      });
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  }, 60_000);
+
+  it('runs the complete measured mastering and verification pipeline for every output format', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'airdox-mastering-formats-'));
+    const sourcePath = path.join(root, 'all-formats-source.wav');
+    const formats = [
+      ['mp3', 'mp3', 'mp3'],
+      ['wav', 'wav', 'pcm_s24le'],
+      ['flac', 'flac', 'flac'],
+      ['ogg', 'ogg', 'vorbis'],
+      ['opus', 'opus', 'opus'],
+      ['aac', 'm4a', 'aac'],
+      ['aiff', 'aiff', 'pcm_s24be'],
+      ['alac', 'm4a', 'alac'],
+    ];
+    try {
+      await execFileAsync('ffmpeg', [
+        '-hide_banner', '-loglevel', 'error', '-y', '-f', 'lavfi',
+        '-i', 'sine=frequency=440:duration=1', '-ar', '48000', '-ac', '2',
+        '-c:a', 'pcm_s24le', sourcePath,
+      ]);
+
+      for (const [outputFormat, extension, codec] of formats) {
+        const report = await masterAudio({
+          sourcePath,
+          outputDirectory: path.join(root, outputFormat),
+          config: { profileId: 'transparent', outputFormat },
+        });
+        expect(report.outputPath).toMatch(new RegExp(`\\.${extension}$`));
+        expect(report.output.probe.codec).toBe(codec);
+        expect(report.output.qualityScore.scoreAvailable).toBe(true);
+        await expect(access(report.outputPath)).resolves.toBeUndefined();
+      }
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  }, 180_000);
 });

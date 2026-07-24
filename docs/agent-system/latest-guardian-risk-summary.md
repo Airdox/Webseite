@@ -1,6 +1,6 @@
 # AIRDOX Guardian-Risikobericht
 
-Erstellt: 2026-07-21T08:42:53.078Z
+Erstellt: 2026-07-24T01:50:13.988Z
 Risiko: MEDIUM
 Blocker: 0
 Warnungen: 3
@@ -11,8 +11,8 @@ Warnungen: 3
 
 ## Warnungen
 
-- 79 uncommitted paths are present; review scope before release.
-- 11 critical-path files changed: desktop/main/index.cjs, desktop/main/preload.cjs, package-lock.json, package.json, scripts/social-tiktok-oauth-init.mjs, src/server/__tests__/worker.test.js, src/server/legalPages.js, src/server/worker.js, ...
+- 78 uncommitted paths are present; review scope before release.
+- 7 critical-path files changed: desktop/main/preload.cjs, desktop/main/services/admin.mjs, desktop/main/services/audioMastering.mjs, package-lock.json, package.json, desktop/main/services/audioFormats.mjs, desktop/main/services/audioQualityScore.mjs
 - Master Controller review is recommended by routing.
 
 ## Empfohlene Gates
@@ -27,7 +27,6 @@ Warnungen: 3
 - `npm run desktop:test:logic`
 - `npm run guardian:risk`
 - `npm run guardian:risk -- --strict`
-- `npm run lint`
 - `npm run refactor:website:opportunities`
 - `npm run test -- --run`
 - `npm run website:profitability`

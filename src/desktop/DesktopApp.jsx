@@ -149,6 +149,12 @@ const TABS = [
 const TUTORIAL_CHECKLIST_KEY = 'flightdeck-tutorial-checklist';
 const TUTORIAL_WELCOME_KEY = 'flightdeck-tutorial-welcome-dismissed';
 const DEFAULT_TOUR_ID = 'full';
+const INITIAL_AUDIO_OPERATION = Object.freeze({
+  kind: 'idle',
+  state: 'idle',
+  phase: 'Bereit',
+  message: 'Audio wählen und anschließend die vollständige Signalanalyse starten.',
+});
 
 const loadTutorialChecklist = () => {
   try {
@@ -231,6 +237,10 @@ const createFriendlyErrorDetail = (message = '') => {
   return help ? `${message}\n\n${help}` : message;
 };
 
+const readableDesktopError = (error, fallback) => String(error?.message || fallback || 'Unbekannter Fehler.')
+  .replace(/^Error invoking remote method '[^']+':\s*(?:Error:\s*)?/i, '')
+  .trim();
+
 const getBatchProgressPercent = ({ current = 0, total = 0 } = {}) => (
   total > 0 ? Math.min(100, Math.round((current / total) * 100)) : 0
 );
@@ -302,15 +312,19 @@ const DesktopApp = () => {
   const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
   const batchCancelRef = useRef(false);
   const [audioProfiles, setAudioProfiles] = useState({});
+  const [audioOutputFormats, setAudioOutputFormats] = useState([]);
   const [audioSourcePath, setAudioSourcePath] = useState('');
+  const [audioOutputDirectory, setAudioOutputDirectory] = useState('');
   const [audioConfig, setAudioConfig] = useState({ profileId: 'liveBalanced' });
   const [audioAnalysis, setAudioAnalysis] = useState(null);
   const [audioResult, setAudioResult] = useState(null);
   const [audioProgress, setAudioProgress] = useState(0);
   const [audioBusy, setAudioBusy] = useState(false);
+  const [audioOperation, setAudioOperation] = useState(INITIAL_AUDIO_OPERATION);
   const audioJobIdRef = useRef('');
   const designStudioOpenedRef = useRef(false);
   const [systemStats, setSystemStats] = useState({});
+  const [systemStatsLoadedFor, setSystemStatsLoadedFor] = useState(null);
   const [manniCampaignState, setManniCampaignState] = useState(null);
   const [saveStatus, setSaveStatus] = useState(null);
   const [tutorialOpen, setTutorialOpen] = useState(false);
@@ -493,19 +507,35 @@ const DesktopApp = () => {
   }, []);
 
   useEffect(() => {
-    if (activeTab !== 'audio-mastering' || Object.keys(audioProfiles).length) return;
-    flightDeckApi.getAudioMasteringProfiles()
-      .then((profiles) => {
+    if (
+      activeTab !== 'audio-mastering'
+      || (Object.keys(audioProfiles).length && audioOutputFormats.length)
+    ) return;
+    Promise.all([
+      flightDeckApi.getAudioMasteringProfiles(),
+      flightDeckApi.getAudioOutputFormats(),
+    ])
+      .then(([profiles, outputFormats]) => {
         setAudioProfiles(profiles || {});
+        setAudioOutputFormats(Array.isArray(outputFormats) ? outputFormats : []);
         const standard = profiles?.liveBalanced;
         if (standard) setAudioConfig({ ...standard, profileId: 'liveBalanced' });
       })
       .catch((error) => setNotice({ tone: 'error', message: error.message }));
-  }, [activeTab, audioProfiles]);
+  }, [activeTab, audioOutputFormats.length, audioProfiles]);
 
   useEffect(() => flightDeckApi.onAudioMasteringProgress?.((update) => {
     if (!audioJobIdRef.current || update?.jobId !== audioJobIdRef.current) return;
-    setAudioProgress(Number(update.progress || 0));
+    const progress = Number(update.progress || 0);
+    setAudioProgress(progress);
+    setAudioOperation((current) => ({
+      ...current,
+      kind: update.operation || current.kind,
+      state: 'running',
+      phase: update.phase || current.phase,
+      message: update.message || current.message,
+      progress,
+    }));
   }), []);
 
   useEffect(() => {
@@ -572,22 +602,31 @@ const DesktopApp = () => {
     }
   }, [activeTab, analyticsData, settingsDraft?.workspaceRoot]);
 
-  // Auto-load system stats when switching to monitor tab
+  // Load system measurements once per workspace. A failed or empty response is
+  // still a completed request, otherwise a browser fallback could trigger an
+  // endless async render loop while the System Monitor is open.
   useEffect(() => {
-    if (activeTab === 'monitor' && (!systemStats || !systemStats.memory)) {
-      (async () => {
-        setBusy(true);
-        try {
-          const stats = await flightDeckApi.getSystemStats({ workspaceRoot: settingsDraft?.workspaceRoot });
-          if (stats) setSystemStats(stats);
-        } catch {
-          // Ignore — mock returns {}
-        } finally {
-          setBusy(false);
-        }
-      })();
-    }
-  }, [activeTab, settingsDraft?.workspaceRoot, systemStats]);
+    const workspaceRoot = settingsDraft?.workspaceRoot || '';
+    if (activeTab !== 'monitor' || systemStatsLoadedFor === workspaceRoot) return undefined;
+
+    let cancelled = false;
+    setBusy(true);
+    (async () => {
+      try {
+        const stats = await flightDeckApi.getSystemStats({ workspaceRoot });
+        if (!cancelled) setSystemStats(stats || {});
+      } catch {
+        if (!cancelled) setSystemStats({});
+      } finally {
+        if (!cancelled) setSystemStatsLoadedFor(workspaceRoot);
+        setBusy(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeTab, settingsDraft?.workspaceRoot, systemStatsLoadedFor]);
 
   useEffect(() => {
     if (activeTab === 'marketing' && !manniCampaignState) {
@@ -1212,43 +1251,161 @@ const DesktopApp = () => {
     setAudioAnalysis(null);
     setAudioResult(null);
     setAudioProgress(0);
+    setAudioOperation({
+      kind: 'analysis',
+      state: 'ready',
+      phase: 'Datei bereit',
+      message: 'Starte die Analyse, um Codec, Dauer, LUFS und True Peak vollständig zu ermitteln.',
+    });
   };
 
   const analyzeAudioForMastering = async () => {
+    if (audioJobIdRef.current) {
+      setNotice({ tone: 'info', message: 'Ein Audio-Job läuft bereits. Warte auf Abschluss oder brich ihn kontrolliert ab.' });
+      return;
+    }
+    const jobId = `audio-analysis-${Date.now()}`;
+    audioJobIdRef.current = jobId;
     setAudioBusy(true);
+    setAudioProgress(1);
+    setAudioOperation({
+      kind: 'analysis',
+      state: 'running',
+      phase: 'Analyse wird vorbereitet',
+      message: 'Die Audioquelle wird geöffnet. Lange Gig-Mitschnitte werden vollständig gelesen.',
+      progress: 1,
+    });
+    setNotice({ tone: 'info', message: 'Audioanalyse gestartet. Fortschritt und aktuelle Phase werden im Audio Lab angezeigt.' });
     try {
-      const result = await flightDeckApi.analyzeAudio({ sourcePath: audioSourcePath, config: audioConfig });
+      const result = await flightDeckApi.analyzeAudio({
+        jobId,
+        sourcePath: audioSourcePath,
+        config: audioConfig,
+      });
       setAudioAnalysis(result);
       setAudioResult(null);
-      setAudioProgress(0);
+      setAudioProgress(100);
+      setAudioOperation({
+        kind: 'analysis',
+        state: 'success',
+        phase: 'Analyse abgeschlossen',
+        message: 'Quelldaten, LUFS und True Peak sind ermittelt. Das Set ist bereit für die Optimierung.',
+        progress: 100,
+      });
       setNotice({ tone: 'success', message: 'Audioanalyse abgeschlossen. Zielwerte und Quelldaten sind geprüft.' });
     } catch (error) {
-      setNotice({ tone: 'error', message: error.message });
+      const message = readableDesktopError(error, 'Audioanalyse fehlgeschlagen.');
+      setAudioOperation((current) => ({
+        ...current,
+        kind: 'analysis',
+        state: 'error',
+        phase: /abgebrochen/i.test(message) ? 'Analyse abgebrochen' : 'Analyse fehlgeschlagen',
+        message,
+      }));
+      setNotice({ tone: 'error', message });
     } finally {
-      setAudioBusy(false);
+      if (audioJobIdRef.current === jobId) {
+        audioJobIdRef.current = '';
+        setAudioBusy(false);
+      }
     }
   };
 
   const renderAudioMaster = async () => {
+    if (audioJobIdRef.current) {
+      setNotice({ tone: 'info', message: 'Ein Audio-Job läuft bereits. Warte auf Abschluss oder brich ihn kontrolliert ab.' });
+      return;
+    }
     const jobId = `audio-${Date.now()}`;
     audioJobIdRef.current = jobId;
     setAudioBusy(true);
-    setAudioProgress(0);
+    setAudioProgress(1);
+    setAudioOperation({
+      kind: 'mastering',
+      state: 'running',
+      phase: 'Mastering wird vorbereitet',
+      message: 'Analyse, Klangformung, Render und technische Verifikation werden nacheinander ausgeführt.',
+      progress: 1,
+    });
+    setNotice({ tone: 'info', message: 'Audio-Optimierung gestartet. Der aktuelle Arbeitsschritt wird im Audio Lab angezeigt.' });
     try {
       const result = await flightDeckApi.masterAudio({
         jobId,
         sourcePath: audioSourcePath,
         workspaceRoot: settingsDraft?.workspaceRoot,
+        outputDirectory: audioOutputDirectory || undefined,
         config: audioConfig,
       });
       setAudioResult({ ...result, playbackUrl: result.outputPlaybackUrl });
       setAudioProgress(100);
-      setNotice({ tone: 'success', message: `Mastering verifiziert: ${result.outputPath}` });
+      setAudioOperation({
+        kind: 'mastering',
+        state: 'success',
+        phase: 'Master gespeichert',
+        message: `Das fertige Master wurde gespeichert: ${result.outputPath}`,
+        progress: 100,
+      });
+      setNotice({ tone: 'success', message: `Master gespeichert und verifiziert: ${result.outputPath}` });
     } catch (error) {
-      setNotice({ tone: 'error', message: error.message });
+      const message = readableDesktopError(error, 'Audio-Optimierung fehlgeschlagen.');
+      setAudioOperation((current) => ({
+        ...current,
+        kind: 'mastering',
+        state: 'error',
+        phase: /abgebrochen/i.test(message) ? 'Mastering abgebrochen' : 'Mastering fehlgeschlagen',
+        message,
+      }));
+      setNotice({ tone: 'error', message });
     } finally {
-      audioJobIdRef.current = '';
-      setAudioBusy(false);
+      if (audioJobIdRef.current === jobId) {
+        audioJobIdRef.current = '';
+        setAudioBusy(false);
+      }
+    }
+  };
+
+  const selectAudioOutputDirectory = async () => {
+    const selected = await runAsyncAction(() => flightDeckApi.pickAudioMasteringOutputDirectory());
+    if (!selected) return;
+    setAudioOutputDirectory(selected);
+    setAudioResult(null);
+    setNotice({ tone: 'success', message: `Speicherordner gewählt: ${selected}` });
+  };
+
+  const cancelAudioOperation = async () => {
+    const jobId = audioJobIdRef.current;
+    if (!jobId) {
+      setAudioOperation((current) => ({
+        ...current,
+        state: 'error',
+        phase: 'Kein aktiver Audio-Job',
+        message: 'Die Verarbeitung ist bereits beendet oder wurde noch nicht gestartet.',
+      }));
+      return;
+    }
+
+    const operationLabel = audioOperation.kind === 'analysis' ? 'Analyse' : 'Mastering';
+    setAudioOperation((current) => ({
+      ...current,
+      state: 'running',
+      phase: `${operationLabel} wird abgebrochen`,
+      message: 'Der laufende FFmpeg-Prozess wird kontrolliert beendet. Bitte kurz warten.',
+    }));
+    setNotice({ tone: 'info', message: `${operationLabel}-Abbruch angefordert.` });
+    try {
+      const accepted = await flightDeckApi.cancelAudioMastering({ jobId });
+      if (!accepted) {
+        throw new Error('Der Audio-Job war beim Abbruch nicht mehr aktiv.');
+      }
+    } catch (error) {
+      const message = readableDesktopError(error, `${operationLabel} konnte nicht abgebrochen werden.`);
+      setAudioOperation((current) => ({
+        ...current,
+        state: 'error',
+        phase: 'Abbruch fehlgeschlagen',
+        message,
+      }));
+      setNotice({ tone: 'error', message });
     }
   };
 
@@ -1258,6 +1415,7 @@ const DesktopApp = () => {
     setAudioAnalysis(null);
     setAudioResult(null);
     setAudioProgress(0);
+    setAudioOperation(INITIAL_AUDIO_OPERATION);
   };
 
   const renderTab = () => {
@@ -1366,12 +1524,20 @@ const DesktopApp = () => {
           result={audioResult}
           config={audioConfig}
           profiles={audioProfiles}
+          outputFormats={audioOutputFormats}
+          outputDirectory={audioOutputDirectory || (
+            settingsDraft?.workspaceRoot
+              ? `${settingsDraft.workspaceRoot.replace(/[\\/]+$/, '')}\\release\\audio-mastering`
+              : ''
+          )}
           busy={audioBusy}
           progress={audioProgress}
+          operation={audioOperation}
           onSelect={selectAudioForMastering}
           onAnalyze={analyzeAudioForMastering}
           onRender={renderAudioMaster}
-          onCancel={() => flightDeckApi.cancelAudioMastering({ jobId: audioJobIdRef.current })}
+          onCancel={cancelAudioOperation}
+          onSelectOutputDirectory={selectAudioOutputDirectory}
           onReveal={() => flightDeckApi.revealPath({ filePath: audioResult?.outputPath })}
           onReset={resetAudioMastering}
           onConfigChange={(field, value) => {
@@ -1379,14 +1545,35 @@ const DesktopApp = () => {
             setAudioAnalysis(null);
             setAudioResult(null);
             setAudioProgress(0);
+            setAudioOperation({
+              kind: 'analysis',
+              state: audioSourcePath ? 'ready' : 'idle',
+              phase: audioSourcePath ? 'Erneute Analyse erforderlich' : 'Bereit',
+              message: audioSourcePath
+                ? 'Parameter wurden geändert. Analysiere das Set erneut, bevor du den Master startest.'
+                : INITIAL_AUDIO_OPERATION.message,
+            });
           }}
           onProfileChange={(profileId) => {
             const profile = audioProfiles[profileId];
             if (!profile) return;
-            setAudioConfig({ ...profile, profileId });
+            setAudioConfig((current) => ({
+              ...profile,
+              profileId,
+              outputFormat: current.outputFormat || profile.outputFormat,
+              sampleRate: current.sampleRate || profile.sampleRate,
+            }));
             setAudioAnalysis(null);
             setAudioResult(null);
             setAudioProgress(0);
+            setAudioOperation({
+              kind: 'analysis',
+              state: audioSourcePath ? 'ready' : 'idle',
+              phase: audioSourcePath ? 'Profil gewählt' : 'Bereit',
+              message: audioSourcePath
+                ? 'Das Klangprofil ist aktiv. Starte die Analyse für den vollständigen Signalcheck.'
+                : INITIAL_AUDIO_OPERATION.message,
+            });
           }}
         />
       );
@@ -1506,16 +1693,26 @@ const DesktopApp = () => {
             if (stats) setSystemStats(stats);
           }}
           onClearCache={async () => {
-            await runAsyncAction(
+            const result = await runAsyncAction(
               () => flightDeckApi.clearCache({ workspaceRoot: settingsDraft?.workspaceRoot }),
-              'Cache geloescht.',
             );
+            if (!result) return;
+            if (!result.cleared) {
+              setNotice({ tone: 'error', message: result.message || 'Cache konnte nicht geleert werden.' });
+              return;
+            }
+            setNotice({ tone: 'success', message: 'Cache geloescht.' });
           }}
           onOptimize={async () => {
-            await runAsyncAction(
+            const result = await runAsyncAction(
               () => flightDeckApi.optimizeSystem({ workspaceRoot: settingsDraft?.workspaceRoot }),
-              'System optimiert.',
             );
+            if (!result) return;
+            if (!result.optimized) {
+              setNotice({ tone: 'error', message: result.message || 'Systemoptimierung konnte nicht ausgefuehrt werden.' });
+              return;
+            }
+            setNotice({ tone: 'success', message: 'System optimiert.' });
           }}
           busy={busy}
         />
@@ -1654,24 +1851,29 @@ const DesktopApp = () => {
   }
 
   return (
-    <div className="fd-app-shell">
-      <header className="fd-app-header">
+    <div className="fd-app-shell fd-orbital-shell" data-ui-version="orbital-command-v1">
+      <header className="fd-app-header fd-orbital-topbar">
         <div className="fd-brand-block">
-          <span className="fd-eyebrow">AIRDOX</span>
-          <div>
+          <span className="fd-orbital-mark" aria-hidden="true">A</span>
+          <div className="fd-orbital-title">
+            <span className="fd-eyebrow">AIRDOX / ORBITAL COMMAND</span>
             <h1>Flight Deck</h1>
             <p>{settingsDraft?.workspaceRoot || 'Kein Workspace gewaehlt'}</p>
           </div>
         </div>
+        <div className="fd-orbital-global-health" aria-label="Globaler Systemstatus">
+          {headerStats.map((stat) => (
+            <span key={stat.label} className={`fd-orbital-health-chip ${stat.tone}`}>
+              <small>{stat.label}</small>
+              <strong>{stat.value}</strong>
+            </span>
+          ))}
+        </div>
         <div className="fd-top-actions" aria-label="Globale Aktionen">
-          <span className={`fd-status-pill ${appState.workspaceValid ? 'ok' : 'warn'}`}>
-            {appState.workspaceValid ? 'Workspace verbunden' : 'Workspace fehlt'}
-          </span>
           <span className={`fd-status-pill ${canGoLive ? 'ok' : 'warn'}`}>
             <Gauge size={14} />
             {liveLabel}
           </span>
-          {!flightDeckApi.isElectron && <span className="fd-status-pill mock">Mock API</span>}
           <button type="button" className="fd-command-button" onClick={refreshState} disabled={busy}>
             <RefreshCw size={15} className={busy ? 'fd-spin' : ''} />
             Refresh
@@ -1689,8 +1891,12 @@ const DesktopApp = () => {
         </div>
       </header>
 
-      <div className="fd-workbench">
+      <div className="fd-workbench fd-orbital-workbench">
         <aside className="fd-sidebar" aria-label="Flight Deck navigation">
+          <div className="fd-orbital-sidebar-brand">
+            <span>FLIGHT DECK</span>
+            <small>ORBITAL COMMAND / LOCAL</small>
+          </div>
           <div className="fd-sidebar-section fd-sidebar-primary">
             <span className="fd-sidebar-kicker">Naechster Schritt</span>
             <strong>{nextStep.label}</strong>
@@ -1764,7 +1970,7 @@ const DesktopApp = () => {
             </div>
           </section>
 
-          <section className="fd-ops-brief" aria-label="Operations Status">
+          {activeTab !== 'overview' && <section className="fd-ops-brief fd-orbital-ops-brief" aria-label="Operations Status">
             <div className="fd-ops-states">
               {headerStats.map((stat) => (
                 <span key={stat.label} className={`fd-health-tile ${stat.tone}`}>
@@ -1805,12 +2011,29 @@ const DesktopApp = () => {
                   : 'Keine akuten Blocker in Workspace, Draft, Audio oder Pipeline.'}
               </span>
             </div>
-          </section>
+          </section>}
 
           {notice && (
             <section className={`fd-notice ${notice.tone}`}>
               <CircleAlert size={16} />
               <span>{notice.message}</span>
+            </section>
+          )}
+
+          {audioBusy && activeTab !== 'audio-mastering' && (
+            <section className="fd-audio-global-job" role="status" aria-live="polite" aria-label="Laufende Audio-Verarbeitung">
+              <AudioWaveform size={17} />
+              <span>
+                <strong>{audioOperation.phase || 'Audio-Verarbeitung läuft'}</strong>
+                <small>{audioOperation.message || 'FFmpeg verarbeitet den gewählten Mitschnitt.'}</small>
+              </span>
+              <div className="fd-audio-global-progress" aria-hidden="true">
+                <span style={{ width: `${Math.min(100, Math.max(0, Number(audioProgress) || 0))}%` }} />
+              </div>
+              <strong>{Math.round(Number(audioProgress) || 0)}%</strong>
+              <button type="button" className="fd-button secondary" onClick={() => jumpToTab('audio-mastering')}>
+                Zum Audio Lab
+              </button>
             </section>
           )}
 
@@ -1827,6 +2050,51 @@ const DesktopApp = () => {
             <BookOpen size={16} />
           </button>
         </section>
+
+        <aside className="fd-orbital-context-rail" aria-label="Operations Assistant">
+          <div className="fd-orbital-context-head">
+            <div>
+              <span className="fd-eyebrow">AIRDOX COPILOT</span>
+              <h2>Operations Assistant</h2>
+            </div>
+            <span className="fd-live-dot-wrap"><span className="fd-live-dot" /> Lokal bereit</span>
+          </div>
+
+          <section className="fd-orbital-context-actions" aria-label="Empfohlene Aktionen">
+            <strong>Empfohlene Aktionen</strong>
+            <button type="button" className="fd-orbital-context-button" onClick={() => jumpToTab('batch')}>
+              <ListChecks size={16} /><span><strong>Batch prüfen</strong><small>{selectedBatchCount} aktive Sets</small></span>
+            </button>
+            <button type="button" className="fd-orbital-context-button" onClick={() => jumpToTab('analytics')}>
+              <BarChart3 size={16} /><span><strong>Performance analysieren</strong><small>Plays, Länder und Geräte</small></span>
+            </button>
+            <button type="button" className="fd-orbital-context-button" onClick={nextStep.action} disabled={busy || isBatchRunning}>
+              <Rocket size={16} /><span><strong>{nextStep.label}</strong><small>{nextStep.actionLabel}</small></span>
+            </button>
+            <button type="button" className="fd-orbital-context-button" onClick={() => jumpToTab('monitor')}>
+              <Activity size={16} /><span><strong>System prüfen</strong><small>CPU, Speicher und Prozesse</small></span>
+            </button>
+          </section>
+
+          <section className="fd-orbital-context-facts" aria-label="Aktueller Kontext">
+            <strong>Aktueller Kontext</strong>
+            <dl>
+              <div><dt>Bereich</dt><dd>{activeTabConfig.label}</dd></div>
+              <div><dt>Draft</dt><dd>{draft?.id || 'Kein Draft'}</dd></div>
+              <div><dt>Queue</dt><dd>{selectedBatchCount} aktiv</dd></div>
+              <div><dt>Pipeline</dt><dd>{activeProgressLabel}</dd></div>
+            </dl>
+          </section>
+
+          <section className={`fd-orbital-context-alert ${blockingItems.length ? 'warn' : 'ok'}`}>
+            <CircleAlert size={16} />
+            <span><strong>{blockingItems.length ? `${blockingItems.length} Blocker` : 'System bereit'}</strong><small>{blockingItems.length ? blockingItems.map((item) => item.label).join(' / ') : 'Alle Betriebs-Gates sind klar.'}</small></span>
+          </section>
+
+          <button type="button" className="fd-button fd-orbital-open-assistant" onClick={() => jumpToTab('assistant')}>
+            <Bot size={16} /> Assistant vollständig öffnen
+          </button>
+        </aside>
       </div>
 
       {tutorialOpen && (

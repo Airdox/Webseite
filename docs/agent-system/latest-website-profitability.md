@@ -1,49 +1,42 @@
 # Latest Website Profitability
 
-Erstellt: 2026-07-21T08:25:04.270Z
+Erstellt: 2026-07-24T01:48:56.836Z
 Measurement window: 30 days
 Event source: neon:analytics_logs
-Status: unprofitable
+Status: no_measurement_data
 
 ## Financial Estimate
-- Estimated gross value: EUR 121.00
+- Estimated gross value: EUR 0.00
 - Estimated monthly cost: EUR 552.00
-- Estimated net value: EUR -431.00
-- ROI: -0.7808
+- Estimated net value: EUR -552.00
+- ROI: -1
 
 ## Funnel
-- Consented events: 232
-- Rejected events: 170
-- Route views: 80
-- Set plays: 70
+- Consented events: 0
+- Rejected events: 0
+- Route views: 0
+- Set plays: 0
 - Newsletter signups: 0
 - Booking clicks: 0
 - Contact submits: 0
 
 ## Conversion Rates
-- engagedPlayRate: 0.875
+- engagedPlayRate: 0
 - newsletterRate: 0
 - bookingIntentRate: 0
 - contactRate: 0
 
 ## Value By Event
-- set_play: EUR 105.00
-- tracklist_open: EUR 12.00
-- route_view: EUR 4.00
-- section_view: EUR 0.00
+- Noch keine Daten
 
 ## Value By Route
-- /: EUR 119.90
-- /#set-recording_2026_06_21-5: EUR 0.45
-- /stark/sets: EUR 0.45
-- /tiktok-creator: EUR 0.15
-- /#set-recording_2026_06_02: EUR 0.05
+- Noch keine Daten
 
 ## Empfehlungen
-1. Improve booking CTA path (high, Webbie)
-   - Review the strongest route and place a contextual booking or EPK CTA after meaningful music engagement.
-2. Strengthen fan capture (medium, Manni)
-   - Pair the top content with a newsletter offer and a measurable campaign parameter.
+1. Enable consented website event export (high, Webbie)
+   - Verify route_view, set_play, newsletter_signup, booking_click, contact_submit, and epk_download reach the audience event store.
+2. Do not optimize ROI without data (high, Audience Intelligence)
+   - Keep the profitability status as no_measurement_data until at least one consented event source exists.
 
 ## Guardrails
 - Aggregate and consented events only.

@@ -1,12 +1,12 @@
 # AIRDOX Wiki Sync Audit
 
-Erstellt: 2026-07-21T08:52:48.601Z
+Erstellt: 2026-07-24T01:50:23.333Z
 Status: warn
 
 ## Ueberblick
 
-- Geaenderte Dateien: 77
-- Content / project files: 64
+- Geaenderte Dateien: 76
+- Content / project files: 68
 - Wiki / Assistant knowledge files: 0
 - Owner: Master Controller -> Wiki Maintainer
 
@@ -18,10 +18,11 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 
 - desktop/main/index.cjs
 - desktop/main/preload.cjs
+- desktop/main/services/admin.mjs
+- desktop/main/services/audioMastering.mjs
 - docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - docs/agent-system/AGENT_TRAINING_CATALOG.json
 - docs/agent-system/AGENT_TRAINING_CATALOG.md
-- docs/agent-system/DECISION_LOG.md
 - docs/agent-system/MENTOR_POSTMORTEM_BANK.json
 - docs/agent-system/MENTOR_POSTMORTEM_BANK.md
 - docs/agent-system/latest-agent-currency.json
@@ -41,8 +42,6 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 - docs/agent-system/latest-background-cycle.json
 - docs/agent-system/latest-designer-portfolio.json
 - docs/agent-system/latest-designer-portfolio.md
-- docs/agent-system/latest-designer-visual-quality.json
-- docs/agent-system/latest-designer-visual-quality.md
 - docs/agent-system/latest-guardian-risk-summary.json
 - docs/agent-system/latest-guardian-risk-summary.md
 - docs/agent-system/latest-job-run.json
@@ -61,25 +60,30 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 - docs/agent-system/manni-reel-queue.json
 - docs/agent-system/manni-reel-weekly-plan.md
 - package.json
-- scripts/social-tiktok-oauth-init.mjs
-- src/components/Footer.jsx
-- src/data/__tests__/musicSets.test.js
-- src/data/musicSets.js
 - src/desktop/DesktopApp.jsx
-- src/desktop/desktop.css
-- src/desktop/mockApi.js
-- src/server/__tests__/worker.test.js
-- src/server/legalPages.js
-- src/server/worker.js
-- desktop/main/services/audioMastering.mjs
-- docs/agent-system/REPORTING_EVIDENCE_POLICY.md
-- src/components/TikTokCreatorPage.css
-- src/components/TikTokCreatorPage.jsx
 - src/desktop/__tests__/AudioMasteringService.test.js
 - src/desktop/__tests__/AudioMasteringTab.test.jsx
+- src/desktop/__tests__/DesktopApp.test.jsx
 - src/desktop/components/AudioMasteringTab.jsx
-- src/server/__tests__/tiktokCreator.test.js
-- src/server/tiktokCreator.js
+- src/desktop/components/OverviewTab.jsx
+- src/desktop/desktop.css
+- src/desktop/mockApi.js
+- desktop/main/services/audioFormats.mjs
+- desktop/main/services/audioQualityScore.mjs
+- src/desktop/__tests__/AdminService.test.js
+- src/desktop/__tests__/AssistantService.test.js
+- src/desktop/__tests__/AudioFormats.test.js
+- src/desktop/__tests__/AudioQualityScore.test.js
+- src/desktop/__tests__/ExtendedComponentCoverage.test.jsx
+- src/desktop/__tests__/GuidedDesignPhases.test.jsx
+- src/desktop/__tests__/MainBootstrap.test.js
+- src/desktop/__tests__/ManniApprovalService.test.js
+- src/desktop/__tests__/OrbitalCommand.test.jsx
+- src/desktop/__tests__/OrbitalOverview.test.jsx
+- src/desktop/__tests__/PipelineService.test.js
+- src/desktop/__tests__/R2Service.test.js
+- src/desktop/__tests__/StateService.test.js
+- src/desktop/components/overview.css
 
 ## Knowledge Files
 

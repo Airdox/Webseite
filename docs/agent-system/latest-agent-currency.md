@@ -1,36 +1,36 @@
 # AIRDOX Agenten-Aktualitaetsbericht
 
-Erstellt: 2026-07-21T08:17:14.833Z
+Erstellt: 2026-07-24T01:45:51.880Z
 Owner: Mentor
 Status: warn
 
 ## Ueberblick
 
 - Gepruefte Agenten: 8
-- Pass: 3
-- Warnungen: 5
+- Pass: 0
+- Warnungen: 8
 
 ## Agenten
 
 | Agent | Status | Domaene | Warnungen |
 | --- | --- | --- | --- |
-| Webbie | WARN | Frontend architecture and web performance | 1 runbook(s) older than 45 days.<br>1 source(s) unreachable or changed. |
+| Webbie | WARN | Frontend architecture and web performance | 2 runbook(s) older than 45 days.<br>1 source(s) unreachable or changed. |
 | Designer | WARN | Visual quality, accessibility, UX evidence | 2 runbook(s) older than 45 days. |
-| Winnie | PASS | Windows desktop, Electron and local automation | - |
-| Guardian | WARN | Security, CI, runtime quality and risk | 1 runbook(s) older than 45 days. |
-| Manni | PASS | Growth, booking conversion and social platform practice | - |
+| Winnie | WARN | Windows desktop, Electron and local automation | 1 source(s) unreachable or changed. |
+| Guardian | WARN | Security, CI, runtime quality and risk | 2 runbook(s) older than 45 days.<br>1 source(s) unreachable or changed. |
+| Manni | WARN | Growth, booking conversion and social platform practice | 2 runbook(s) older than 45 days. |
 | Repository | WARN | Source control, GitHub governance and release hygiene | 1 runbook(s) older than 45 days. |
-| Refactor | WARN | Architecture simplification and maintainability | 1 runbook(s) older than 45 days. |
-| Mentor | PASS | Learning loops and agent improvement process | - |
+| Refactor | WARN | Architecture simplification and maintainability | 1 runbook(s) older than 45 days.<br>2 source(s) unreachable or changed. |
+| Mentor | WARN | Learning loops and agent improvement process | 2 runbook(s) older than 45 days. |
 
 ## Quellenchecks
 
 ### Webbie
 
 - PASS https://react.dev/ (200)
-- PASS https://vite.dev/guide/ (200)
+- WARN https://vite.dev/guide/ (TypeError)
 - PASS https://web.dev/articles (200)
-- WARN https://developer.mozilla.org/en-US/docs/Web (AbortError)
+- PASS https://developer.mozilla.org/en-US/docs/Web (200)
 
 ### Designer
 
@@ -42,14 +42,14 @@ Status: warn
 
 - PASS https://www.electronjs.org/docs/latest/ (200)
 - PASS https://playwright.dev/docs/intro (200)
-- PASS https://learn.microsoft.com/en-us/windows/apps/ (200)
+- WARN https://learn.microsoft.com/en-us/windows/apps/ (TypeError)
 
 ### Guardian
 
 - PASS https://owasp.org/www-project-top-ten/ (200)
 - PASS https://docs.github.com/en/actions (200)
 - PASS https://developers.cloudflare.com/workers/ (200)
-- PASS https://nodejs.org/en/learn/getting-started/security-best-practices (200)
+- WARN https://nodejs.org/en/learn/getting-started/security-best-practices (TypeError)
 
 ### Manni
 
@@ -65,9 +65,9 @@ Status: warn
 
 ### Refactor
 
-- PASS https://martinfowler.com/refactoring/ (200)
+- WARN https://martinfowler.com/refactoring/ (AbortError)
 - PASS https://web.dev/articles/fast (200)
-- PASS https://nodejs.org/en/learn/diagnostics/user-journey (200)
+- WARN https://nodejs.org/en/learn/diagnostics/user-journey (TypeError)
 
 ### Mentor
 

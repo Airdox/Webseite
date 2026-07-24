@@ -430,8 +430,14 @@ export const mockFlightDeckApi = {
   async getAudioMasteringProfiles() {
     throw new Error('Audio-Mastering benötigt die Electron-Desktop-App und lokales FFmpeg.');
   },
+  async getAudioOutputFormats() {
+    throw new Error('Audio-Konvertierung benötigt die Electron-Desktop-App und lokales FFmpeg.');
+  },
   async pickAudioMasteringFile() {
     throw new Error('Dateiauswahl für Audio-Mastering ist nur in der Electron-Desktop-App verfügbar.');
+  },
+  async pickAudioMasteringOutputDirectory() {
+    throw new Error('Die Wahl des Mastering-Speicherorts ist nur in der Electron-Desktop-App verfügbar.');
   },
   async analyzeAudio() {
     throw new Error('Reale Audioanalyse ist im Browser deaktiviert. Starte die Electron-Desktop-App.');
@@ -596,13 +602,34 @@ export const mockFlightDeckApi = {
     return { filePath: `C:\\Exports\\analytics-${payload?.type || 'json'}.json` };
   },
   async getSystemStats() {
-    return {};
+    return {
+      memory: {
+        total: 16 * 1024 * 1024 * 1024,
+        available: 9 * 1024 * 1024 * 1024,
+        used: 7 * 1024 * 1024 * 1024,
+        percentUsed: 43.75,
+      },
+      cpu: {
+        cores: 8,
+        percentUsed: 18,
+        clockSpeed: 3.4,
+      },
+      disk: {
+        total: 512 * 1024 * 1024 * 1024,
+        free: 280 * 1024 * 1024 * 1024,
+        used: 232 * 1024 * 1024 * 1024,
+        percentUsed: 45.31,
+      },
+      processes: [],
+      warnings: [],
+      lastUpdate: new Date().toISOString(),
+    };
   },
   async clearCache() {
-    return { cleared: true };
+    throw new Error('Cache-Verwaltung benötigt die Electron-Desktop-App.');
   },
   async optimizeSystem() {
-    return { optimized: true };
+    throw new Error('Systemoptimierung benötigt die Electron-Desktop-App.');
   },
   async askAssistant(payload) {
     const q = String(payload?.question || '').toLowerCase();

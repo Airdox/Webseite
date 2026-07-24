@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-21T08:25:04.270Z",
+  "generatedAt": "2026-07-24T01:48:56.836Z",
   "agent": "audience-intelligence",
   "model": {
     "currency": "EUR",
@@ -8,74 +8,31 @@
   },
   "summary": {
     "eventSource": "neon:analytics_logs",
-    "totalRawEvents": 402,
-    "totalConsentedEvents": 232,
-    "rejectedEvents": 170,
+    "totalRawEvents": 0,
+    "totalConsentedEvents": 0,
+    "rejectedEvents": 0,
     "privacyRejectedEvents": 0,
-    "estimatedGrossValue": 121,
+    "estimatedGrossValue": 0,
     "totalCost": 552,
-    "estimatedNetValue": -431,
-    "roi": -0.7808,
-    "profitabilityStatus": "unprofitable",
+    "estimatedNetValue": -552,
+    "roi": -1,
+    "profitabilityStatus": "no_measurement_data",
     "funnel": {
-      "routeViews": 80,
-      "setPlays": 70,
+      "routeViews": 0,
+      "setPlays": 0,
       "newsletterSignups": 0,
       "bookingClicks": 0,
       "contactSubmits": 0
     },
     "conversionRates": {
-      "engagedPlayRate": 0.875,
+      "engagedPlayRate": 0,
       "newsletterRate": 0,
       "bookingIntentRate": 0,
       "contactRate": 0
     },
-    "valueByEvent": [
-      {
-        "key": "set_play",
-        "value": 105
-      },
-      {
-        "key": "tracklist_open",
-        "value": 12
-      },
-      {
-        "key": "route_view",
-        "value": 4
-      },
-      {
-        "key": "section_view",
-        "value": 0
-      }
-    ],
-    "valueByRoute": [
-      {
-        "key": "/",
-        "value": 119.9
-      },
-      {
-        "key": "/#set-recording_2026_06_21-5",
-        "value": 0.45
-      },
-      {
-        "key": "/stark/sets",
-        "value": 0.45
-      },
-      {
-        "key": "/tiktok-creator",
-        "value": 0.15
-      },
-      {
-        "key": "/#set-recording_2026_06_02",
-        "value": 0.05
-      }
-    ],
-    "valueByCampaign": [
-      {
-        "key": "unknown",
-        "value": 121
-      }
-    ],
+    "valueByEvent": [],
+    "valueByRoute": [],
+    "valueByCampaign": [],
     "supportedEvents": [
       "contact_submit",
       "booking_click",
@@ -99,14 +56,14 @@
     {
       "priority": "high",
       "owner": "Webbie",
-      "title": "Improve booking CTA path",
-      "action": "Review the strongest route and place a contextual booking or EPK CTA after meaningful music engagement."
+      "title": "Enable consented website event export",
+      "action": "Verify route_view, set_play, newsletter_signup, booking_click, contact_submit, and epk_download reach the audience event store."
     },
     {
-      "priority": "medium",
-      "owner": "Manni",
-      "title": "Strengthen fan capture",
-      "action": "Pair the top content with a newsletter offer and a measurable campaign parameter."
+      "priority": "high",
+      "owner": "Audience Intelligence",
+      "title": "Do not optimize ROI without data",
+      "action": "Keep the profitability status as no_measurement_data until at least one consented event source exists."
     }
   ]
 }

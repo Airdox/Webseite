@@ -2,6 +2,7 @@ const fs = require('node:fs/promises');
 const fsSync = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const { randomUUID } = require('node:crypto');
 const { pathToFileURL } = require('node:url');
 const electron = require('electron');
 const { resolveAppProtocolAssetPath } = require('./protocolPath.cjs');
@@ -21,6 +22,26 @@ let mainWindow = null;
 let designStudioWindow = null;
 let servicesPromise = null;
 const audioMasteringJobs = new Map();
+const audioPlaybackFiles = new Map();
+
+const createAudioPlaybackUrl = (filePath) => {
+  const token = randomUUID();
+  audioPlaybackFiles.set(token, path.resolve(String(filePath)));
+  while (audioPlaybackFiles.size > 64) {
+    audioPlaybackFiles.delete(audioPlaybackFiles.keys().next().value);
+  }
+  return `app://flightdeck/audio/${token}`;
+};
+
+const sendAudioJobProgress = (sender, payload) => {
+  const target = sender || mainWindow?.webContents;
+  if (!target || target.isDestroyed?.()) return;
+  try {
+    target.send('flightdeck:audio-mastering-progress', payload);
+  } catch {
+    // A closed renderer must not terminate the underlying FFmpeg job.
+  }
+};
 
 const getServices = async () => {
   if (!servicesPromise) {
@@ -47,6 +68,7 @@ const getServices = async () => {
       analyzeAudio: audioMastering.analyzeAudio,
       masterAudio: audioMastering.masterAudio,
       audioMasteringProfiles: audioMastering.AUDIO_MASTERING_PROFILES,
+      audioOutputFormats: audioMastering.AUDIO_OUTPUT_FORMAT_LIST,
     }));
   }
 
@@ -197,6 +219,16 @@ const readAnalyticsCache = async () => {
 
 const registerAppProtocol = () => {
   protocol.handle('app', (request) => {
+    const requestUrl = new URL(request.url);
+    if (requestUrl.hostname === 'flightdeck' && requestUrl.pathname.startsWith('/audio/')) {
+      const token = requestUrl.pathname.slice('/audio/'.length);
+      const audioPath = audioPlaybackFiles.get(token);
+      if (!audioPath) return new Response('Audio not found', { status: 404 });
+      return net.fetch(pathToFileURL(audioPath).toString(), {
+        headers: request.headers,
+      });
+    }
+
     const assetPath = resolveAppProtocolAssetPath({
       appRoot: app.getAppPath(),
       requestUrl: request.url,
@@ -250,7 +282,9 @@ const createWindow = async () => {
     if (!app.isPackaged) {
       try {
         await mainWindow.loadURL(DEV_DESKTOP_URL);
-        mainWindow.webContents.openDevTools({ mode: 'detach' });
+        if (!process.env.FLIGHTDECK_E2E) {
+          mainWindow.webContents.openDevTools({ mode: 'detach' });
+        }
         await writeStartupLog(`loaded dev url ${DEV_DESKTOP_URL}`);
         return;
       } catch (error) {
@@ -355,22 +389,59 @@ ipcMain.handle('flightdeck:get-audio-mastering-profiles', async () => {
   return audioMasteringProfiles;
 });
 
+ipcMain.handle('flightdeck:get-audio-output-formats', async () => {
+  const { audioOutputFormats } = await getServices();
+  return audioOutputFormats.map(({ id, name, extension, lossless }) => ({
+    id,
+    name,
+    extension,
+    lossless,
+  }));
+});
+
 ipcMain.handle('flightdeck:pick-audio-mastering-file', async () => {
   const result = await dialog.showOpenDialog(mainWindow, {
     properties: ['openFile'],
     title: 'Live-Set für Audio-Optimierung auswählen',
-    filters: [{ name: 'Audio', extensions: ['wav', 'flac', 'aiff', 'aif', 'mp3', 'm4a', 'aac'] }],
+    filters: [{
+      name: 'Audio',
+      extensions: ['wav', 'flac', 'aiff', 'aif', 'mp3', 'm4a', 'aac', 'ogg', 'opus'],
+    }],
   });
   return result.canceled || !result.filePaths[0] ? null : result.filePaths[0];
 });
 
-ipcMain.handle('flightdeck:analyze-audio', async (_event, payload) => {
-  const { analyzeAudio } = await getServices();
-  const result = await analyzeAudio({ sourcePath: payload?.sourcePath, config: payload?.config || {} });
-  return { ...result, playbackUrl: pathToFileURL(result.sourcePath).toString() };
+ipcMain.handle('flightdeck:pick-audio-mastering-output-directory', async () => {
+  const result = await dialog.showOpenDialog(mainWindow, {
+    properties: ['openDirectory', 'createDirectory'],
+    title: 'Speicherordner für das fertige Master auswählen',
+  });
+  return result.canceled || !result.filePaths[0] ? null : result.filePaths[0];
 });
 
-ipcMain.handle('flightdeck:master-audio', async (_event, payload) => {
+ipcMain.handle('flightdeck:analyze-audio', async (event, payload) => {
+  const { analyzeAudio } = await getServices();
+  const jobId = String(payload?.jobId || `audio-analysis-${Date.now()}`);
+  if (audioMasteringJobs.has(jobId)) throw new Error('Dieser Audio-Job läuft bereits.');
+  const controller = new AbortController();
+  audioMasteringJobs.set(jobId, controller);
+  try {
+    const result = await analyzeAudio({
+      sourcePath: payload?.sourcePath,
+      config: payload?.config || {},
+      signal: controller.signal,
+      onProgress: (progress, detail = {}) => sendAudioJobProgress(
+        event?.sender,
+        { jobId, progress, ...detail },
+      ),
+    });
+    return { ...result, playbackUrl: createAudioPlaybackUrl(result.sourcePath) };
+  } finally {
+    audioMasteringJobs.delete(jobId);
+  }
+});
+
+ipcMain.handle('flightdeck:master-audio', async (event, payload) => {
   const { masterAudio } = await getServices();
   const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
   const jobId = String(payload?.jobId || `audio-${Date.now()}`);
@@ -378,17 +449,23 @@ ipcMain.handle('flightdeck:master-audio', async (_event, payload) => {
   const controller = new AbortController();
   audioMasteringJobs.set(jobId, controller);
   try {
+    const outputDirectory = payload?.outputDirectory
+      ? path.resolve(String(payload.outputDirectory))
+      : path.join(workspaceRoot, 'release', 'audio-mastering');
     const result = await masterAudio({
       sourcePath: payload?.sourcePath,
-      outputDirectory: path.join(workspaceRoot, 'release', 'audio-mastering'),
+      outputDirectory,
       config: payload?.config || {},
       signal: controller.signal,
-      onProgress: (progress) => mainWindow?.webContents.send('flightdeck:audio-mastering-progress', { jobId, progress }),
+      onProgress: (progress, detail = {}) => sendAudioJobProgress(
+        event?.sender,
+        { jobId, progress, ...detail },
+      ),
     });
     return {
       ...result,
-      inputPlaybackUrl: pathToFileURL(result.sourcePath).toString(),
-      outputPlaybackUrl: pathToFileURL(result.outputPath).toString(),
+      inputPlaybackUrl: createAudioPlaybackUrl(result.sourcePath),
+      outputPlaybackUrl: createAudioPlaybackUrl(result.outputPath),
     };
   } finally {
     audioMasteringJobs.delete(jobId);
@@ -784,7 +861,12 @@ ipcMain.handle('flightdeck:get-system-stats', async (_event, payload) => {
 ipcMain.handle('flightdeck:clear-cache', async (_event, payload) => {
   try {
     const { clearCache } = await import('./services/admin.mjs');
-    return clearCache();
+    const activeSession = mainWindow?.webContents?.session || electron?.session?.defaultSession;
+    return await clearCache({
+      clearHttpCache: activeSession?.clearCache
+        ? () => activeSession.clearCache()
+        : undefined,
+    });
   } catch (error) {
     await writeStartupLog(`Clear cache error: ${error.message}`);
     return { cleared: false, error: error.message };
@@ -794,7 +876,15 @@ ipcMain.handle('flightdeck:clear-cache', async (_event, payload) => {
 ipcMain.handle('flightdeck:optimize-system', async (_event, payload) => {
   try {
     const { optimizeSystem } = await import('./services/admin.mjs');
-    return optimizeSystem();
+    const activeSession = mainWindow?.webContents?.session || electron?.session?.defaultSession;
+    return await optimizeSystem({
+      clearHttpCache: activeSession?.clearCache
+        ? () => activeSession.clearCache()
+        : undefined,
+      flushStorage: activeSession?.flushStorageData
+        ? () => activeSession.flushStorageData()
+        : undefined,
+    });
   } catch (error) {
     await writeStartupLog(`Optimize system error: ${error.message}`);
     return { optimized: false, error: error.message };
