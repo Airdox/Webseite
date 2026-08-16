@@ -1,5 +1,233 @@
 export const sets = [
-{
+  {
+    id: 'recording_2026_08_16',
+    title: 'AFTER RAVE THE PLANET 2026',
+    date: 'AUG 2026',
+    file: '01 REC-2026-08-16.mp3',
+    cover: '/assets/airdox-vinyl.jpg',
+    duration: '2:20:58',
+    isNew: true,
+    vinylColor: '#9adf6b',
+    tracks: [
+      {
+        time: '00:00:00',
+        artist: 'Alan Fitzpatrick',
+        title: 'In The Beginning'
+      },
+      {
+        time: '00:04:02',
+        artist: 'Marcel Dettmann',
+        title: 'Push'
+      },
+      {
+        time: '00:07:24',
+        artist: 'Martin Books',
+        title: 'Doris (Original Mix)'
+      },
+      {
+        time: '00:10:49',
+        artist: 'Ode To 75',
+        title: 'Fallin\' (Nils Ohrmann Remix)'
+      },
+      {
+        time: '00:14:35',
+        artist: 'The Flirts, Beltran (BR)',
+        title: 'Passion (R U Satisfied) (Extended Mix)'
+      },
+      {
+        time: '00:17:36',
+        artist: 'Sammy Virji, Fred again.., Reggie',
+        title: 'Talk of the Town (Original Mix)'
+      },
+      {
+        time: '00:19:52',
+        artist: 'Torsten Kanzler, MoMo, Dominik Vaillant',
+        title: 'Lakritz (Original Mix)'
+      },
+      {
+        time: '00:21:21',
+        artist: 'Breaking Beattz, Almanac',
+        title: 'People In The House (Extended Mix)'
+      },
+      {
+        time: '00:25:19',
+        artist: 'Breaking Beattz, Adam Sellouk',
+        title: 'Bom Dia (Extended Mix)'
+      },
+      {
+        time: '00:28:59',
+        artist: 'SOSA (UK), Kilo Ali',
+        title: 'BLOW (WHITE GIRL IN TOWN) [feat. Kilo Ali] (WHITE GIRL IN TOWN)'
+      },
+      {
+        time: '00:32:52',
+        artist: 'Claude VonStroke',
+        title: 'The Creeps (feat. Barry Drift) (Original Mix)'
+      },
+      {
+        time: '00:35:53',
+        artist: 'Patrick Arbez',
+        title: '3. Seance (Original Mix)'
+      },
+      {
+        time: '00:37:35',
+        artist: 'BRANDON (DE)',
+        title: 'My Body Talks (Extended Mix)'
+      },
+      {
+        time: '00:40:38',
+        artist: 'Tristan Henry, Cloonee, Prospa',
+        title: 'Good Girl (Extended Mix)'
+      },
+      {
+        time: '00:43:12',
+        artist: 'Caique Carvalho, Mojjo',
+        title: 'Mind Alert (Extended Mix)'
+      },
+      {
+        time: '00:45:02',
+        artist: 'Italobros',
+        title: 'Suerte (Extended Mix)'
+      },
+      {
+        time: '00:48:29',
+        artist: 'D',
+        title: 'Deck-Secret Dumb (Original Mix) [Agile Recordings] [myfreemp3'
+      },
+      {
+        time: '00:50:19',
+        artist: 'Havoc & Lawn',
+        title: 'Eyes On You (Original Mix)'
+      },
+      {
+        time: '00:54:50',
+        artist: 'ATLAC',
+        title: 'Stop Talking (Extended Mix)'
+      },
+      {
+        time: '00:57:32',
+        artist: 'Beyond Limits, Tyson O\'brien',
+        title: 'Congo Bongo (Original Mix)'
+      },
+      {
+        time: '01:00:35',
+        artist: 'SNOOKO, Zack Darza',
+        title: 'Bow Down (Original Mix)'
+      },
+      {
+        time: '01:04:32',
+        artist: 'Airdox_after Rave the Planet 2026',
+        title: 'Dj Rush Da Flow'
+      },
+      {
+        time: '01:06:24',
+        artist: 'Ammo Avenue',
+        title: 'Retro Dance (Extended Mix)'
+      },
+      {
+        time: '01:10:40',
+        artist: 'Axel Karakasis',
+        title: 'On The Phone (Bodyscrub Remix)'
+      },
+      {
+        time: '01:12:39',
+        artist: 'Kolter',
+        title: 'Authentic Computers 2.0 (Original Mix)'
+      },
+      {
+        time: '01:16:38',
+        artist: 'Prok & Fitch',
+        title: 'Pop in Pop Out (Original Mix)'
+      },
+      {
+        time: '01:20:51',
+        artist: 'SNOOKO, Zack Darza',
+        title: 'Carla Next Door (Original Mix)'
+      },
+      {
+        time: '01:23:18',
+        artist: 'Balanka',
+        title: 'Fatal Blows (Original Mix)'
+      },
+      {
+        time: '01:28:41',
+        artist: 'Young M.A, Cloonee, Inntraw',
+        title: 'Stephanie (Extended Mix)'
+      },
+      {
+        time: '01:31:48',
+        artist: 'Zoo Brazil',
+        title: 'Slob (Nick Curly Remix)'
+      },
+      {
+        time: '01:34:29',
+        artist: 'SLAMM, Dan Molinari',
+        title: 'K.E.T. (Amine Mix)'
+      },
+      {
+        time: '01:38:24',
+        artist: 'Samim',
+        title: 'Heater (Claude VonStroke Remix)'
+      },
+      {
+        time: '01:41:42',
+        artist: 'Roddy Lima',
+        title: 'STEP LIKE (Original Mix)'
+      },
+      {
+        time: '01:47:07',
+        artist: 'RSCL',
+        title: 'Can You Feel The Beat (Original Mix)'
+      },
+      {
+        time: '01:49:50',
+        artist: 'Patrick Arbez',
+        title: 'Kopfnicker'
+      },
+      {
+        time: '01:53:51',
+        artist: 'Alan Fitzpatrick',
+        title: 'We Are Forever Young (Original'
+      },
+      {
+        time: '01:58:43',
+        artist: 'Mike Mair',
+        title: 'Terminator X (Original Mix)'
+      },
+      {
+        time: '02:02:07',
+        artist: 'Gorb',
+        title: 'Dance With Ugly Girl (Original Mix)'
+      },
+      {
+        time: '02:05:14',
+        artist: 'Skylin3, Nicole Del Prete',
+        title: 'Naughty Girl (Kevin McKay Extended ViP)'
+      },
+      {
+        time: '02:08:43',
+        artist: 'Rene Bourgeois',
+        title: '4 My Recordz'
+      },
+      {
+        time: '02:11:44',
+        artist: 'Primal Beat',
+        title: 'Blowing My Head Up (Diatek Remix)'
+      },
+      {
+        time: '02:15:58',
+        artist: 'MJ Lan',
+        title: 'Generate Bodies (2000)'
+      },
+      {
+        time: '02:18:04',
+        artist: 'James Brown, Carl Cox',
+        title: 'I\'m Black And I\'m Proud - Say It Loud (Original Mix)'
+      }
+    ],
+    publishedAt: '2026-08-16'
+  },
+  {
     id: 'recording_2026_06_21-5',
     title: 'fete de la musiQue #5',
     date: 'JUN 2026',
@@ -102,7 +330,7 @@ export const sets = [
     ],
     publishedAt: '2026-06-21'
   },
-{
+  {
     id: 'recording_2026_06_02',
     title: 'FOR THE HATERS',
     date: 'JUN 2026',
@@ -350,7 +578,7 @@ export const sets = [
     ],
     publishedAt: '2026-06-02'
   },
-{
+  {
     id: 'recording_2026_05_24',
     title: 'LIVE SET MAY 2026',
     date: 'MAY 2026',
@@ -568,7 +796,7 @@ export const sets = [
     ],
     publishedAt: '2026-05-24'
   },
-{
+  {
     id: 'recording_2026_05_07-2',
     title: 'LIVE SET MAY 2026 (full)',
     date: 'MAY 2026',
@@ -841,7 +1069,7 @@ export const sets = [
     ],
     publishedAt: '2026-05-07'
   },
-{
+  {
     id: 'recording_2026_05_07',
     title: 'VHG',
     date: 'MAY 2026',
@@ -1114,7 +1342,7 @@ export const sets = [
     ],
     publishedAt: '2026-05-07'
   },
-{
+  {
     id: 'recording_2026_05_02',
     title: 'SISSYGUT ALLES GUT',
     date: 'MAY 2026',
@@ -1332,7 +1560,7 @@ export const sets = [
     ],
     publishedAt: '2026-05-02'
   },
-{
+  {
     id: 'recording_2026_05_02_rauchst_du_raus',
     title: 'RAUCHST DU RAUS',
     date: 'MAY 2026',
@@ -1455,7 +1683,7 @@ export const sets = [
     ],
     publishedAt: '2026-05-02'
   },
-{
+  {
     id: 'recording_2026_05_01',
     title: 'REC-2026-05-01',
     date: 'MAY 2026',
@@ -1542,7 +1770,7 @@ export const sets = [
     ],
     publishedAt: '2026-05-01'
   },
-{
+  {
     id: '135',
     title: 'SET 135',
     date: 'APR 2026',
@@ -1640,7 +1868,7 @@ export const sets = [
     ],
     publishedAt: '2026-04-26'
   },
-{
+  {
     id: 'recording_2026_04_12',
     title: 'REC 12.04.2026',
     date: 'APR 2026',
@@ -1672,7 +1900,7 @@ export const sets = [
       }
     ]
   },
-{
+  {
     id: 'recording_2026_03_15',
     title: 'REC 15.03.2026',
     date: 'MAR 2026',
@@ -1698,7 +1926,7 @@ export const sets = [
       }
     ]
   },
-{
+  {
     id: 'recording_2026_03_09',
     title: 'REC 09.03.2026',
     date: 'MAR 2026',
@@ -1707,7 +1935,7 @@ export const sets = [
     isNew: false,
     vinylColor: '#00ffcc'
   },
-{
+  {
     id: 'secret_set_2025_12_22',
     title: 'SECRET SET (PIRATE STUDIO)',
     date: '22.12.2025',
@@ -1716,7 +1944,7 @@ export const sets = [
     isNew: false,
     vinylColor: '#ff00ff'
   },
-{
+  {
     id: '0',
     title: 'PIRATE STUDIO (17.12.)',
     date: '17.12.2025',
@@ -1725,7 +1953,7 @@ export const sets = [
     duration: '1:05:00',
     vinylColor: '#00f5ff'
   },
-{
+  {
     id: '1',
     title: 'PIRATE STUDIO (OLD)',
     date: 'DEC 2025',
@@ -1733,7 +1961,7 @@ export const sets = [
     duration: '1:02:34',
     vinylColor: '#ff00aa'
   },
-{
+  {
     id: '2',
     title: 'OVER AND OUT',
     date: 'FEB 2024',
@@ -1741,7 +1969,7 @@ export const sets = [
     duration: '58:22',
     vinylColor: '#7cfc00'
   },
-{
+  {
     id: '3',
     title: '65',
     date: 'JAN 2024',
@@ -1749,7 +1977,7 @@ export const sets = [
     duration: '1:05:00',
     vinylColor: '#ffd700'
   },
-{
+  {
     id: '4',
     title: 'TSCHAU MÄRKISCHE',
     date: 'MAR 2024',
@@ -1757,7 +1985,7 @@ export const sets = [
     duration: '45:18',
     vinylColor: '#ff4500'
   },
-{
+  {
     id: '5',
     title: 'OHBOY',
     date: 'APR 2024',
@@ -1765,7 +1993,7 @@ export const sets = [
     duration: '52:45',
     vinylColor: '#9370db'
   },
-{
+  {
     id: 'recording_2024_02_20',
     title: 'SOLLTE NICHT SEIN',
     date: 'FEB 2024',
