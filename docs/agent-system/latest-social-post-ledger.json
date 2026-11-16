@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-05-24T13:32:19.333Z",
+  "generatedAt": "2026-08-04T03:29:42.580Z",
   "source": {
     "packagesScanned": 1,
     "ledgerPath": "docs/agent-system/social-post-ledger.json",
-    "outputRoot": "docs/agent-system/visual-templates/social/social-auto-output"
+    "outputRoot": "docs/agent-system/social-auto-output"
   },
   "counts": {
     "ready_to_upload": 2,
@@ -11,60 +11,60 @@
   },
   "posts": [
     {
-      "id": "recording_2026_05_07-2:facebook",
-      "packageId": "recording_2026_05_07-2",
+      "id": "recording_2026_06_21-5:facebook",
+      "packageId": "recording_2026_06_21-5",
       "platform": "facebook",
       "status": "blocked",
       "sourceStatus": "blocked-missing-meta-oauth",
       "liveUrl": "",
       "postedAt": "",
-      "asset": "docs/agent-system/visual-templates/social/social-auto-output/recording-2026-05-07-2/recording-2026-05-07-2-59s-reel-1078.mp4",
-      "caption": "LIVE SET MAY 2026 #2 is online. RENE BOURGEOIS - FACE2FACE WITH MY DEMON (ORIGINAL MIX). Stream the full set on AIRDOX.INFO.",
+      "asset": "docs/agent-system/social-auto-output/recording-2026-06-21-5/recording-2026-06-21-5-teaser-3537.mp4",
+      "caption": "FETE DE LA MUSIQUE #5 is online. ALFRED HEINRICHS - I DON´T KNOW (RENE BOURGEOIS REMIX). Stream the full set on AIRDOX.INFO.",
       "nextAction": "Use Meta Business Suite manually or add Meta Graph credentials.",
-      "packageTitle": "LIVE SET MAY 2026 #2",
-      "manifestPath": "docs/agent-system/visual-templates/social/social-auto-output/recording-2026-05-07-2/manifest.json"
+      "packageTitle": "fete de la musiQue #5",
+      "manifestPath": "docs/agent-system/social-auto-output/recording-2026-06-21-5/manifest.json"
     },
     {
-      "id": "recording_2026_05_07-2:instagram",
-      "packageId": "recording_2026_05_07-2",
+      "id": "recording_2026_06_21-5:instagram",
+      "packageId": "recording_2026_06_21-5",
       "platform": "instagram",
       "status": "blocked",
       "sourceStatus": "blocked-missing-meta-oauth",
       "liveUrl": "",
       "postedAt": "",
-      "asset": "docs/agent-system/visual-templates/social/social-auto-output/recording-2026-05-07-2/recording-2026-05-07-2-59s-reel-1078.mp4",
-      "caption": "LIVE SET MAY 2026 #2\n\nRENE BOURGEOIS - FACE2FACE WITH MY DEMON (ORIGINAL MIX)\nStart at 00:17:58. Full set on AIRDOX.INFO.\n\n#AIRDOX #BerlinTechno #UndergroundTechno #TechnoDJ #LiveSet #DJSet #TechnoReel",
+      "asset": "docs/agent-system/social-auto-output/recording-2026-06-21-5/recording-2026-06-21-5-teaser-3537.mp4",
+      "caption": "FETE DE LA MUSIQUE #5\n\nALFRED HEINRICHS - I DON´T KNOW (RENE BOURGEOIS REMIX)\nStart at 00:58:57. Full set on AIRDOX.INFO.\n\n#AIRDOX #BerlinTechno #UndergroundTechno #TechnoDJ #LiveSet #DJSet #TechnoReel",
       "nextAction": "Use Meta Business Suite manually or add Meta Graph credentials.",
-      "packageTitle": "LIVE SET MAY 2026 #2",
-      "manifestPath": "docs/agent-system/visual-templates/social/social-auto-output/recording-2026-05-07-2/manifest.json"
+      "packageTitle": "fete de la musiQue #5",
+      "manifestPath": "docs/agent-system/social-auto-output/recording-2026-06-21-5/manifest.json"
     },
     {
-      "id": "recording_2026_05_07-2:tiktok",
-      "packageId": "recording_2026_05_07-2",
+      "id": "recording_2026_06_21-5:tiktok",
+      "packageId": "recording_2026_06_21-5",
       "platform": "tiktok",
       "status": "ready_to_upload",
       "sourceStatus": "credentials-present-not-uploaded",
       "liveUrl": "",
       "postedAt": "",
-      "asset": "docs/agent-system/visual-templates/social/social-auto-output/recording-2026-05-07-2/recording-2026-05-07-2-59s-reel-1078.mp4",
-      "caption": "LIVE SET MAY 2026 #2 - RENE BOURGEOIS. Full set on AIRDOX.INFO. #AIRDOX #BerlinTechno #UndergroundTechno #TechnoDJ #LiveSet",
-      "nextAction": "Run API upload after platform publishing scope is confirmed.",
-      "packageTitle": "LIVE SET MAY 2026 #2",
-      "manifestPath": "docs/agent-system/visual-templates/social/social-auto-output/recording-2026-05-07-2/manifest.json"
+      "asset": "docs/agent-system/social-auto-output/recording-2026-06-21-5/recording-2026-06-21-5-teaser-3537.mp4",
+      "caption": "FETE DE LA MUSIQUE #5 - ALFRED HEINRICHS. Full set on AIRDOX.INFO. #AIRDOX #BerlinTechno #UndergroundTechno #TechnoDJ #LiveSet",
+      "nextAction": "App is live; rerun TikTok OAuth with video.publish and confirm social:tiktok:check:init before Direct Post.",
+      "packageTitle": "fete de la musiQue #5",
+      "manifestPath": "docs/agent-system/social-auto-output/recording-2026-06-21-5/manifest.json"
     },
     {
-      "id": "recording_2026_05_07-2:youtube",
-      "packageId": "recording_2026_05_07-2",
+      "id": "recording_2026_06_21-5:youtube",
+      "packageId": "recording_2026_06_21-5",
       "platform": "youtube",
       "status": "ready_to_upload",
       "sourceStatus": "credentials-present-not-uploaded",
       "liveUrl": "",
       "postedAt": "",
-      "asset": "docs/agent-system/visual-templates/social/social-auto-output/recording-2026-05-07-2/recording-2026-05-07-2-59s-reel-1078.mp4",
-      "caption": "LIVE SET MAY 2026 #2 | RENE BOURGEOIS - FACE2FACE WITH MY DEMON (ORIGINAL MIX) | AIRDOX.INFO",
+      "asset": "docs/agent-system/social-auto-output/recording-2026-06-21-5/recording-2026-06-21-5-teaser-3537.mp4",
+      "caption": "FETE DE LA MUSIQUE #5 | ALFRED HEINRICHS - I DON´T KNOW (RENE BOURGEOIS REMIX) | AIRDOX.INFO",
       "nextAction": "Run YouTube upload after OAuth is valid and user approval is confirmed.",
-      "packageTitle": "LIVE SET MAY 2026 #2",
-      "manifestPath": "docs/agent-system/visual-templates/social/social-auto-output/recording-2026-05-07-2/manifest.json"
+      "packageTitle": "fete de la musiQue #5",
+      "manifestPath": "docs/agent-system/social-auto-output/recording-2026-06-21-5/manifest.json"
     }
   ]
 }

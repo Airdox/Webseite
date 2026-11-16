@@ -1,0 +1,73 @@
+{
+  "schema": "airdox.tiktok-direct-post-audit-package.v1",
+  "preparedAt": "2026-08-27T12:45:00+02:00",
+  "app": {
+    "id": "7642957799622592529",
+    "name": "AIRDOX",
+    "publicUrl": "https://airdox.info/tiktok-creator",
+    "organizationUrl": "https://airdox.info"
+  },
+  "rejectedAudit": {
+    "reference": "20260808210920",
+    "rejectedAt": "2026-08-10T07:05:21+02:00",
+    "reasonVerified": true,
+    "reason": "Demo evidence did not visibly cover UX points 1-5, show the full website URL, and end with the resulting post visible in TikTok."
+  },
+  "artifacts": [
+    {
+      "path": "docs/agent-system/tiktok-publishing-readiness.md",
+      "purpose": "Authoritative portal, implementation, and blocker status",
+      "status": "ready"
+    },
+    {
+      "path": "docs/agent-system/tiktok-direct-post-audit-demo-script.md",
+      "purpose": "Executable end-to-end recording script and reviewer gate",
+      "status": "ready"
+    },
+    {
+      "path": "docs/agent-system/tiktok-direct-post-audit-form-answers.md",
+      "purpose": "Consistent application answers for all known form fields",
+      "status": "ready_except_legal_name"
+    },
+    {
+      "path": "docs/agent-system/evidence/tiktok-direct-post-original-sample.mp4",
+      "purpose": "Original neutral video selected during the audit recording",
+      "status": "ready",
+      "sha256": "2572EE08A2F9A541A2DAE39210EC09A64A0992782621373BBF28C63EF0173EAE",
+      "durationSeconds": 10,
+      "bytes": 28857,
+      "video": "H.264 720x1280 30fps yuv420p",
+      "audio": "AAC stereo silence"
+    },
+    {
+      "path": "docs/agent-system/evidence/airdox-tiktok-direct-post-audit-demo-2026-08-v2.mp4",
+      "purpose": "Final uninterrupted screen recording uploaded to TikTok",
+      "status": "blocked_on_live_oauth_and_user_approved_private_test_post"
+    }
+  ],
+  "submission": {
+    "externalSubmissionPerformed": false,
+    "requiresImmediateUserConfirmation": true,
+    "lastPreflight": {
+      "checkedAt": "2026-08-27T13:00:00+02:00",
+      "targetVerified": true,
+      "targetAppName": "AIRDOX",
+      "targetAppId": "7642957799622592529",
+      "portalEnvironment": "Production Live",
+      "portalAction": "Reapply",
+      "userSubmissionConfirmationReceived": true,
+      "submissionAttempted": false,
+      "blockers": [
+        "The required final end-to-end screen recording docs/agent-system/evidence/airdox-tiktok-direct-post-audit-demo-2026-08-v2.mp4 does not exist.",
+        "The available neutral 10-second sample video is the content to select inside the workflow, not proof of the OAuth, creator-info, UX, post, polling, and TikTok-profile result flow.",
+        "The applicant's full legal name is still not present in the prepared form answers.",
+        "No explicit approval exists for the exact recorded private test post parameters (caption, target TikTok account, privacy, and timing)."
+      ]
+    }
+  },
+  "remainingUserInputs": [
+    "Applicant's full legal name",
+    "Explicit approval of the exact neutral sample video, caption, target TikTok account, privacy, and timing before the recorded test post",
+    "Immediate confirmation before final TikTok Reapply/Submit"
+  ]
+}

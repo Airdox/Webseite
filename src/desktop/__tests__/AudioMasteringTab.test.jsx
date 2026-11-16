@@ -53,7 +53,7 @@ const predictedScore = {
 const setup = (overrides = {}) => {
   const callbacks = {
     onSelect: vi.fn(), onAnalyze: vi.fn(), onRender: vi.fn(), onCancel: vi.fn(),
-    onReveal: vi.fn(), onReset: vi.fn(), onConfigChange: vi.fn(), onProfileChange: vi.fn(),
+    onReveal: vi.fn(), onReset: vi.fn(), onConfigChange: vi.fn(), onProfileChange: vi.fn(), onPreparePublish: vi.fn(),
     onSelectOutputDirectory: vi.fn(),
   };
   render(<AudioMasteringTab
@@ -81,34 +81,39 @@ const setup = (overrides = {}) => {
 };
 
 describe('AudioMasteringTab interactions', () => {
-  it('connects selection, analysis, render, profile, reveal and reset actions', () => {
-    const callbacks = setup({ result: { outputPath: 'master.mp3', playbackUrl: 'file:///master.mp3', output: { loudness: { input_i: '-14', input_tp: '-1.2' } } } });
-    fireEvent.click(screen.getByRole('button', { name: /Audio wählen/i }));
-    fireEvent.click(screen.getByRole('button', { name: /Analysieren/i }));
-    fireEvent.click(screen.getByRole('button', { name: 'Master erstellen & speichern' }));
+  it('connects the focused source, analysis, render, profile and reset actions', () => {
+    const callbacks = setup();
+    fireEvent.click(screen.getByRole('button', { name: 'Datei wechseln' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Quellmessung wiederholen (optional)' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Master erstellen und speichern' }));
     fireEvent.click(screen.getByRole('radio', { name: /Transparent/i }));
-    fireEvent.click(screen.getByRole('button', { name: 'Gespeicherte Datei zeigen' }));
     fireEvent.click(screen.getByRole('button', { name: 'Speicherort wählen' }));
     fireEvent.click(screen.getByRole('button', { name: /Mastering zurücksetzen/i }));
     expect(callbacks.onSelect).toHaveBeenCalledOnce();
     expect(callbacks.onAnalyze).toHaveBeenCalledOnce();
     expect(callbacks.onRender).toHaveBeenCalledOnce();
     expect(callbacks.onProfileChange).toHaveBeenCalledWith('transparent');
-    expect(callbacks.onReveal).toHaveBeenCalledOnce();
     expect(callbacks.onSelectOutputDirectory).toHaveBeenCalledOnce();
     expect(callbacks.onReset).toHaveBeenCalledOnce();
   });
 
-  it('explains the four-step workflow and exposes the save action after analysis', () => {
+  it('offers publish and reveal only after a verified result exists', () => {
+    const callbacks = setup({ result: { outputPath: 'master.mp3', playbackUrl: 'file:///master.mp3', output: { loudness: { input_i: '-14', input_tp: '-1.2' } } } });
+    fireEvent.click(screen.getByRole('button', { name: 'Set-Publish vorbereiten' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Datei im Ordner zeigen' }));
+    expect(callbacks.onPreparePublish).toHaveBeenCalledOnce();
+    expect(callbacks.onReveal).toHaveBeenCalledOnce();
+  });
+
+  it('explains the three-step workflow and exposes one primary save action after analysis', () => {
     const callbacks = setup();
 
-    expect(screen.getByRole('list', { name: 'Mastering-Ablauf' })).toHaveTextContent('Set auswählen');
-    expect(screen.getByRole('list', { name: 'Mastering-Ablauf' })).toHaveTextContent('Erstellen & speichern');
-    expect(screen.getByRole('listitem', { current: 'step' })).toHaveTextContent('Master einstellen');
-    expect(screen.getByRole('region', { name: 'Nächster Mastering-Schritt' })).toHaveTextContent(
-      'Prüfe Profil, Format und Speicherort.',
-    );
-    fireEvent.click(screen.getByRole('button', { name: 'Jetzt Master erstellen & speichern' }));
+    expect(screen.getByRole('list', { name: 'Mastering-Ablauf' })).toHaveTextContent('Quelle');
+    expect(screen.getByRole('list', { name: 'Mastering-Ablauf' })).toHaveTextContent('Ergebnis');
+    expect(screen.getByRole('listitem', { current: 'step' })).toHaveTextContent('Master');
+    expect(screen.getByRole('region', { name: 'Mastering-Aktion' })).toHaveTextContent('Master erstellen und speichern');
+    expect(screen.getAllByRole('button', { name: 'Master erstellen und speichern' })).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Master erstellen und speichern' }));
     expect(callbacks.onRender).toHaveBeenCalledOnce();
     expect(screen.getByText('D:\\Masters')).toBeVisible();
   });
@@ -117,18 +122,20 @@ describe('AudioMasteringTab interactions', () => {
     const callbacks = setup();
     expect(screen.getByLabelText('Format')).toBeVisible();
     expect(screen.getByLabelText('Format').querySelectorAll('option')).toHaveLength(8);
-    fireEvent.click(screen.getByLabelText('Expertenmodus'));
+    fireEvent.click(screen.getByLabelText('Details'));
     const numberInputs = document.querySelectorAll('.fd-audio-slider input[type="number"]');
-    expect(numberInputs).toHaveLength(13);
+    expect(numberInputs).toHaveLength(14);
     fireEvent.change(numberInputs[0], { target: { value: '-15' } });
+    fireEvent.change(numberInputs[8], { target: { value: '1.25' } });
     fireEvent.change(screen.getByLabelText('Format'), { target: { value: 'flac' } });
     fireEvent.change(screen.getByLabelText('Samplerate'), { target: { value: '44100' } });
     expect(callbacks.onConfigChange).toHaveBeenCalledWith('targetLufs', -15);
+    expect(callbacks.onConfigChange).toHaveBeenCalledWith('stereoWidth', 1.25);
     expect(callbacks.onConfigChange).toHaveBeenCalledWith('outputFormat', 'flac');
     expect(callbacks.onConfigChange).toHaveBeenCalledWith('sampleRate', 44100);
   });
 
-  it('shows measured original, estimated target and measured master scores separately', () => {
+  it('shows measured original and measured master scores without a stale target prediction', () => {
     setup({
       result: {
         outputPath: 'master.wav',
@@ -140,8 +147,7 @@ describe('AudioMasteringTab interactions', () => {
     });
 
     expect(screen.getByRole('article', { name: 'Originalaufnahme' })).toHaveTextContent('78');
-    expect(screen.getByRole('article', { name: 'Nach Bearbeitung' })).toHaveTextContent('92');
-    expect(screen.getByRole('article', { name: 'Nach Bearbeitung' })).toHaveTextContent('Erwarteter Bereich 84–100');
+    expect(screen.queryByRole('article', { name: 'Nach Bearbeitung' })).not.toBeInTheDocument();
     expect(screen.getByRole('article', { name: 'Fertiges Master' })).toHaveTextContent('97');
     expect(screen.getByRole('article', { name: 'Originalaufnahme' })).toHaveTextContent('kein standardisierter Klangtest');
   });
@@ -187,7 +193,6 @@ describe('AudioMasteringTab interactions', () => {
       },
     });
     expect(screen.getByRole('status', { name: 'Audio-Verarbeitungsstatus' })).toHaveTextContent('Loudness messen');
-    expect(screen.getByRole('button', { name: 'Analysiere… 42%' })).toBeDisabled();
     fireEvent.click(screen.getByRole('button', { name: /Analyse abbrechen/i }));
     expect(callbacks.onCancel).toHaveBeenCalledOnce();
     expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '42');
@@ -205,14 +210,15 @@ describe('AudioMasteringTab interactions', () => {
     });
     expect(screen.getByRole('status', { name: 'Audio-Verarbeitungsstatus' })).toHaveTextContent('Analyse fehlgeschlagen');
     expect(screen.getByRole('status', { name: 'Audio-Verarbeitungsstatus' })).toHaveTextContent('ffmpeg wurde nicht gefunden.');
-    expect(screen.getByRole('button', { name: 'Analysieren' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Set jetzt analysieren' })).toBeEnabled();
   });
 
   it('disables work without a real source and omits preview players without URLs', () => {
     setup({ sourcePath: '', analysis: null });
-    expect(screen.getByRole('button', { name: 'Analysieren' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Master erstellen & speichern' })).toBeDisabled();
-    expect(screen.getByRole('listitem', { current: 'step' })).toHaveTextContent('Set auswählen');
+    expect(screen.getByRole('button', { name: 'Datei auswählen' })).toBeEnabled();
+    expect(screen.queryByRole('region', { name: 'Mastering-Aktion' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Master erstellen und speichern' })).not.toBeInTheDocument();
+    expect(screen.getByRole('listitem', { current: 'step' })).toHaveTextContent('Quelle');
     expect(document.querySelectorAll('audio')).toHaveLength(0);
   });
 });

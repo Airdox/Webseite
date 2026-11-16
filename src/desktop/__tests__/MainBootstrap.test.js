@@ -20,6 +20,7 @@ describe('Electron main/preload bootstrap', () => {
     delete requireFromRoot.cache[preloadPath];
     windows = [];
     handlers = new Map();
+    delete process.env.VITE_DEV_SERVER_URL;
 
     class BrowserWindowMock {
       static getAllWindows = vi.fn(() => windows.filter((window) => !window.destroyed));
@@ -104,6 +105,7 @@ describe('Electron main/preload bootstrap', () => {
     vi.restoreAllMocks();
     delete requireFromRoot.cache[indexPath];
     delete requireFromRoot.cache[preloadPath];
+    delete process.env.VITE_DEV_SERVER_URL;
   });
 
   it('registers privileged app protocol, creates the main window and wires every IPC channel', async () => {
@@ -130,7 +132,7 @@ describe('Electron main/preload bootstrap', () => {
         sandbox: true,
       },
     });
-    expect(windows[0].loadURL).toHaveBeenCalledWith('http://127.0.0.1:4174/desktop.html');
+    expect(windows[0].loadURL).toHaveBeenCalledWith('app://flightdeck/desktop.html');
 
     for (const channel of [
       'flightdeck:get-state',
@@ -180,13 +182,21 @@ describe('Electron main/preload bootstrap', () => {
       height: 1120,
       title: 'AIRDOX Design Studio',
     });
-    expect(windows[1].loadURL).toHaveBeenCalledWith('http://127.0.0.1:4174/desktop.html?view=design-studio');
+    expect(windows[1].loadURL).toHaveBeenCalledWith('app://flightdeck/desktop.html?view=design-studio');
 
     await expect(handlers.get('flightdeck:pick-import-files')()).resolves.toEqual([]);
     await expect(handlers.get('flightdeck:export-records')(null, { rows: [{ a: 1 }], format: 'json' })).resolves.toBeNull();
     await expect(handlers.get('flightdeck:reveal-path')(null, {})).resolves.toBe(false);
     await expect(handlers.get('flightdeck:clear-cache')(null, {})).resolves.toMatchObject({ cleared: true });
     await expect(handlers.get('flightdeck:optimize-system')(null, {})).resolves.toMatchObject({ optimized: true });
+  });
+
+  it('uses a development server only when its URL is explicitly configured', async () => {
+    process.env.VITE_DEV_SERVER_URL = 'http://127.0.0.1:4999/desktop.html';
+    requireFromRoot(indexPath);
+
+    await vi.waitFor(() => expect(windows).toHaveLength(1));
+    expect(windows[0].loadURL).toHaveBeenCalledWith('http://127.0.0.1:4999/desktop.html');
   });
 
   it('exposes the complete preload bridge without executing IPC calls eagerly', () => {

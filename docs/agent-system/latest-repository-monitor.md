@@ -1,17 +1,17 @@
 # AIRDOX Repository-Monitor
 
-Erstellt: 2026-07-24T01:45:49.424Z
+Erstellt: 2026-10-20T01:45:52.236Z
 Agent: Repository
 Repository: D:\webseeite-main
-Branch: codex/repository-order-2026-07
+Branch: codex/fix-mastering-header-actions
 
 ## Ueberblick
 
 - Checks: 6
 - Fehler: 0
 - Warnungen: 3
-- Offene Pfade: 78
-- Unerwartete offene Pfade: 76
+- Offene Pfade: 71
+- Unerwartete offene Pfade: 70
 - Baseline offene Pfade: 80
 - Versionierte generierte Artefakte (Review): 0
 
@@ -19,18 +19,16 @@ Branch: codex/repository-order-2026-07
 
 | Check | Stufe | Detail |
 | --- | --- | --- |
-| branch-naming | WARN | Aktueller Branch: codex/repository-order-2026-07 |
+| branch-naming | WARN | Aktueller Branch: codex/fix-mastering-header-actions |
 | required-governance-files | PASS | Gefundene Governance-Dateien: 3/3 |
-| working-tree-cleanliness-total | WARN | 78 uncommitted Pfade insgesamt. |
-| working-tree-cleanliness | WARN | 76 unerwartete uncommitted Pfade (78 gesamt, 80 baseline) |
+| working-tree-cleanliness-total | WARN | 71 uncommitted Pfade insgesamt. |
+| working-tree-cleanliness | WARN | 70 unerwartete uncommitted Pfade (71 gesamt, 80 baseline) |
 | tracked-generated-artifacts | PASS | 0 potentiell generierte Artefaktpfade sind versioniert. |
 | root-html-duplication | PASS | 0 zusaetzliche Root-HTML-Dateien erkannt. |
 
 ## Unerwartete offene Pfade
 
 - M desktop/main/index.cjs
-- M desktop/main/preload.cjs
-- M desktop/main/services/admin.mjs
 - M desktop/main/services/audioMastering.mjs
 - M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - M docs/agent-system/AGENT_TRAINING_CATALOG.json
@@ -52,7 +50,6 @@ Branch: codex/repository-order-2026-07
 - M docs/agent-system/latest-audit.json
 - M docs/agent-system/latest-audit.md
 - M docs/agent-system/latest-background-cycle.json
-- M docs/agent-system/latest-designer-portfolio.json
 - M docs/agent-system/latest-designer-portfolio.md
 - M docs/agent-system/latest-guardian-risk-summary.json
 - M docs/agent-system/latest-guardian-risk-summary.md
@@ -66,6 +63,8 @@ Branch: codex/repository-order-2026-07
 - M docs/agent-system/latest-refactor-website-opportunities.md
 - M docs/agent-system/latest-repository-monitor.json
 - M docs/agent-system/latest-repository-monitor.md
+- M docs/agent-system/latest-social-post-ledger.json
+- M docs/agent-system/latest-social-post-ledger.md
 - M docs/agent-system/latest-website-profitability.json
 - M docs/agent-system/latest-website-profitability.md
 - M docs/agent-system/latest-wiki-sync-audit.json
@@ -73,37 +72,32 @@ Branch: codex/repository-order-2026-07
 - M docs/agent-system/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
 - M docs/agent-system/manni-reel-weekly-plan.md
-- M e2e/desktop-flightdeck.spec.js
 - M e2e/flightdeck-audio-mastering.spec.js
-- M e2e/flightdeck-quality.spec.js
+- M e2e/flightdeck-electron-system.spec.js
 - M package-lock.json
+- M scripts/social-post-ledger.mjs
+- M src/data/__tests__/musicSets.test.js
+- M src/data/musicSets.js
 - M src/desktop/DesktopApp.jsx
 - M src/desktop/__tests__/AudioMasteringService.test.js
 - M src/desktop/__tests__/AudioMasteringTab.test.jsx
 - M src/desktop/__tests__/DesktopApp.test.jsx
+- M src/desktop/__tests__/MainBootstrap.test.js
 - M src/desktop/components/AudioMasteringTab.jsx
-- M src/desktop/components/OverviewTab.jsx
+- M src/desktop/components/SetImportTab.jsx
 - M src/desktop/desktop.css
-- M vitest.desktop.config.js
-- ?? desktop/main/services/audioFormats.mjs
-- ?? desktop/main/services/audioQualityScore.mjs
-- ?? docs/WINDOWS_FLIGHTDECK_TEST_RESULTS_2026-07-23.md
-- ?? e2e/flightdeck-electron-system.spec.js
-- ?? e2e/flightdeck-orbital-command.spec.js
-- ?? src/desktop/__tests__/AdminService.test.js
-- ?? src/desktop/__tests__/AssistantService.test.js
-- ?? src/desktop/__tests__/AudioFormats.test.js
-- ?? src/desktop/__tests__/AudioQualityScore.test.js
-- ?? src/desktop/__tests__/ExtendedComponentCoverage.test.jsx
-- ?? src/desktop/__tests__/GuidedDesignPhases.test.jsx
-- ?? src/desktop/__tests__/MainBootstrap.test.js
-- ?? src/desktop/__tests__/ManniApprovalService.test.js
-- ?? src/desktop/__tests__/OrbitalCommand.test.jsx
-- ?? src/desktop/__tests__/OrbitalOverview.test.jsx
-- ?? src/desktop/__tests__/PipelineService.test.js
-- ?? src/desktop/__tests__/R2Service.test.js
-- ?? src/desktop/__tests__/StateService.test.js
-- ?? src/desktop/components/overview.css
+- ?? docs/agent-system/evidence/
+- ?? docs/agent-system/tiktok-direct-post-audit-demo-script.md
+- ?? docs/agent-system/tiktok-direct-post-audit-form-answers.md
+- ?? docs/agent-system/tiktok-direct-post-audit-package.json
+- ?? docs/agent-system/tiktok-publishing-readiness.json
+- ?? docs/agent-system/tiktok-publishing-readiness.md
+- ?? e2e/helpers/
+- ?? playwright.electron.config.js
+- ?? public/assets/strohpuppe-cover.jpg
+- ?? public/assets/strohpuppe-daumenkino.gif
+- ?? scripts/render-strohpuppe-reel.ps1
+- ?? scripts/render-tiktok-audit-sample.ps1
 
 ## Baseline fuer offene Pfade
 
@@ -191,8 +185,6 @@ Branch: codex/repository-order-2026-07
 ## Alle offenen Pfade
 
 - M desktop/main/index.cjs
-- M desktop/main/preload.cjs
-- M desktop/main/services/admin.mjs
 - M desktop/main/services/audioMastering.mjs
 - M docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - M docs/agent-system/AGENT_TRAINING_CATALOG.json
@@ -214,7 +206,6 @@ Branch: codex/repository-order-2026-07
 - M docs/agent-system/latest-audit.json
 - M docs/agent-system/latest-audit.md
 - M docs/agent-system/latest-background-cycle.json
-- M docs/agent-system/latest-designer-portfolio.json
 - M docs/agent-system/latest-designer-portfolio.md
 - M docs/agent-system/latest-guardian-risk-summary.json
 - M docs/agent-system/latest-guardian-risk-summary.md
@@ -228,6 +219,8 @@ Branch: codex/repository-order-2026-07
 - M docs/agent-system/latest-refactor-website-opportunities.md
 - M docs/agent-system/latest-repository-monitor.json
 - M docs/agent-system/latest-repository-monitor.md
+- M docs/agent-system/latest-social-post-ledger.json
+- M docs/agent-system/latest-social-post-ledger.md
 - M docs/agent-system/latest-website-profitability.json
 - M docs/agent-system/latest-website-profitability.md
 - M docs/agent-system/latest-wiki-sync-audit.json
@@ -235,39 +228,33 @@ Branch: codex/repository-order-2026-07
 - M docs/agent-system/manni-reel-draft-pack.md
 - M docs/agent-system/manni-reel-queue.json
 - M docs/agent-system/manni-reel-weekly-plan.md
-- M e2e/desktop-flightdeck.spec.js
 - M e2e/flightdeck-audio-mastering.spec.js
-- M e2e/flightdeck-quality.spec.js
+- M e2e/flightdeck-electron-system.spec.js
 - M package-lock.json
 - M package.json
+- M scripts/social-post-ledger.mjs
+- M src/data/__tests__/musicSets.test.js
+- M src/data/musicSets.js
 - M src/desktop/DesktopApp.jsx
 - M src/desktop/__tests__/AudioMasteringService.test.js
 - M src/desktop/__tests__/AudioMasteringTab.test.jsx
 - M src/desktop/__tests__/DesktopApp.test.jsx
+- M src/desktop/__tests__/MainBootstrap.test.js
 - M src/desktop/components/AudioMasteringTab.jsx
-- M src/desktop/components/OverviewTab.jsx
+- M src/desktop/components/SetImportTab.jsx
 - M src/desktop/desktop.css
-- M src/desktop/mockApi.js
-- M vitest.desktop.config.js
-- ?? desktop/main/services/audioFormats.mjs
-- ?? desktop/main/services/audioQualityScore.mjs
-- ?? docs/WINDOWS_FLIGHTDECK_TEST_RESULTS_2026-07-23.md
-- ?? e2e/flightdeck-electron-system.spec.js
-- ?? e2e/flightdeck-orbital-command.spec.js
-- ?? src/desktop/__tests__/AdminService.test.js
-- ?? src/desktop/__tests__/AssistantService.test.js
-- ?? src/desktop/__tests__/AudioFormats.test.js
-- ?? src/desktop/__tests__/AudioQualityScore.test.js
-- ?? src/desktop/__tests__/ExtendedComponentCoverage.test.jsx
-- ?? src/desktop/__tests__/GuidedDesignPhases.test.jsx
-- ?? src/desktop/__tests__/MainBootstrap.test.js
-- ?? src/desktop/__tests__/ManniApprovalService.test.js
-- ?? src/desktop/__tests__/OrbitalCommand.test.jsx
-- ?? src/desktop/__tests__/OrbitalOverview.test.jsx
-- ?? src/desktop/__tests__/PipelineService.test.js
-- ?? src/desktop/__tests__/R2Service.test.js
-- ?? src/desktop/__tests__/StateService.test.js
-- ?? src/desktop/components/overview.css
+- ?? docs/agent-system/evidence/
+- ?? docs/agent-system/tiktok-direct-post-audit-demo-script.md
+- ?? docs/agent-system/tiktok-direct-post-audit-form-answers.md
+- ?? docs/agent-system/tiktok-direct-post-audit-package.json
+- ?? docs/agent-system/tiktok-publishing-readiness.json
+- ?? docs/agent-system/tiktok-publishing-readiness.md
+- ?? e2e/helpers/
+- ?? playwright.electron.config.js
+- ?? public/assets/strohpuppe-cover.jpg
+- ?? public/assets/strohpuppe-daumenkino.gif
+- ?? scripts/render-strohpuppe-reel.ps1
+- ?? scripts/render-tiktok-audit-sample.ps1
 
 ## Versionierte generierte Artefakte
 
@@ -275,14 +262,14 @@ Branch: codex/repository-order-2026-07
 
 ## Letzte Commits
 
+- 101cbe9 feat(flightdeck): publish recording_2026_08_16
+- 7dac0b2 chore: record Windows build 0.1.43
+- 0a0f1f1 fix: show workspace action labels at desktop widths
+- 9c0199d backup: CRITICAL unverified checkpoint before audio mastering
 - 6774048 docs(agents): refresh governance and evidence reports
 - d7678b7 content(music): refresh published set catalog
 - ec7b12d feat(web): add TikTok creator workflow
 - b6a6a6e feat(desktop): add audio mastering workspace
 - eaea410 chore(repo): ignore local generated artifacts
 - 26cb11b fix: separate hero and navigation controls
-- b88ea53 refactor: remove legacy VIP access and generated artifacts
-- cf03914 chore: daily autopush 2026-07-02 02:32 +02:00
-- 76647ef Refresh agent system reports
-- 4159007 Fix latest set hero indicator
 

@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import {
   Activity, AlertTriangle, AudioLines, CheckCircle2, CircleStop, FolderOpen, Gauge,
-  LoaderCircle, Pause, Play, RotateCcw, Save, SlidersHorizontal, Sparkles, Waves,
+  LoaderCircle, Pause, Play, RotateCcw, Save, SlidersHorizontal, UploadCloud,
 } from 'lucide-react';
 
 const PARAMETER_GROUPS = [
@@ -23,6 +23,7 @@ const PARAMETER_GROUPS = [
       ['mudCutDb', 'Low-Mid Cleanup', 'dB', -4, 0, 0.1],
       ['presenceGainDb', 'Präsenz', 'dB', -2, 3, 0.1],
       ['trebleGainDb', 'Höhen / Air', 'dB', -2, 3, 0.1],
+      ['stereoWidth', 'Stereo-Breite', '×', 1, 2, 0.05],
     ],
   },
   {
@@ -195,7 +196,7 @@ const AudioMasteringTab = ({
   outputFormats = [], outputDirectory = '',
   progress = 0, operation = {}, onSelect = () => {}, onAnalyze = () => {}, onRender = () => {},
   onCancel = () => {}, onReveal = () => {}, onReset = () => {}, onSelectOutputDirectory = () => {},
-  onConfigChange = () => {}, onProfileChange = () => {},
+  onConfigChange = () => {}, onProfileChange = () => {}, onPreparePublish = () => {},
 }) => {
   const [expertMode, setExpertMode] = useState(false);
   const profileList = useMemo(() => Array.isArray(profiles) ? profiles : Object.values(profiles || {}), [profiles]);
@@ -216,69 +217,35 @@ const AudioMasteringTab = ({
   const operationMessage = operation.message || 'Audio wählen und anschließend die vollständige Signalanalyse starten.';
   const analyzing = busy && operationKind === 'analysis';
   const mastering = busy && operationKind === 'mastering';
-  const activeWorkflowStep = result ? 5 : mastering ? 4 : analysis ? 3 : sourcePath ? 2 : 1;
+  const activeWorkflowStep = result ? 3 : analysis || mastering ? 2 : 1;
   const workflowSteps = [
-    ['Set auswählen', 'Audiodatei öffnen'],
-    ['Analysieren', 'LUFS, Peak und Qualität messen'],
-    ['Master einstellen', 'Profil, Format und Speicherort prüfen'],
-    ['Erstellen & speichern', 'Rendern und Ergebnis verifizieren'],
+    ['Quelle', sourcePath ? 'Datei gewählt' : 'Audiodatei wählen'],
+    ['Master', analysis ? 'Einstellungen bereit' : 'Signal analysieren'],
+    ['Ergebnis', result ? 'Gespeichert & geprüft' : 'Rendern & speichern'],
   ];
-  const flightbarTitle = busy
-    ? operationPhase
-    : operationState === 'error'
-      ? operationPhase
-      : result
-        ? 'Master gespeichert und verifiziert'
-        : analysis
-          ? 'Analyse fertig – Einstellungen prüfen und Master speichern'
-          : operationPhase;
-  const flightbarDetail = result?.outputPath || operationMessage;
+  const primaryAction = !sourcePath
+    ? { label: 'Audiodatei auswählen', icon: FolderOpen, onClick: onSelect }
+    : !analysis
+      ? { label: 'Set jetzt analysieren', icon: Activity, onClick: onAnalyze }
+      : { label: 'Master erstellen und speichern', icon: Save, onClick: onRender };
+  const PrimaryIcon = primaryAction.icon;
 
   return (
     <div className="fd-panel-stack fd-audio-mastering">
-      <section className="fd-audio-hero">
-        <div className="fd-audio-orbit" aria-hidden="true"><Waves size={38} /><i /><i /><i /></div>
-        <div className="fd-audio-hero-copy">
-          <span className="fd-audio-kicker"><Sparkles size={14} /> ORBITAL AUDIO LAB</span>
-          <h2>Live-Set Optimierung</h2>
-          <p>Druckvolles Fundament, definierte Höhen und streaming-sichere Lautheit – analysiert und gerendert mit lokalem FFmpeg.</p>
-          <div className="fd-audio-source" title={sourcePath || 'Keine Audiodatei ausgewählt'}>
-            <AudioLines size={17} />
-            <span>{sourcePath || 'Wähle einen echten Gig-Mitschnitt aus'}</span>
-          </div>
-          <div
-            className={`fd-audio-live-status state-${operationState}`}
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
-            aria-label="Audio-Verarbeitungsstatus"
-          >
-            <span className="fd-audio-live-icon" aria-hidden="true">
-              {operationState === 'running'
-                ? <LoaderCircle size={17} />
-                : operationState === 'success'
-                  ? <CheckCircle2 size={17} />
-                  : operationState === 'error'
-                    ? <AlertTriangle size={17} />
-                    : <Activity size={17} />}
-            </span>
-            <span className="fd-audio-live-copy">
-              <strong>{operationPhase}</strong>
-              <span>{operationMessage}</span>
-            </span>
-            {(busy || operationState === 'success') && <em>{safeProgress}%</em>}
-          </div>
+      <header className="fd-audio-header">
+        <div>
+          <span className="fd-audio-kicker">AUDIO MASTERING</span>
+          <h2>Ein Set. Ein sauberer Master.</h2>
+          <p>Datei prüfen, Klangprofil wählen und das verifizierte Ergebnis speichern.</p>
         </div>
-        <div className="fd-audio-hero-actions">
-          <button type="button" className="fd-button secondary" onClick={onSelect} disabled={busy}>
-            <FolderOpen size={16} /> Audio wählen
-          </button>
-          <button type="button" className="fd-button" onClick={onAnalyze} disabled={busy || !sourcePath}>
-            {analyzing ? <LoaderCircle className="fd-audio-spinner" size={16} /> : <Activity size={16} />}
-            {analyzing ? `Analysiere… ${safeProgress}%` : analysis ? 'Erneut analysieren' : 'Analysieren'}
-          </button>
-        </div>
-      </section>
+        <span className={`fd-audio-state-pill state-${operationState}`}>
+          {operationState === 'running' && <LoaderCircle className="fd-audio-spinner" size={15} />}
+          {operationState === 'success' && <CheckCircle2 size={15} />}
+          {operationState === 'error' && <AlertTriangle size={15} />}
+          {operationState === 'idle' && <Activity size={15} />}
+          {operationPhase}
+        </span>
+      </header>
 
       <ol className="fd-audio-workflow" aria-label="Mastering-Ablauf">
         {workflowSteps.map(([title, detail], index) => {
@@ -298,28 +265,69 @@ const AudioMasteringTab = ({
         })}
       </ol>
 
-      <section className="fd-audio-next-action" aria-label="Nächster Mastering-Schritt">
-        <div>
-          <span>Nächster Schritt</span>
-          {!sourcePath && <><strong>Wähle dein aufgenommenes Live-Set aus.</strong><p>Danach misst FlightDeck die komplette Datei.</p></>}
-          {sourcePath && !analysis && <><strong>Starte die technische Analyse.</strong><p>Erst danach werden Mastering und Speichern freigeschaltet.</p></>}
-          {analysis && !result && <><strong>Prüfe Profil, Format und Speicherort.</strong><p>Klicke anschließend auf „Master erstellen & speichern“. FlightDeck rendert, prüft und speichert die neue Datei.</p></>}
-          {result && <><strong>Dein Master ist gespeichert.</strong><p title={result.outputPath}>{result.outputPath}</p></>}
+      <section className="fd-surface fd-audio-source-card" aria-label="Quelldatei">
+        <div className="fd-audio-section-title">
+          <span>1</span>
+          <div><h3>Quelldatei</h3><p>WAV, FLAC, AIFF, MP3, M4A, AAC, OGG oder Opus · Stereo</p></div>
         </div>
-        {!busy && !sourcePath && <button type="button" className="fd-button primary" onClick={onSelect}><FolderOpen size={16} /> Audio wählen</button>}
-        {!busy && sourcePath && !analysis && <button type="button" className="fd-button primary" onClick={onAnalyze}><Activity size={16} /> Analyse starten</button>}
-        {!busy && analysis && !result && <button type="button" className="fd-button primary" onClick={onRender}><Save size={16} /> Jetzt Master erstellen & speichern</button>}
-        {!busy && result && <button type="button" className="fd-button primary" onClick={onReveal}><FolderOpen size={16} /> Ergebnis im Ordner öffnen</button>}
-        {busy && <span className="fd-audio-next-running"><LoaderCircle size={16} /> Verarbeitung läuft…</span>}
+        <div className="fd-audio-file-row">
+          <AudioLines size={20} />
+          <div title={sourcePath || 'Keine Audiodatei ausgewählt'}>
+            <strong>{sourcePath ? sourcePath.split(/[\\/]/).pop() : 'Noch keine Audiodatei gewählt'}</strong>
+            <span>{sourcePath || 'Die Originaldatei bleibt unverändert.'}</span>
+          </div>
+          <button type="button" className="fd-button secondary" onClick={onSelect} disabled={busy}>
+            <FolderOpen size={16} /> {sourcePath ? 'Datei wechseln' : 'Datei auswählen'}
+          </button>
+          {analysis && (
+            <button
+              type="button"
+              className="fd-button secondary"
+              onClick={onAnalyze}
+              disabled={busy}
+              title="Nur nötig, wenn die Quelldatei außerhalb von Flight Deck verändert wurde. Profil- und Regleränderungen verwenden die vorhandene Messung."
+            >
+              {analyzing ? <LoaderCircle className="fd-audio-spinner" size={16} /> : <Activity size={16} />}
+              Quellmessung wiederholen (optional)
+            </button>
+          )}
+        </div>
+        {(operationState !== 'idle' || sourcePath) && (
+          <div
+            className={`fd-audio-operation state-${operationState}`}
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            aria-label="Audio-Verarbeitungsstatus"
+          >
+            <div>
+              <strong>{operationPhase}</strong>
+              <span>{operationMessage}</span>
+            </div>
+            {(busy || operationState === 'success') && <em>{safeProgress}%</em>}
+            <div
+              className="fd-audio-progress"
+              role="progressbar"
+              aria-label="Audio-Verarbeitungsfortschritt"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow={safeProgress}
+              aria-valuetext={`${operationPhase} – ${safeProgress}%`}
+            ><span style={{ width: `${safeProgress}%` }} /></div>
+          </div>
+        )}
       </section>
 
       <div className="fd-audio-layout">
         <section className="fd-surface fd-audio-control">
-          <div className="fd-section-head">
-            <div><h3>Mastering-Konfiguration</h3><p>Profil wählen oder jeden Parameter präzise abstimmen.</p></div>
+          <div className="fd-section-head fd-audio-config-head">
+            <div className="fd-audio-section-title">
+              <span>2</span>
+              <div><h3>Klang & Ausgabe</h3><p>Ein Profil reicht. Details sind optional.</p></div>
+            </div>
             <label className="fd-audio-expert-toggle">
               <SlidersHorizontal size={15} />
-              <span>Expertenmodus</span>
+              <span>Details</span>
               <input type="checkbox" checked={expertMode} onChange={(event) => setExpertMode(event.target.checked)} />
             </label>
           </div>
@@ -337,8 +345,7 @@ const AudioMasteringTab = ({
           </div>
 
           <fieldset className="fd-audio-output-panel">
-            <legend>Ausgabe & Konvertierung</legend>
-            <p>Das verifizierte Master wird direkt im gewählten Zielformat gespeichert.</p>
+            <legend>Speichern als</legend>
             <div className="fd-audio-output-settings">
               <label>
                 Format
@@ -395,10 +402,19 @@ const AudioMasteringTab = ({
               ))}
             </div>
           )}
+          <div className="fd-audio-target-summary" aria-label="Gewählte Mastering-Ziele">
+            <span><small>Lautheit</small><strong>{config.targetLufs ?? '–'} LUFS</strong></span>
+            <span><small>True Peak</small><strong>{config.truePeak ?? '–'} dBTP</strong></span>
+            <span><small>Format</small><strong>{String(config.outputFormat || 'mp3').toUpperCase()}</strong></span>
+          </div>
         </section>
 
         <aside className="fd-surface fd-audio-diagnostics">
-          <div className="fd-section-head"><h3>Signal-Diagnose</h3><Gauge size={18} /></div>
+          <div className="fd-section-head"><div><h3>Messung</h3><p>{analysis
+            ? analysis.scope?.mode === 'representative'
+              ? 'Schnellanalyse · Anfang, Mitte und Ende'
+              : 'Messung des kurzen Sets'
+            : 'Nach der Analyse sichtbar'}</p></div><Gauge size={18} /></div>
           <div className="fd-audio-meter-grid">
             <Meter label="Input Loudness" value={inputLoudness?.input_i} unit="LUFS" target={config.targetLufs} />
             <Meter label="Input True Peak" value={inputLoudness?.input_tp} unit="dBTP" target={config.truePeak} />
@@ -407,11 +423,6 @@ const AudioMasteringTab = ({
           </div>
           <div className="fd-audio-score-grid" aria-label="Technische Qualitätsscores">
             <QualityScoreCard title="Originalaufnahme" report={analysis?.qualityScore || result?.input?.qualityScore} />
-            <QualityScoreCard
-              title="Nach Bearbeitung"
-              report={analysis?.predictedQualityScore || result?.input?.predictedQualityScore}
-              predicted
-            />
             {result?.output?.qualityScore && (
               <QualityScoreCard title="Fertiges Master" report={result.output.qualityScore} />
             )}
@@ -422,16 +433,30 @@ const AudioMasteringTab = ({
         </aside>
       </div>
 
-      <section className={`fd-audio-flightbar ${busy ? 'running' : ''}`}>
-        <div className="fd-audio-progress-copy"><strong>{flightbarTitle}</strong><span>{flightbarDetail}</span></div>
-        <div className="fd-audio-progress" role="progressbar" aria-label="Audio-Verarbeitungsfortschritt" aria-valuemin="0" aria-valuemax="100" aria-valuenow={safeProgress} aria-valuetext={`${operationPhase} – ${safeProgress}%`}><span style={{ width: `${safeProgress}%` }} /></div>
-        <strong className="fd-audio-percent">{safeProgress}%</strong>
+      {sourcePath && <section className={`fd-surface fd-audio-action-card ${result ? 'complete' : ''}`} aria-label="Mastering-Aktion">
+        <div>
+          <span>{result ? 'Fertig' : `Schritt ${activeWorkflowStep} von 3`}</span>
+          <strong>{result ? 'Master gespeichert und technisch verifiziert' : primaryAction.label}</strong>
+          <p title={result?.outputPath || ''}>{result?.outputPath || (analysis ? 'Das Original bleibt erhalten. Die Ausgabe erhält einen neuen, versionierten Dateinamen.' : 'Die vollständige Analyse verhindert Blindflug bei Lautheit und Peaks.')}</p>
+        </div>
         <div className="fd-toolbar-actions">
-          {busy ? <button type="button" className="fd-button danger" onClick={onCancel}><CircleStop size={16} /> {analyzing ? 'Analyse abbrechen' : 'Mastering abbrechen'}</button> : <button type="button" className="fd-button primary" onClick={onRender} disabled={!sourcePath || !analysis}><Save size={16} /> Master erstellen & speichern</button>}
-          <button type="button" className="fd-button secondary" onClick={onReveal} disabled={busy || !result?.outputPath}><FolderOpen size={16} /> Gespeicherte Datei zeigen</button>
+          {busy ? (
+            <button type="button" className="fd-button danger" onClick={onCancel}>
+              <CircleStop size={16} /> {analyzing ? 'Analyse abbrechen' : 'Mastering abbrechen'}
+            </button>
+          ) : result ? (
+            <>
+              <button type="button" className="fd-button primary" onClick={onPreparePublish}><UploadCloud size={16} /> Set-Publish vorbereiten</button>
+              <button type="button" className="fd-button secondary" onClick={onReveal}><FolderOpen size={16} /> Datei im Ordner zeigen</button>
+            </>
+          ) : (
+            <button type="button" className="fd-button primary" onClick={primaryAction.onClick}>
+              <PrimaryIcon size={16} /> {primaryAction.label}
+            </button>
+          )}
           <button type="button" className="fd-icon-button" aria-label="Mastering zurücksetzen" title="Mastering zurücksetzen" onClick={onReset} disabled={busy}><RotateCcw size={16} /></button>
         </div>
-      </section>
+      </section>}
     </div>
   );
 };

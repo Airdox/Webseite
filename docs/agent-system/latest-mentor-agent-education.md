@@ -1,6 +1,6 @@
 # AIRDOX Mentor Agentenbildungs-Scorecard
 
-Erstellt: 2026-07-24T01:48:33.885Z
+Erstellt: 2026-10-20T01:45:59.341Z
 Owner: Mentor
 Status: warn
 

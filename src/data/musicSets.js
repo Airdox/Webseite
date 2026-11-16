@@ -1,12 +1,153 @@
 export const sets = [
   {
+    id: 'recording_2026_08_23',
+    title: 'STROHPUPPE - IST UND IMMER WAR',
+    date: 'AUG 2026',
+    file: '01 REC-2026-08-23.mp3',
+    cover: '/assets/strohpuppe-daumenkino.gif',
+    duration: '1:53:51',
+    isNew: true,
+    vinylColor: '#00f0ff',
+    tracks: [
+      {
+        time: '00:00:00',
+        artist: 'Green Velvet, Layton Giordani',
+        title: 'When It Kicks (Rebūke Extended Remix)'
+      },
+      {
+        time: '00:01:03',
+        artist: 'Gorb',
+        title: 'Dance With Ugly Girl (Original Mix)'
+      },
+      {
+        time: '00:06:18',
+        artist: 'Giorgio Rusconi',
+        title: 'Wonderwall (Bodyscrub Remix)'
+      },
+      {
+        time: '00:11:05',
+        artist: 'Alfred Heinrichs',
+        title: 'Bitch (Original Mix)'
+      },
+      {
+        time: '00:17:05',
+        artist: 'La Roux',
+        title: 'Quicksand (Boy 8 Bit Mix)'
+      },
+      {
+        time: '00:21:54',
+        artist: 'Nicole Moudaber',
+        title: 'Hair (Original Mix)'
+      },
+      {
+        time: '00:23:45',
+        artist: 'Geschwister Schumann',
+        title: 'Your Way (Original Mix)'
+      },
+      {
+        time: '00:29:31',
+        artist: 'Fabio Florido',
+        title: 'Concave (Original Mix)'
+      },
+      {
+        time: '00:33:46',
+        artist: 'Slam',
+        title: 'Cadence (Original Mix)'
+      },
+      {
+        time: '00:38:49',
+        artist: 'Karl O\'Connor & Peter Sutton',
+        title: 'Guiltless'
+      },
+      {
+        time: '00:44:16',
+        artist: 'Claude VonStroke',
+        title: 'The Creeps (feat. Barry Drift) (Original Mix)'
+      },
+      {
+        time: '00:49:05',
+        artist: 'Claude VonStroke',
+        title: 'Who\'s Afraid Of Detroit? (Original Mix)'
+      },
+      {
+        time: '00:53:03',
+        artist: 'Chris Lake',
+        title: 'Psycho (Extended Mix)'
+      },
+      {
+        time: '00:56:07',
+        artist: 'Balanka',
+        title: 'Fatal Blows (Original Mix)'
+      },
+      {
+        time: '01:01:42',
+        artist: 'Ali Love, Vintage Culture, Max Styler',
+        title: 'Freaky 1 (Original Mix)'
+      },
+      {
+        time: '01:04:56',
+        artist: 'Alok, FAANGS, SCRIPT',
+        title: 'Substance (Extended Mix)'
+      },
+      {
+        time: '01:09:34',
+        artist: 'Alfred Heinrichs',
+        title: 'Playd (Original Mix)'
+      },
+      {
+        time: '01:13:16',
+        artist: 'Jefferson Airplane',
+        title: 'White Rabbit (Umami Edit)'
+      },
+      {
+        time: '01:17:07',
+        artist: 'Jon Cutler ft. E Man',
+        title: 'It\'s Yours (Nice7 Remix)'
+      },
+      {
+        time: '01:21:42',
+        artist: 'Rene Bourgeois',
+        title: '4 My Recordz'
+      },
+      {
+        time: '01:24:07',
+        artist: 'Tobi Dreher',
+        title: 'Golden Gate (Original Mix)'
+      },
+      {
+        time: '01:29:46',
+        artist: 'Ferhat Albayrak',
+        title: 'Evolving Wisdom'
+      },
+      {
+        time: '01:31:56',
+        artist: 'Brian Ffar',
+        title: 'Billy Bought A Laser (Pan Pot Remix)'
+      },
+      {
+        time: '01:39:57',
+        artist: 'Gnarls Barkley',
+        title: 'Crazy'
+      },
+      {
+        time: '01:42:30',
+        artist: 'Adam Beyer & Alan Fitzpatrick',
+        title: 'Human Reason (Original Mix)'
+      },
+      {
+        time: '01:48:52',
+        artist: 'BENNETT',
+        title: 'Vois sur ton chemin (Techno Mix)'
+      }
+    ]
+  },
+  {
     id: 'recording_2026_08_16',
     title: 'AFTER RAVE THE PLANET 2026',
     date: 'AUG 2026',
     file: '01 REC-2026-08-16.mp3',
     cover: '/assets/airdox-vinyl.jpg',
     duration: '2:20:58',
-    isNew: true,
     vinylColor: '#9adf6b',
     tracks: [
       {

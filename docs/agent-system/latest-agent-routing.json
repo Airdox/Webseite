@@ -1,11 +1,9 @@
 {
-  "generatedAt": "2026-07-24T09:45:55.662Z",
+  "generatedAt": "2026-10-20T01:48:17.712Z",
   "source": "git-status",
-  "changedFileCount": 78,
+  "changedFileCount": 71,
   "changedFiles": [
     "desktop/main/index.cjs",
-    "desktop/main/preload.cjs",
-    "desktop/main/services/admin.mjs",
     "desktop/main/services/audioMastering.mjs",
     "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md",
     "docs/agent-system/AGENT_TRAINING_CATALOG.json",
@@ -27,7 +25,6 @@
     "docs/agent-system/latest-audit.json",
     "docs/agent-system/latest-audit.md",
     "docs/agent-system/latest-background-cycle.json",
-    "docs/agent-system/latest-designer-portfolio.json",
     "docs/agent-system/latest-designer-portfolio.md",
     "docs/agent-system/latest-guardian-risk-summary.json",
     "docs/agent-system/latest-guardian-risk-summary.md",
@@ -41,6 +38,8 @@
     "docs/agent-system/latest-refactor-website-opportunities.md",
     "docs/agent-system/latest-repository-monitor.json",
     "docs/agent-system/latest-repository-monitor.md",
+    "docs/agent-system/latest-social-post-ledger.json",
+    "docs/agent-system/latest-social-post-ledger.md",
     "docs/agent-system/latest-website-profitability.json",
     "docs/agent-system/latest-website-profitability.md",
     "docs/agent-system/latest-wiki-sync-audit.json",
@@ -48,39 +47,33 @@
     "docs/agent-system/manni-reel-draft-pack.md",
     "docs/agent-system/manni-reel-queue.json",
     "docs/agent-system/manni-reel-weekly-plan.md",
-    "e2e/desktop-flightdeck.spec.js",
     "e2e/flightdeck-audio-mastering.spec.js",
-    "e2e/flightdeck-quality.spec.js",
+    "e2e/flightdeck-electron-system.spec.js",
     "package-lock.json",
     "package.json",
+    "scripts/social-post-ledger.mjs",
+    "src/data/__tests__/musicSets.test.js",
+    "src/data/musicSets.js",
     "src/desktop/DesktopApp.jsx",
     "src/desktop/__tests__/AudioMasteringService.test.js",
     "src/desktop/__tests__/AudioMasteringTab.test.jsx",
     "src/desktop/__tests__/DesktopApp.test.jsx",
-    "src/desktop/components/AudioMasteringTab.jsx",
-    "src/desktop/components/OverviewTab.jsx",
-    "src/desktop/desktop.css",
-    "src/desktop/mockApi.js",
-    "vitest.desktop.config.js",
-    "desktop/main/services/audioFormats.mjs",
-    "desktop/main/services/audioQualityScore.mjs",
-    "docs/WINDOWS_FLIGHTDECK_TEST_RESULTS_2026-07-23.md",
-    "e2e/flightdeck-electron-system.spec.js",
-    "e2e/flightdeck-orbital-command.spec.js",
-    "src/desktop/__tests__/AdminService.test.js",
-    "src/desktop/__tests__/AssistantService.test.js",
-    "src/desktop/__tests__/AudioFormats.test.js",
-    "src/desktop/__tests__/AudioQualityScore.test.js",
-    "src/desktop/__tests__/ExtendedComponentCoverage.test.jsx",
-    "src/desktop/__tests__/GuidedDesignPhases.test.jsx",
     "src/desktop/__tests__/MainBootstrap.test.js",
-    "src/desktop/__tests__/ManniApprovalService.test.js",
-    "src/desktop/__tests__/OrbitalCommand.test.jsx",
-    "src/desktop/__tests__/OrbitalOverview.test.jsx",
-    "src/desktop/__tests__/PipelineService.test.js",
-    "src/desktop/__tests__/R2Service.test.js",
-    "src/desktop/__tests__/StateService.test.js",
-    "src/desktop/components/overview.css"
+    "src/desktop/components/AudioMasteringTab.jsx",
+    "src/desktop/components/SetImportTab.jsx",
+    "src/desktop/desktop.css",
+    "docs/agent-system/evidence/",
+    "docs/agent-system/tiktok-direct-post-audit-demo-script.md",
+    "docs/agent-system/tiktok-direct-post-audit-form-answers.md",
+    "docs/agent-system/tiktok-direct-post-audit-package.json",
+    "docs/agent-system/tiktok-publishing-readiness.json",
+    "docs/agent-system/tiktok-publishing-readiness.md",
+    "e2e/helpers/",
+    "playwright.electron.config.js",
+    "public/assets/strohpuppe-cover.jpg",
+    "public/assets/strohpuppe-daumenkino.gif",
+    "scripts/render-strohpuppe-reel.ps1",
+    "scripts/render-tiktok-audit-sample.ps1"
   ],
   "assignments": [
     {
@@ -93,7 +86,8 @@
         "docs/agent-system/latest-website-profitability.md",
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md"
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "src/data/musicSets.js"
       ],
       "rules": [
         "audience-intelligence"
@@ -114,17 +108,13 @@
       "agent": "Designer",
       "role": "review",
       "files": [
-        "docs/agent-system/latest-designer-portfolio.json",
         "docs/agent-system/latest-designer-portfolio.md",
+        "public/assets/strohpuppe-cover.jpg",
+        "public/assets/strohpuppe-daumenkino.gif",
         "src/desktop/__tests__/AudioMasteringTab.test.jsx",
         "src/desktop/__tests__/DesktopApp.test.jsx",
-        "src/desktop/__tests__/ExtendedComponentCoverage.test.jsx",
-        "src/desktop/__tests__/GuidedDesignPhases.test.jsx",
-        "src/desktop/__tests__/OrbitalCommand.test.jsx",
-        "src/desktop/__tests__/OrbitalOverview.test.jsx",
         "src/desktop/components/AudioMasteringTab.jsx",
-        "src/desktop/components/OverviewTab.jsx",
-        "src/desktop/components/overview.css",
+        "src/desktop/components/SetImportTab.jsx",
         "src/desktop/desktop.css"
       ],
       "rules": [
@@ -159,16 +149,19 @@
         "docs/agent-system/latest-refactor-website-opportunities.md",
         "docs/agent-system/latest-repository-monitor.json",
         "docs/agent-system/latest-repository-monitor.md",
+        "docs/agent-system/latest-social-post-ledger.json",
+        "docs/agent-system/latest-social-post-ledger.md",
         "docs/agent-system/latest-wiki-sync-audit.json",
         "docs/agent-system/latest-wiki-sync-audit.md",
-        "e2e/desktop-flightdeck.spec.js",
         "e2e/flightdeck-audio-mastering.spec.js",
         "e2e/flightdeck-electron-system.spec.js",
-        "e2e/flightdeck-orbital-command.spec.js",
-        "e2e/flightdeck-quality.spec.js",
+        "e2e/helpers/",
         "package-lock.json",
         "package.json",
-        "vitest.desktop.config.js"
+        "playwright.electron.config.js",
+        "scripts/render-strohpuppe-reel.ps1",
+        "scripts/render-tiktok-audit-sample.ps1",
+        "scripts/social-post-ledger.mjs"
       ],
       "rules": [
         "quality-security"
@@ -180,7 +173,8 @@
       "files": [
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md"
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "scripts/social-post-ledger.mjs"
       ],
       "rules": [
         "growth-conversion"
@@ -213,14 +207,14 @@
         "docs/agent-system/latest-refactor-website-opportunities.md",
         "docs/agent-system/latest-repository-monitor.json",
         "docs/agent-system/latest-repository-monitor.md",
+        "docs/agent-system/latest-social-post-ledger.json",
+        "docs/agent-system/latest-social-post-ledger.md",
         "docs/agent-system/latest-wiki-sync-audit.json",
         "docs/agent-system/latest-wiki-sync-audit.md",
-        "e2e/desktop-flightdeck.spec.js",
         "e2e/flightdeck-audio-mastering.spec.js",
         "e2e/flightdeck-electron-system.spec.js",
-        "e2e/flightdeck-orbital-command.spec.js",
-        "e2e/flightdeck-quality.spec.js",
-        "vitest.desktop.config.js"
+        "e2e/helpers/",
+        "playwright.electron.config.js"
       ],
       "rules": []
     },
@@ -228,15 +222,20 @@
       "agent": "Mentor",
       "role": "review",
       "files": [
-        "docs/WINDOWS_FLIGHTDECK_TEST_RESULTS_2026-07-23.md",
         "docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md",
         "docs/agent-system/AGENT_TRAINING_CATALOG.json",
         "docs/agent-system/AGENT_TRAINING_CATALOG.md",
         "docs/agent-system/MENTOR_POSTMORTEM_BANK.json",
         "docs/agent-system/MENTOR_POSTMORTEM_BANK.md",
+        "docs/agent-system/evidence/",
         "docs/agent-system/manni-reel-draft-pack.md",
         "docs/agent-system/manni-reel-queue.json",
-        "docs/agent-system/manni-reel-weekly-plan.md"
+        "docs/agent-system/manni-reel-weekly-plan.md",
+        "docs/agent-system/tiktok-direct-post-audit-demo-script.md",
+        "docs/agent-system/tiktok-direct-post-audit-form-answers.md",
+        "docs/agent-system/tiktok-direct-post-audit-package.json",
+        "docs/agent-system/tiktok-publishing-readiness.json",
+        "docs/agent-system/tiktok-publishing-readiness.md"
       ],
       "rules": [
         "learning-documentation"
@@ -246,33 +245,30 @@
       "agent": "Refactor",
       "role": "implementation_support",
       "files": [
-        "desktop/main/services/admin.mjs",
-        "desktop/main/services/audioFormats.mjs",
         "desktop/main/services/audioMastering.mjs",
-        "desktop/main/services/audioQualityScore.mjs",
+        "src/data/__tests__/musicSets.test.js",
+        "src/data/musicSets.js",
         "src/desktop/DesktopApp.jsx",
-        "src/desktop/__tests__/AdminService.test.js",
-        "src/desktop/__tests__/AssistantService.test.js",
-        "src/desktop/__tests__/AudioFormats.test.js",
         "src/desktop/__tests__/AudioMasteringService.test.js",
         "src/desktop/__tests__/AudioMasteringTab.test.jsx",
-        "src/desktop/__tests__/AudioQualityScore.test.js",
         "src/desktop/__tests__/DesktopApp.test.jsx",
-        "src/desktop/__tests__/ExtendedComponentCoverage.test.jsx",
-        "src/desktop/__tests__/GuidedDesignPhases.test.jsx",
         "src/desktop/__tests__/MainBootstrap.test.js",
-        "src/desktop/__tests__/ManniApprovalService.test.js",
-        "src/desktop/__tests__/OrbitalCommand.test.jsx",
-        "src/desktop/__tests__/OrbitalOverview.test.jsx",
-        "src/desktop/__tests__/PipelineService.test.js",
-        "src/desktop/__tests__/R2Service.test.js",
-        "src/desktop/__tests__/StateService.test.js",
         "src/desktop/components/AudioMasteringTab.jsx",
-        "src/desktop/components/OverviewTab.jsx",
-        "src/desktop/mockApi.js"
+        "src/desktop/components/SetImportTab.jsx"
       ],
       "rules": [
         "refactor-architecture"
+      ]
+    },
+    {
+      "agent": "Webbie",
+      "role": "primary",
+      "files": [
+        "public/assets/strohpuppe-cover.jpg",
+        "public/assets/strohpuppe-daumenkino.gif"
+      ],
+      "rules": [
+        "website-experience"
       ]
     },
     {
@@ -280,34 +276,16 @@
       "role": "primary",
       "files": [
         "desktop/main/index.cjs",
-        "desktop/main/preload.cjs",
-        "desktop/main/services/admin.mjs",
-        "desktop/main/services/audioFormats.mjs",
         "desktop/main/services/audioMastering.mjs",
-        "desktop/main/services/audioQualityScore.mjs",
         "package.json",
         "src/desktop/DesktopApp.jsx",
-        "src/desktop/__tests__/AdminService.test.js",
-        "src/desktop/__tests__/AssistantService.test.js",
-        "src/desktop/__tests__/AudioFormats.test.js",
         "src/desktop/__tests__/AudioMasteringService.test.js",
         "src/desktop/__tests__/AudioMasteringTab.test.jsx",
-        "src/desktop/__tests__/AudioQualityScore.test.js",
         "src/desktop/__tests__/DesktopApp.test.jsx",
-        "src/desktop/__tests__/ExtendedComponentCoverage.test.jsx",
-        "src/desktop/__tests__/GuidedDesignPhases.test.jsx",
         "src/desktop/__tests__/MainBootstrap.test.js",
-        "src/desktop/__tests__/ManniApprovalService.test.js",
-        "src/desktop/__tests__/OrbitalCommand.test.jsx",
-        "src/desktop/__tests__/OrbitalOverview.test.jsx",
-        "src/desktop/__tests__/PipelineService.test.js",
-        "src/desktop/__tests__/R2Service.test.js",
-        "src/desktop/__tests__/StateService.test.js",
         "src/desktop/components/AudioMasteringTab.jsx",
-        "src/desktop/components/OverviewTab.jsx",
-        "src/desktop/components/overview.css",
-        "src/desktop/desktop.css",
-        "src/desktop/mockApi.js"
+        "src/desktop/components/SetImportTab.jsx",
+        "src/desktop/desktop.css"
       ],
       "rules": [
         "desktop-flightdeck"
@@ -338,14 +316,14 @@
     "docs/agent-system/latest-refactor-website-opportunities.md",
     "docs/agent-system/latest-repository-monitor.json",
     "docs/agent-system/latest-repository-monitor.md",
+    "docs/agent-system/latest-social-post-ledger.json",
+    "docs/agent-system/latest-social-post-ledger.md",
     "docs/agent-system/latest-wiki-sync-audit.json",
     "docs/agent-system/latest-wiki-sync-audit.md",
-    "e2e/desktop-flightdeck.spec.js",
     "e2e/flightdeck-audio-mastering.spec.js",
-    "e2e/flightdeck-quality.spec.js",
-    "vitest.desktop.config.js",
     "e2e/flightdeck-electron-system.spec.js",
-    "e2e/flightdeck-orbital-command.spec.js"
+    "e2e/helpers/",
+    "playwright.electron.config.js"
   ],
   "recommendedGates": [
     "manual:refactor-website-patch-proposal before code changes",
@@ -358,6 +336,7 @@
     "npm run desktop:test:logic",
     "npm run guardian:risk",
     "npm run guardian:risk -- --strict",
+    "npm run lint",
     "npm run refactor:website:opportunities",
     "npm run test -- --run",
     "npm run website:profitability"

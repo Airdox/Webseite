@@ -1,13 +1,13 @@
 # AIRDOX Agenten-Systemstatus
 
-Erstellt: 2026-07-24T01:50:26.162Z
+Erstellt: 2026-10-20T01:48:28.447Z
 
 ## Ueberblick
 
 - Status: ACTION_REQUIRED
 - Jobs: 47 (24 script, 23 manual)
 - Externe Live-Jobs mit Gate: 5
-- Veraltete Berichte: 1
+- Veraltete Berichte: 2
 - Hinweise: 2
 
 ## Architektur
@@ -54,14 +54,14 @@ flowchart TD
 
 | Bericht | Status | Alter h | Pfad |
 | --- | --- | ---: | --- |
-| background-cycle | aging | 24.08 | docs/agent-system/latest-background-cycle.json |
-| job-run | fresh | 0.08 | docs/agent-system/latest-job-run.json |
-| audit | fresh | 0.08 | docs/agent-system/latest-audit.json |
+| background-cycle | stale | 78.05 | docs/agent-system/latest-background-cycle.json |
+| job-run | fresh | 0.04 | docs/agent-system/latest-job-run.json |
+| audit | fresh | 0.04 | docs/agent-system/latest-audit.json |
 | dependency-radar | fresh | 0 | docs/agent-system/latest-agent-dependency-radar.json |
-| task-queue | stale | 1460.97 | docs/agent-system/latest-agent-task-queue.json |
+| task-queue | stale | 3572.94 | docs/agent-system/latest-agent-task-queue.json |
 
 ## Hinweise
 
-- watch: background-cycle is aging (24.08h old). Naechster Schritt: Let the next scheduled background cycle refresh it.
-- action: task-queue is stale (1460.97h old). Naechster Schritt: Run npm run agents:background:deep and inspect failed steps.
+- action: background-cycle is stale (78.05h old). Naechster Schritt: Run npm run agents:background:deep and inspect failed steps.
+- action: task-queue is stale (3572.94h old). Naechster Schritt: Run npm run agents:background:deep and inspect failed steps.
 

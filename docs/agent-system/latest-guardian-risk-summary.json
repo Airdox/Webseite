@@ -1,22 +1,21 @@
 {
-  "generatedAt": "2026-07-24T01:50:13.988Z",
+  "generatedAt": "2026-10-20T01:48:14.476Z",
   "riskLevel": "medium",
   "ok": true,
   "blockers": [],
   "warnings": [
-    "78 uncommitted paths are present; review scope before release.",
-    "7 critical-path files changed: desktop/main/preload.cjs, desktop/main/services/admin.mjs, desktop/main/services/audioMastering.mjs, package-lock.json, package.json, desktop/main/services/audioFormats.mjs, desktop/main/services/audioQualityScore.mjs",
+    "71 uncommitted paths are present; review scope before release.",
+    "6 critical-path files changed: desktop/main/services/audioMastering.mjs, package-lock.json, package.json, scripts/social-post-ledger.mjs, scripts/render-strohpuppe-reel.ps1, scripts/render-tiktok-audit-sample.ps1",
     "Master Controller review is recommended by routing."
   ],
-  "changedFileCount": 78,
+  "changedFileCount": 71,
   "criticalFiles": [
-    "desktop/main/preload.cjs",
-    "desktop/main/services/admin.mjs",
     "desktop/main/services/audioMastering.mjs",
     "package-lock.json",
     "package.json",
-    "desktop/main/services/audioFormats.mjs",
-    "desktop/main/services/audioQualityScore.mjs"
+    "scripts/social-post-ledger.mjs",
+    "scripts/render-strohpuppe-reel.ps1",
+    "scripts/render-tiktok-audit-sample.ps1"
   ],
   "checks": {
     "jobValidation": {
@@ -25,7 +24,7 @@
     },
     "routing": {
       "ok": true,
-      "assignmentCount": 9,
+      "assignmentCount": 10,
       "recommendedGates": [
         "manual:refactor-website-patch-proposal before code changes",
         "npm run agent:audit -- --strict",
@@ -37,6 +36,7 @@
         "npm run desktop:test:logic",
         "npm run guardian:risk",
         "npm run guardian:risk -- --strict",
+        "npm run lint",
         "npm run refactor:website:opportunities",
         "npm run test -- --run",
         "npm run website:profitability"

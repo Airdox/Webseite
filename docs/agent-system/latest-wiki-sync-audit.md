@@ -1,12 +1,12 @@
 # AIRDOX Wiki Sync Audit
 
-Erstellt: 2026-07-24T01:50:23.333Z
+Erstellt: 2026-10-20T01:48:24.481Z
 Status: warn
 
 ## Ueberblick
 
-- Geaenderte Dateien: 76
-- Content / project files: 68
+- Geaenderte Dateien: 69
+- Content / project files: 61
 - Wiki / Assistant knowledge files: 0
 - Owner: Master Controller -> Wiki Maintainer
 
@@ -17,8 +17,6 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 ## Content Files
 
 - desktop/main/index.cjs
-- desktop/main/preload.cjs
-- desktop/main/services/admin.mjs
 - desktop/main/services/audioMastering.mjs
 - docs/agent-system/AGENT_SYSTEM_ARCHITECTURE.md
 - docs/agent-system/AGENT_TRAINING_CATALOG.json
@@ -40,7 +38,6 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 - docs/agent-system/latest-audit.json
 - docs/agent-system/latest-audit.md
 - docs/agent-system/latest-background-cycle.json
-- docs/agent-system/latest-designer-portfolio.json
 - docs/agent-system/latest-designer-portfolio.md
 - docs/agent-system/latest-guardian-risk-summary.json
 - docs/agent-system/latest-guardian-risk-summary.md
@@ -54,36 +51,32 @@ Master Controller muss den Wiki Maintainer beauftragen: neue Projekt-/Content-Ae
 - docs/agent-system/latest-refactor-website-opportunities.md
 - docs/agent-system/latest-repository-monitor.json
 - docs/agent-system/latest-repository-monitor.md
+- docs/agent-system/latest-social-post-ledger.json
+- docs/agent-system/latest-social-post-ledger.md
 - docs/agent-system/latest-website-profitability.json
 - docs/agent-system/latest-website-profitability.md
 - docs/agent-system/manni-reel-draft-pack.md
 - docs/agent-system/manni-reel-queue.json
 - docs/agent-system/manni-reel-weekly-plan.md
 - package.json
+- scripts/social-post-ledger.mjs
+- src/data/__tests__/musicSets.test.js
+- src/data/musicSets.js
 - src/desktop/DesktopApp.jsx
 - src/desktop/__tests__/AudioMasteringService.test.js
 - src/desktop/__tests__/AudioMasteringTab.test.jsx
 - src/desktop/__tests__/DesktopApp.test.jsx
-- src/desktop/components/AudioMasteringTab.jsx
-- src/desktop/components/OverviewTab.jsx
-- src/desktop/desktop.css
-- src/desktop/mockApi.js
-- desktop/main/services/audioFormats.mjs
-- desktop/main/services/audioQualityScore.mjs
-- src/desktop/__tests__/AdminService.test.js
-- src/desktop/__tests__/AssistantService.test.js
-- src/desktop/__tests__/AudioFormats.test.js
-- src/desktop/__tests__/AudioQualityScore.test.js
-- src/desktop/__tests__/ExtendedComponentCoverage.test.jsx
-- src/desktop/__tests__/GuidedDesignPhases.test.jsx
 - src/desktop/__tests__/MainBootstrap.test.js
-- src/desktop/__tests__/ManniApprovalService.test.js
-- src/desktop/__tests__/OrbitalCommand.test.jsx
-- src/desktop/__tests__/OrbitalOverview.test.jsx
-- src/desktop/__tests__/PipelineService.test.js
-- src/desktop/__tests__/R2Service.test.js
-- src/desktop/__tests__/StateService.test.js
-- src/desktop/components/overview.css
+- src/desktop/components/AudioMasteringTab.jsx
+- src/desktop/components/SetImportTab.jsx
+- src/desktop/desktop.css
+- docs/agent-system/tiktok-direct-post-audit-demo-script.md
+- docs/agent-system/tiktok-direct-post-audit-form-answers.md
+- docs/agent-system/tiktok-direct-post-audit-package.json
+- docs/agent-system/tiktok-publishing-readiness.json
+- docs/agent-system/tiktok-publishing-readiness.md
+- scripts/render-strohpuppe-reel.ps1
+- scripts/render-tiktok-audit-sample.ps1
 
 ## Knowledge Files
 

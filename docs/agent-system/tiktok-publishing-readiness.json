@@ -1,0 +1,73 @@
+{
+  "schema": "airdox.tiktok-publishing-readiness.v2",
+  "checkedAt": "2026-08-27T12:30:00+02:00",
+  "developerPortal": {
+    "appId": "7642957799622592529",
+    "appName": "AIRDOX",
+    "productionStatus": "Live",
+    "directPostEnabled": true,
+    "directPostAudit": {
+      "status": "rejected",
+      "reference": "20260808210920",
+      "rejectedAt": "2026-08-10T07:05:21+02:00",
+      "reasonSource": "Authenticated TikTok Developer Portal app detail response",
+      "reason": "The demo did not show all Required UX Implementation points 1-5, the complete end-to-end flow ending with the resulting post in TikTok, and the full website URL.",
+      "uploadedDemoFilename": "airdox-tiktok-content-posting-api-review-demo.mp4",
+      "uploadedDemoAvailableLocally": false,
+      "portalAction": "Reapply",
+      "reapplicationSubmitted": false
+    }
+  },
+  "approvedProducts": [
+    "Login Kit",
+    "Content Posting API"
+  ],
+  "configuredScopes": [
+    "user.info.basic",
+    "video.publish",
+    "video.upload"
+  ],
+  "verifiedImplementation": {
+    "publicCreatorToolUrl": "https://airdox.info/tiktok-creator",
+    "publicPageHttpStatus": 200,
+    "freshCreatorInfo": true,
+    "nicknameDisplayed": true,
+    "privacyOptionsFromCreatorInfo": true,
+    "privacyHasNoDefault": true,
+    "interactionControlsDefaultOff": true,
+    "durationLimitEnforced": true,
+    "editableCaption": true,
+    "videoPreview": true,
+    "commercialDisclosureFlow": true,
+    "musicAndBrandedContentDeclarations": true,
+    "explicitPublishConsent": true,
+    "processingNotice": true,
+    "statusPolling": true
+  },
+  "evidenceGap": {
+    "type": "audit_demo",
+    "requiredRepair": "Record a replacement demo that visibly covers UX points 1-5, keeps the full AIRDOX URL visible, completes OAuth and publishing, and ends with the resulting post visible in TikTok.",
+    "recordingGate": "docs/agent-system/tiktok-direct-post-audit-demo-script.md"
+  },
+  "apiReadiness": {
+    "directPostReady": false,
+    "lastObservedStoredRefreshTokenScope": "user.info.basic,video.upload",
+    "missingStoredScope": "video.publish",
+    "requiredSuccessVerdict": "posting_init_ready_no_media_uploaded"
+  },
+  "workflowDecision": {
+    "canUseAutomatedPublicDirectPostNow": false,
+    "canUseInboxUpload": true,
+    "reapplyNow": false,
+    "requiredBeforeReapplication": [
+      "Produce and review the replacement demo against the recording gate.",
+      "Confirm that the demo ends with the resulting post visible inside TikTok.",
+      "Obtain separate user confirmation immediately before submitting the external reapplication."
+    ],
+    "requiredAfterAuditApproval": [
+      "Run direct-post OAuth and store a new refresh token containing video.publish.",
+      "Run npm run social:tiktok:check:init and require posting_init_ready_no_media_uploaded.",
+      "Keep per-video approval for video, caption, privacy, platform, timing, and landing URL."
+    ]
+  }
+}

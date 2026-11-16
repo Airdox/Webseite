@@ -46,9 +46,13 @@ const classifyStatus = (status) => {
 
 const statusAction = (platform, status) => {
   if (status === 'published') return 'Document KPI and reuse winner signals.';
-  if (status === 'ready_to_upload') return platform === 'youtube'
-    ? 'Run YouTube upload after OAuth is valid and user approval is confirmed.'
-    : 'Run API upload after platform publishing scope is confirmed.';
+  if (status === 'ready_to_upload') {
+    if (platform === 'youtube') return 'Run YouTube upload after OAuth is valid and user approval is confirmed.';
+    if (platform === 'tiktok') {
+      return 'App is live; rerun TikTok OAuth with video.publish and confirm social:tiktok:check:init before Direct Post.';
+    }
+    return 'Run API upload after platform publishing scope is confirmed.';
+  }
   if (status === 'blocked') {
     if (platform === 'instagram' || platform === 'facebook') return 'Use Meta Business Suite manually or add Meta Graph credentials.';
     if (platform === 'tiktok') return 'Run TikTok OAuth/check, then use the Direct Post API after explicit approval.';

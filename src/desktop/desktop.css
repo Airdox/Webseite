@@ -4306,6 +4306,95 @@ input[type="range"] {
 @media (max-width: 1100px) { .fd-audio-layout { grid-template-columns: 1fr; } .fd-audio-flightbar { grid-template-columns: 1fr 1fr 48px; } .fd-audio-flightbar .fd-toolbar-actions { grid-column: 1 / -1; } }
 @media (max-width: 760px) { .fd-audio-hero { grid-template-columns: 1fr; } .fd-audio-orbit { display: none; } .fd-audio-hero-actions { flex-direction: row; } .fd-audio-workflow { grid-template-columns: 1fr 1fr; } .fd-audio-next-action { align-items: stretch; flex-direction: column; } .fd-audio-profiles, .fd-audio-parameters { grid-template-columns: 1fr; } .fd-audio-slider { grid-template-columns: 90px 1fr 86px; } .fd-audio-save-target { grid-template-columns: 20px minmax(0, 1fr); } .fd-audio-save-target .fd-button { grid-column: 1 / -1; } .fd-audio-flightbar { grid-template-columns: 1fr 48px; } .fd-audio-flightbar .fd-audio-progress { grid-column: 1 / -1; grid-row: 2; } }
 
+/* Audio Mastering · focused workflow */
+.fd-audio-mastering { --audio-cyan: #6ff6dd; --audio-violet: #a88cff; }
+.fd-audio-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 4px 2px 2px; }
+.fd-audio-header h2 { margin: 5px 0 4px; color: var(--airdox-text); font-size: clamp(23px, 2vw, 31px); letter-spacing: -.035em; }
+.fd-audio-header p { margin: 0; color: var(--airdox-muted); font-size: 12px; }
+.fd-audio-kicker { color: var(--audio-cyan); font-size: 9px; font-weight: 800; letter-spacing: .18em; }
+.fd-audio-state-pill { display: inline-flex; align-items: center; gap: 7px; min-height: 30px; padding: 0 10px; color: var(--airdox-muted); border: 1px solid var(--airdox-border); border-radius: 999px; background: var(--airdox-surface); font-size: 10px; font-weight: 700; white-space: nowrap; }
+.fd-audio-state-pill.state-running { color: var(--audio-cyan); border-color: rgba(111,246,221,.35); background: rgba(111,246,221,.07); }
+.fd-audio-state-pill.state-success { color: var(--airdox-lime); border-color: rgba(183,245,43,.3); background: rgba(183,245,43,.06); }
+.fd-audio-state-pill.state-error { color: var(--airdox-danger); border-color: rgba(255,107,107,.4); background: rgba(255,107,107,.07); }
+.fd-audio-workflow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.fd-audio-workflow li { position: relative; display: flex; gap: 10px; align-items: center; min-width: 0; padding: 10px 12px; color: #687980; border: 1px solid var(--airdox-border); border-radius: 9px; background: rgba(255,255,255,.015); }
+.fd-audio-workflow li::after { position: absolute; right: -9px; z-index: 1; width: 9px; height: 1px; content: ''; background: var(--airdox-border); }
+.fd-audio-workflow li:last-child::after { display: none; }
+.fd-audio-workflow li > span { display: grid; width: 22px; height: 22px; flex: 0 0 22px; place-items: center; border: 1px solid currentColor; border-radius: 50%; font-size: 9px; font-weight: 800; }
+.fd-audio-workflow li div { min-width: 0; }
+.fd-audio-workflow strong, .fd-audio-workflow small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fd-audio-workflow strong { color: #9aabb0; font-size: 10px; }
+.fd-audio-workflow small { margin-top: 2px; font-size: 8px; }
+.fd-audio-workflow li.active { color: var(--audio-cyan); border-color: rgba(111,246,221,.34); background: rgba(111,246,221,.055); }
+.fd-audio-workflow li.active strong { color: #eef8f7; }
+.fd-audio-workflow li.completed { color: var(--airdox-lime); }
+.fd-audio-section-title { display: flex; align-items: center; gap: 11px; }
+.fd-audio-section-title > span { display: grid; width: 26px; height: 26px; flex: 0 0 26px; place-items: center; color: #07100f; border-radius: 50%; background: var(--audio-cyan); font-size: 10px; font-weight: 900; }
+.fd-audio-section-title h3, .fd-audio-section-title p { margin: 0; }
+.fd-audio-section-title h3 { color: var(--airdox-text); font-size: 13px; }
+.fd-audio-section-title p { margin-top: 3px; color: var(--airdox-muted); font-size: 9px; }
+.fd-audio-source-card { padding: 16px; }
+.fd-audio-file-row { display: grid; grid-template-columns: 24px minmax(0,1fr) auto auto; gap: 10px; align-items: center; margin-top: 13px; padding: 12px; border: 1px solid var(--airdox-border); border-radius: 9px; background: rgba(0,0,0,.12); }
+.fd-audio-file-row > svg { color: var(--audio-cyan); }
+.fd-audio-file-row > div { min-width: 0; }
+.fd-audio-file-row strong, .fd-audio-file-row span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fd-audio-file-row strong { color: #e5efee; font-size: 11px; }
+.fd-audio-file-row span { margin-top: 3px; color: var(--airdox-muted); font-family: "Cascadia Mono", Consolas, monospace; font-size: 8px; }
+.fd-audio-operation { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 7px 12px; align-items: center; margin-top: 10px; padding: 10px 12px; border: 1px solid var(--airdox-border); border-radius: 9px; background: rgba(0,0,0,.12); }
+.fd-audio-operation strong, .fd-audio-operation span { display: block; }
+.fd-audio-operation strong { color: #dce7e6; font-size: 10px; }
+.fd-audio-operation span { margin-top: 2px; color: var(--airdox-muted); font-size: 9px; }
+.fd-audio-operation em { color: var(--audio-cyan); font-size: 10px; font-style: normal; font-weight: 800; }
+.fd-audio-operation.state-error { border-color: rgba(255,107,107,.38); background: rgba(255,107,107,.05); }
+.fd-audio-operation.state-error strong { color: #ffb0b0; }
+.fd-audio-operation .fd-audio-progress { grid-column: 1 / -1; }
+.fd-audio-layout { display: grid; grid-template-columns: minmax(0,1.35fr) minmax(300px,.65fr); gap: 12px; }
+.fd-audio-control, .fd-audio-diagnostics { min-width: 0; padding: 16px; }
+.fd-audio-config-head { align-items: center; }
+.fd-audio-profiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px,1fr)); gap: 7px; margin-top: 14px; }
+.fd-audio-profiles button { min-height: 70px; padding: 10px; color: #899a9f; text-align: left; border: 1px solid var(--airdox-border); border-radius: 9px; background: rgba(255,255,255,.018); cursor: pointer; }
+.fd-audio-profiles button strong, .fd-audio-profiles button span { display: block; }
+.fd-audio-profiles button strong { color: #d7e1e0; font-size: 10px; }
+.fd-audio-profiles button span { margin-top: 5px; font-size: 8px; line-height: 1.4; }
+.fd-audio-profiles button:hover:not(:disabled) { border-color: rgba(111,246,221,.3); }
+.fd-audio-profiles button.active { border-color: rgba(111,246,221,.5); background: rgba(111,246,221,.07); box-shadow: inset 3px 0 var(--audio-cyan); }
+.fd-audio-output-panel { margin: 14px 0 0; padding: 12px; border: 1px solid var(--airdox-border); border-radius: 9px; }
+.fd-audio-output-panel legend { padding: 0 6px; color: #aebbbd; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.fd-audio-output-settings { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.fd-audio-output-settings label { display: grid; gap: 5px; color: var(--airdox-muted); font-size: 9px; }
+.fd-audio-output-settings select { width: 100%; min-height: 34px; padding: 0 9px; color: var(--airdox-text); border: 1px solid var(--airdox-border); border-radius: 7px; background: #111a20; font-size: 10px; }
+.fd-audio-save-target { display: grid; grid-template-columns: 20px minmax(0,1fr) auto; gap: 9px; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--airdox-border); }
+.fd-audio-save-target > svg { color: var(--audio-cyan); }
+.fd-audio-save-target > span { min-width: 0; }
+.fd-audio-save-target small, .fd-audio-save-target strong { display: block; }
+.fd-audio-save-target small { color: var(--airdox-muted); font-size: 8px; }
+.fd-audio-save-target strong { overflow: hidden; margin-top: 3px; color: #dfe9e8; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.fd-audio-target-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; margin-top: 12px; }
+.fd-audio-target-summary > span { padding: 9px 10px; border: 1px solid var(--airdox-border); border-radius: 8px; background: rgba(255,255,255,.015); }
+.fd-audio-target-summary small, .fd-audio-target-summary strong { display: block; }
+.fd-audio-target-summary small { color: var(--airdox-muted); font-size: 8px; text-transform: uppercase; letter-spacing: .07em; }
+.fd-audio-target-summary strong { margin-top: 4px; color: var(--audio-cyan); font-size: 11px; }
+.fd-audio-action-card { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 16px; border-color: rgba(111,246,221,.28); background: linear-gradient(90deg, rgba(111,246,221,.065), rgba(168,140,255,.035)); }
+.fd-audio-action-card > div:first-child { min-width: 0; }
+.fd-audio-action-card > div:first-child > span { color: var(--audio-cyan); font-size: 8px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.fd-audio-action-card > div:first-child > strong { display: block; margin-top: 4px; color: #eef8f7; font-size: 13px; }
+.fd-audio-action-card p { overflow: hidden; margin: 4px 0 0; color: var(--airdox-muted); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.fd-audio-action-card.complete { border-color: rgba(183,245,43,.32); background: rgba(183,245,43,.055); }
+.fd-audio-action-card.complete > div:first-child > span { color: var(--airdox-lime); }
+@media (max-width: 1050px) {
+  .fd-audio-layout { grid-template-columns: 1fr; }
+  .fd-audio-file-row { grid-template-columns: 24px minmax(0,1fr) auto; }
+  .fd-audio-file-row .fd-button:last-child { grid-column: 2 / -1; justify-self: start; }
+}
+@media (max-width: 720px) {
+  .fd-audio-header, .fd-audio-action-card { align-items: stretch; flex-direction: column; }
+  .fd-audio-workflow { grid-template-columns: 1fr; }
+  .fd-audio-workflow li::after { display: none; }
+  .fd-audio-file-row { grid-template-columns: 22px minmax(0,1fr); }
+  .fd-audio-file-row .fd-button { grid-column: 1 / -1; justify-self: stretch; }
+  .fd-audio-output-settings, .fd-audio-target-summary { grid-template-columns: 1fr; }
+}
+
 /* ========================================================================== */
 /* Flight Deck · Orbital Command v1                                           */
 /* Dense operational UI layer. Kept last so legacy tabs inherit the shell.    */

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-24T01:45:51.880Z",
+  "generatedAt": "2026-10-20T01:45:56.675Z",
   "owner": "Mentor",
   "purpose": "Agent source currency and continuous learning check",
   "maxRunbookAgeDays": 45,
@@ -16,20 +16,20 @@
       "status": "warn",
       "warnings": [
         "2 runbook(s) older than 45 days.",
-        "1 source(s) unreachable or changed."
+        "4 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
-          "ageDays": 53,
+          "ageDays": 141,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         },
         {
           "filePath": "docs/agent-system/reports/operations/OPERATING_MODEL.md",
           "exists": true,
-          "ageDays": 48,
+          "ageDays": 136,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         }
@@ -37,9 +37,9 @@
       "sources": [
         {
           "url": "https://react.dev/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://react.dev/"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://vite.dev/guide/",
@@ -49,15 +49,15 @@
         },
         {
           "url": "https://web.dev/articles",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://web.dev/discover?hl=pl"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://developer.mozilla.org/en-US/docs/Web",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://developer.mozilla.org/en-US/docs/Web"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         }
       ],
       "nextActions": [
@@ -71,20 +71,21 @@
       "domain": "Visual quality, accessibility, UX evidence",
       "status": "warn",
       "warnings": [
-        "2 runbook(s) older than 45 days."
+        "2 runbook(s) older than 45 days.",
+        "3 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_AUTOMATION_ROADMAP.md",
           "exists": true,
-          "ageDays": 53,
+          "ageDays": 141,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         },
         {
           "filePath": "docs/brand/AIRDOX_CORPORATE_DESIGN.md",
           "exists": true,
-          "ageDays": 53,
+          "ageDays": 141,
           "committedAt": "2026-05-17T05:17:12+02:00",
           "fresh": false
         }
@@ -92,21 +93,21 @@
       "sources": [
         {
           "url": "https://www.w3.org/WAI/standards-guidelines/wcag/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://web.dev/learn/accessibility/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://web.dev/learn/accessibility/"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://web.dev/learn/performance/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://web.dev/learn/performance/"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         }
       ],
       "nextActions": [
@@ -120,36 +121,37 @@
       "domain": "Windows desktop, Electron and local automation",
       "status": "warn",
       "warnings": [
-        "1 source(s) unreachable or changed."
+        "2 runbook(s) older than 45 days.",
+        "3 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/WINDOWS_FLIGHTDECK.md",
           "exists": true,
-          "ageDays": 14,
+          "ageDays": 102,
           "committedAt": "2026-07-10T06:07:23+02:00",
-          "fresh": true
+          "fresh": false
         },
         {
           "filePath": "docs/FLIGHT_DECK_TUTORIAL.md",
           "exists": true,
-          "ageDays": 14,
+          "ageDays": 102,
           "committedAt": "2026-07-10T06:07:23+02:00",
-          "fresh": true
+          "fresh": false
         }
       ],
       "sources": [
         {
           "url": "https://www.electronjs.org/docs/latest/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://www.electronjs.org/docs/latest/"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://playwright.dev/docs/intro",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://playwright.dev/docs/intro"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://learn.microsoft.com/en-us/windows/apps/",
@@ -170,20 +172,20 @@
       "status": "warn",
       "warnings": [
         "2 runbook(s) older than 45 days.",
-        "1 source(s) unreachable or changed."
+        "4 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
-          "ageDays": 48,
+          "ageDays": 136,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         },
         {
           "filePath": "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md",
           "exists": true,
-          "ageDays": 53,
+          "ageDays": 141,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         }
@@ -191,21 +193,21 @@
       "sources": [
         {
           "url": "https://owasp.org/www-project-top-ten/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://owasp.org/www-project-top-ten/"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://docs.github.com/en/actions",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://docs.github.com/en/actions"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://developers.cloudflare.com/workers/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://developers.cloudflare.com/workers/"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://nodejs.org/en/learn/getting-started/security-best-practices",
@@ -225,20 +227,21 @@
       "domain": "Growth, booking conversion and social platform practice",
       "status": "warn",
       "warnings": [
-        "2 runbook(s) older than 45 days."
+        "2 runbook(s) older than 45 days.",
+        "3 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/campaigns/MANNI_GROWTH_PLAYBOOK.md",
           "exists": true,
-          "ageDays": 48,
+          "ageDays": 136,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         },
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
-          "ageDays": 48,
+          "ageDays": 136,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         }
@@ -246,21 +249,21 @@
       "sources": [
         {
           "url": "https://ads.tiktok.com/business/creativecenter/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://ads.tiktok.com/creative/creativeCenter?rid=v88stcfj6vd"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://creators.instagram.com/",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://creators.instagram.com/"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://support.google.com/youtube/answer/10059070",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://support.google.com/youtube/answer/10059070"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         }
       ],
       "nextActions": [
@@ -274,13 +277,14 @@
       "domain": "Source control, GitHub governance and release hygiene",
       "status": "warn",
       "warnings": [
-        "1 runbook(s) older than 45 days."
+        "1 runbook(s) older than 45 days.",
+        "3 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/operations/REPOSITORY_GOVERNANCE.md",
           "exists": true,
-          "ageDays": 53,
+          "ageDays": 141,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         }
@@ -288,21 +292,21 @@
       "sources": [
         {
           "url": "https://git-scm.com/docs",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://git-scm.com/docs"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://docs.github.com/en/repositories",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://docs.github.com/en/repositories"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://docs.github.com/en/pull-requests",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://docs.github.com/en/pull-requests"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         }
       ],
       "nextActions": [
@@ -317,13 +321,13 @@
       "status": "warn",
       "warnings": [
         "1 runbook(s) older than 45 days.",
-        "2 source(s) unreachable or changed."
+        "3 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/operations/REFACTOR_OPTIMIZATION_LOOP.md",
           "exists": true,
-          "ageDays": 48,
+          "ageDays": 136,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         }
@@ -333,13 +337,13 @@
           "url": "https://martinfowler.com/refactoring/",
           "ok": false,
           "status": null,
-          "error": "AbortError"
+          "error": "TypeError"
         },
         {
           "url": "https://web.dev/articles/fast",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://web.dev/explore/fast"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://nodejs.org/en/learn/diagnostics/user-journey",
@@ -359,20 +363,21 @@
       "domain": "Learning loops and agent improvement process",
       "status": "warn",
       "warnings": [
-        "2 runbook(s) older than 45 days."
+        "2 runbook(s) older than 45 days.",
+        "2 source(s) unreachable or changed."
       ],
       "runbooks": [
         {
           "filePath": "docs/agent-system/reports/mentor/MENTOR_LEARNING_LOOPS.md",
           "exists": true,
-          "ageDays": 48,
+          "ageDays": 136,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         },
         {
           "filePath": "docs/agent-system/reports/operations/AGENT_CONTINUOUS_LEARNING.md",
           "exists": true,
-          "ageDays": 48,
+          "ageDays": 136,
           "committedAt": "2026-06-06T12:12:03+02:00",
           "fresh": false
         }
@@ -380,15 +385,15 @@
       "sources": [
         {
           "url": "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         },
         {
           "url": "https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows",
-          "ok": true,
-          "status": 200,
-          "finalUrl": "https://docs.github.com/en/actions/how-tos"
+          "ok": false,
+          "status": null,
+          "error": "TypeError"
         }
       ],
       "nextActions": [

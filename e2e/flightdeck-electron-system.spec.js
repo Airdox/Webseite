@@ -1,8 +1,8 @@
-import { test, expect, _electron as electron } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import process from 'node:process';
+import { closeFlightDeck, launchBuiltFlightDeck } from './helpers/flightdeckElectron.js';
 
 test.describe('Flight Deck System Monitor – real Electron host services', () => {
   test.describe.configure({ mode: 'serial', timeout: 120_000 });
@@ -13,17 +13,7 @@ test.describe('Flight Deck System Monitor – real Electron host services', () =
 
   test.beforeAll(async () => {
     testRoot = await mkdtemp(path.join(tmpdir(), 'airdox-system-e2e-'));
-    const electronEnv = {
-      ...process.env,
-      FLIGHTDECK_E2E: '1',
-      VITE_DEV_SERVER_URL: 'http://127.0.0.1:4173/desktop.html',
-    };
-    delete electronEnv.ELECTRON_RUN_AS_NODE;
-
-    electronApp = await electron.launch({
-      args: ['.', `--user-data-dir=${path.join(testRoot, 'electron-profile')}`],
-      env: electronEnv,
-    });
+    electronApp = await launchBuiltFlightDeck(testRoot);
     page = await electronApp.firstWindow();
     await page.waitForLoadState('domcontentloaded');
     await expect(page.getByRole('heading', { name: 'Flight Deck', exact: true })).toBeVisible({ timeout: 30_000 });
@@ -37,7 +27,7 @@ test.describe('Flight Deck System Monitor – real Electron host services', () =
   });
 
   test.afterAll(async () => {
-    await electronApp?.close().catch(() => {});
+    await closeFlightDeck(electronApp);
     if (testRoot) await rm(testRoot, { recursive: true, force: true });
   });
 

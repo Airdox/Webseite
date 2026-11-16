@@ -332,12 +332,32 @@ const DesktopApp = () => {
   const [tutorialStepIndex, setTutorialStepIndex] = useState(0);
   const [tutorialChecklist, setTutorialChecklist] = useState(loadTutorialChecklist);
   const liveRequiresSourceAudio = settingsDraft?.safeMode !== false;
+  const liveRequiresTracklist = settingsDraft?.requireTracklistForLive !== false;
+  const draftHasSeekableTracks = Boolean((draft?.tracks || []).some((track) => (
+    String(track?.time || '').trim()
+    && (String(track?.artist || '').trim() || String(track?.title || '').trim())
+  )));
+  const publishRequiresTracklist = Boolean(settingsDraft?.autoDeploy && liveRequiresTracklist);
+  const canDraftPublish = Boolean(
+    draft?.id
+    && draft?.file
+    && (!publishRequiresTracklist || draftHasSeekableTracks)
+  );
   const canDraftGoLive = Boolean(
     settingsDraft?.workspaceRoot
     && draft?.id
     && draft?.file
-    && (!liveRequiresSourceAudio || draft?.sourceAudioPath),
+    && (!liveRequiresSourceAudio || draft?.sourceAudioPath)
+    && (!liveRequiresTracklist || draftHasSeekableTracks)
   );
+  const publishDisabledReason = publishRequiresTracklist && !draftHasSeekableTracks
+    ? 'Auto Deploy ist aktiv. Ergänze zuerst eine Tracklist mit Zeitmarken.'
+    : 'Publish braucht mindestens ID und Dateiname.';
+  const goLiveDisabledReason = liveRequiresSourceAudio && !draft?.sourceAudioPath
+    ? 'Go Live braucht eine Audio Source aus dem Windows-Dateisystem.'
+    : liveRequiresTracklist && !draftHasSeekableTracks
+      ? 'Go Live braucht eine Tracklist mit Zeitmarken.'
+      : 'Go Live braucht Workspace, ID und Dateiname.';
   const selectedBatchCount = batchQueue.filter(isBatchLiveCandidate).length;
   const canGoLive = Boolean(
     settingsDraft?.workspaceRoot
@@ -701,6 +721,7 @@ const DesktopApp = () => {
       progress: 0,
     });
     setActiveTab('import');
+    return result;
   };
 
   const saveSettings = async () => {
@@ -767,6 +788,11 @@ const DesktopApp = () => {
   ));
 
   const publishCurrentDraft = async () => {
+    if (!canDraftPublish) {
+      setNotice({ tone: 'error', message: publishDisabledReason });
+      setActiveTab('import');
+      return;
+    }
     startPublishRun({
       mode: 'publish',
       label: 'Preflight',
@@ -847,6 +873,11 @@ const DesktopApp = () => {
     }
     if (liveRequiresSourceAudio && !draft?.sourceAudioPath) {
       setNotice({ tone: 'error', message: 'Go Live braucht eine Audio Source aus dem Windows-Dateisystem.' });
+      setActiveTab('import');
+      return;
+    }
+    if (liveRequiresTracklist && !draftHasSeekableTracks) {
+      setNotice({ tone: 'error', message: 'Go Live braucht eine Tracklist mit Zeitmarken. Es wurden keine Publish-Schritte gestartet.' });
       setActiveTab('import');
       return;
     }
@@ -1332,10 +1363,14 @@ const DesktopApp = () => {
       const result = await flightDeckApi.masterAudio({
         jobId,
         sourcePath: audioSourcePath,
+        analysisId: audioAnalysis?.analysisId,
         workspaceRoot: settingsDraft?.workspaceRoot,
         outputDirectory: audioOutputDirectory || undefined,
         config: audioConfig,
       });
+      if (result?.status && result.status !== 'completed') {
+        throw new Error('Das Mastering wurde nicht verbindlich finalisiert. Es wurde kein veröffentlichbarer Master übernommen.');
+      }
       setAudioResult({ ...result, playbackUrl: result.outputPlaybackUrl });
       setAudioProgress(100);
       setAudioOperation({
@@ -1370,6 +1405,19 @@ const DesktopApp = () => {
     setAudioOutputDirectory(selected);
     setAudioResult(null);
     setNotice({ tone: 'success', message: `Speicherordner gewählt: ${selected}` });
+  };
+
+  const prepareMasterForPublish = async () => {
+    if (!audioResult?.outputPath || (audioResult.status && audioResult.status !== 'completed')) {
+      setNotice({ tone: 'error', message: 'Nur ein vollständig verifiziertes Master kann für Publish vorbereitet werden.' });
+      return;
+    }
+    const prepared = await loadImport([audioResult.outputPath]);
+    if (!prepared) return;
+    setNotice({
+      tone: 'success',
+      message: 'Verifiziertes Master in Set Import übernommen. Prüfe Titel, Tracklist und Cover vor Publish.',
+    });
   };
 
   const cancelAudioOperation = async () => {
@@ -1503,8 +1551,10 @@ const DesktopApp = () => {
           onLoadDemo={() => loadImport([])}
           onPublish={publishCurrentDraft}
           onGoLive={goLiveNow}
+          canPublish={canDraftPublish}
+          publishDisabledReason={publishDisabledReason}
           canGoLive={canDraftGoLive}
-          goLiveDisabledReason="Go Live braucht eine Audio Source aus dem Windows-Dateisystem."
+          goLiveDisabledReason={goLiveDisabledReason}
           onDraftChange={updateDraftField}
           onTrackChange={updateTrack}
           onTrackAdd={addTrack}
@@ -1539,19 +1589,20 @@ const DesktopApp = () => {
           onCancel={cancelAudioOperation}
           onSelectOutputDirectory={selectAudioOutputDirectory}
           onReveal={() => flightDeckApi.revealPath({ filePath: audioResult?.outputPath })}
+          onPreparePublish={prepareMasterForPublish}
           onReset={resetAudioMastering}
           onConfigChange={(field, value) => {
             setAudioConfig((current) => ({ ...current, [field]: value }));
-            setAudioAnalysis(null);
             setAudioResult(null);
-            setAudioProgress(0);
+            setAudioProgress(audioAnalysis ? 100 : 0);
             setAudioOperation({
               kind: 'analysis',
-              state: audioSourcePath ? 'ready' : 'idle',
-              phase: audioSourcePath ? 'Erneute Analyse erforderlich' : 'Bereit',
+              state: audioAnalysis ? 'success' : (audioSourcePath ? 'ready' : 'idle'),
+              phase: audioAnalysis ? 'Quellanalyse gültig' : (audioSourcePath ? 'Analyse erforderlich' : 'Bereit'),
               message: audioSourcePath
-                ? 'Parameter wurden geändert. Analysiere das Set erneut, bevor du den Master startest.'
+                ? 'Die Klangparameter wurden geändert. Die unveränderte Quellanalyse wird beim Speichern sicher wiederverwendet.'
                 : INITIAL_AUDIO_OPERATION.message,
+              progress: audioAnalysis ? 100 : 0,
             });
           }}
           onProfileChange={(profileId) => {
@@ -1563,16 +1614,16 @@ const DesktopApp = () => {
               outputFormat: current.outputFormat || profile.outputFormat,
               sampleRate: current.sampleRate || profile.sampleRate,
             }));
-            setAudioAnalysis(null);
             setAudioResult(null);
-            setAudioProgress(0);
+            setAudioProgress(audioAnalysis ? 100 : 0);
             setAudioOperation({
               kind: 'analysis',
-              state: audioSourcePath ? 'ready' : 'idle',
-              phase: audioSourcePath ? 'Profil gewählt' : 'Bereit',
+              state: audioAnalysis ? 'success' : (audioSourcePath ? 'ready' : 'idle'),
+              phase: audioAnalysis ? 'Quellanalyse gültig' : (audioSourcePath ? 'Profil gewählt' : 'Bereit'),
               message: audioSourcePath
-                ? 'Das Klangprofil ist aktiv. Starte die Analyse für den vollständigen Signalcheck.'
+                ? 'Das Klangprofil ist aktiv. Die unveränderte Quellanalyse bleibt für den sicheren Render gültig.'
                 : INITIAL_AUDIO_OPERATION.message,
+              progress: audioAnalysis ? 100 : 0,
             });
           }}
         />

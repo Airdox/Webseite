@@ -15,14 +15,25 @@ const net = electron?.net;
 const protocol = electron?.protocol;
 const shell = electron?.shell;
 
-const DEV_DESKTOP_URL = process.env.VITE_DEV_SERVER_URL || 'http://127.0.0.1:4174/desktop.html';
+const DEV_DESKTOP_URL = String(process.env.VITE_DEV_SERVER_URL || '').trim();
 const PACKAGED_DESKTOP_URL = 'app://flightdeck/desktop.html';
 
 let mainWindow = null;
 let designStudioWindow = null;
 let servicesPromise = null;
 const audioMasteringJobs = new Map();
+const audioAnalysisCache = new Map();
 const audioPlaybackFiles = new Map();
+
+const cacheAudioAnalysis = (analysis) => {
+  if (!analysis?.sourcePath) return '';
+  const analysisId = randomUUID();
+  audioAnalysisCache.set(analysisId, analysis);
+  while (audioAnalysisCache.size > 16) {
+    audioAnalysisCache.delete(audioAnalysisCache.keys().next().value);
+  }
+  return analysisId;
+};
 
 const createAudioPlaybackUrl = (filePath) => {
   const token = randomUUID();
@@ -279,7 +290,7 @@ const createWindow = async () => {
   });
 
   try {
-    if (!app.isPackaged) {
+    if (!app.isPackaged && DEV_DESKTOP_URL) {
       try {
         await mainWindow.loadURL(DEV_DESKTOP_URL);
         if (!process.env.FLIGHTDECK_E2E) {
@@ -326,9 +337,8 @@ const createDesignStudioWindow = async () => {
     designStudioWindow = null;
   });
 
-  const studioUrl = app.isPackaged
-    ? `${PACKAGED_DESKTOP_URL}?view=design-studio`
-    : `${DEV_DESKTOP_URL}?view=design-studio`;
+  const desktopUrl = !app.isPackaged && DEV_DESKTOP_URL ? DEV_DESKTOP_URL : PACKAGED_DESKTOP_URL;
+  const studioUrl = `${desktopUrl}?view=design-studio`;
   await designStudioWindow.loadURL(studioUrl);
   return true;
 };
@@ -435,7 +445,8 @@ ipcMain.handle('flightdeck:analyze-audio', async (event, payload) => {
         { jobId, progress, ...detail },
       ),
     });
-    return { ...result, playbackUrl: createAudioPlaybackUrl(result.sourcePath) };
+    const analysisId = cacheAudioAnalysis(result);
+    return { ...result, analysisId, playbackUrl: createAudioPlaybackUrl(result.sourcePath) };
   } finally {
     audioMasteringJobs.delete(jobId);
   }
@@ -443,27 +454,38 @@ ipcMain.handle('flightdeck:analyze-audio', async (event, payload) => {
 
 ipcMain.handle('flightdeck:master-audio', async (event, payload) => {
   const { masterAudio } = await getServices();
-  const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
   const jobId = String(payload?.jobId || `audio-${Date.now()}`);
   if (audioMasteringJobs.has(jobId)) throw new Error('Dieser Audio-Job läuft bereits.');
   const controller = new AbortController();
   audioMasteringJobs.set(jobId, controller);
   try {
-    const outputDirectory = payload?.outputDirectory
+    let outputDirectory = payload?.outputDirectory
       ? path.resolve(String(payload.outputDirectory))
-      : path.join(workspaceRoot, 'release', 'audio-mastering');
+      : '';
+    if (!outputDirectory) {
+      const workspaceRoot = await resolveWorkspaceRoot(payload?.workspaceRoot);
+      if (!workspaceRoot) throw new Error('Kein Speicherordner gewählt und kein Flight-Deck-Workspace konfiguriert.');
+      outputDirectory = path.join(workspaceRoot, 'release', 'audio-mastering');
+    }
+    const analysisId = String(payload?.analysisId || '');
     const result = await masterAudio({
       sourcePath: payload?.sourcePath,
       outputDirectory,
       config: payload?.config || {},
+      sourceAnalysis: analysisId ? audioAnalysisCache.get(analysisId) : null,
       signal: controller.signal,
       onProgress: (progress, detail = {}) => sendAudioJobProgress(
         event?.sender,
         { jobId, progress, ...detail },
       ),
     });
+    if (controller.signal.aborted) throw new Error('Audio-Optimierung abgebrochen.');
+    const nextAnalysisId = cacheAudioAnalysis(result.input);
     return {
       ...result,
+      analysisId: nextAnalysisId,
+      status: 'completed',
+      phase: 'committed',
       inputPlaybackUrl: createAudioPlaybackUrl(result.sourcePath),
       outputPlaybackUrl: createAudioPlaybackUrl(result.outputPath),
     };
@@ -936,4 +958,11 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+app.on('before-quit', () => {
+  for (const controller of audioMasteringJobs.values()) controller.abort();
+  audioMasteringJobs.clear();
+  audioAnalysisCache.clear();
+  audioPlaybackFiles.clear();
 });

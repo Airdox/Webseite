@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { execFile } from 'node:child_process';
-import { access, mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdirSync } from 'node:fs';
+import {
+  access, mkdir, mkdtemp, readFile, readdir, rm, utimes, writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { promisify } from 'node:util';
@@ -41,7 +44,9 @@ describe('audio mastering profiles', () => {
   });
 
   it('uses the balanced profile for empty and unknown profile selections', () => {
-    expect(validateMasteringConfig()).toMatchObject({ profileId: 'liveBalanced', targetLufs: -14 });
+    expect(validateMasteringConfig()).toMatchObject({
+      profileId: 'liveBalanced', targetLufs: -14, truePeak: -1.5, outputFormat: 'wav', sampleRate: 48000,
+    });
     expect(validateMasteringConfig({ profileId: 'does-not-exist' })).toMatchObject({
       profileId: 'does-not-exist',
       targetLufs: -14,
@@ -73,7 +78,7 @@ describe('audio mastering profiles', () => {
     },
   );
 
-  it.each([undefined, '', 'wma', 'mp4', null])('falls back to mp3 for unsupported format %s', (outputFormat) => {
+  it.each(['', 'wma', 'mp4', null])('falls back to mp3 for unsupported format %s', (outputFormat) => {
     expect(validateMasteringConfig({ outputFormat }).outputFormat).toBe('mp3');
   });
 
@@ -141,8 +146,15 @@ describe('FFmpeg audio filter construction', () => {
     ].join(','));
   });
 
+  it('adds stereo widening only when the current job explicitly requests it', () => {
+    const widened = validateMasteringConfig({ profileId: 'liveBalanced', stereoWidth: 1.25 });
+    expect(buildToneFilter(widened)).toContain('extrastereo=m=1.25');
+    expect(buildToneFilter(config)).not.toContain('extrastereo=');
+    expect(buildToneFilter({ ...config, stereoWidth: 0 })).not.toContain('extrastereo=');
+  });
+
   it('builds first-pass loudnorm analysis with JSON output', () => {
-    expect(buildLoudnormFilter(config)).toBe('loudnorm=I=-14:LRA=9:TP=-1.2:print_format=json');
+    expect(buildLoudnormFilter(config)).toBe('loudnorm=I=-14:LRA=9:TP=-1.5:print_format=json');
   });
 
   it('builds second-pass loudnorm with all measured values', () => {
@@ -151,7 +163,7 @@ describe('FFmpeg audio filter construction', () => {
       input_thresh: '-27.00', target_offset: '0.15',
     };
     expect(buildLoudnormFilter(config, measured)).toBe(
-      'loudnorm=I=-14:LRA=9:TP=-1.2:measured_I=-17.25:measured_LRA=8.10:'
+      'loudnorm=I=-14:LRA=9:TP=-1.5:measured_I=-17.25:measured_LRA=8.10:'
       + 'measured_TP=-0.30:measured_thresh=-27.00:offset=0.15:linear=true:print_format=json',
     );
   });
@@ -180,6 +192,19 @@ describe('loudnorm measurement parsing', () => {
 
   it('surfaces malformed JSON instead of silently accepting it', () => {
     expect(() => parseLoudnormJson('{"input_i":oops,"target_offset":"0"}')).toThrow();
+  });
+
+  it('parses the quiet ebur128 render summary', () => {
+    const stderr = `Summary:\n\n  Integrated loudness:\n    I:         -14.1 LUFS\n    Threshold: -24.1 LUFS\n\n  Loudness range:\n    LRA:         5.2 LU\n\n  Sample peak:\n    Peak:       -1.6 dBFS`;
+    expect(_internal.parseEbur128Summary(stderr)).toMatchObject({
+      input_i: '-14.1', input_tp: '-1.6', input_lra: '5.2', peakKind: 'sample', normalization_type: 'linear-fast',
+    });
+  });
+
+  it('rejects missing render summaries and defaults an omitted threshold safely', () => {
+    expect(() => _internal.parseEbur128Summary('ordinary ffmpeg output')).toThrow('keine verwertbare Render-Messung');
+    expect(() => _internal.parseEbur128Summary('Summary:\nIntegrated loudness:\n I: -14 LUFS\nLoudness range:\n LRA: 5 LU')).toThrow('unvollständig');
+    expect(_internal.parseEbur128Summary('Summary:\nIntegrated loudness:\n I: -14 LUFS\nLoudness range:\n LRA: 5 LU\nSample peak:\n Peak: -2 dBFS').input_thresh).toBe('0');
   });
 });
 
@@ -215,9 +240,80 @@ describe('output safety helpers', () => {
   it('escapes FFmpeg filter path delimiters and quotes', () => {
     expect(_internal.escapeFilterValue("C:\\Audio:Sets\\DJ's.wav")).toBe(String.raw`C\:/Audio\:Sets/DJ\'s.wav`);
   });
+
+  it('uses fixed representative windows for long sets only', () => {
+    expect(_internal.representativeSegmentsFor()).toEqual([]);
+    expect(_internal.representativeSegmentsFor(600)).toEqual([]);
+    const segments = _internal.representativeSegmentsFor(10_800);
+    expect(segments).toHaveLength(3);
+    expect(segments.map(({ duration }) => duration)).toEqual([45, 45, 45]);
+    expect(segments.map(({ start }) => Math.round(start))).toEqual([1058, 5378, 9158]);
+    expect(_internal.calibrationSegmentsFor(135)).toEqual([]);
+    expect(_internal.calibrationSegmentsFor(Number.NaN)).toEqual([]);
+    expect(_internal.calibrationSegmentsFor(180)).toHaveLength(3);
+  });
+
+  it('enforces explicit stereo layouts and exact source signatures', () => {
+    expect(() => _internal.assertStereoPolicy()).toThrow('genau 2 Kanälen');
+    expect(() => _internal.assertStereoPolicy({ channels: 2, channelLayout: '5.1' })).toThrow('nicht unterstützte Kanallayout');
+    expect(() => _internal.assertStereoPolicy({ channels: 2, channelLayout: ' Stereo ' })).not.toThrow();
+    expect(_internal.sourceSignaturesMatch(null, null)).toBe(false);
+    const signature = { path: 'C:/sets/live.wav', size: 100, mtimeMs: 200 };
+    expect(_internal.sourceSignaturesMatch(signature, null)).toBe(false);
+    expect(_internal.sourceSignaturesMatch(signature, { ...signature })).toBe(true);
+    expect(_internal.sourceSignaturesMatch(signature, { ...signature, size: 101 })).toBe(false);
+    expect(_internal.sourceSignaturesMatch(signature, { ...signature, mtimeMs: 201 })).toBe(false);
+    expect(_internal.sourceSignaturesMatch(signature, { ...signature, path: 'C:/sets/other.wav' })).toBe(false);
+  });
+
+  it('rejects a mastering job without a source before starting external work', async () => {
+    await expect(masterAudio({ sourcePath: '', outputDirectory: 'C:/unused' })).rejects.toThrow('Keine Audioquelle ausgewählt');
+  });
+
+  it('selects the fast path only inside the bounded gain, peak and dynamics corridor', () => {
+    const config = validateMasteringConfig({ profileId: 'liveBalanced' });
+    expect(_internal.chooseNormalizationStrategy(config, {
+      input_i: '-22', input_lra: '14', input_tp: '-0.1',
+    })).toMatchObject({ mode: 'dynamic', reason: 'Dynamische Korrektur erforderlich' });
+    expect(_internal.chooseNormalizationStrategy(config, {
+      input_i: '0', input_lra: '6', input_tp: '-20',
+    })).toMatchObject({ mode: 'dynamic', gainDb: -14 });
+    expect(_internal.chooseNormalizationStrategy(config, {
+      input_i: '-16', input_lra: '6', input_tp: '2',
+    })).toMatchObject({ mode: 'dynamic', reason: 'Dynamische Korrektur erforderlich' });
+    expect(_internal.chooseNormalizationStrategy(config, {
+      input_i: '-14', input_lra: '15', input_tp: '-2',
+    })).toMatchObject({ mode: 'dynamic', loudnessRangeExcess: 6 });
+    expect(_internal.chooseNormalizationStrategy(config, {
+      input_i: '-12', input_lra: '6', input_tp: '-1',
+    })).toMatchObject({ mode: 'linear-fast', gainDb: -2 });
+    expect(_internal.chooseNormalizationStrategy(config, {
+      input_i: '-12', input_lra: '6', input_tp: '-1',
+    })).toMatchObject({ mode: 'linear-fast', gainDb: -2 });
+    expect(_internal.chooseNormalizationStrategy(config, {})).toMatchObject({ mode: 'dynamic', reason: 'Messwerte unvollständig' });
+  });
 });
 
 describe('real FFmpeg mastering pipeline', () => {
+  it('analyzes a long set from bounded representative sections', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'airdox-mastering-representative-'));
+    const sourcePath = path.join(root, 'long-set.wav');
+    try {
+      await execFileAsync('ffmpeg', [
+        '-hide_banner', '-loglevel', 'error', '-y', '-f', 'lavfi',
+        '-i', 'sine=frequency=440:duration=605:sample_rate=8000', '-ar', '8000', '-ac', '2',
+        '-c:a', 'pcm_s16le', sourcePath,
+      ]);
+      const analysis = await analyzeAudio({ sourcePath, config: { outputFormat: 'wav' } });
+      expect(analysis.scope).toMatchObject({ mode: 'representative', measuredDuration: 135 });
+      expect(analysis.scope.segments).toHaveLength(3);
+      expect(analysis.qualityScore.confidence).toMatchObject({ level: 'mittel', percent: 60 });
+      expect(analysis.qualityScore.issues[0]).toMatch(/repräsentativen Abschnitten/i);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  }, 90_000);
+
   it('analyzes, masters, verifies and versions a real short WAV', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'airdox-mastering-unit-'));
     const sourcePath = path.join(root, 'gig-source.wav');
@@ -268,18 +364,28 @@ describe('real FFmpeg mastering pipeline', () => {
         sourcePath,
         outputDirectory,
         config,
+        sourceAnalysis: analysis,
         onProgress: (value, detail) => progress.push({ value, ...detail }),
       });
       expect(first.outputPath).toMatch(/gig-source-mastered\.wav$/);
       await expect(access(first.outputPath)).resolves.toBeUndefined();
       const report = JSON.parse(await readFile(`${first.outputPath}.mastering.json`, 'utf8'));
       expect(report.config).toMatchObject({ profileId: 'transparent', outputFormat: 'wav' });
+      expect(report.analysisReused).toBe(true);
+      expect(report.input.analyzedAt).toBe(analysis.analyzedAt);
       expect(report.output.probe.duration).toBeCloseTo(analysis.probe.duration, 1);
       expect(report.output.qualityScore).toMatchObject({
         scoreAvailable: true,
         confidence: { level: 'hoch' },
       });
-      expect(progress.some((entry) => entry.phase === 'Master rendern')).toBe(true);
+      expect(progress.some((entry) => /Master .*rendern/.test(entry.phase))).toBe(true);
+      expect(first.normalization).toMatchObject({
+        initialStrategy: { mode: expect.stringMatching(/^(linear-fast|dynamic)$/) },
+        appliedStrategy: { mode: expect.stringMatching(/^(linear-fast|dynamic)$/) },
+        verificationMode: expect.stringMatching(/^(render-metrics|deep-fallback)$/),
+      });
+      expect(progress.some((entry) => entry.phase === 'Quellanalyse wiederverwenden')).toBe(true);
+      expect(progress.some((entry) => entry.phase === 'Quelle analysieren')).toBe(false);
       expect(progress.at(-1)).toMatchObject({ value: 100, phase: 'Mastering abgeschlossen' });
 
       const second = await masterAudio({ sourcePath, outputDirectory, config });
@@ -293,6 +399,112 @@ describe('real FFmpeg mastering pipeline', () => {
     await expect(analyzeAudio({ sourcePath: '' })).rejects.toThrow('Keine Audioquelle ausgewählt.');
     await expect(analyzeAudio({ sourcePath: path.join(tmpdir(), 'airdox-does-not-exist.wav') })).rejects.toThrow();
   });
+
+  it('selects the first audio stream explicitly and rejects implicit surround downmixing', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'airdox-mastering-channel-policy-'));
+    const mixedStreamPath = path.join(root, 'video-first.mkv');
+    const surroundPath = path.join(root, 'surround.wav');
+    try {
+      await execFileAsync('ffmpeg', [
+        '-hide_banner', '-loglevel', 'error', '-y',
+        '-f', 'lavfi', '-i', 'color=c=black:s=16x16:d=0.25',
+        '-f', 'lavfi', '-i', 'sine=frequency=440:duration=0.25',
+        '-map', '0:v:0', '-map', '1:a:0', '-c:v', 'ffv1', '-c:a', 'pcm_s24le', '-ac', '2', mixedStreamPath,
+      ]);
+      expect(await _internal.probeAudio(mixedStreamPath)).toMatchObject({ codec: 'pcm_s24le', channels: 2 });
+
+      await execFileAsync('ffmpeg', [
+        '-hide_banner', '-loglevel', 'error', '-y',
+        '-f', 'lavfi', '-i', 'anullsrc=channel_layout=5.1:sample_rate=48000:d=0.25',
+        '-c:a', 'pcm_s24le', surroundPath,
+      ]);
+      await expect(analyzeAudio({ sourcePath: surroundPath })).rejects.toThrow(/genau 2 Kanälen|Surround/i);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  }, 30_000);
+
+  it('invalidates a stale source analysis before rendering', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'airdox-mastering-stale-analysis-'));
+    const sourcePath = path.join(root, 'stale-source.wav');
+    try {
+      await execFileAsync('ffmpeg', [
+        '-hide_banner', '-loglevel', 'error', '-y', '-f', 'lavfi',
+        '-i', 'sine=frequency=330:duration=0.5', '-ar', '48000', '-ac', '2',
+        '-c:a', 'pcm_s24le', sourcePath,
+      ]);
+      const staleAnalysis = await analyzeAudio({ sourcePath, config: { outputFormat: 'wav' } });
+      const changedTime = new Date(Date.now() + 5_000);
+      await utimes(sourcePath, changedTime, changedTime);
+
+      const report = await masterAudio({
+        sourcePath,
+        outputDirectory: path.join(root, 'output'),
+        config: { profileId: 'transparent', outputFormat: 'wav' },
+        sourceAnalysis: staleAnalysis,
+      });
+      expect(report.analysisReused).toBe(false);
+      expect(report.input.sourceSignature.mtimeMs).not.toBe(staleAnalysis.sourceSignature.mtimeMs);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  }, 60_000);
+
+  it('versions against sidecars and rolls back the audio/report pair on report conflict or late abort', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'airdox-mastering-atomic-pair-'));
+    const sourcePath = path.join(root, 'atomic-source.wav');
+    const outputDirectory = path.join(root, 'output');
+    const firstOutputPath = path.join(outputDirectory, 'atomic-source-mastered.wav');
+    const secondOutputPath = path.join(outputDirectory, 'atomic-source-mastered-v2.wav');
+    const thirdOutputPath = path.join(outputDirectory, 'atomic-source-mastered-v3.wav');
+    try {
+      await execFileAsync('ffmpeg', [
+        '-hide_banner', '-loglevel', 'error', '-y', '-f', 'lavfi',
+        '-i', 'sine=frequency=550:duration=0.5', '-ar', '48000', '-ac', '2',
+        '-c:a', 'pcm_s24le', sourcePath,
+      ]);
+      const config = { profileId: 'transparent', outputFormat: 'wav' };
+      const analysis = await analyzeAudio({ sourcePath, config });
+      await mkdir(outputDirectory);
+      await writeFile(`${firstOutputPath}.mastering.json`, '{"reserved":true}', 'utf8');
+
+      const versioned = await masterAudio({ sourcePath, outputDirectory, config, sourceAnalysis: analysis });
+      expect(versioned.outputPath).toBe(secondOutputPath);
+
+      let conflictCreated = false;
+      await expect(masterAudio({
+        sourcePath,
+        outputDirectory,
+        config,
+        sourceAnalysis: analysis,
+        onProgress: (_progress, detail) => {
+          if (!conflictCreated && /Master .*rendern/.test(detail.phase)) {
+            mkdirSync(`${thirdOutputPath}.mastering.json`);
+            conflictCreated = true;
+          }
+        },
+      })).rejects.toThrow();
+      await expect(access(thirdOutputPath)).rejects.toThrow();
+      await rm(`${thirdOutputPath}.mastering.json`, { recursive: true, force: true });
+
+      const controller = new AbortController();
+      await expect(masterAudio({
+        sourcePath,
+        outputDirectory,
+        config,
+        sourceAnalysis: analysis,
+        signal: controller.signal,
+        onProgress: (_progress, detail) => {
+          if (detail.phase === 'Ausgabe finalisieren') controller.abort();
+        },
+      })).rejects.toThrow(/abgebrochen/i);
+      await expect(access(thirdOutputPath)).rejects.toThrow();
+      await expect(access(`${thirdOutputPath}.mastering.json`)).rejects.toThrow();
+      expect((await readdir(outputDirectory)).some((name) => name.startsWith('.atomic-source-mastering-'))).toBe(false);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  }, 90_000);
 
   it('does not award fake source resolution when a low-bitrate MP3 is upsampled to WAV', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'airdox-mastering-provenance-'));

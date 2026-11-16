@@ -3,7 +3,7 @@ import { sets } from '../musicSets.js';
 
 describe('music set audio manifest', () => {
   it('keeps the complete public set catalog', () => {
-    expect(sets).toHaveLength(20);
+    expect(sets).toHaveLength(22);
     expect(new Set(sets.map((set) => set.id)).size).toBe(sets.length);
   });
 

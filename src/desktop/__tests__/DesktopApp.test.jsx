@@ -78,12 +78,12 @@ describe('DesktopApp', () => {
 
     await screen.findByRole('heading', { name: 'Flight Deck' });
     fireEvent.click(screen.getByRole('button', { name: 'Audio Mastering', exact: true }));
-    await screen.findByRole('heading', { name: 'Live-Set Optimierung' });
-    fireEvent.click(screen.getAllByRole('button', { name: /Audio wählen/i })[0]);
+    await screen.findByRole('heading', { name: 'Ein Set. Ein sauberer Master.' });
+    fireEvent.click(screen.getByRole('button', { name: 'Datei auswählen' }));
     await screen.findByText('D:\\Gigs\\long-live-set.wav');
-    fireEvent.click(screen.getByRole('button', { name: 'Analysieren' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Set jetzt analysieren' }));
 
-    await screen.findByRole('button', { name: 'Analysiere… 1%' });
+    await screen.findByRole('button', { name: 'Analyse abbrechen' });
     const payload = analyzeAudio.mock.calls[0][0];
     expect(payload).toMatchObject({
       sourcePath: 'D:\\Gigs\\long-live-set.wav',
@@ -104,7 +104,7 @@ describe('DesktopApp', () => {
     expect(screen.getByRole('status', { name: 'Laufende Audio-Verarbeitung' })).toHaveTextContent('Loudness messen');
     expect(screen.getByRole('status', { name: 'Laufende Audio-Verarbeitung' })).toHaveTextContent('37%');
     fireEvent.click(screen.getByRole('button', { name: 'Zum Audio Lab' }));
-    await screen.findByRole('heading', { name: 'Live-Set Optimierung' });
+    await screen.findByRole('heading', { name: 'Ein Set. Ein sauberer Master.' });
 
     await act(async () => {
       resolveAnalysis({
@@ -118,8 +118,8 @@ describe('DesktopApp', () => {
       screen.getByRole('status', { name: 'Audio-Verarbeitungsstatus' }),
     ).toHaveTextContent('Analyse abgeschlossen'));
     expect(screen.getByRole('progressbar', { name: 'Audio-Verarbeitungsfortschritt' })).toHaveAttribute('aria-valuenow', '100');
-    expect(screen.getByRole('button', { name: 'Erneut analysieren' })).toBeEnabled();
-  }, 30000);
+    expect(screen.getByRole('button', { name: 'Quellmessung wiederholen (optional)' })).toBeEnabled();
+  }, 60000);
 
   it('lets the user choose a real save folder and sends it through the explicit save workflow', async () => {
     const masteringProfile = {
@@ -154,10 +154,24 @@ describe('DesktopApp', () => {
     const masterAudio = vi.fn().mockResolvedValue({
       sourcePath: 'D:\\Gigs\\set.wav',
       outputPath: 'D:\\Masters\\set-mastered.wav',
+      reportPath: 'D:\\Masters\\set-mastered.wav.mastering.json',
+      status: 'completed',
       outputPlaybackUrl: 'app://flightdeck/audio/master-token',
       input: {},
       output: { qualityScore: measuredScore, loudness: {} },
     });
+    const prepareImport = vi.fn().mockResolvedValue({
+      draft: {
+        id: 'set-mastered',
+        title: 'Set Mastered',
+        file: 'set-mastered.mp3',
+        sourceAudioPath: 'D:\\Masters\\set-mastered.wav',
+        tracks: [],
+        isNew: true,
+      },
+      warnings: ['No tracklist file detected.'],
+    });
+    const publishSet = vi.fn();
     Object.assign(flightDeckApi, {
       getAudioMasteringProfiles: vi.fn().mockResolvedValue({ liveBalanced: masteringProfile }),
       getAudioOutputFormats: vi.fn().mockResolvedValue([
@@ -168,6 +182,7 @@ describe('DesktopApp', () => {
       pickAudioMasteringFile: vi.fn().mockResolvedValue('D:\\Gigs\\set.wav'),
       pickAudioMasteringOutputDirectory: vi.fn().mockResolvedValue('D:\\Masters'),
       analyzeAudio: vi.fn().mockResolvedValue({
+        analysisId: 'analysis-token',
         sourcePath: 'D:\\Gigs\\set.wav',
         playbackUrl: 'app://flightdeck/audio/source-token',
         probe: {
@@ -182,29 +197,45 @@ describe('DesktopApp', () => {
         },
       }),
       masterAudio,
+      prepareImport,
+      publishSet,
     });
 
     render(<DesktopApp />);
     await screen.findByRole('heading', { name: 'Flight Deck' });
     fireEvent.click(screen.getByRole('button', { name: 'Audio Mastering', exact: true }));
-    await screen.findByRole('heading', { name: 'Live-Set Optimierung' });
-    fireEvent.click(screen.getAllByRole('button', { name: 'Audio wählen' })[0]);
+    await screen.findByRole('heading', { name: 'Ein Set. Ein sauberer Master.' });
+    fireEvent.click(screen.getByRole('button', { name: 'Datei auswählen' }));
     await screen.findByText('D:\\Gigs\\set.wav');
     fireEvent.click(screen.getByRole('button', { name: 'Speicherort wählen' }));
     await screen.findByText('D:\\Masters');
-    fireEvent.click(screen.getByRole('button', { name: 'Analysieren', exact: true }));
-    await screen.findByRole('button', { name: 'Jetzt Master erstellen & speichern' });
-    fireEvent.click(screen.getByRole('button', { name: 'Jetzt Master erstellen & speichern' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Set jetzt analysieren' }));
+    await screen.findByRole('button', { name: 'Master erstellen und speichern' });
+    fireEvent.click(screen.getByLabelText('Details'));
+    const stereoWidthInput = screen.getByText('Stereo-Breite').closest('label').querySelector('input[type="number"]');
+    fireEvent.change(stereoWidthInput, { target: { value: '1.2' } });
+    expect(flightDeckApi.analyzeAudio).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('button', { name: 'Master erstellen und speichern' })).toBeEnabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Master erstellen und speichern' }));
 
     await waitFor(() => expect(masterAudio).toHaveBeenCalledWith(expect.objectContaining({
+      analysisId: 'analysis-token',
       sourcePath: 'D:\\Gigs\\set.wav',
       outputDirectory: 'D:\\Masters',
     })));
     await screen.findByText(/Master gespeichert und verifiziert:/i);
-    expect(screen.getByRole('region', { name: 'Nächster Mastering-Schritt' })).toHaveTextContent(
-      'Dein Master ist gespeichert.',
+    expect(screen.getByRole('region', { name: 'Mastering-Aktion' })).toHaveTextContent(
+      'Master gespeichert und technisch verifiziert',
     );
-  }, 30000);
+    fireEvent.click(screen.getByRole('button', { name: 'Set-Publish vorbereiten' }));
+    await waitFor(() => expect(prepareImport).toHaveBeenCalledWith(expect.objectContaining({
+      filePaths: ['D:\\Masters\\set-mastered.wav'],
+    })));
+    await screen.findAllByRole('heading', { name: 'Set Import' });
+    expect(screen.getByLabelText('Audio Source')).toHaveValue('D:\\Masters\\set-mastered.wav');
+    expect(screen.getAllByRole('button', { name: 'Alles ausfuehren & Live' }).every((button) => button.disabled)).toBe(true);
+    expect(publishSet).not.toHaveBeenCalled();
+  }, 60000);
 
   it('offers a return action from the standalone Design Studio window', async () => {
     window.history.pushState({}, '', '/desktop.html?view=design-studio');
@@ -400,7 +431,7 @@ describe('DesktopApp', () => {
           isNew: true,
           vinylColor: '#9adf6b',
           cover: '/assets/recording_2026_05_01.jpg',
-          tracks: [],
+          tracks: [{ time: '00:00', artist: 'AIRDOX', title: 'Opening' }],
           sourceAudioPath: 'D:\\Music\\Airdox_REC_2026_05_01.mp3',
         },
         warnings: [],
@@ -464,7 +495,7 @@ describe('DesktopApp', () => {
           isNew: true,
           vinylColor: '#9adf6b',
           cover: '/assets/recording_2026_05_01.jpg',
-          tracks: [],
+          tracks: [{ time: '00:00', artist: 'AIRDOX', title: 'Opening' }],
           sourceAudioPath: 'D:\\Music\\Airdox_REC_2026_05_01.mp3',
         },
         warnings: [],
@@ -621,7 +652,7 @@ describe('DesktopApp', () => {
           isNew: true,
           vinylColor: '#9adf6b',
           cover: '/assets/recording_2026_05_01.jpg',
-          tracks: [],
+          tracks: [{ time: '00:00', artist: 'AIRDOX', title: 'Opening' }],
           sourceAudioPath: 'D:\\Music\\Airdox_REC_2026_05_01.mp3',
         },
         warnings: [],

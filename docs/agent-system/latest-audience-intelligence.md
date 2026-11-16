@@ -1,6 +1,6 @@
 # AIRDOX Audience-Intelligence-Bericht
 
-Erstellt: 2026-07-24T01:48:45.362Z
+Erstellt: 2026-10-20T01:46:01.169Z
 
 Consent-Modus: consented-aggregate
 Analysierte Consent-Events: 0
